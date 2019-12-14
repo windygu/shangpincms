@@ -1,0 +1,277 @@
+﻿/* CSS Document */
+
+/* ============== Account notice ============== */
+
+.spAccount_share {
+	width:100%;
+	padding:15px 0 0 0;
+}
+.spAccount_share .shareTabs_menu {
+	border-bottom:1px solid #cccccc;
+}
+.spAccount_share .shareTabs_menu li {
+	cursor: pointer;
+	background:#f7f7f7;
+	border-color:#cccccc;
+	border-style:solid;
+	border-width:1px 1px 0;
+	color:#666;
+	float: left;
+	height: 24px;
+	line-height:24px;
+	margin:3px 5px 0 0;
+	overflow: hidden;
+	text-align: center;
+	padding:0 20px;
+	overflow:hidden;
+}
+.spAccount_share .shareTabs_menu li.hover {
+	background:#fff;
+	color:#333;
+	font-weight:700;
+	position:relative;
+	bottom:-1px;
+	height:27px;
+	line-height:27px;
+	margin:0 5px 0 0;
+}
+.spAccount_share .shareTabs_menu li.right_txt{
+	cursor:default;
+	background:#fff;
+	border:0 none;
+	float:right;
+	height:27px;
+	line-height:27px;
+	text-align:right;
+	padding:0;
+	margin:0;
+}
+.spAccount_share .shareTabs_menu span{
+	float:right;
+	color:#999;
+	zoom:1;
+}
+.spAccount_share .shareTabs_menu span em{
+	font-weight:700;
+	color:#000;
+}
+
+#spTabs_content {
+	padding:20px 15px;
+	margin:0 auto;
+	border:1px solid #cccccc;
+	border-top:none;
+}
+
+
+.spAccount_share .share_content {
+	padding:0 35px 0 0;
+}
+.share_content .share_block{
+	
+}
+.share_block h4{
+	color:#999;
+	line-height:25px;
+	text-align:right;
+}
+.share_block dl{
+	width:100%;
+}
+.share_block dt{
+	width:120px;
+	float:left;
+}
+.share_block dd{
+	width:412px;
+	border:1px solid #eee;
+	float:right;
+	padding:15px 25px;
+	line-height:180%;
+}
+.share_block dd span{
+	display:block;
+	position:relative;
+}
+.share_block dd span a{
+	color:#000;
+}
+.share_block dd span a:hover{
+	text-decoration:underline;
+}
+.share_block dd span em{
+	display:block;
+	color:#999;
+}
+.share_block dd span .dot{
+	width:13px;
+	height:14px;
+	overflow:hidden;
+	position:absolute;
+	top:5px;
+	left:-38px;
+	background:url(/images/page/account/share_icon.png) no-repeat 0 0;
+}
+.share_block dd p{
+	padding:15px 0;
+	line-height:160%;
+}
+.share_block dd .share_size{
+	border-top:1px solid #eee;
+	line-height:30px;
+	color:#666;
+}
+.comment_imgs{
+	padding:0;
+}
+.share_block .share_handle{
+	text-align:right;
+	line-height:35px;
+	color:#666;
+	position:relative;
+	margin:5px 0 0 0;
+}
+.share_block .share_handle a.edit{
+	display:inline-block;
+	padding:0 0 0 18px;
+	background:url(/images/page/account/share_icon.png) no-repeat -86px -13px #fff;
+}
+.share_block .share_handle a.delete{
+	display:inline-block;
+	padding:0 0 0 18px;
+	background:url(/images/page/account/share_icon.png) no-repeat -86px -48px #fff;
+}
+.share_block .share_handle a.delete:hover{
+	text-decoration:underline;
+}
+
+.share_block .share_handle .share_tips{
+	width:155px;
+	padding-top:6px;
+	position:absolute;
+	top:-60px;
+	right:-45px;
+	_right:10px;
+	text-align:center;
+	border:1px solid #979797;
+	background:#fff;
+	display:none;
+}
+.share_tips li{
+	display:block;
+	height:55px;
+	position:relative;
+	font-family:"宋体";
+	line-height:23px;
+}
+.share_tips li i{
+	background-image:url(/images/plug/arrow/sp_li.gif);
+    background-position: -149px -233px;
+    background-repeat: no-repeat;
+	background-color:#fff;
+	display:block;
+	width:9px;
+	height:6px;
+	overflow:hidden;
+	position:absolute;
+	left:80px;
+	bottom:-6px;
+	_bottom:-7px;
+}
+.share_tips li a{
+	display:inline-block;
+	width:53px;
+	height:20px;
+	border:1px solid #999;
+	border-radius:.3em;
+	-webkit-border-radius:.3em;
+	background:#f0f0f0;
+	padding:0;
+}
+.share_tips li a:link, .share_tips li a:visited{
+	text-decoration:none;
+}
+.share_tips li a:hover, .share_tips li a:active{
+	color:#666;
+	border:1px solid #333;
+}
+
+.spAccount_share .share_prod{
+	width:100%;
+	overflow:hidden;
+}
+.share_prod ul{
+	width:680px;
+}
+.share_prod li{
+	width:210px;
+	margin-right:13px;
+	float:left;
+}
+.share_prod li a{
+	display:block;
+	width:100%;
+	height:280px;
+	position:relative;
+}
+:root .share_prod li a p{filter:none;}/*for IE9*/
+.share_prod li a p{
+	height:280px;
+	width:210px;
+	position:absolute;
+	left:0;
+	top:0;
+	background:rgba(0,0,0,0.6);
+	zoom:1;
+	filter:progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr='#99000000', endColorstr='#99000000');
+	text-align:center;
+	font-size:14px;
+	font-weight:700;
+	color:#fff;
+	line-height:280px;
+	display:none;
+}
+.share_prod li a.hover p{
+	display:block;
+}
+.share_prod li span{
+	display:block;
+	padding:15px 0 15px 15px;
+	color:#666;
+}
+
+.spAccount_share .none_noDataMsg{
+	text-align:center;
+	line-height:35px;
+	padding:15px 0;
+}
+.spAccount_share .none_noDataMsg a{
+	color:#b9966a;
+}
+
+.onlyRead .shareTabs_menu{
+	border-bottom:1px solid #eee;
+}
+.onlyRead .shareTabs_menu li{
+	border:0 none;
+	background:#fff;
+	color:#333;
+	font-size:14px;
+	font-weight:bold;
+	height:35px;
+	line-height:35px;
+	margin:0;
+	padding:0;
+	cursor:default;
+}
+.onlyRead .shareTabs_menu li.right_txt{
+	font-size:12px;
+	font-weight:normal;
+}
+#spTabs_content.only_content{
+	border:0 none;
+}
+
+.spPage{
+	margin:10px 0 0;
+}

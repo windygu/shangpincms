@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <statement id="ComBeziPicLab_t_model_type_FetchEntityByIdentity_NoLock" primarykey="id">
+    SELECT id,collect_amount,create_date,file_content,file_name,file_type,model_type_code,name,share_amount,sp_wfs_style_code,status,style_url,createUser_user_id,real_collect_amount,real_share_amount,picture_file_no  FROM t_model_type  WITH(NOLOCK)  WHERE id=@id
+  </statement>
+  <statement id="ComBeziPicLab_t_relation_goods_FetchEntityByIdentity_NoLock" primarykey="id">
+    SELECT id,brand_name,cdn_img_url,file_content,file_type,goods_sku,limited_price,order_seq,stock,model_type_id  FROM t_relation_goods  WITH(NOLOCK)  WHERE id=@id
+  </statement>
+  <statement id="ComBeziPicLab_t_tag_base_FetchEntityByIdentity_NoLock" primarykey="tag_id">
+    SELECT tag_id,tag_name,create_date  FROM t_tag_base  WITH(NOLOCK)  WHERE tag_id=@tag_id
+  </statement>
+  <statement id="ComBeziPicLab_t_tag_instance_FetchEntityByIdentity_NoLock" primarykey="tag_instance_id">
+    SELECT tag_instance_id,order_seq,tag_name,model_type_id,tag_base_id  FROM t_tag_instance  WITH(NOLOCK)  WHERE tag_instance_id=@tag_instance_id
+  </statement>
+</statements>

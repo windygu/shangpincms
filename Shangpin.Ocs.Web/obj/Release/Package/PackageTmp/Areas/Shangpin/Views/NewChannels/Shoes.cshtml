@@ -1,0 +1,746 @@
+﻿@using Shangpin.Entity.Item
+@using Shangpin.Entity.User
+@using Shangpin.Entity.Wfs
+@using Shangpin.Framework.Common
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@using Shangpin.Ocs.Service.Shangpin;
+@using Shangpin.Ocs.Service.Common;
+@{
+    ViewBag.Title = "女鞋频道页管理";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    SWfsIndexModuleService _SWfsIndexModuleService = new SWfsIndexModuleService();
+    SWfsOperationPictureService _SWfsOperationPictureService = new SWfsOperationPictureService();
+    SWfsIndexModuleLinkService _SWfsIndexModuleLinkService = new SWfsIndexModuleLinkService();
+    NewsChannelsSservice _newsChannelsSservice = new NewsChannelsSservice();
+
+    //首页品牌
+    IEnumerable<Shangpin.Entity.Item.Search.BrandInfo> brandList = ViewBag.RecommendBrand;
+
+    IList<SWfsOperationPicture> topList = ViewBag.Banner;//头图Banner
+
+    IList<SWfsOperationPicture> bannerList = ViewBag.Banner70;
+
+
+    string pageNo = String.IsNullOrEmpty(Request.QueryString["PageNo"]) ? NewsChannelsSservice.WomenShoes : Request.QueryString["PageNo"];
+    SWfsGlobalConfig sgc = new NewsChannelsSservice().GetSWfsGlobalConfigByFunctionNo("ShoesNewArrival");
+    string newNoticeTitle = new NewsChannelsSservice().GetNewNoticeNameByNowTime(pageNo);
+    string titleName = "";
+    if (!string.IsNullOrEmpty(newNoticeTitle))
+    {
+        //string.Format("{0:M}",dt); 格式：9月5日
+        DateTime dt = Convert.ToDateTime(newNoticeTitle.Split('_')[1]);
+        titleName = string.Format("{0:M}", dt) + "即将上新" + newNoticeTitle.Split('_')[0];
+    }
+    List<SWfsIndexModule> allfloors = _newsChannelsSservice.GetChanelFloors(pageNo);//楼层
+    string pagePositionNo = "CHANNEL_NA003";
+
+    string PagePostionNameOne = "热门推荐";
+    string PagePostionNameTwo = "国际大牌";
+    if (brandList != null && brandList.Count() > 0)
+    {
+        var bandPopul = brandList.Where(n => n.PagePositionNo == "PopularBrand" && n.IsRecommendBrand == 0).ToList();
+        var bandInter = brandList.Where(n => n.PagePositionNo == "InternationalBrand" && n.IsRecommendBrand == 0).ToList();
+        if (bandPopul != null && bandPopul.Count() > 0)
+        {
+            PagePostionNameOne = bandPopul[0].FirstName;
+        }
+        if (bandInter != null && bandInter.Count() > 0)
+        {
+            PagePostionNameTwo = bandInter[0].FirstName;
+        }
+    }
+
+}
+
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/js/tipswindown.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="/Areas/Shangpin/Scripts/page/newchannel/channel.js"></script>
+    <script type="text/javascript">
+        function switchTab(ProTag, ProBox) {
+            //alert(ProTag + "-" + ProBox);
+            for (i = 1; i < 5; i++) {
+                if ("tab" + i == ProTag) {
+                    $("#" + ProTag).attr("style", "background-color: red;");
+                } else {
+                    $("#tab" + i).removeAttr("style");
+                }
+                if ("con" + i == ProBox) {
+                    $("#" + ProBox).show();
+                } else {
+                    $("#con" + i).hide();
+                }
+            }
+        }
+        //进入商品列表
+        function EnterShoesNew() {
+            var configvalue = $("#hidConfigValue").val();
+            var pageno = $("#PageNo").val();
+            var mid = "";
+            if (configvalue == "") {
+                alert("请先设置上新时间，再做此操作。");
+            }
+            else {
+                window.location.href = "/Shangpin/NewChannels/ShoesNewProductList?PageNo=" + pageno + "&ModuleId=" + mid;
+            }
+        }
+        //获取上新预告状态
+        function GetStatusNewsNotice() {
+            $.ajax({
+                type: "POST",
+                url: "/Shangpin/NewChannels/GetStatusNewsNotice",
+                async: false,
+                data: { pageNo: $("#PageNo").val() },
+                dataType: "text",
+                success: function (data) {
+                    var result = data == "1" ? "关闭" : "开启";
+                    $("#A_IsNChannel").html(result);
+                    $("#A_IsNChannel").attr("nstate", data);
+                }
+            });
+        }
+
+        //关闭上新预告状态
+        function ChannelNewsNotice() {
+            var html = $("#A_IsNChannel").html();
+            var dates = $("#A_IsNChannel").attr("nstate");
+            $.ajax({
+                type: "POST",
+                url: "/Shangpin/NewChannels/ChannelGetStatusNewsNotice",
+                async: false,
+                data: { pageNo: $("#PageNo").val(), DateSate: dates },
+                dataType: "text",
+                success: function (data) {
+                    var result = html == "关闭" ? "开启" : "关闭";
+                    var data = dates == "0" ? "1" : "0";
+                    $("#A_IsNChannel").html(result);
+                    $("#A_IsNChannel").attr("nstate", data);
+                }
+            });
+        }
+
+        function GetStatusbanner() {
+            $.ajax({
+                type: "POST",
+                url: "/Shangpin/NewChannels/GetStatusbanner",
+                async: false,
+                data: { pageNo: $("#PageNo").val() },
+                dataType: "text",
+                success: function (data) {
+                    var result = data == "1" ? "关闭" : "开启";
+                    $("#A_IsBChannel").html(result);
+                    $("#A_IsBChannel").attr("nstate", data);
+                }
+            });
+        }
+        function ChannelStatusbanner() {
+            var html = $("#A_IsBChannel").html();
+            var dates = $("#A_IsBChannel").attr("nstate");
+            $.ajax({
+                type: "POST",
+                url: "/Shangpin/NewChannels/ChannelStatusbanner",
+                async: false,
+                data: { pageNo: $("#PageNo").val(), Status: dates },
+                dataType: "text",
+                success: function (data) {
+                    var result = html == "关闭" ? "开启" : "关闭";
+                    var data = dates == "0" ? "1" : "0";
+                    $("#A_IsBChannel").html(result);
+                    $("#A_IsBChannel").attr("nstate", data);
+                }
+            });
+        }
+        $(document).ready(function () {
+            GetStatusNewsNotice();
+            GetStatusbanner()
+        })
+    </script>
+}
+@section HeadStyle{
+    <link href="/Areas/Shangpin/Content/css/tipswindown.css" rel="stylesheet" type="text/css" charset="utf-8" />
+    <link href="~/Areas/Shangpin/Content/css/page/channel/channels_201408.css" rel="stylesheet" />
+    <style type="text/css">
+        .dispalayRegion {
+            display: none;
+            position: absolute;
+            width: 770px;
+            background-color: White;
+            height: auto;
+            top: 0px;
+            left: 0px;
+            font-size: 12px;
+        }
+
+            .dispalayRegion td {
+                padding: 10px;
+            }
+
+        .setbar {
+            text-align: right;
+            padding-top: 6px;
+            width: 100%;
+            height: 10px;
+        }
+
+        a.blue_button {
+            background-color: #449FDF;
+            color: white;
+            padding: 3px 4px;
+            border-radius: 3px;
+        }
+
+        .floor {
+            border: 1px solid black;
+            width: 100%;
+            margin: 8px 0px;
+        }
+
+            .floor.hidefloor {
+                border: 2px dotted red;
+            }
+
+        .today_style {
+            float: right;
+            width: 770px;
+            height: 470px;
+        }
+
+            .today_style div.left {
+                display: block;
+                height: 465px;
+                border: none;
+            }
+
+            .today_style div.left {
+                padding-right: 7px;
+            }
+
+                .today_style div.left span {
+                    display: block;
+                    padding-bottom: 10px;
+                }
+
+            .today_style .right span.top {
+                padding-bottom: 10px;
+            }
+
+        div.floor {
+            height: 560px;
+        }
+
+            div.floor.second {
+                height: 460px;
+            }
+
+            div.floor div.content {
+                width: 775px;
+                float: right;
+            }
+
+        .small_img_list ul {
+            padding: 0px;
+        }
+
+        .product_list .small_img_list li {
+            width: 145px;
+            height: 188px;
+            padding: 0px;
+        }
+
+            .product_list .small_img_list li img {
+                width: 142px;
+                height: 183px;
+                position: absolute;
+                bottom: 0;
+                left: 0px;
+                z-index: 1;
+            }
+
+        .product_list .small_img_list {
+            width: 440px;
+            height: 379px;
+            border: 1px solid transparent;
+            border-right: 0;
+            border-bottom: 0;
+        }
+    </style>
+
+}
+<script type="text/javascript">
+    //修改最新上架名称
+    function ChangeNewArrivalName(obj, pageNo, pagePositionNo) {
+        
+        var $this = $(obj);
+        if (!$this.is("[save=save]")) {
+            $this.prev("input").remove();
+            $this.text("保存").attr("save", "save");
+            var span = $this.prev("span.left").hide();
+            $this.before("<input style='width:200px;color: #212121; font-family: '微软雅黑','Microsoft YaHei', '黑体', 'Tahoma', '宋体';font-size: 16px;line-height: 24px;' type='input' value='" + span.text() + "' maxlength='10'>");
+            $this.after('<a class="blue_button cancel" onclick="cancelEditModule(this)" style="font-size:12px;color:white;" href="javascript:void(0);">取消</a>');
+
+        } else {
+            var input = $this.prev("input");
+            input.val($.trim(input.val()));//去空格
+            if ($this.is("[save=save]") && input.val().length > 0 && input.val().length <= 10) {
+                $.ajax({
+                    url: "/shangpin/NewChannels/ChangeNewArrivalName",
+                    data: { PageNo: pageNo, PagePositionNo: pagePositionNo, ArrivalTitle: input.val() },
+                    type: "get",
+                    success: function (result) {
+                        if (result.status == 1) {
+                            $this.text($this.attr("oldname"));
+                            $this.next("a.cancel").remove();
+                            input.prev("span.left").text(input.val()).show();
+                            $this.removeAttr("save");
+                            input.remove();
+                        } else {
+                            alert(result.message);
+                        }
+                    }
+                })
+            }
+        }
+    }
+    function cancelEditModule(obj) {
+        var prevA = $(obj).prev("a");
+        prevA.text(prevA.attr("oldname"));
+        prevA.prev("input").remove();
+        prevA.prev("span.left").show();
+        prevA.removeAttr("save");
+        $(obj).remove();
+    }
+</script>
+<h1>
+    OCS > 尚品>频道页列表>频道页管理
+</h1>
+<div style="width:1070px;text-align:left;line-height:25px;font-size:16px;">
+    频道位置:<span id="channelName"></span><br />
+    频道状态:
+    <input type="radio" checked="checked" onclick='if(!confirm("确定开启频道吗?状态修改将立即生效")){return false;}changeStates("@(pageNo)", 1)' style="line-height:55px;" value="1" name="channel" id="openChannel"><label for="openChannel">开启</label>&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="radio" onclick='if(!confirm("确定关闭状态吗?状态修改将立即生效")){return false;}changeStates("@(pageNo)", 0)' value="0" name="channel" id="closeChannel"><label for="closeChannel">关闭</label>
+    <input type="hidden" id="PageNo" value="@(pageNo)" />
+</div>
+<div style="width:1070px;text-align:right">
+    <a class="blue_button" href="/shangpin/NewChannels/FloorSort?PageNo=@(pageNo)">更改页面布局</a>
+</div>
+<div class="spIndex_box">
+    <input type="hidden" id="hidConfigValue" name="hidConfigValue" value="@(sgc!=null?sgc.ConfigValue:"")" />
+    <!--首页banner start-->
+    <!--首页图片轮播 start-->
+    <div id="spIndex_mxImageSwitch" style="border:1px solid #000;">
+        <a name="ImageSwitchList" href="/shangpin/NewChannels/ShoesTopPiclist?PageNo=@Request.QueryString["PageNo"]" class="blue_button">轮播图管理列表</a>
+        <div class="switchwrapper">
+            @{
+                if (topList != null && topList.Count > 0)
+                {
+                    SWfsOperationPicture topBigShow = topList.Where(p => p.PictureIndex == 4).FirstOrDefault();
+                    if (topBigShow != null)
+                    {
+                        <a id="switchhref" href="/shangpin/NewChannels/shoescreatetopswitch.html?PageNo=@Request.QueryString["PageNo"]" title="测试链接标题-index-0">
+                            <img src="/ReadPic/GetPic.ashx?width=960&pictureFileNo=@(topBigShow.PictureFileNo)&type=2" alt="@(topBigShow.PictureName)" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="/shangpin/NewChannels/shoescreatetopswitch.html?PageNo=@Request.QueryString["PageNo"]"><img alt="@(topList[0].PictureName)" src="/ReadPic/GetPic.ashx?pictureFileNo=@(topList[0].PictureFileNo)&type=2" /> </a>
+                    }
+                }
+                else
+                {
+                    <a href="/shangpin/NewChannels/shoescreatetopswitch.html?PageNo=@Request.QueryString["PageNo"]">点击添加轮播图</a>
+                }
+            }
+        </div>
+    </div>
+    <!--首页图片轮播 end-->
+    <!--首页banner end-->
+    <!--首页主体部分 start-->
+    <div class="spIndex_body">
+        <!--最新上架预告start-->
+        <div class="clr" style="border:1px solid #000;margin-top: 25px;">
+            <h6>
+                <span class="right">
+                    <a id="A_IsNChannel" nstate="" class="blue_button" style="color:white;cursor:pointer" onclick="ChannelNewsNotice()">
+                        开启
+                    </a>
+                    <a href="~/Shangpin/NewChannels/ShoesNewArrivalNoticeList?PageNo=@Request.QueryString["PageNo"]" class="blue_button" style="color:white;">
+                        上新预报管理
+                    </a>&nbsp;&nbsp;
+                </span>
+                <span class="left">最新上架预告</span>
+
+            </h6>
+        </div>
+        <!--最新上架预告 end-->
+        <!--热门潮流 start-->
+        <div id="spTabs" class="clr" style="border:1px solid #000;margin-top: 15px;">
+            <h6 class="clr" id="spTabs_menu" style="position: relative;">
+                <ul class="bigTabs_menu clr">
+                    <li class="curr" id="tab1" onmouseover="switchTab('tab1','con1');"><span class="padr10"><a href="/shangpin/NewChannels/ShoesBrandSelectList?PageNo=@Request.QueryString["PageNo"]&PagePositionNo=PopularBrand&PagePositionName=@(HttpUtility.UrlEncodeUnicode(PagePostionNameOne))">@PagePostionNameOne</a></span>|</li>
+                    <li id="tab2" onmouseover="switchTab('tab2','con2');"><span class="padl10"><a href="/shangpin/NewChannels/ShoesBrandSelectList?PagePositionNo=InternationalBrand&PageNo=@Request.QueryString["PageNo"]&PagePositionName=@(HttpUtility.UrlEncodeUnicode(PagePostionNameTwo))">@PagePostionNameTwo</a></span></li>
+                </ul>
+            </h6>
+
+            <div class="clr" id="spTab_content">
+                <div class="major_suit clr" id="con1">
+                    <p>
+                        @*<a href="/shangpin/NewChannels/ShoesBrandSelectList?PageNo=@Request.QueryString["PageNo"]&PagePositionNo=PopularRecommendBrand&PagePositionName=@(HttpUtility.UrlEncodeUnicode("热门潮流品牌推荐"))&isRecommendBrand=1">
+                                <img src="/Areas/shangpin/images/page/index_201408/image01.jpg" width="128" height="200" />
+                            </a>*@
+                        @if (brandList != null && brandList.Count() > 0)
+                        {
+                            var brandList0 = brandList.Where(n => n.PagePositionNo == "PopularRecommendBrand" && n.IsRecommendBrand == 1).ToList();
+                            if (brandList0 != null && brandList0.Count() > 0)
+                            {
+                                <a href="/shangpin/NewChannels/ShoesBrandSelectList?PageNo=@Request.QueryString["PageNo"]&PagePositionNo=PopularRecommendBrand&PagePositionName=@(HttpUtility.UrlEncodeUnicode(PagePostionNameOne))&isRecommendBrand=1">
+                                    <img src="/ReadPic/GetPic.ashx?width=128&height=200&pictureFileNo=@(brandList0[0].PictureFileNo)&type=2" width="128" height="200" />
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="/shangpin/NewChannels/ShoesBrandSelectList?PageNo=@Request.QueryString["PageNo"]&PagePositionNo=PopularRecommendBrand&PagePositionName=@(HttpUtility.UrlEncodeUnicode(PagePostionNameOne))&isRecommendBrand=1">
+                                    添加热门推荐
+                                </a>
+                            }
+                        }
+                        else
+                        {
+                            <a href="/shangpin/NewChannels/ShoesBrandSelectList?PageNo=@Request.QueryString["PageNo"]&PagePositionNo=PopularRecommendBrand&PagePositionName=@(HttpUtility.UrlEncodeUnicode(PagePostionNameOne))&isRecommendBrand=1">
+                                添加热门推荐
+                            </a>
+                        }
+                    </p>
+                    <ul>
+                        @*<li>
+                                <a href="/shangpin/NewChannels/AddShoesBrands?PageNo=@Request.QueryString["PageNo"]&PagePositionNo=PopularBrand&PagePositionName=@(HttpUtility.UrlEncodeUnicode("热门潮流"))">
+                                    <img src="/Areas/shangpin/images/page/index_201408/hotbrand.jpg" width="364" height="105" />
+                                </a>
+                            </li>*@
+                        @if (brandList != null && brandList.Count() > 0)
+                        {
+                            var brandList1 = brandList.Where(n => n.PagePositionNo == "PopularBrand" && n.IsRecommendBrand == 0).Take(15).ToList();
+                            if (brandList1 != null && brandList1.Count() > 0)
+                            {
+                                for (int i = 0; i < brandList1.Count(); i++)
+                                {
+                                    <li>
+                                        <a href="/shangpin/NewChannels/AddShoesBrands?PageNo=@Request.QueryString["PageNo"]&PagePositionNo=PopularBrand&PagePositionName=@(HttpUtility.UrlEncodeUnicode(PagePostionNameOne))&isFromList=0">
+                                            <img src="/ReadPic/GetPic.ashx?width=128&height=61&pictureFileNo=@(brandList1.ElementAt(i).BrandLogo)&type=2" width="128" height="61" />
+                                        </a>
+                                    </li>
+                                }
+                            }
+                        }
+                    </ul>
+                </div>
+
+                <div class="major_suit clr non" id="con2" style="display:none;">
+                    <p>
+                        @*<a href="/shangpin/NewChannels/ShoesBrandSelectList?PageNo=@Request.QueryString["PageNo"]&PagePositionNo=InternationalRecommendBrand&PagePositionName=@(HttpUtility.UrlEncodeUnicode("国际大牌品牌推荐"))&isRecommendBrand=1">
+                                <img src="/Areas/shangpin/images/page/index_201408/image160_250.jpg" width="128" height="200" />
+                            </a>*@
+                        @if (brandList != null && brandList.Count() > 0)
+                        {
+                            var brandList3 = brandList.Where(n => n.PagePositionNo == "InternationalRecommendBrand" && n.IsRecommendBrand == 1).ToList();
+                            if (brandList3 != null && brandList3.Count() > 0)
+                            {
+                                <a href="/shangpin/NewChannels/ShoesBrandSelectList?PageNo=@Request.QueryString["PageNo"]&PagePositionNo=InternationalRecommendBrand&PagePositionName=@(HttpUtility.UrlEncodeUnicode(PagePostionNameTwo))&isRecommendBrand=1">
+                                    <img src="/ReadPic/GetPic.ashx?width=128&height=200&pictureFileNo=@(brandList3[0].PictureFileNo)&type=2" width="128" height="200" />
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="/shangpin/NewChannels/ShoesBrandSelectList?PageNo=@Request.QueryString["PageNo"]&PagePositionNo=InternationalRecommendBrand&PagePositionName=@(HttpUtility.UrlEncodeUnicode(PagePostionNameTwo))&isRecommendBrand=1">
+                                    添加国际大牌推荐
+                                </a>
+                            }
+                        }
+                        else
+                        {
+                            <a href="/shangpin/NewChannels/ShoesBrandSelectList?PageNo=@Request.QueryString["PageNo"]&PagePositionNo=InternationalRecommendBrand&PagePositionName=@(HttpUtility.UrlEncodeUnicode(PagePostionNameTwo))&isRecommendBrand=1">
+                                添加国际大牌推荐
+                            </a>
+                        }
+
+                    </p>
+                    <ul>
+                        @*<li>
+                                <a href="/shangpin/NewChannels/AddShoesBrands?PageNo=@Request.QueryString["PageNo"]&PagePositionNo=InternationalBrand&PagePositionName=@(HttpUtility.UrlEncodeUnicode("国际大牌"))">
+                                    <img src="/Areas/shangpin/images/page/index_201408/InternationalBrand.jpg" width="128" height="61" />
+                                </a>
+                            </li>*@
+                        @if (brandList != null && brandList.Count() > 0)
+                        {
+                            var brandList2 = brandList.Where(n => n.PagePositionNo == "InternationalBrand" && n.IsRecommendBrand == 0).Take(15).ToList();
+                            if (brandList2 != null && brandList2.Count() > 0)
+                            {
+                                for (int i = 0; i < brandList2.Count(); i++)
+                                {
+                                    <li>
+                                        <a href="/shangpin/NewChannels/AddShoesBrands?PageNo=@Request.QueryString["PageNo"]&PagePositionNo=InternationalBrand&PagePositionName=@(HttpUtility.UrlEncodeUnicode(PagePostionNameTwo))&isFromList=0">
+                                            <img src="/ReadPic/GetPic.ashx?width=128&height=61&pictureFileNo=@(brandList2.ElementAt(i).BrandLogo)&type=2" width="128" height="61" />
+                                        </a>
+                                    </li>
+                                }
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--热门潮流 end-->
+        <!--最新上架 start-->
+        <div class="clr" style="border:1px solid #000;margin-top: 25px;">
+            <h6>
+                <span class="right">
+                    <a href="#" class="blue_button" style="color:white;" onclick="EnterShoesNew()">
+                        进入商品列表
+                    </a>
+                </span>
+                @{
+                    NewsChannelsSservice service = new NewsChannelsSservice();
+                    //SWfsIndexNewArrival newinfo = service.SelectNewArrivalInfo(pageNo, pagePositionNo);
+                    string newtitle = "最新上架";
+                    //if (newinfo != null)
+                    //{
+                    //    newtitle = newinfo.NewArrivalTitle;
+                    //}
+                }
+                <span class="left">@newtitle</span>&nbsp;&nbsp;
+                @*@if (newinfo != null)
+                {
+                    <a class="blue_button" style="font-size:12px;color:white;" href="javascript:void(0);" oldname="修改最新上架名称" onclick="ChangeNewArrivalName(this, '@pageNo', '@pagePositionNo')">修改最新上架名称</a>
+                }*@
+                &nbsp;&nbsp;<a href="~/Shangpin/NewChannels/AddShoesNewDate" class="blue_button" style="color:white;font-size:12px;">
+                    设置上新时间
+                </a>
+                <span style="text-align:center;font-size:16px;padding-left:50px;font-family:KaiTi;">@titleName</span>
+            </h6>
+        </div>
+        <!--最新上架 end-->
+        <!--banner广告 start-->
+        <div class="banner" style="border:1px solid #000;margin-top: 25px;">
+            <a class="blue_button" style="float: right; cursor: pointer; " id="A_IsBChannel" nstate="" onclick="ChannelStatusbanner()">开启 </a>&nbsp;&nbsp;&nbsp;
+            <a class="blue_button" style="float:right" href="/shangpin/NewChannels/ShoesIndexBottonList.html?PagePositionNo=BannerADHeight70&PagePositionName=@(HttpUtility.UrlEncodeUnicode("横幅广告"))&PageNo=@Request.QueryString["PageNo"]">横幅广告管理列表 </a>
+            <a href="/shangpin/NewChannels/shoescreatebottonpageposition.html?PagePositionNo=BannerADHeight70&PictureIndex=0&PagePositionName=@(HttpUtility.UrlEncodeUnicode("横幅广告770*70"))&PageNo=@Request.QueryString["PageNo"]">
+                @{
+
+                    if (bannerList != null && bannerList.Count() > 0)
+                    {
+                        <img alt="@(bannerList[0].PictureName)" src="/ReadPic/GetPic.ashx?pictureFileNo=@(bannerList[0].PictureFileNo)&type=2" />
+                    }
+                    else
+                    {
+                        <img src="/Areas/shangpin/images/page/index_201408/banner02.jpg" width="770" height="70" />
+                    }
+
+                }
+            </a>
+        </div>
+        <!--banner广告 end-->
+        <!--分类层start-->
+        @{
+            SWfsIndexModule classifiedFloor = allfloors.Where(a => a.ADShowType == 5).FirstOrDefault();
+            if (classifiedFloor != null || (classifiedFloor == null && _newsChannelsSservice.CreateClassifiedFloor(pageNo) > 0))
+            {
+                if (classifiedFloor == null)
+                {
+                    allfloors = _newsChannelsSservice.GetChanelFloors(pageNo);
+                    classifiedFloor = allfloors.First(a => a.ADShowType == 5);
+                }
+                List<SWfsOperationPicture> picsTmpe = _newsChannelsSservice.GetChannelSWfsOperationPicture(classifiedFloor.ModuleId, classifiedFloor.ADShowType, 1);
+                SWfsOperationPicture todayPic0 = picsTmpe.FirstOrDefault(a => a.PictureIndex == 0) != null ? picsTmpe.First(a => a.PictureIndex == 0) : new SWfsOperationPicture();
+                SWfsOperationPicture todayPic1 = picsTmpe.FirstOrDefault(a => a.PictureIndex == 1) != null ? picsTmpe.First(a => a.PictureIndex == 1) : new SWfsOperationPicture();
+                SWfsOperationPicture todayPic2 = picsTmpe.FirstOrDefault(a => a.PictureIndex == 2) != null ? picsTmpe.First(a => a.PictureIndex == 2) : new SWfsOperationPicture();
+                SWfsOperationPicture todayPic3 = picsTmpe.FirstOrDefault(a => a.PictureIndex == 3) != null ? picsTmpe.First(a => a.PictureIndex == 3) : new SWfsOperationPicture();
+                SWfsOperationPicture todayPic4 = picsTmpe.FirstOrDefault(a => a.PictureIndex == 4) != null ? picsTmpe.First(a => a.PictureIndex == 4) : new SWfsOperationPicture();
+
+
+                <div class="floor @(classifiedFloor.Stutas == 0 ? "hidefloor" : "")" adshowtype="@classifiedFloor.ADShowType" moduleid="@classifiedFloor.ModuleId">
+                    <div class="content">
+                        <div class="setbar">
+                            <a class="blue_button" href="/shangpin/NewChannels/ClassifiedFloorADManager?PageNo=@(pageNo)">分类楼层广告图</a>
+                        </div>
+                        <div class="clr">
+                            <h6 class="no_border">
+                                <span class="right">
+                                </span>
+                                <span class="left">@(classifiedFloor.ModuleName)</span><a class="blue_button" style="font-size:12px;color:white;" href="javascript:void(0);" oldname="修改楼层名称" onclick="ChangeModuleName(this, '@classifiedFloor.ModuleId')">修改楼层名称</a>
+
+                            </h6>
+                            <div class="today_style clr">
+                                <div class="left" style="width:232px;">
+                                    <span class="top">
+                                        <a href="@(classifiedFloor.ModuleId == 0 ? "javascript:void(0);" : "/shangpin/NewChannels/EditClassifiedFloorAD?picId=0&moduleId=" + classifiedFloor.ModuleId + "&pictureIndex=0&PageNo=" + pageNo)">
+                                            <img managerid="@(todayPic0.PictureManageId)" pictureindex="0" src="@(!string.IsNullOrEmpty(todayPic0.PictureFileNo) ? "/ReadPic/GetPic.ashx?pictureFileNo=" + todayPic0.PictureFileNo + "&type=2" : "")" width="230" height="150" />
+                                        </a>
+                                    </span>
+                                    <span>
+                                        <a href="@(classifiedFloor.ModuleId == 0 ? "javascript:void(0);" : "/shangpin/NewChannels/EditClassifiedFloorAD?picId=0&moduleId=" + classifiedFloor.ModuleId + "&pictureIndex=1&PageNo=" + pageNo)">
+                                            <img managerid="@(todayPic1.PictureManageId)" pictureindex="1" src="@(!string.IsNullOrEmpty(todayPic1.PictureFileNo) ? "/ReadPic/GetPic.ashx?pictureFileNo=" + todayPic1.PictureFileNo + "&type=2" : "")" width="230" height="310" />
+                                        </a>
+                                    </span>
+                                </div>
+                                <div class="left" style="width:292px;">
+                                    <span class="top">
+                                        <a href="@(classifiedFloor.ModuleId == 0 ? "javascript:void(0);" : "/shangpin/NewChannels/EditClassifiedFloorAD?picId=0&moduleId=" + classifiedFloor.ModuleId + "&pictureIndex=2&PageNo=" + pageNo)">
+                                            <img managerid="@(todayPic2.PictureManageId)" pictureindex="2" src="@(!string.IsNullOrEmpty(todayPic2.PictureFileNo) ? "/ReadPic/GetPic.ashx?pictureFileNo=" + todayPic2.PictureFileNo + "&type=2" : "")" width="290" height="470" />
+                                        </a>
+                                    </span>
+                                </div>
+                                <div class="right" style="width:232px;">
+                                    <span class="top">
+                                        <a href="@(classifiedFloor.ModuleId == 0 ? "javascript:void(0);" : "/shangpin/NewChannels/EditClassifiedFloorAD?picId=0&moduleId=" + classifiedFloor.ModuleId + "&pictureIndex=3&PageNo=" + pageNo)">
+                                            <img managerid="@(todayPic3.PictureManageId)" pictureindex="3" src="@(!string.IsNullOrEmpty(todayPic3.PictureFileNo) ? "/ReadPic/GetPic.ashx?pictureFileNo=" + todayPic3.PictureFileNo + "&type=2" : "")" width="230" height="310" />
+                                        </a>
+                                    </span>
+                                    <span>
+                                        <a href="@(classifiedFloor.ModuleId == 0 ? "javascript:void(0);" : "/shangpin/NewChannels/EditClassifiedFloorAD?picId=0&moduleId=" + classifiedFloor.ModuleId + "&pictureIndex=4&PageNo=" + pageNo)">
+                                            <img managerid="@(todayPic4.PictureManageId)" pictureindex="4" src="@(!string.IsNullOrEmpty(todayPic4.PictureFileNo) ? "/ReadPic/GetPic.ashx?pictureFileNo=" + todayPic4.PictureFileNo + "&type=2" : "")" width="230" height="150" />
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        <!--分类层end-->
+        @{
+            if (allfloors == null)
+            {
+                allfloors = new List<SWfsIndexModule>();
+            }
+            List<SWfsIndexModule> floors = allfloors.OrderBy(a => a.Sort).ToList();//所有楼层
+            for (int i = 1; i <= 8; i++)
+            {
+                SWfsIndexModule temp = null;
+                if (floors != null && floors.Count > 0)
+                {
+                    temp = floors.Where(a => a.Sort == i).FirstOrDefault();
+                }
+                if (temp == null)
+                {
+                    if (i % 2 == 0)
+                    {
+                        temp = new SWfsIndexModule { ModuleId = 0, ModuleName = i + "F", ADShowType = 0, Sort = i, Stutas = 1 };//右图模板
+                    }
+                    else
+                    {
+                        temp = new SWfsIndexModule { ModuleId = 0, ModuleName = i + "F", ADShowType = 1, Stutas = 1, Sort = i };//左图模板
+                    }
+                    if (_newsChannelsSservice.CreateFloor(temp.ADShowType, pageNo, temp.ModuleName, temp.Sort) > 0)
+                    {
+                        floors = _newsChannelsSservice.GetChanelFloors(pageNo);
+                        temp = floors.Where(a => a.Sort == i).FirstOrDefault();
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                if (temp == null)//重复排序的楼层会出问题
+                {
+                    if (i % 2 == 0)
+                    {
+                        temp = new SWfsIndexModule { ModuleId = 0, ModuleName = i + "F", ADShowType = 0, Sort = i, Stutas = 1 };//左图模板
+                    }
+                    else
+                    {
+                        temp = new SWfsIndexModule { ModuleId = 0, ModuleName = i + "F", ADShowType = 1, Stutas = 1, Sort = i };//右图模板
+                    }
+                }
+                List<SWfsOperationPicture> pics = _newsChannelsSservice.GetChannelSWfsOperationPicture(temp.ModuleId, temp.ADShowType, 1);//_SWfsIndexModuleService.GetSWfsOperationPictureByModuleId(floors[i].ModuleId);
+
+                List<SWfsIndexModuleLink> links = _SWfsIndexModuleLinkService.GetSWfsIndexModuleLinkByModuleId(temp.ModuleId);
+                if (links != null)
+                {
+                    links = links.OrderByDescending(a => a.DateCreate).ToList();
+                }
+                if (floors != null && floors.Count > 0 && (temp.ADShowType == 0 || temp.ADShowType == 1) && temp.ModuleId > 0)
+                {
+                    <div class="floor second @(temp.Stutas==0?"hidefloor":"")" adshowtype="@temp.ADShowType" moduleid="@temp.ModuleId" sort="@i">
+                        <div class="content">
+                            <div class="setbar">
+                                <a class="blue_button" href="@(temp.ModuleId == 0 ? "javascript:void(0);" : "/shangpin/NewChannels/FloorADPicManager?PageNo="+pageNo+"&moduleId=" + temp.ModuleId + "&type=" + temp.ADShowType)">进入活动图列表</a>
+                                <a class="blue_button" href="@(temp.ModuleId == 0 ? "javascript:void(0);" : "/shangpin/NewChannels/ShoesNewProductList?TagFloor=floor&ModuleId=" + temp.ModuleId + "&ModuleName="+temp.ModuleName+"&PageNo=" + pageNo)">进入单品推荐列表</a>
+                                <a class="blue_button" href="@(temp.ModuleId == 0 ? "javascript:void(0);" : "/shangpin/NewChannels/FloorLinkSet?PageNo=" + pageNo + "&moduleId=" + temp.ModuleId + "&moduleName=" + (temp.ModuleId == 0 ? i + "F" : temp.ModuleName))"> 楼层链接管理</a>
+                            </div>
+                            <div class="woman_list">
+                                <h6>
+                                    <span class="right">
+                                        @if (links.Count() > 0 && !string.IsNullOrEmpty(links[0].LinkName))
+                                        {
+                                            <a target="_blank" href="@(links[0].LinkHref)" class="padl10">@(links[0].LinkName)&gt;</a>
+
+                                        }
+                                    </span>
+                                    <span class="left">@(temp.ModuleId == 0 ? i + "F" : temp.ModuleName.ToString())</span>
+
+                                    <a class="blue_button" style="font-size:12px;color:white;" href="javascript:void(0);" oldname="修改楼层名称" onclick="ChangeModuleName(this, '@temp.ModuleId')">修改楼层名称</a>
+
+                                </h6>
+                                <div class="product_list clr">
+
+                                    <!--单图-->
+                                    <div class="big_img" @(Html.Raw(i % 2 == 0 ? "style='float:right;'" : ""))>
+                                        <a href="@(temp.ModuleId == 0 ? "javascript:void(0);" : "/shangpin/NewChannels/EditFloorAD?picId=0&moduleId=" + temp.ModuleId + "&pictureIndex=0&PageNo=" + pageNo)" target="_self">
+                                            <img src="@(pics.Count > 0 ? "/ReadPic/GetPic.ashx?pictureFileNo=" + pics[0].PictureFileNo + "&type=2" : "")" width="310" height="380">
+                                        </a>
+                                    </div>
+                                    <ul class="small_img_list">
+                                        @{
+                                        var tempBranLinks = links.Where(a => a.LinkType == 2).OrderBy(b => b.SortId).ToList();
+                                        if (tempBranLinks == null)
+                                        {
+                                            tempBranLinks = new List<SWfsIndexModuleLink>();
+                                        }
+                                        Dictionary<string, List<ProductInfoShoes>> dicList = new NewsChannelsSservice().GetNewArrivalProductListInfo(pageNo, temp.ModuleId.ToString());
+                                        if (dicList == null && dicList.Count() <= 0)
+                                        {
+                                            dicList = new Dictionary<string, List<ProductInfoShoes>>();
+                                        }
+                                        for (int s = 0; s < 6; s++)
+                                        {
+                                            SWfsIndexModuleLink tempLink = tempBranLinks.Where(a => a.SortId == s).OrderBy(b => b.DateCreate).FirstOrDefault();
+                                            if (tempLink == null)
+                                            {
+                                                tempLink = new SWfsIndexModuleLink { LinkId = 0, LinkType = 2, SortId = s, LinkName = "分类" + (s + 1), ModuleId = temp.ModuleId };
+                                            }
+                                            string picFile = "";
+                                            foreach (var item in dicList)
+                                            {
+                                                if (item.Value.Count > s)
+                                                {
+                                                    picFile = item.Value[s].ProductPicFile;
+                                                    break;
+                                                }
+                                            }
+                                            <li>
+                                                <a categroyhref="@(tempLink.LinkId>0?tempLink.LinkHref:"")" href="@(temp.ModuleId == 0 ? "javascript:void(0);" : "/shangpin/NewChannels/ShoesNewProductList?TagFloor=floor&ModuleId=" + temp.ModuleId + "&ModuleName="+temp.ModuleName+"&PageNo=" + pageNo)">
+                                                    <span>
+                                                        <!--品牌名-->
+                                                        <b>
+                                                            @(tempLink.LinkId > 0 ? tempLink.CategoryNo : "")
+                                                        </b>
+                                                        <!--图片名-->
+                                                        <em>
+                                                            <b>@(tempLink.LinkId > 0 ? tempLink.LinkName : "")</b>
+                                                        </em>
+                                                    </span>
+                                                    <img src="/ReadPic/GetPic.ashx?width=142&height=183&pictureFileNo=@picFile&type=1" width="142" height="183" linkid="@(tempLink.LinkId)" @*onclick="setCategory(this,'@(tempLink.SortId)','@(tempLink.ModuleId)')"*@ alt="@(tempLink.LinkHref)" />
+                                                </a>
+                                            </li>
+                                        }
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </div>
+    <!--首页主体部分 end-->
+</div>

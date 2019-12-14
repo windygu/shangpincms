@@ -1,0 +1,108 @@
+﻿@{
+    Layout = null;
+    
+}
+<link href="/Areas/Shangpin/Content/css/init.css" rel="stylesheet" type="text/css"
+      charset="utf-8" />
+<link href="/Areas/Shangpin/Content/css/core.css" rel="stylesheet" type="text/css"
+      charset="utf-8" />
+<link href="/Areas/Shangpin/Content/css/page/rightcontent/rightcontent.css" rel="stylesheet"
+      type="text/css" charset="utf-8" />
+
+<script type="text/javascript" src="/Areas/Shangpin/Scripts/lib/jquery.js" charset="utf-8"></script>
+<script type="text/javascript" src="/Areas/Shangpin/Scripts/plug/ERPBrand.js"></script>
+<script type="text/javascript" src="/Areas/Outlet/Scripts/lib/jquery.form.js" charset="utf-8"></script>
+
+<style type="text/css">
+    td {
+        padding: 5px;
+        margin: 0;
+    }
+    .applybox td {
+        vertical-align: top;
+    }
+
+    .applybox .button {
+        background-color: #4d90fe;
+        border: 1px solid #3079ed;
+        color: #fff;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        font-size: 14px;
+        display: inline-block;
+        padding: 5px 10px;
+        *padding: 3px 0px 0;
+        position: relative;
+        text-decoration: none;
+        -webkit-transition: border-color 0.218s ease 0s;
+        -moz-transition: border-color 0.218s ease 0s;
+        -o-transition: border-color 0.218s ease 0s;
+        transition: border-color 0.218s ease 0s;
+        cursor: pointer;
+        margin: 0 15px 0 0;
+        *zoom: 1;
+    }
+</style>
+<div class="applybox">
+    <form id="submitForm" name="submitForm" action="/shangpin/newshelf/AddNewBrandManage"
+          method="post">
+        <table>
+            <tr>
+                <td style="color:red">选择品牌：</td>
+                <td>
+                    <input type="hidden" value="" id="BrandNo" name="BrandNo" />
+                    <input type="text" name="BrandName" id="BrandName" value="" onfocus="if(this.value == this.defaultValue) this.value = ''"
+                           onblur="if(this.value == '') this.value = this.defaultValue" />
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td style="text-align:center;">
+                    <input id="week" name="week" type="hidden" value="@ViewBag.WeekDays"/>
+                    <input class="button" id="AddApply" type="button" value=" 添 加 " />
+                    <input id="CloseApply" class="button" type="button" value=" 取 消 " />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("#BrandName").selectBrand('BrandNo', 'BrandName', false, '', ''); //执行品牌选择操作
+        $(".applybox").delegate('#AddApply', 'click', function () {
+            $("#submitForm").ajaxSubmit({
+                success: function (result) {
+                    if (result > 0) {
+                        alert("添加成功！");
+                        parent.window.TrueInfo();
+                    }
+                    else {
+                        alert(result);
+                    }
+                }
+            });
+        });
+
+        $(".applybox").delegate('#CloseApply', 'click', function () {
+            $(window.parent.document).find("#windown-close").trigger("click");
+        });
+    });
+
+</script>

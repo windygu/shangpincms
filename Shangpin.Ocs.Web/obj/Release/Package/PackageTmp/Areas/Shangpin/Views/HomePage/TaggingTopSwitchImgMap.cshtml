@@ -1,0 +1,128 @@
+﻿@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Ocs.Service;
+@using Shangpin.Entity.Wfs;
+@{
+   
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "设置热点图热点区域";
+    SWfsOperationPicture picmanagerSingle = (SWfsOperationPicture)ViewBag.PicManagerSingle;
+    string url = "/shangpin/homepage/UpdateTopSwitchImgMap.html?pid="+Request["pid"];
+}
+
+@section HeadScript{
+<script src="/Areas/Shangpin/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+<script src="/Areas/Shangpin/Scripts/homepage/jquery.image-maps.js" type="text/javascript"
+        charset="utf-8"></script>
+    }
+@section HeadStyle
+{
+    @*<style type="text/css">
+         button.secondary {
+            background-color: #4d90fe;
+            border: 1px solid #3079ed;
+            color: #fff;
+        }
+    </style>*@
+}
+<script type="text/javascript" language="javascript">
+    $(function () {
+        $('#imgMap').imageMaps();
+    });
+</script>
+<div id="mx-rightcontent-addbox" class="mx-rightcontent-msgbox">
+    <form id="formAddSubject" action="/shangpin/homepage/settopswitchimgmap.html" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="PictureManageId" value="@picmanagerSingle.PictureManageId" />
+        <div id="imgMap">
+            <img alt="@picmanagerSingle.PictureName" width="958" height="499" name="@picmanagerSingle.PictureManageId" src="/ReadPic/GetPic.ashx?width=958&height=499&pictureFileNo=@picmanagerSingle.PictureFileNo&type=2" usemap="#Map" ref='imageMaps'>
+
+            <map name="Map">
+                @{
+                    if (!string.IsNullOrEmpty(picmanagerSingle.LinkAddress) && picmanagerSingle.LinkAddress.Split('|').Count() > 1)
+                    {
+                        string[] link = picmanagerSingle.LinkAddress.Split('|');
+                        foreach (var item in link)
+                        {
+                            if (!item.Contains("="))
+                            {
+                                continue;
+                            }
+                            <area shape="rect" coords="@item.Split('=')[1]" href="@item.Split('=')[0]" title="@(item.Split('=').Count() >2? item.Split('=')[2]:"")" />
+                        }
+                    }
+                }
+            </map>
+            <br />
+            <p style="color:red;margin-left:40px;">*格式：开头"http://" 示例："http://www.shangpin.com"</p>
+        </div>
+
+        <dl>
+            <dt>&nbsp;</dt>
+            <dd>
+                <button type="button" id="btnCancle" name="" value="" class="secondary" onclick="window.location='@url'" >
+                    上一步
+                </button>
+                <button type="button" id="btnSave" name="" value="" class="secondary">
+                    保 存
+                </button>
+                <button type="button" id="btnCancle" name="" value="" onclick="window.location='/Shangpin/homepage/indexlistismap.html'">
+                    取 消
+                </button>
+            </dd>
+        </dl>
+
+    </form>
+</div>
+
+<script type="text/javascript" language="javascript">
+    $("#btnSave").bind("click", function () {
+        var check = true;
+        $("input[type=text][name*=link]").each(function () {
+            var msg = $(this).val()
+            if (msg == "" || msg == null || msg == undefined)
+            {
+                alert("请完整填写地址");
+                check = false;
+                return false;
+            }
+            if (!CheckUrl(msg))
+            {
+                alert("请确认地址是否正确");
+                check = false;
+                return false;
+            }
+        });
+        if (check) {
+            FormSubmit();
+        }
+    });
+
+    function FormSubmit() {
+       
+        $("#formAddSubject").ajaxSubmit({            
+            success: function (html) {
+                if (typeof (html) == "string") {
+                    var rs = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+                    data = eval("(" + rs + ")");
+                }
+                else {
+                    data = html;
+                }
+                if (data.result != "1") {
+                    alert(data.message);
+                    return false;
+                }
+                else if (data.result == "1") {
+                   
+                    window.location = "/Shangpin/homepage/indexlistismap.html";
+                    return true;
+                }
+            }
+        })
+    }
+    function CheckUrl(url) {
+        if (!/^(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@@?^=%&amp;:/~\+#]*[\w\-\@@?^=%&amp;/~\+#])?$/.test(url)) {
+            return false;
+        }
+        return true;
+    }
+</script>

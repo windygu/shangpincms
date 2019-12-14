@@ -1,0 +1,107 @@
+﻿@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    int totalCount = 10;
+    int currentPage = 1;
+    int pageSize = 10;
+
+    ViewBag.Title = "品牌管理";
+}
+@using Shangpin.Ocs.Web.Infrastructure;
+@section HeadScript{
+<script type="text/javascript" src="/Areas/outlet/Scripts/page/index/popDiv.js"></script>
+
+}
+<h1><a href="/outlet/subject/index">活动管理</a> > 活动分类管理</h1>
+<form action="/outlet/subject/SordManage" method="get">
+<div style="padding:5px;">
+@*<input type="hidden" name="pageIndex" value="1" />*@
+分类名称 <input type="text" value="@ViewBag.Name" style="" name="name">
+<button type="submit">提交查询</button>
+</div>
+</form>
+<input type="hidden" id="CurSordName" name="CurSordName" />
+<table class="mx-table">
+    <thead>
+        <tr>
+            <th width="12%">
+                模块名称
+            </th>
+            <th width="12%">
+                位置
+            </th>
+            <th width="12%">
+                品牌名称
+            </th>
+            <th width="12%">
+                图片预览
+            </th>
+            <th width="12%">
+                创建时间
+            </th>
+            <th width="12%">
+                当前状态
+            </th>
+            <th width="12%">
+                排序值
+            </th>
+            <th width="16%">
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        
+             <tr id="SordName_0" class="cross">
+                <td>旗舰店</td>
+                <td>广告位</td>
+                <td>
+                    PRADA
+                </td>
+                <td>
+                    <img />
+                </td>
+                <td>
+                    2013-1-1
+                </td>
+                <td>
+                    显示
+                </td>
+                <td>
+                    <input type="text" value="1"/>
+                </td>
+                <td>
+                    <a href="###" >编辑</a>
+                    <a href="#">隐藏</a>
+                    <a href="###" >删除</a>
+                </td>
+            </tr>
+
+    </tbody>
+</table>
+<div class="spPage">@Html.Raw(Html.PagerX("page", currentPage, pageSize, totalCount))</div>
+<div id="mx-rightcontent-fixbarbg">
+    <div class="fixbarcontent">
+        <!-- 添加订单 start -->
+        <div class="mx-rightcontent-msgbox" id="mx-rightcontent-addbox">
+            <!--h1>添加数据<a href="#" id="mx-rightcontent-addbox-close" class="close">×</a></h1-->
+            <dl>
+                <dt>分类名称：</dt>
+                <dd>
+                    <input type="text" value="" name="SordName" id="SordName"></dd>
+            </dl>
+            <dl>
+                <dt>&nbsp;</dt>
+                <dd>
+                    <button class="secondary" value="" name="BtnAdd" id="BtnAdd" type="button">
+                        确&#12288;定</button>
+                    <button value="" name="BtnCancle" id="BtnCancle" type="button">
+                        取&#12288;消</button></dd>
+            </dl>
+        </div>
+        
+    </div>
+</div>
+<div class="clr" id="mx-rightcontent-fixbar">
+    <a id="mx-btn-add" href="#"></a>@*<a id="mx-btn-del" href="#"></a><a id="mx-btn-search"
+        href="#"></a>@*<a id="mx-btn-folder" href="#"></a>*@
+</div>

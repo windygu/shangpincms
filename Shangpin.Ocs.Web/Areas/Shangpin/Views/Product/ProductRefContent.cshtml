@@ -1,0 +1,210 @@
+﻿@{
+    ViewBag.Title = "产品详情编辑";
+    Layout = "~/Areas/Shangpin/Views/Shared/_LayoutProduct.cshtml";
+}
+@model Shangpin.Entity.Wfs.SWfsProductRef
+@section HeadStyle{
+<link href="/Areas/Shangpin/Content/css/tipswindown.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+        .mx-table{font-size:12px;}
+        .dispalayRegion{display:none;position:absolute;width:500px;background-color:White;height:auto;top:0px;left:0px;font-size:12px;}
+        .dispalayRegion td{padding:10px;}
+        .opratorbutton{width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;color: #FFFFFF; cursor: pointer;}
+</style>
+}
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/Venue/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/Areas/Shangpin/Scripts/js/tipswindown.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="/Areas/Shangpin/Scripts/js/DivWaitMsg.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //选择会场模板
+            $("#selectMeetingTemp").click(function () {
+                tipsWindown("选择会场模板", "iframe:/shangpin/product/SelectMeetingTemplate?seltemplateno=" + $("#TemplateNO").val(), "600", "350", "true", "", "true", "text");
+            });
+            $("#saveContent").click(function () {
+                $("#loadTemplate img").attr("src", "/img/e.jpg");
+                $("#HTMLCode").val($("#loadTemplate").html());
+                $("#objData").submit();
+            });
+            $("#publishContent").click(function () {
+                $.get("/shangpin/product/PublishProductContent?publishID=" + $("#RefID").val(), function (data) {
+                    data > 0 ? alert("发布成功") : alert("发布失败");
+                });
+            });
+            $("img[lazy]").each(function () {
+                $(this).attr("src", $(this).attr("lazy"));
+            });
+            //清除缓存
+            $("#clearcache").click(function () {
+                $.get("/shangpin/product/ClearProductDetailCache?producNO=" + $("#ProductNO").val(), function (data) {
+                    alert(data);
+                });
+            });
+            $("#loadTemplate img").click(function () {//单击图片加载编辑
+                editehtml.opratorObj = $(this);
+                editehtml.fileType = "img";
+                editehtml.showEditeDiv();
+                event.stopPropagation();
+            });
+            $("[data-title]").click(function (event) {
+                editehtml.opratorObj = $(this);
+                editehtml.fileType = "text";
+                editehtml.showEditeDiv();
+                event.stopPropagation();
+            });
+
+            //双击复制div层
+            $("div[copyregion]").dblclick(function () {
+                $(this).clone(true).insertAfter(this);
+            });
+            
+        });
+
+        var editehtml = {
+            "fileType": "img",
+            "opratorObj": Object,
+            "saveEdite": function () {//保存块编辑
+                if (this.fileType == "img") {
+                    if ($("#imgfile").val() == '') {
+                        this.opratorObj.attr("lazy", this.opratorObj.attr("src"));
+                        this.hideDiv();
+                        return;
+                    }
+                    $("#formobj").ajaxSubmit(function (data) { //上传图片
+                        data = jQuery.parseJSON(data);
+                        if (data.status == 0) {
+                            editehtml.opratorObj.attr("src", data.message);
+                            editehtml.opratorObj.attr("lazy", data.message);
+                        } else {
+                            alert(data.message);
+                        }
+                        editehtml.hideDiv();
+                    });
+                }
+                if (this.fileType == "text") {
+                    this.opratorObj.text($("#editeText").val()); //编辑文字
+                    this.hideDiv();
+                }
+            },
+            "hideDiv": function () {//隐藏编辑层
+                $('.dispalayRegion').hide();
+                $('#windownBG').remove();
+            },
+            "showEditeDiv": function () {//显示编辑层
+                if (this.fileType == "img") {
+                    $("#imgfile").val("");
+                    $("#yulan").attr("src", this.opratorObj.attr("src"));
+                    $("#imgSize").text(this.opratorObj.attr("width") + "*" + this.opratorObj.attr("height"));
+                    $("#imgWidth").val(this.opratorObj.attr("width"));
+                    $("#imgHeight").val(this.opratorObj.attr("height"));
+                    $("#imgobj").show();
+                    $("#textobj").hide();
+                }
+                if (this.fileType == "text") {
+                    $("#editeText").val(this.opratorObj.text());
+                    $("#textobj").show();
+                    $("#imgobj").hide();
+                }
+                $("body").append('<div id="windownBG" style="height:' + $(document).height() + 'px;opacity:0.5;z-index: 9999;display:block;left:0px;top:0px;position:absolute;width:100%;background: none repeat scroll 0 0 #000000;"></div>');
+                $("#regionEdite").css({ 'top': ($(window).height() / 2) - ($("#regionEdite").height() / 2) + $(window).scrollTop(), 'left': ($(window).width() / 2) - ($("#regionEdite").width() / 2), 'display': 'block', 'z-index': '99999' });
+            }
+        };
+
+        //弹出层选择行 返回数据
+        function ClickRowNew(value) {
+            $("#templateTip").html("已选择").css({ color: "green" });
+            $("#TemplateNO").val(value);
+            $("#windown-close").trigger("click");
+            //更新模板编号
+            $.get("/shangpin/product/EditeTemplateNo?refID=@(Model.RefID)&tempNO=" + $("#TemplateNO").val(), function (data) {
+                if (data > 0) {
+                    window.location.reload();
+                }
+            });
+        }
+        //清除模板选择
+        function TrueInfo() {
+            $("#templateTip").html("未选择").css({ color: "red" });
+            $("#TemplateNO").val("");
+            $("#windown-close").trigger("click");
+            $.get("/shangpin/product/EditeTemplateNo?refID=@(Model.RefID)", function (data) {
+                if (data > 0) {
+                    window.location.reload();
+                }
+            });
+        }
+    </script>
+}
+
+<h1>
+    OCS > 尚品 > <a href="/Shangpin/product/productmanager">产品管理</a> >产品详情编辑
+</h1>
+<form action="/shangpin/product/ProductRefContent" method="post" id="objData">
+    <div style="margin-top:20px;margin-bottom:20px;">
+    选择模板:&nbsp;&nbsp;<input type="button" id="selectMeetingTemp" value="选择模板"
+                            style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;"/>
+                    @if (string.IsNullOrEmpty(Model.TemplateNO))
+                    {
+                        <span id="templateTip" style="padding-left: 10px; color: red;">未选择</span>
+                    }
+                    else
+                    {
+                        <span id="templateTip" style="padding-left: 10px; color: green;">已选择</span>
+                    }
+                    &nbsp;&nbsp;&nbsp;
+                    <input type="button" id="saveContent" value="保存" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;"/>
+                            &nbsp;&nbsp;
+                    <input type="button" id="publishContent" value="发布" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;"/>&nbsp;&nbsp;
+                    <input type="button" id="clearcache" value="清除缓存" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;"/>
+                    <input type="hidden" id="RefID" value="@Model.RefID" name="RefID"/>
+                    <input type="hidden" id="ProductNO" value="@Model.ProductNO" name="ProductNO"/>
+                    <input type="hidden" id="TemplateNO" value="@Model.TemplateNO" name="TemplateNO"/>
+                    <input type="hidden" id="Status" value="@Model.Status" name="Status"/>
+                    <input type="hidden" id="HTMLCode" value="@Model.HTMLCode" name="HTMLCode"/>
+    </div>
+</form>
+
+<div id="loadTemplate">
+    @Html.Raw(Model.HTMLCode)
+</div>
+
+ @section hiddendiv{
+    <div id="regionEdite"  class="dispalayRegion" >
+        <form action="/Shangpin/product/SaveImg" method="post" enctype="multipart/form-data" id="formobj" accept-charset="utf-8">
+            <table  border="0">
+                <tr id="imgobj">
+                    <td>图片:</td>
+                    <td>
+                        <input type="hidden" value="0" name="FlagReigionID" /><!--主键ID-->
+                        <img src="" alt="" title="yulan" id="yulan" width="100" height="136"/>
+                        <input type="file" name="imgfile" id="imgfile"/>
+                        <input type="hidden" value="ImgNO"  name="ImgNO"/> <!--图片-->
+                        <input type="hidden" id="imgWidth" name="imgWidth" value="0"/>
+                        <input type="hidden" id="imgHeight" name="imgHeight" value="0"/>
+                        <input type="hidden" id="imgLength" name="imgLength" value="1000"/>
+                        <span style="color:Red;" id="imgSize"></span>
+                    </td>
+                </tr>
+                <tr id="textobj">
+                    <td id="typetext">编辑文字:</td>
+                    <td>
+                        <textarea id="editeText" cols="64" rows="5"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="button" value="确定" id="saveOprator" class="opratorbutton" onclick="editehtml.saveEdite()"/>
+                        <input type="button" value="返回" onclick="$('.dispalayRegion').hide();$('#windownBG').remove();" class="opratorbutton" /> 
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    }
+
+@ViewData["tip"]

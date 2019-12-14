@@ -1,0 +1,450 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <!--逻辑清除查询楼层关联图片-->
+  <statement id="ComBeziWfs_SWfsOperationPicture_DeleteSWfsIndexModuleRefPic">
+    update SWfsOperationPicture set DataState=255 where PagePositionNo=@ModuleId
+  </statement>
+  <!--逻辑清除查询楼层关联图片-->
+  <statement id="ComBeziWfs_SWfsOperationPicture_DeleteSWfsOperationPictureByPicId">
+    update SWfsOperationPicture set DataState=255 where PictureManageId=@PictureManageId
+  </statement>
+  <!--根据创建时间与操作人获取楼层ID-->
+  <statement id="ComBeziWfs_SWfsIndexModule_GetSWfsIndexModuleIdByCreaterAndCreateTime">
+    select ModuleId from SWfsIndexModule (nolock) where DateCreate=@DateCreate and OperateUserId=@OperateUserId
+  </statement>
+  <!--根据楼层ID获取楼层对象-->
+  <statement id="ComBeziWfs_SWfsIndexModule_GetSWfsIndexModuleByModuleId">
+    select * from SWfsIndexModule (nolock) where ModuleId=@ModuleId
+  </statement>
+  <!--根据楼层ID获取楼层连接对象-->
+  <statement id="ComBeziWfs_SWfsIndexModuleLink_GetSWfsIndexModuleLinkByModuleId">
+    select [LinkId]
+    ,[ModuleId]
+    ,[LinkName]
+    ,[CategoryNo]
+    ,[LinkHref]
+    ,[LinkType]
+    ,[DateCreate]
+    ,[OperateUserId]
+    ,[UpdateDate]
+    ,[UpdateOperateUserId]
+    ,[SortId]
+    ,[Stutas]
+    ,[DataState] from SWfsIndexModuleLink (nolock) where ModuleId=@ModuleId
+  </statement>
+  <!--根据楼层ID获取楼层连接对象-->
+  <statement id="ComBeziWfs_SWfsIndexModuleLink_GetSWfsIndexModuleLinkByModuleIdAndDateCreate">
+    select [LinkId]
+    ,[ModuleId]
+    ,[LinkName]
+    ,[CategoryNo]
+    ,[LinkHref]
+    ,[LinkType]
+    ,[DateCreate]
+    ,[OperateUserId]
+    ,[UpdateDate]
+    ,[UpdateOperateUserId]
+    ,[SortId]
+    ,[Stutas]
+    ,[DataState] from SWfsIndexModuleLink (nolock) where ModuleId=@ModuleId and DateCreate=@DateCreate
+  </statement>
+  <!--获取楼层广告图分页-->
+  <statement id="ComBeziWfs_SWfsOperationPicture_GetSWfsOperationPicturePageByPagePositionNo">
+    with temp as(
+    select
+    PictureManageId
+    ,PictureFileNo
+    ,PictureName
+    ,LinkAddress
+    ,SortId
+    ,PageNo
+    ,PagePositionNo
+    ,PagePositionName
+    ,DateBegin
+    ,PictureIndex
+    ,DateEnd
+    ,DataState
+    ,row_number() over(order by DateCreate desc) as _row
+    from SWfsOperationPicture (nolock) where 1=1
+    and PictureName like '%'+cast(@PictureName as nvarchar)+'%'
+    #if($DateBegin!='')
+    and DateBegin >= @DateBegin
+    #end
+    #if($DateEnd!='')
+    and  DateBegin &lt;= @DateEnd
+    #end
+    and PagePositionNo=@moduleId and datastate=1  and PageNo='index' and WebSiteNo='shangpin.com'
+    )select
+    PictureManageId
+    ,PictureFileNo
+    ,PictureName
+    ,LinkAddress
+    ,PictureIndex
+    ,SortId
+    ,PageNo
+    ,PagePositionNo
+    ,PagePositionName
+    ,DateBegin
+    ,DateEnd
+    ,DataState from temp where _row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!--获取楼层广告图总数-->
+  <statement id="ComBeziWfs_SWfsOperationPicture_GetSWfsOperationPictureCountByPagePositionNo">
+    select
+    count(1)
+    from SWfsOperationPicture (nolock) where 1=1
+    and PictureName like '%'+cast(@PictureName as nvarchar)+'%'
+    #if($DateBegin!='')
+    and DateBegin >= @DateBegin
+    #end
+    #if($DateEnd!='')
+    and  DateBegin &lt;= @DateEnd
+    #end
+    and PagePositionNo=@moduleId and datastate=1  and PageNo='index' and WebSiteNo='shangpin.com'
+  </statement>
+  <!--根据广告图ID获取广告图对象-->
+  <statement id="ComBeziWfs_SWfsOperationPicture_GetSWfsOperationPictureByPictureManageId">
+    select *  from SWfsOperationPicture where PictureManageId=@PictureManageId   
+  </statement>
+
+  <!--获取最右侧导航分页-->
+  <statement id="ComBeziWfs_SWfsNavigationManage_GetSWfsNavigationManagePage">
+    with temp as(
+    select
+    [NavigationId]
+    ,[NavigationTitle]
+    ,[NavigationLink]
+    ,[SortId]
+    ,[CreateDate]
+    ,[Status]
+    ,[DataState]
+    ,[OperateUserId]
+    ,[UpdateOperateUserId]
+    ,[UpdateDate]
+    ,row_number() over(order by DateCreate desc) as _row
+    from SWfsNavigationManage (nolock) where  datastate=1
+    )select * from temp where _row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!--获取最右侧导航总数-->
+  <statement id="ComBeziWfs_SWfsNavigationManage_GetSWfsNavigationManageCount">
+    select  count(1)  from SWfsNavigationManage (nolock) where  datastate=1
+  </statement>
+  <!--逻辑删除右侧导航-->
+  <statement id="ComBeziWfs_SWfsNavigationManage_DeleteSWfsNavigationManageLogic">
+    update SWfsNavigationManage set DataState=255 where NavigationId=@NavigationId
+  </statement>
+  <!--根据导航ID获取右侧导航-->
+  <statement id="ComBeziWfs_SWfsNavigationManage_GetSWfsNavigationManageById">
+    select * from  SWfsNavigationManage (nolock) where  NavigationId=@NavigationId
+  </statement>
+  <statement id="ComBeziWfs_SWfsOperationPicture_GetSWfsOperationPictureModel">
+    select * from  SWfsOperationPicture(nolock) where PictureManageId=@PictureManageId
+  </statement>
+  <statement id="ComBeziWfs_SWfsOperationPicture_DelSWfsOperationPictureById">
+    update SWfsOperationPicture set DataState=255 where PictureManageId=@PictureManageId
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsOperationPicture_GetSWfsOperationPictureByPageNoPositionNoPiceureIndex">
+    select * from SWfsOperationPicture (nolock) where 1=1
+    #if($PageNo!='')
+    and PageNo=@PageNo
+    #end
+    #if($PictureIndex>-1)
+    and PictureIndex=@PictureIndex
+    #end
+    #if($PagePositionNo!='')
+    and PagePositionNo=@PagePositionNo 
+    #end
+    and datastate=1 and status=1
+  </statement>
+
+  <!-- 新版首页底部运营广告位置（三个）-->
+  <statement id="ComBeziWfs_SWfsOperationPicture_GetSWfsOperationPictureBottom">
+    select * from (
+    SELECT top 1 *
+    FROM   SWfsOperationPicture c
+    WHERE  c.[Status] = 1
+    AND c.DataState=1
+    #if($PageNo!='')
+    AND c.PageNo = @PageNo
+    #end
+    #if($PagePositionNo!='')
+    AND c.PagePositionNo=@PagePositionNo
+    #end
+    AND PictureIndex=0 AND c.DateBegin &lt;= GETDATE()
+    ORDER BY
+    c.DateBegin DESC) AS p1
+    UNION
+    SELECT * FROM (
+    SELECT top 1 *
+    FROM   SWfsOperationPicture c
+    WHERE  c.[Status] = 1
+    AND c.DataState=1
+    #if($PageNo!='')
+    AND c.PageNo = @PageNo
+    #end
+    #if($PagePositionNo!='')
+    AND c.PagePositionNo=@PagePositionNo
+    #end
+    AND PictureIndex=1 AND c.DateBegin &lt;= GETDATE()
+    ORDER BY
+    c.DateBegin DESC) AS p2
+    UNION
+    SELECT * FROM (
+    SELECT top 1 *
+    FROM   SWfsOperationPicture c
+    WHERE  c.[Status] = 1
+    AND c.DataState=1
+    #if($PageNo!='')
+    AND c.PageNo = @PageNo
+    #end
+    #if($PagePositionNo!='')
+    AND c.PagePositionNo=@PagePositionNo
+    #end
+    AND PictureIndex=2 AND c.DateBegin &lt;= GETDATE()
+    ORDER BY
+    c.DateBegin DESC) AS p3
+
+    order by PictureIndex asc
+
+  </statement>
+
+  <!-- 新版首页运营广告位置-->
+  <statement id="ComBeziWfs_SWfsOperationPicture_GetSWfsOperationPictureByPageNo">
+    SELECT  top 1 *
+    FROM   SWfsOperationPicture c
+    WHERE  c.[Status] = 1
+    AND c.DataState=1
+    #if($PageNo!='')
+    AND c.PageNo = @PageNo
+    #end
+    #if($PagePositionNo!='')
+    AND c.PagePositionNo=@PagePositionNo
+    #end
+    And DateBegin &lt;= GETDATE()
+    ORDER BY
+    c.DateBegin DESC
+  </statement>
+
+  <!--获取今日style楼层-->
+  <statement id="ComBeziWfs_SWfsIndexModule_GetSWfsIndexModuleTodayStyle">
+    select top 1 * from SWfsIndexModule (nolock) where ADShowType=3 and dataState=1  and PageNo='index' and WebSiteNo='shangpin.com'
+  </statement>
+  <!--获取包含今日style在内的楼层-->
+  <!--select Top 9 * from SWfsIndexModule (nolock) where   dataState=1 order by sort asc-->
+  <statement id="ComBeziWfs_SWfsIndexModule_GetSWfsIndexModuleIncludeTodayStyle">
+    select  * from SWfsIndexModule (nolock) where    dataState=1 and PageNo='index' and WebSiteNo='shangpin.com' order by sort asc
+  </statement>
+
+  <!--获取楼层对应的图片集合-->
+  <statement id="ComBeziWfs_SWfsOperationPicture_GetSWfsOperationPictureByModuleId">
+    select  * from SWfsOperationPicture (nolock) where PagePositionNo=@ModuleId and datastate=1 and PageNo='index' and WebSiteNo='shangpin.com'
+  </statement>
+  <!--根据链接ID获取链接对象-->
+  <statement id="ComBeziWfs_SwfsIndexModuleLink_GetSwfsIndexModuleLinkByLinkId">
+    select  * from SwfsIndexModuleLink where LinkId=@LinkId
+  </statement>
+  <!--获取ParentNo获取分类集合-->
+  <statement id="ComBeziWfs_SpfShopCategory_GetSWfsCategoryByParentNo">
+    select * from SpfShopCategory where ParentCategoryNo=@ParentNo
+  </statement>
+  <!--验证广告图时间是否存在相同 -->
+  <statement id="ComBeziWfs_SWfsOperationPicture_CheckExisTheSameTimePic">
+    select count(1) from  SWfsOperationPicture where datastate=1 and  CONVERT(varchar(100),DateBegin, 120)=CONVERT(varchar(100),@DateBegin, 120) and PagePositionNo=@ModuleId
+    and PictureIndex=@PictureIndex and PageNo='index' and WebSiteNo='shangpin.com'
+  </statement>
+  <!--获取楼层当前播放的大小或单广告图 -->
+  <statement id="ComBeziWfs_SWfsOperationPicture_GetCurrentSWfsOperationPictureByModuleId">
+    #if($ADShowType=='1')
+    SELECT top 1 pic.*
+    FROM SWfsIndexModule (nolock)  module
+    left join SWfsOperationPicture (nolock)   pic
+    on cast(module.moduleid as varchar(255) )=pic.PagePositionNo
+    where pic.datastate=1
+    and getdate()>pic.DateBegin
+    and module.moduleid=@ModuleId
+    and pic.PictureIndex=2
+    and pic.WebSiteNo=module.WebSiteNo
+    and pic.PageNo=module.PageNo
+    order by pic.DateBegin Desc
+    #end
+    #if($ADShowType=='2')
+    select * from  (SELECT top 1 pic.*
+    FROM SWfsIndexModule (nolock)  module
+    left join SWfsOperationPicture (nolock)   pic
+    on cast(module.moduleid as varchar(255) )=pic.PagePositionNo
+    where pic.datastate=1
+    and getdate()>pic.DateBegin
+    and module.moduleid=@ModuleId
+    and pic.PictureIndex=0
+    and pic.WebSiteNo=module.WebSiteNo
+    and pic.PageNo=module.PageNo
+    order by pic.DateBegin Desc ) as p1
+    UNION
+    select * from ( SELECT top 1 pic.*
+    FROM SWfsIndexModule (nolock)  module
+    left join SWfsOperationPicture (nolock)   pic
+    on cast(module.moduleid as varchar(255) )=pic.PagePositionNo
+    where pic.datastate=1
+    and getdate()>pic.DateBegin
+    and module.moduleid=@ModuleId
+    and pic.PictureIndex=1
+    and pic.WebSiteNo=module.WebSiteNo
+    and pic.PageNo=module.PageNo
+    order by pic.DateBegin Desc ) as p2
+    #end
+    #if($ADShowType=='3' )
+    SELECT pic.*
+    FROM SWfsIndexModule (nolock)  module
+    left join SWfsOperationPicture (nolock)   pic
+    on cast(module.moduleid as varchar(255) )=pic.PagePositionNo
+    where pic.datastate=1
+    and module.moduleid=@ModuleId
+    and pic.WebSiteNo=module.WebSiteNo
+    and pic.PageNo=module.PageNo
+    order by pic.DateCreate Desc
+    #end
+  </statement>
+  <!--获取楼层可用图片是否时间重复 -->
+  <statement id="ComBeziWfs_SWfsOperationPicture_CheckModulePictureSameTime">
+    SELECT count(1)
+    FROM SWfsOperationPicture  (nolock)  pic
+    left join SWfsIndexModule  (nolock)  module
+    on cast(module.moduleid as varchar(255) )=pic.PagePositionNo
+    where module.ModuleId=@ModuleId 
+    and pic.DataState=1
+    and pic.PictureIndex=@PictureIndex and pic.DateBegin=@DateBegin  and pic.WebSiteNo=module.WebSiteNo and pic.PageNo=module.PageNo
+  </statement>
+  <!--获取楼层可以播放的大小或单广告图 -->
+  <statement id="ComBeziWfs_SWfsOperationPicture_GetAllSWfsOperationPictureByModuleId">
+    #if($ADShowType=='1')
+    SELECT top 100 pic.*
+    FROM SWfsIndexModule (nolock)  module
+    left join SWfsOperationPicture (nolock)   pic
+    on cast(module.moduleid as varchar(255) )=pic.PagePositionNo
+    where pic.datastate=1
+    and getdate()>pic.DateBegin
+    and module.moduleid=@ModuleId
+    and pic.PictureIndex=2
+    and pic.WebSiteNo=module.WebSiteNo
+    and pic.PageNo=module.PageNo
+    order by pic.DateBegin Desc
+    #end
+    #if($ADShowType=='2')
+    select * from  (SELECT   top 100 pic.*
+    FROM SWfsIndexModule (nolock)  module
+    left join SWfsOperationPicture (nolock)   pic
+    on cast(module.moduleid as varchar(255) )=pic.PagePositionNo
+    where pic.datastate=1
+    and getdate()>pic.DateBegin
+    and module.moduleid=@ModuleId
+    and pic.PictureIndex=0
+    and pic.WebSiteNo=module.WebSiteNo
+    and pic.PageNo=module.PageNo
+    order by pic.DateBegin Desc ) as p1
+    UNION
+    select * from ( SELECT top 100 pic.*
+    FROM SWfsIndexModule (nolock)  module
+    left join SWfsOperationPicture (nolock)   pic
+    on cast(module.moduleid as varchar(255) )=pic.PagePositionNo
+    where pic.datastate=1
+    and getdate()>pic.DateBegin
+    and module.moduleid=@ModuleId
+    and pic.PictureIndex=1
+    and pic.WebSiteNo=module.WebSiteNo
+    and pic.PageNo=module.PageNo
+    order by pic.DateBegin Desc ) as p2
+    #end
+    #if($ADShowType=='3' )
+    SELECT pic.*
+    FROM SWfsIndexModule (nolock)  module
+    left join SWfsOperationPicture (nolock)   pic
+    on cast(module.moduleid as varchar(255) )=pic.PagePositionNo
+    where pic.datastate=1
+    and pic.WebSiteNo=module.WebSiteNo
+    and pic.PageNo=module.PageNo
+    and module.moduleid=@ModuleId
+    order by pic.DateCreate Desc
+    #end
+  </statement>
+  
+  <statement id="ComBeziWfs_SWfsOperationPicture_GetSWfsOperationPicture">
+    select * from (SELECT TOP 1 *
+    FROM   SWfsOperationPicture c
+    WHERE  c.[Status] = 1 and datastate=1
+    AND c.WebSiteNo='shangpin.com' AND c.PageNo=@PageNo AND c.PagePositionNo=@PagePositionNo
+    AND c.PictureIndex = 1
+    AND c.DateBegin &lt;= GETDATE()
+    ORDER BY
+    c.DateBegin DESC) AS p1
+    UNION
+    SELECT * FROM (
+    SELECT TOP 1 *
+    FROM   SWfsOperationPicture c
+    WHERE  c.[Status] = 1 and datastate=1
+    AND c.WebSiteNo='shangpin.com' AND c.PageNo=@PageNo AND c.PagePositionNo=@PagePositionNo
+    AND c.PictureIndex = 2
+    AND c.DateBegin &lt;= GETDATE()
+    ORDER BY
+    c.DateBegin DESC) AS p2
+    UNION
+    SELECT * FROM (
+    SELECT TOP 1 *
+    FROM   SWfsOperationPicture c
+    WHERE  c.[Status] = 1 and datastate=1
+    AND c.WebSiteNo='shangpin.com' AND c.PageNo=@PageNo AND c.PagePositionNo=@PagePositionNo
+    AND c.PictureIndex = 3
+    AND c.DateBegin &lt;= GETDATE()
+    ORDER BY
+    c.DateBegin DESC) AS p3
+    UNION
+    SELECT * FROM (
+    SELECT TOP 1 *
+    FROM   SWfsOperationPicture c
+    WHERE  c.[Status] = 1 and datastate=1
+    AND c.WebSiteNo='shangpin.com' AND c.PageNo=@PageNo AND c.PagePositionNo=@PagePositionNo
+    AND c.PictureIndex = 4
+    AND (c.DateBegin &lt;= GETDATE() AND c.DateEnd > GETDATE())
+    ORDER BY
+    c.DateBegin DESC) AS p4
+  </statement>
+
+
+  <statement id="ComBeziWfs_SWfsOperationPicture_GetSWfsOperationPictureImgMap">
+    SELECT  *
+    FROM   SWfsOperationPicture c
+    WHERE  c.[Status] = 1 and datastate=1
+    AND c.WebSiteNo='shangpin.com' AND c.PageNo='index' AND c.PagePositionNo='SwitchPictureImgMap'   
+    ORDER BY c.DateBegin DESC
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsOperationPicture_GetSWfsOperationPictureImgMapCount">
+    SELECT  count(1)
+    FROM   SWfsOperationPicture c
+    WHERE  c.[Status] = 1 and datastate=1 AND c.PagePositionNo='SwitchPictureImgMap'
+    AND GETDATE()>=c.DateBegin AND c.DateEnd >GETDATE()
+  </statement>
+  
+
+  <statement id="ComBeziWfs_SWfsNavigationManage_GetNavigationList">
+    select NavigationId,NavigationTitle,NavigationLink,SortId,CreateDate,[Status],DataState,OperateUserId,UpdateOperateUserId,UpdateDate from SWfsNavigationManage order by SortId desc
+  </statement>
+  <statement id="ComBeziWfs_SWfsNavigationManage_UpdateNavigationSortById">
+    update SWfsNavigationManage set SortId=@SortId where NavigationId =@NavigationId
+  </statement>
+  <statement id="ComBeziWfs_SWfsNavigationManage_UpdateNavigationInfoById">
+    update SWfsNavigationManage set NavigationTitle=@NavigationTitle, NavigationLink=@NavigationLink where NavigationId =@NavigationId
+  </statement>
+  <statement id="ComBeziWfs_SWfsNavigationManage_DeleteNavigationSortById">
+    delete from SWfsNavigationManage where NavigationId =@NavigationId
+  </statement>
+  <statement id="ComBeziWfs_SWfsNavigationManage_GetMaxNavigSortId">
+    select max(SortId) as SortId from SWfsNavigationManage
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsSpHomeRecommendBrand_deleteHomeRecommendBrandByID">
+
+    update SWfsSpHomeRecommendBrand set DataState=255 where RecommendBrandID=@RecommendBrandID
+  </statement>
+
+</statements>

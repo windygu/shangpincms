@@ -1,0 +1,169 @@
+﻿@using Shangpin.Entity.Wfs;
+@{
+    ViewBag.Title = "楼层链接管理";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+    <script src="/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+    <script src="/Areas/Shangpin/Scripts/Venue/jquery.form.js" type="text/javascript"
+            charset="utf-8"></script>
+    <script>
+        function beforeSubmit() {
+            var error = "";
+            var flag = true;
+            var inputArr = new Array();
+            $(".border_dl [errorfor]").each(function (i, n) {
+                if (i == 2) {  }
+                $this = $(n);
+                var input = $("#" + $this.attr("errorfor"));
+                if (input.length > 0) {
+                    input.attr("onfocus", "$('.error').text('').hide()");
+                    if (input.is(":not([type=file])"))
+                        input.val($.trim(input.val()));//去空格
+                    var dt = $this.parent().prev();
+                    var title = dt.text();
+                    if (title.split('*').length > 0)
+                        title = title.split('*')[0]
+                    if (title.split('：').length > 0)
+                        title = title.split('：')[0];
+                    if (input.is("[required]") && input.val().length == 0) {
+                        error += "," + title + "不能为空 ";
+                        flag = false;
+                        inputArr.push(input);
+                        return true;
+                    }
+                    if (input.is("[maxlength]") && input.val().length > (parseInt(input.attr("maxleng")))) {
+                        error += "," + title + "长度不过超过" + input.attr("maxleng");
+                        flag = false;
+                        inputArr.push(input);
+                        return true;
+                    }
+                    if (input.val().length > 0 && input.is("[datatype=http]") && !(input.val().indexOf('http://') == 0 && input.val().split('.').length > 1)) {
+                        error += "," + title + "输入格式不正确";
+                        flag = false;
+                        inputArr.push(input);
+                        return true;
+                    }
+                }
+            })
+            Tip(error, inputArr);
+            return flag;
+
+        }
+        function doSubmit() {
+            if (!beforeSubmit()) return false;
+            $("form").ajaxSubmit(function (data) {
+                if (data && data.status == 1) {
+                    alert('保存成功');
+                    @(Html.Raw(Request.UrlReferrer == null ? "history.go(-1);" : "location.href='" + Request.UrlReferrer.ToString() + "';"))
+                } else if (data && data.message) {
+                    alert(data.message);
+                } else {
+                    alert('操作失败请稍后重试!');
+                }
+            });
+            return true;
+        }
+        function tipError(inputArr) {
+            $(inputArr).each(function (i, n) {
+                var $n = $(n);
+                $n.attr("onfocus", "$('input[oldborder]').css('border',$(this).attr('oldborder'));");
+                $n.attr("oldborder", $n.css("border"));
+                $n.css("border", "1px solid red");
+            })
+        }
+        function Tip(error, arr) {
+            if (error.length > 0 && error.indexOf(',') == 0) {
+                error = error.substring(1);
+            }
+            if (arr.length > 0) {
+                alert(error);
+                $(arr[0]).focus();
+            }
+        }
+    </script>
+}
+@section HeadStyle
+{
+    <style type="text/css">
+        .hotblock {
+            display: none;
+        }
+
+        .titleColor, span {
+            color: Red;
+        }
+
+        .mx-rightcontent-msgbox .border_dl dt {
+            width: 150px;
+            padding-right: 10px;
+            text-align: right;
+            font-size: 14px;
+        }
+
+        .mx-rightcontent-msgbox .border_dl {
+            width: 800px;
+        }
+
+            .mx-rightcontent-msgbox .border_dl dd {
+                width: 500px;
+                margin-bottom: 8px;
+            }
+    </style>
+}
+<h1>
+    OCS > 尚品 > 首页管理>楼层链接管理
+</h1>
+<hr style="border: 1px solid Black; border-left: none; border-right: none; height: inherit;" />
+<!-- 添加活动 start -->
+<div id="mx-rightcontent-addbox" class="mx-rightcontent-msgbox">
+    <form id="formAddFloor" action="/shangpin/NewChannels/FloorLinkSet.html" method="post">
+
+        <input type="hidden" id="moduleId" name="moduleId" value="@ViewBag.moduleId " />
+
+
+        <dl class="border_dl">
+            <dt style="width:500px;text-align:left;clear:both;">楼层名称：@ViewBag.moduleName</dt>
+            <dt style="clear:both;">&nbsp;</dt>
+            @{
+                List<SWfsIndexModuleLink> links = ViewData["links"] as List<SWfsIndexModuleLink>;
+                for (int i = 0; i < 1; i++)
+                {
+                    SWfsIndexModuleLink temp = links.Where(a => a.SortId == i).OrderBy(b => b.DateCreate).FirstOrDefault() ?? new SWfsIndexModuleLink { LinkId = 0, LinkName = "", LinkHref = "" };
+
+                    <dt class="titleColor" style="clear:both;">链接文字：</dt>
+                    <dd>
+                        <input type="hidden" name="linkid@(i + 1)" value="@temp.LinkId" />
+                        <input id="word@(i + 1)" type="text" name="word@(i + 1)" value="@temp.LinkName" maxlength="15" required />
+                        <span errorfor="word@(i + 1)">15个字符以内</span>
+                    </dd>
+                    <dt class="titleColor">链接地址：</dt>
+                    <dd>
+                        <input datatype="http" id="link@(i + 1)" type="text" name="link@(i + 1)" value="@temp.LinkHref" maxlength="1000" required />
+                        <span errorfor="link@(i + 1)">*格式：http://www.shangpin.com，开头"http://"</span>
+                    </dd>
+                    @*<dt class="titleColor">开始时间*：</dt>
+                        <dd>
+                            <input readonly="readonly" class="Wdate" id="time1" onclick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm:00'})" type="text" required name="time1" value="" maxlength="30" />
+                            <span errorfor="time1" style="display:none;"></span>
+                        </dd>*@
+                }
+            }
+        </dl>
+
+        <span class="error" style="display:none;"></span>
+        <dl>
+            <dt>&nbsp;</dt>
+            <dd>
+                <button type="button" id="btnSave" name="" value="" class="secondary" onclick="doSubmit();">
+                    确 定
+                </button>
+                <button type="button" id="btnCancle" name="" value="" onclick="@(Html.Raw(Request.UrlReferrer == null ? "history.go(-1);" : "location.href='" + Request.UrlReferrer.ToString() + "';"))">
+                    取 消
+                </button>
+            </dd>
+        </dl>
+    </form>
+
+</div>

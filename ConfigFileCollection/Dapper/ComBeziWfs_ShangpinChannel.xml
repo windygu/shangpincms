@@ -1,0 +1,693 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <!--查询频道会场列表-->
+  <statement id="ComBeziWfs_SWfsSpChannel_SelectSWfsSpChannelList">
+    with temp as( SELECT [ChannelID]
+    ,[ChannelNO]
+    ,[Status]
+    ,row_number() over(order by ChannelID desc) as row
+    FROM [SWfsSpChannel] WITH(NOLOCK) WHERE 1=1
+    #if($ChannelNO!='')
+    AND ChannelNO=@ChannelNO
+    #end)select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!--查询频道会场总条数-->
+  <statement id="ComBeziWfs_SWfsSpChannel_SelectSWfsSpChannelTotalCount">
+    SELECT COUNT([ChannelID]) FROM
+    [SWfsSpChannel] WITH(NOLOCK) WHERE 1=1
+    #if($ChannelNO!='')
+    AND ChannelNO=@ChannelNO
+    #end
+  </statement>
+  <!--查询会场中的频道编号是否重复-->
+  <statement id="ComBeziWfs_SWfsChannelContent_IsExistsChannelNO">
+    SELECT COUNT(ChannelNO) FROM SWfsSpChannel WITH(NOLOCK) WHERE ChannelNO=@ChannelNO
+  </statement>
+  <!--按会场ID查询会场-->
+  <statement id="ComBeziWfs_SWfsSpChannel_SelectSWfsSpChannelByID">
+    SELECT [ChannelID]
+    ,[ChannelNO]
+    ,[Status]
+    FROM [SWfsSpChannel] WITH(NOLOCK) WHERE ChannelID=@ChannelID
+  </statement>
+  <!--查询频道详情-->
+  <statement id="ComBeziWfs_SWfsSpChannelDetail_SelectSWfsSpChannelDetailByChannelNO">
+    SELECT [DetailID]
+    ,[ChannelNO]
+    ,[WebTemplateNO]
+    ,[CssPath]
+    ,[JsPath]
+    ,[CreateDate]
+    FROM [SWfsSpChannelDetail] WITH(NOLOCK) WHERE  ChannelNO=@ChannelNO
+  </statement>
+
+
+  <!--查询模板列表-->
+  <statement id="ComBeziWfs_SWfsSpChannelTemplate_SelectSWfsSpChannelTemplateList">
+    with temp as(SELECT [TemplateID]
+    ,[TemplateNO]
+    ,[TemplateName]
+    ,[TemplateDirection]
+    ,[OcsCssPath]
+    ,[OcsJsPath]
+    ,[CssPath]
+    ,[JsPath]
+    ,[CreateDate]
+    ,row_number() over(order by TemplateID desc) as row
+    FROM [SWfsSpChannelTemplate] WITH(NOLOCK) WHERE 1=1
+    #if($TemplateName!='')
+    AND TemplateName like '%'+@TemplateName+'%'
+    #end
+    #if($TemplateNO!='')
+    AND TemplateNO =@TemplateNO
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!--查询模板总条数-->
+  <statement id="ComBeziWfs_SWfsSpChannelTemplate_SelectSWfsSpChannelTemplateTotalCount">
+    SELECT COUNT([TemplateID])
+    FROM [SWfsSpChannelTemplate] WITH(NOLOCK) WHERE 1=1
+    #if($TemplateName!='')
+    AND TemplateName like '%'+@TemplateName+'%'
+    #end
+    #if($TemplateNO!='')
+    AND TemplateNO =@TemplateNO
+    #end
+  </statement>
+  <!--按ID删除模板-->
+  <statement id="ComBeziWfs_SWfsSpChannelTemplate_DeleteSWfsSpChannelTemplateByID">
+    DELETE FROM [SWfsSpChannelTemplate]
+    WHERE TemplateID=@TemplateID
+  </statement>
+  <!--按编号查询模板CSS和JS路径-->
+  <statement id="ComBeziWfs_SWfsSpChannelTemplate_SelectSWfsSpChannelTemplateByTempNO">
+    SELECT TemplatePath,OcsCssPath,OcsJsPath,CssPath,JsPath FROM SWfsSpChannelTemplate WITH(NOLOCK) WHERE TemplateNO=@TemplateNO
+  </statement>
+  <!--查询重复的模板编号-->
+  <statement id="ComBeziWfs_SWfsSpChannelTemplate_IsExistTempalateNO">
+    SELECT COUNT(TemplateNO) FROM SWfsSpChannelTemplate WITH(NOLOCK) WHERE TemplateNO=@TemplateNO
+  </statement>
+
+
+  <!--会场区块关联查询按模板编号会场ID区块ID关联类别-->
+  <statement id="ComBeziWfs_SWfsSpChannelTemplateRegion_SelectMeetingRelationList">
+    SELECT [RelationID]
+    ,[ChannelNO]
+    ,[RegionID]
+    ,[ImgNO]
+    ,[Description]
+    ,[RelationType]
+    ,[TemplateNO]
+    ,[CreateDate]
+    ,[RelationContent]
+    FROM [SWfsSpChannelTemplateRegion] WITH(NOLOCK) WHERE 1=1
+    #if($RelationID!='')
+    AND RelationID=@RelationID
+    #end
+    #if($ChannelNO!='')
+    AND ChannelNO=@ChannelNO
+    #end
+    #if($RegionID!='')
+    AND RegionID=@RegionID
+    #end
+    #if($RelationType!='')
+    AND RelationType=@RelationType
+    #end
+    #if($TemplateNO!='')
+    AND TemplateNO=@TemplateNO
+    #end
+  </statement>
+  <!--查询活动专题列表(奥莱、尚品、活动、专题)-->
+  <statement id="ComBeziWfs_SWfsSubjectAndSWfsTopics_SelectChannelActiveANDSpecialListByPage">
+    with temp as(
+    select *,row_number() over( order by StartTime desc) as row from (
+
+    select SubjectNo as ActiveNO
+    ,SubjectName as ActiveName
+    ,Status
+    ,DateBegin as StartTime
+    ,DateEnd as EndTime
+    ,1 as ActiveType
+    ,2 as WebSource
+    from SWfsSubject WITH(NOLOCK)
+
+    union all
+
+    select SubjectNo as ActiveNO
+    ,SubjectName as ActiveName
+    ,Status
+    ,DateBegin as StartTime
+    ,DateEnd as EndTime
+    ,1 as ActiveType
+    ,1 as WebSource
+    from SWfsNewSubject WITH(NOLOCK)
+
+    union all
+
+    select TopicNo as ActiveNO
+    ,TopicName as ActiveName
+    ,Status
+    ,DateBegin as StartTime
+    ,DateEnd as EndTime
+    ,0 as ActiveType
+    ,WebSite as WebSource
+    from SWfsTopics WITH(NOLOCK) )as activelist
+
+    where 1=1
+    #if($ActiveNOAndName!='')
+    and (ActiveNO=@ActiveNOAndName or ActiveName like '%'+@ActiveNOAndName+'%')
+    #end
+    #if($Status!="")
+    AND Status=@Status
+    #end
+    #if($StartTime!="")
+    AND StartTime >= @StartTime
+    #end
+    #if($EndTime!="")
+    AND @EndTime > EndTime
+    #end
+    #if($WebSource!='')
+    and WebSource=@WebSource
+    #end
+    #if($ActiveType!='')
+    and ActiveType=@ActiveType
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectAndSWfsTopics_SelectChannelActiveANDSpecialCount">
+    with temp as(
+
+    select count(0) as total ,2 as WebSource,1 as ActiveType from SWfsSubject WITH(NOLOCK)
+    WHERE 1=1
+    #if($ActiveNOAndName!="")
+    AND (SubjectNo=@ActiveNOAndName or SubjectName like '%'+@ActiveNOAndName+'%')
+    #end
+    #if($Status!="")
+    AND Status=@Status
+    #end
+    #if($StartTime!="")
+    AND DateBegin >= @StartTime
+    #end
+    #if($EndTime!="")
+    AND @EndTime > DateEnd
+    #end
+
+    union all
+
+    select count(0) as total,1 as WebSource,1 as ActiveType from SWfsNewSubject WITH(NOLOCK)
+    WHERE 1=1
+    #if($ActiveNOAndName!="")
+    AND (SubjectNo=@ActiveNOAndName or SubjectName like '%'+@ActiveNOAndName+'%')
+    #end
+    #if($Status!="")
+    AND Status=@Status
+    #end
+    #if($StartTime!="")
+    AND DateBegin >= @StartTime
+    #end
+    #if($EndTime!="")
+    AND @EndTime > DateEnd
+    #end
+
+    union all
+
+    select count(0) as total, 1 as WebSource,0 as ActiveType from SWfsTopics WITH(NOLOCK)
+    WHERE WebSite=1
+    #if($ActiveNOAndName!="")
+    AND (TopicNo=@ActiveNOAndName or TopicName like '%'+@ActiveNOAndName+'%')
+    #end
+    #if($Status!="")
+    AND Status=@Status
+    #end
+    #if($StartTime!="")
+    AND DateBegin >= @StartTime
+    #end
+    #if($EndTime!="")
+    AND @EndTime > DateEnd
+    #end
+
+    union all
+
+    select count(0) as total, 2 as WebSource,0 as ActiveType from SWfsTopics WITH(NOLOCK)
+    WHERE WebSite=2
+    #if($ActiveNOAndName!="")
+    AND (TopicNo=@ActiveNOAndName or TopicName like '%'+@ActiveNOAndName+'%')
+    #end
+    #if($Status!="")
+    AND Status=@Status
+    #end
+    #if($StartTime!="")
+    AND DateBegin >= @StartTime
+    #end
+    #if($EndTime!="")
+    AND @EndTime > DateEnd
+    #end
+
+    )select sum(total) from temp where 1=1
+    #if($WebSource!='')
+    and WebSource=@WebSource
+    #end
+    #if($ActiveType!='')
+    and ActiveType=@ActiveType
+    #end
+  </statement>
+
+
+  <!--按频道编号查询产品分组-->
+  <statement id="ComBeziWfs_SWfsSpChannelProductGroup_SelectSWfsSpChannelProductGroupList">
+    with temp as(
+    SELECT [GroupID]
+    ,[ChannelNO]
+    ,[GroupName]
+    ,[Status]
+    ,[StartTime]
+    ,[EndTime]
+    ,[CreateDate]
+    ,row_number() over(order by GroupID desc) as row
+    FROM [SWfsSpChannelProductGroup] WITH(NOLOCK) WHERE ChannelNO=@ChannelNO
+    #if($GroupName!='')
+    AND GroupName like '%'+@GroupName+'%'
+    #end
+    #if($Status!='')
+    AND Status=@Status
+    #end
+    #if($StartTime!='')
+    AND StartTime >= @StartTime
+    #end
+    #if($EndTime!='')
+    AND @EndTime>EndTime
+    #end
+    )
+    select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <statement id="ComBeziWfs_SWfsSpChannelProductGroup_SelectSWfsSpChannelProductCount">
+    select count(0) from SWfsSpChannelProductGroup WITH(NOLOCK) WHERE ChannelNO=@ChannelNO
+    #if($GroupName!='')
+    AND GroupName like '%'+@GroupName+'%'
+    #end
+    #if($Status!='')
+    AND Status=@Status
+    #end
+    #if($StartTime!='')
+    AND StartTime >= @StartTime
+    #end
+    #if($EndTime!='')
+    AND @EndTime>EndTime
+    #end
+  </statement>
+  <!--按ID删除产品分组-->
+  <statement id="ComBeziWfs_SWfsSpChannelProductGroup_DeleteSWfsSpChannelProductGroupByID">
+    delete SWfsSpChannelProductGroup where GroupID=@GroupID;delete SWfsSpChannelProduct where GroupID=@GroupID
+  </statement>
+  <!--按分组ID查询组内产品列表-->
+  <statement id="ComBeziWfs_SWfsSpChannelProduct_SelectSWfsSpChannelProductList">
+    with temp as (
+    SELECT a.[ProductID] as Id
+    ,a.[GroupID] as SkillGroupId
+    ,a.ProductNo
+    ,a.[ProductImgNO] as ProductFileNo
+    ,a.[CreateDate] as CreateTime
+    ,a.[SortValue] as SortValue
+    ,b.ProductModel as GoodsNo
+    ,b.ProductModel
+    ,b.ProductName
+    ,d.ProductShowPic as ProductPicFile
+    ,d.ProductShowPic
+    ,f.GoldPrice as SellPrice
+    ,f.GoldPrice
+    ,f.PlatinumPrice
+    ,f.DiamondPrice
+    ,f.StandardPrice as LimitedPrice
+    ,f.StandardPrice
+    ,f.MarketPrice
+    ,f.PromotionPrice
+    ,e.PcSaleState as IsShelf
+    ,e.PcSaleState
+    ,c.BrandCnName
+    ,c.BrandEnName
+    ,row_number() over(order by a.sortvalue asc) as row
+    FROM [SWfsSpChannelProduct](nolock) as a
+    left join SpProduct (nolock) as b on a.productNO=b.ProductNO
+    left join SpfProductExtend(nolock) as d on d.ProductNo=a.ProductNo and d.TypeFlag=1
+    left join SpfSkuExtend(nolock) as e on e.ProductNo=a.ProductNo and e.PcShowState=1
+    left join SpfSkuPrice(nolock) as f on f.SkuNo=e.SkuNo
+    left join SpBrand(nolock) as c on c.BrandNo=b.BrandNo where a.GroupID=@GroupID
+    #if($Keyword!='')
+    and (b.ProductName like '%'+@KeyWord+ '%' or b.ProductNo =@KeyWord or b.ProductModel=@KeyWord)
+    #end
+    #if($CategoryNo !='')
+    and b.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and b.ProductSex=@Gender
+    #end
+    #if($BrandNO !='')
+    and b.BrandNO=@BrandNO
+    #end
+    #if($IsShelf!='')
+    and e.PcSaleState=@IsShelf
+    #end
+    )
+    select * from temp  where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <statement id="ComBeziWfs_SWfsSpChannelProduct_SelectSWfsSpChannelProductCount">
+    select count(0) from SWfsSpChannelProduct (NOLOCK) as a
+    left join SpProduct (nolock) as b on a.productNO=b.ProductNO
+    left join SpfProductExtend(nolock) as d on d.ProductNo=a.ProductNo and d.TypeFlag=1
+    left join SpfSkuExtend(nolock) as e on e.ProductNo=a.ProductNo and e.PcShowState=1
+    left join SpfSkuPrice(nolock) as f on f.SkuNo=e.SkuNo
+    left join SpBrand(nolock) as c on c.BrandNo=b.BrandNo where a.GroupID=@GroupID
+    #if($Keyword!='')
+    and (b.ProductName like '%'+@KeyWord+ '%' or b.ProductNo =@KeyWord or b.ProductModel=@KeyWord)
+    #end
+    #if($CategoryNo !='')
+    and b.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and b.ProductSex=@Gender
+    #end
+    #if($BrandNO !='')
+    and b.BrandNO=@BrandNO
+    #end
+    #if($IsShelf!='')
+    and e.PcSaleState=@IsShelf
+    #end
+  </statement>
+  <!--加载商品列表-->
+  <statement id="ComBeziWfs_WfsProduct_SelectChannelProductList">
+    with temp as(select
+    a.ProductNo,
+    a.ProductModel as GoodsNo,
+    a.ProductModel,
+    e.PcSaleState as IsShelf,
+    e.PcSaleState,
+    a.ProductName,
+    d.ProductShowPic as ProductPicFile,
+    d.ProductShowPic,
+    f.GoldPrice as SellPrice,
+    f.GoldPrice,
+    f.PlatinumPrice,
+    f.DiamondPrice,
+    f.StandardPrice as LimitedPrice,
+    f.StandardPrice,
+    f.MarketPrice,
+    f.PromotionPrice,
+    a.BrandNo,
+    b.BrandCnName,
+    b.BrandEnName,
+    row_number() over(order by a.ProductNO)as row
+    from SpProduct (nolock) as a
+    left join SpfProductExtend(nolock) as d on d.ProductNo=a.ProductNo and d.TypeFlag=1
+    left join SpfSkuExtend(nolock) as e on e.ProductNo=a.ProductNo and e.PcShowState=1
+    left join SpfSkuPrice(nolock) as f on f.SkuNo=e.SkuNo
+    left join SpBrand (nolock) as b on a.BrandNo=b.BrandNo
+    where  1=1
+    #if($Keyword!='')
+    and (a.ProductName like '%'+@KeyWord+ '%' or a.ProductNo=@KeyWord or a.ProductModel=@KeyWord)
+    #end
+    #if($CategoryNo !='')
+    and a.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and a.ProductSex=@Gender
+    #end
+    #if($BrandNO !='')
+    and a.BrandNO=@BrandNO
+    #end
+    #if($IsShelf!='')
+    and e.PcSaleState=@IsShelf
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <statement id="ComBeziWfs_WfsProduct_SelectChannelProductListTotalCount">
+    select count(0) from  SpProduct (nolock) as a
+    left join SpfProductExtend(nolock) as d on d.ProductNo=a.ProductNo and d.TypeFlag=1
+    left join SpfSkuExtend(nolock) as e on e.ProductNo=a.ProductNo and e.PcShowState=1
+    left join SpfSkuPrice(nolock) as f on f.SkuNo=e.SkuNo
+    left join SpBrand (nolock) as b on a.BrandNo=b.BrandNo
+    where  1=1
+    #if($Keyword!='')
+    and (a.ProductName like '%'+@KeyWord+ '%' or a.ProductNo=@KeyWord or a.ProductModel=@KeyWord)
+    #end
+    #if($CategoryNo !='')
+    and a.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and a.ProductSex=@Gender
+    #end
+    #if($BrandNO !='')
+    and a.BrandNO=@BrandNO
+    #end
+    #if($IsShelf!='')
+    and e.PcSaleState=@IsShelf
+    #end
+  </statement>
+  <!--按分组ID查询组内已近添加过的产品编号-->
+  <statement id="ComBeziWfs_SWfsSpChannelProduct_SelectSWfsSpChannelProductNOByGroupID">
+    select ProductNO from SWfsSpChannelProduct  WITH(NOLOCK) where GroupID=@GroupID
+  </statement>
+  <!--按分组ID删除添加的产品-->
+  <statement id="ComBeziWfs_SWfsSpChannelProduct_DeleteSWfsSpChannelProductByID">
+    Delete SWfsSpChannelProduct where ProductID=@ProductID
+  </statement>
+  <!--批量删除频道产品-->
+  <statement id="ComBeziWfs_SWfsSpChannelProduct_DeleteSWfsSpChannelProductByIDList">
+    DELETE FROM [SWfsSpChannelProduct]
+    WHERE ProductID in @idList
+  </statement>
+
+
+  <!--查询品牌分组列表-->
+  <statement id="ComBeziWfs_SWfsSpChannelBrandGroup_GetSWfsSpChannelBrandGroupList">
+    with temp as (
+    SELECT [GroupID]
+    ,[ChannelNO]
+    ,[GroupName]
+    ,[Status]
+    ,[CreateDate]
+    ,row_number() over(order by GroupID desc) as row
+    FROM [SWfsSpChannelBrandGroup]  WITH(NOLOCK) where ChannelNO=@ChannelNO)
+    select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <statement id="ComBeziWfs_SWfsSpChannelBrandGroup_GetSWfsSpChannelBrandCount">
+    select count(0) from SWfsSpChannelBrandGroup  WITH(NOLOCK) where ChannelNO=@ChannelNO
+  </statement>
+  <!--查询品牌分组名称是否存在-->
+  <statement id="ComBeziWfs_SWfsSpChannelBrandGroup_IsExistSWfsSpChannelBrandGroupName">
+    select GroupID from SWfsSpChannelBrandGroup WITH(NOLOCK) where GroupName=@GroupName and ChannelNO=@ChannelNO
+  </statement>
+  <!--删除品牌分组-->
+  <statement id="ComBeziWfs_SWfsSpChannelBrandGroup_DeleteSWfsSpChannelBrandGroup">
+    delete SWfsSpChannelBrandGroup where GroupID=@GroupID;delete SWfsSpChannelBrand where GroupID=@GroupID
+  </statement>
+  <!--查询品牌分组内的品牌-->
+  <statement id="ComBeziWfs_SWfsSpChannelBrand_GetSWfsSpChannelBrandImgNO">
+    select BrandID,ImgNO from SWfsSpChannelBrand  WITH(NOLOCK) where GroupID=@GroupID order by SortValue asc
+  </statement>
+  <!--查询品牌分组内的品牌的个数-->
+  <statement id="ComBeziWfs_SWfsSpChannelBrand_GetSWfsSpChannelBrandImgCount">
+    select count(0) from SWfsSpChannelBrand  WITH(NOLOCK) where GroupID=@GroupID 
+  </statement>
+  <!--添加品牌返回ID-->
+  <statement id="ComBeziWfs_SWfsSpChannelBrand_GetSWfsSpChannelBrandID">
+    insert into SWfsSpChannelBrand(GroupID,BrandName,ImgLink,ImgNO) values(@GroupID,@BrandName,@ImgLink,@ImgNO);select SCOPE_IDENTITY()
+  </statement>
+
+
+  <!--查询品牌轮播分组列表-->
+  <statement id="ComBeziWfs_SWfsListAlterGroup_GetBrandAlterPicGroupList">
+    with temp as(
+    SELECT [GroupId]
+    ,[GroupName]
+    ,[Status]
+    ,[Gender]
+    ,[Category]
+    ,[CreateDate]
+    ,[GroupType]
+    ,row_number() over(order by GroupId desc) as row
+    FROM [SWfsListAlterGroup] WITH(NOLOCK) where GroupType=@GroupType
+    #if($GroupName!='')
+    AND GroupName like '%'+@GroupName+'%'
+    #end
+    #if($Status!='')
+    AND Status =@Status
+    #end
+    #if($Category!='')
+    AND Category =@Category
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <statement id="ComBeziWfs_SWfsListAlterGroup_GetBrandAlterPicGroupCount">
+    select count(0) from SWfsListAlterGroup WITH(NOLOCK) where GroupType=@GroupType
+    #if($GroupName!='')
+    AND GroupName like '%'+@GroupName+'%'
+    #end
+    #if($Status!='')
+    AND Status =@Status
+    #end
+    #if($Category!='')
+    AND Category =@Category
+    #end
+  </statement>
+  <!--按ID删除品牌轮播分组-->
+  <statement id="ComBeziWfs_SWfsListAlterGroup_DeleteBrandAlterPicGroupByID">
+    delete SWfsListAlterGroup  where GroupId=@GroupId
+  </statement>
+  <!--查询品牌轮播分组内图片列表-->
+  <statement id="ComBeziWfs_SWfsListAlterGroup_GetBrandAlterPicList">
+    SELECT [AlterPicId]
+    ,[LargePicture]
+    ,[LinkName]
+    ,[AlterAddress]
+    ,[GroupId]
+    ,[CreateDate]
+    FROM [SWfsListAlterPic] WITH(NOLOCK) WHERE GroupId=@GroupId
+  </statement>
+  <!--按ID删除品牌轮播图片-->
+  <statement id="ComBeziWfs_SWfsListAlterPic_DeleteBrandAlterPicByID">
+    delete SWfsListAlterPic  where AlterPicId=@AlterPicId
+  </statement>
+  <!--开启品牌轮播分组-->
+  <statement id="ComBeziWfs_SWfsListAlterGroup_OpenBrandAlterPicGroup">
+    update SWfsListAlterGroup set Status=0 where GroupType=2 and Status=1 and Category=@ChannelNO;
+    update SWfsListAlterGroup set Status=@Status,GroupName=@GroupName where GroupId=@GroupId
+  </statement>
+  
+  <!--频道头图列表-->
+  <statement id="ComBeziWfs_SWfsSpChannelAdver_List">
+    with temp as(select AdverID,ChannelNO,ImgNO,AdverName,AdverLink,CreateDate,Status,row_number() over(order by CreateDate desc) as row from SWfsSpChannelAdver
+    where 1=1 and ChannelNO = @channelno
+    #if($AdverName != '')
+    and AdverName like '%'+cast(@AdverName as varchar)+'%'
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement> 
+  <!--频道头图返回总条数-->
+  <statement id="ComBeziWfs_SWfsSpChannelAdver_Count">
+    select count(AdverName) from SWfsSpChannelAdver
+    where 1=1 and ChannelNO = @channelno
+    #if($AdverName != '')
+    and AdverName like '%'+cast(@AdverName as varchar)+'%'
+    #end
+  </statement>
+  <!--查询一条头图-->
+  <statement id="ComBeziWfs_SWfsSpChannelAdver_BYID">
+    select * from SWfsSpChannelAdver where AdverID = @adverId
+  </statement>
+  
+  <!--删除一条头图-->
+  <statement id="ComBeziWfs_SWfsSpChannelAdver_Delete">
+    delete SWfsSpChannelAdver where AdverID = @adverId
+  </statement>
+  
+  <!--频道轮播图列表-->
+  <statement id="ComBeziWfs_SWfsListAlterGroup_Select">
+    with temp as(select GroupId,GroupName,Status,Category,Gender,CreateDate,GroupType,row_number() over(order by CreateDate desc) as row
+    from SWfsListAlterGroup
+    where 1=1 and GroupType = 1 and Category = @channelno
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  
+  <!--返回轮播图总条数-->
+  <statement id="ComBeziWfs_SWfsListAlterGroup_Select_Count">
+    select count(GroupName) from SWfsListAlterGroup
+    where 1=1 and GroupType = 1 and Category = @channelno
+  </statement>
+  
+  <!--修改头图状态-->
+  <statement id="ComBeziWfs_SWfsSpChannelAdver_UpdateStatus">
+    update SWfsSpChannelAdver set Status = 0 where Channelno = @channelno
+    update SWfsSpChannelAdver set Status = @status where AdverID = @adverid
+  </statement>
+  
+  
+  <!--查询品类-->
+  <statement id="ComBeziWfs_SWfsListAlterGroup_BYCategory">
+    select * from SWfsListAlterGroup where Category = @category and GroupType = 1
+  </statement>
+  
+  <!--把所有相同的品类设置为关闭-->
+  <statement id="ComBeziWfs_SWfsListAlterGroup_UpdateStatus">
+    update SWfsListAlterGroup set Status = 0 where Category = @category and GroupType = 1
+    update SWfsListAlterGroup set Status = @status where GroupId = @groupId
+  </statement>
+  
+  <!--修改品牌分组状态-->
+  <statement id="ComBeziWfs_SWfsSpChannelBrandGroup_UpdatStatus">
+    update SWfsSpChannelBrandGroup set Status = 0 where Status=1 and Channelno = @channelno;
+    update SWfsSpChannelBrandGroup set Status = @status where GroupId = @groupId
+  </statement>
+
+
+  <!--根据频道编号查询推荐的OCS分类-->
+  <statement id="ComBeziWfs_SWfsSpChannelRecommendCategory_GetCategoryByChannelNO">
+    select a.CategoryNo,a.CategoryName,a.ParentNo,a.VisibleState,b.SortValue as Sort,b.RecommendCategoryID
+    from SWfsCategory (NOLOCK) as a left join SWfsSpChannelRecommendCategory (NOLOCK) as b
+    on a.categoryNo=b.categoryNO
+    where a.categoryNo like ''+@ChannelNO+'%'
+  </statement>
+  <!--根据频道编号查询已经推荐的OCS分类-->
+  <statement id="ComBeziWfs_SWfsSpChannelRecommendCategory_GetRecommentCategoryByChannelNO">
+    select RecommendCategoryID
+    ,ChannelNO
+    ,CategoryNO as CategoryNo
+    ,SortValue as Sort
+    from SWfsSpChannelRecommendCategory WITH(NOLOCK)
+    where ChannelNO=@ChannelNO
+  </statement>
+  <!--根据频道编号查询已经推荐的OCS分类总条数-->
+  <statement id="ComBeziWfs_SWfsSpChannelRecommendCategory_GetRecommentCategoryCount">
+    select count(0) from SWfsSpChannelRecommendCategory WITH(NOLOCK) where ChannelNO=@ChannelNO
+  </statement>
+  <!--取消推荐的OCS分类-->
+  <statement id="ComBeziWfs_SWfsSpChannelRecommendCategory_CancelRecommentCategory">
+    delete SWfsSpChannelRecommendCategory  where RecommendCategoryID in @RecommendCategoryID
+  </statement>
+  <!--根据频道编号查询已近推荐的品牌-->
+  <statement id="ComBeziWfs_SWfsSpChannelRecommendBrand_GetRecommentBrand">
+    SELECT [RecommendBrandID]
+    ,[ChannelNO]
+    ,[BrandNO]
+    ,[SortValue]
+    ,[CreateDate]
+    FROM [SWfsSpChannelRecommendBrand] WITH(NOLOCK) WHERE ChannelNO=@ChannelNO
+  </statement>
+  <!--取消频道页推荐品牌-->
+  <statement id="ComBeziWfs_SWfsSpChannelRecommendBrand_CancelRecommendBrand">
+    delete SWfsSpChannelRecommendBrand where RecommendBrandID in @RecommendBrandID
+  </statement>
+  <!--频道页推荐标题查询-->
+  <statement id="ComBeziWfs_SWfsSpChannelRecommendLink_SelectByChannelNoList">
+    select * from  SWfsSpChannelRecommendLink where ChannelNO=@ChannelNO order by RecommendLinkID 
+  </statement>
+
+  <!--频道页推荐标题查询单个数据-->
+  <statement id="ComBeziWfs_SWfsSpChannelRecommendLink_SelectByRecommendLinkID">
+    select * from  SWfsSpChannelRecommendLink where RecommendLinkID=@RecommendLinkID order by RecommendLinkID
+  </statement>
+
+
+
+  <!--女士/男士频道首页小运营位位置图数据读取-->
+  <statement id="ComBeziWfs_SWfsSpChannelRecommendLink_SelectByRecommendLinkIDList">
+    select * from  SWfsSpChannelRecommendLink where ParentID=@ParentID and ChannelNO=@ChannelNO order by SortValue 
+  </statement>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</statements>

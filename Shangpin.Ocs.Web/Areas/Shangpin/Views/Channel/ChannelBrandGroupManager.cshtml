@@ -1,0 +1,248 @@
+﻿@model IList<Shangpin.Entity.Wfs.SWfsSpChannelBrandGroup>
+@using Shangpin.Ocs.Service.Common
+@using Shangpin.Ocs.Web.Infrastructure
+@{
+    ViewBag.Title = "频道品牌组管理";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    int pageIndex = ViewBag.pageIndex;
+    int pageSize = ViewBag.pageSize;
+    int totalCount = ViewBag.totalCount;
+    Shangpin.Ocs.Service.Shangpin.SWfsChannelService channelDal = new Shangpin.Ocs.Service.Shangpin.SWfsChannelService();
+    IEnumerable<Shangpin.Entity.Wfs.SWfsSpChannelBrand> brandImgNOList = null;
+    IEnumerable<SelectListItem> manchanneloption = new List<SelectListItem>()
+    {
+        new SelectListItem{Text="服饰CLOTHING",Value=AppSettingManager.AppSettings["MenClothing"]},
+        new SelectListItem{Text="箱包BAGS",Value=AppSettingManager.AppSettings["MenBags"]},
+        new SelectListItem{Text="鞋靴SHOES",Value=AppSettingManager.AppSettings["MenShoes"]},
+        new SelectListItem{Text="配饰ACCESSORIES",Value=AppSettingManager.AppSettings["MenAccessories"]},
+        new SelectListItem{Text="腕表眼镜WATCHES",Value=AppSettingManager.AppSettings["MenWatches"]},
+        new SelectListItem{Text="美妆BEAUT",Value=AppSettingManager.AppSettings["MenBeauty"]},
+        new SelectListItem{Text="家居HOME",Value=AppSettingManager.AppSettings["MenHomes"]},
+    };
+    IEnumerable<SelectListItem> womanchanneloption = new List<SelectListItem>()
+    {
+        new SelectListItem{Text="服饰CLOTHING",Value=AppSettingManager.AppSettings["WomenClothing"]},
+        new SelectListItem{Text="箱包BAGS",Value=AppSettingManager.AppSettings["WomenBags"]},
+        new SelectListItem{Text="鞋靴SHOES",Value=AppSettingManager.AppSettings["WomenShoes"]},
+        new SelectListItem{Text="配饰ACCESSORIES",Value=AppSettingManager.AppSettings["WomenAccessories"]},
+        new SelectListItem{Text="腕表眼镜WATCHES",Value=AppSettingManager.AppSettings["WomenWatches"]},
+        new SelectListItem{Text="美妆BEAUT",Value=AppSettingManager.AppSettings["WomenBeauty"]},
+        new SelectListItem{Text="家居HOME",Value=AppSettingManager.AppSettings["WomenHomes"]},
+    };
+}
+<h1>
+    OCS > 尚品 > <a href="/Shangpin/channel/ChannelList">频道页列表</a> >品牌组管理
+</h1>
+<table width="auto" border="0" class="mx-table" style="width: 100%;">
+    <tr>
+        <td style="text-align: left;">
+            分组列表
+        </td>
+    </tr>
+    @for (int i = 0; i < Model.Count(); i++)
+    {
+        <tr class="@(i % 2 == 0 ? "cross" : "")">
+            <td style="text-align: left;">
+                @{
+        brandImgNOList = channelDal.GetBrandByGroupID(Model.ElementAt(i).GroupID);
+        for (int j = 0; j < 5; j++)
+        {
+            if (brandImgNOList.Count() > j)
+            {
+                    <img alt="点击上传图片"  objid="@(brandImgNOList.ElementAt(j).BrandID)" sortvalue="@(j + 1)" groupid="@(Model.ElementAt(i).GroupID)"  src="/ReadPic/GetPic.ashx?width=89&height=43&pictureFileNo=@(brandImgNOList.ElementAt(j).ImgNO)&type=2" width="89" height="43"/>
+            }
+            else
+            {
+                    <img alt="点击上传图片" objid="0" src="" width="89" height="43" sortvalue="@(j + 1)" groupid="@(Model.ElementAt(i).GroupID)" />
+            }
+
+        }
+                    <br />
+        for (int j = 5; j < 10; j++)
+        {
+            if (brandImgNOList.Count() > j)
+            {
+                    <img alt="点击上传图片" objid="@(brandImgNOList.ElementAt(j).BrandID)" sortvalue="@(j + 1)"  groupid="@(Model.ElementAt(i).GroupID)" src="/ReadPic/GetPic.ashx?width=89&height=43&pictureFileNo=@(brandImgNOList.ElementAt(j).ImgNO)&type=2" width="89" height="43"/>
+            }
+            else
+            {
+                    <img alt="点击上传图片" objid="0" src="" width="89" height="43" sortvalue="@(j + 1)"  groupid="@(Model.ElementAt(i).GroupID)"/>
+            }
+        }
+                    <br />
+                        
+                }
+            </td>
+            <td>
+                分组名称: @Model.ElementAt(i).GroupName
+                <br />
+                分组状态: <span style="color: Red;">@(Model.ElementAt(i).Status == 0 ? "关闭" : "开启")</span>
+                设置: <a href="javascript:;" onclick="editeStatus(@(Model.ElementAt(i).GroupID),this,'@(Model.ElementAt(i).ChannelNO)')" title="@(Model.ElementAt(i).Status == 0 ? 1 : 0)">@(Model.ElementAt(i).Status == 0 ? "开启" : "关闭")</a>
+                <br />
+                分组所属:
+                @if (Model.ElementAt(i).ChannelNO.IndexOf("A01") == 0)
+                {
+                    @Html.Raw("女士 > " + womanchanneloption.Single(p => p.Value == Model.ElementAt(i).ChannelNO).Text)
+                    <br />
+                    <a href="http://www.shangpin.com/"></a>                                                                                                    
+                }
+                else if (Model.ElementAt(i).ChannelNO.IndexOf("A02") == 0)
+                {
+                    @Html.Raw("男士 > " + manchanneloption.Single(p => p.Value == Model.ElementAt(i).ChannelNO).Text)
+                }
+                <br />
+                <a href="/shangpin/channel/EditeBrandGroup/@Model.ElementAt(i).GroupID?channelno=@(Request.QueryString["channelno"])" class="button">
+                    编辑</a> <a onclick="return confirm('是否删除')" href="/shangpin/channel/DeleteBrandGroup/@Model.ElementAt(i).GroupID?channelno=@(Request.QueryString["channelno"])" class="button">
+                        删除</a> 
+            </td>
+        </tr>
+    }
+</table>
+<div class="spPage">
+    @if (totalCount > 0)
+    {
+        @Html.Raw(@Html.PagerX("page", pageIndex, pageSize, totalCount))
+    }
+</div>
+<div class="clr" id="mx-rightcontent-fixbar">
+    <a id="mx-btn-add" href="/Shangpin/channel/EditeBrandGroup/0?channelno=@(Request.QueryString["channelno"])" title="添加品牌组">
+    </a>
+</div>
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/Venue/jquery.form.js" type="text/javascript"
+        charset="utf-8"></script>
+    <script type="text/javascript">
+        var imgobj = "";
+        //隐藏层
+        function hidendiv() {
+            $('#windownBG').remove();
+            $('#upSkillImg').hide();
+        }
+        $(document).ready(function () {
+            $("tr img").click(function () {
+                imgobj = $(this);
+                $.get("/shangpin/channel/GetBrandByID/" + imgobj.attr("objid"), function (data) {
+                    data = eval("(" + data + ")");
+                    $("#BrandID").val(data.BrandID);
+                    if (imgobj.attr("objid") == "0") {
+                        $("#GroupID").val(imgobj.attr("groupid"));
+                    } else {
+                        $("#GroupID").val(data.GroupID);
+                    }
+                    $("#SortValue").val(imgobj.attr("sortvalue"));
+                    $("#BrandName").val(data.BrandName);
+                    $("#ImgLink").val(data.ImgLink);
+                    $("#ImgNO").val(data.ImgNO);
+                    $("#upimg").attr("src", "/ReadPic/GetPic.ashx?width=85&height=39&pictureFileNo=" + data.ImgNO + "&type=2");
+                });
+                $("body").append('<div id="windownBG" style="height:' + $(document).height() + 'px;opacity:0.5;z-index: 9999;display:block;left:0px;top:0px;position:absolute;width:100%;background: none repeat scroll 0 0 #000000;"></div>');
+                $("#upSkillImg").css({ 'top': ($(window).height() / 2) - ($("#upSkillImg").height() / 2) + $(window).scrollTop(), 'left': ($(window).width() / 2) - ($("#upSkillImg").width()/2), 'display': 'block', 'z-index': '99999' });
+            });
+        });
+        //异步上传图片
+        function upimgfile(len) {
+            if ($("#BrandName").val().length<=0) {
+                alert("品牌名称不能为空");
+                return;
+            }
+            var nums = $("#BrandName").val().replace(/[^\x00-\xff]/g, "00").length;
+            if (nums > len) {
+                alert("品牌名称只能在" + len / 2 + "个汉字" + len + "个字符");
+                return false;
+            }
+            $("#upimgform").ajaxSubmit(function (data) {
+                data = eval("(" + data + ")");
+                if (data.status == 0) {
+                    alert(data.message);
+                } else {
+                    $('#windownBG').remove();
+                    $('#upSkillImg').hide();
+                    $("#imgfile").val("");
+                    $("#BrandID").val("");
+                    $("#BrandName").val("");
+                    $("#ImgLink").val("");
+                    $("#GroupID").val("");
+                    $("#ImgNO").val("");
+                    $("#SortValue").val("");
+                    imgobj.attr("src", "/ReadPic/GetPic.ashx?width=85&height=39&pictureFileNo=" + data.imgno + "&type=2");
+                    imgobj.attr("objid", data.objid);
+                }
+            });
+        }
+        function editeStatus(id, obj, channelno) {
+            var status = $(obj).attr("title");
+            //$.get("/shangpin/channel/EditeBrandStatus/" + id + "?status=" + status, function (data) {
+            if (!confirm("您确定修改吗？如果修改同品类下的状态全部为关闭")) {
+                return false;
+            } else {
+            $.get("/shangpin/channel/EditeBrandStatus/" + id + "?status=" + status + "&channelno=" + channelno, function (data) {
+                if (data == -1) {
+                    alert("上传图片不够10张不能开启");
+                    return;
+                }
+                window.location.href = window.location.href;
+//                if (data > 0) {
+//                    if (status == "1") {
+//                        $(obj).text("关闭");
+//                        $(obj).parent().children("span").text("开启");
+//                        $(obj).attr("title", "0");
+//                    } else {
+//                        $(obj).text("开启");
+//                        $(obj).parent().children("span").text("关闭");
+//                        $(obj).attr("title", "1");
+//                    }
+//                } else {
+//                    alert("操作异常");
+//                }
+            });
+            }
+        }
+    </script>
+}
+@section hiddendiv{
+    <div id="upSkillImg" style="width: 500px; height: 220px; background-color: White;
+        display: none; position: absolute; text-align: center;">
+        <div style="text-align: right;">
+            <a href="javascript:hidendiv();">关闭</a>
+        </div>
+        <form action="/shangpin/channel/EditeBrand" method="post" id="upimgform" enctype="multipart/form-data">
+        <table  class="mx-table">
+            <tr>
+                <td>图片上传:</td>
+                <td>
+                    <img src="" id="upimg" width="85" height="39" alt="预览图片" />
+                    <input type="file" name="imgfile" id="imgfile" /><br />
+                    <span style="color:red;">155*74小 大小为 300kb</span>
+                </td>
+            </tr>
+            <tr>
+                <td>品牌名称:</td>
+                <td>
+                    <input type="text" name="BrandName" id="BrandName" style="width: 300px;" maxlength="26" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                   品牌链接: 
+                </td>
+                <td>
+                    <input type="text" name="ImgLink" id="ImgLink" style="width: 200px;" maxlength="200" /> (<span style="color:Red;">请加入http://前缀</span>)<br />
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <a href="javascript:upimgfile(26)" class="button">确定</a>
+                    <a href="javascript:hidendiv()" class="button">取消</a>
+                    @*<input type="button" value="确定" onclick="upimgfile(26)" />&nbsp;
+                    <input type="button" value="取消" onclick="hidendiv()" />*@
+                </td>
+            </tr>
+        </table>
+        <input type="hidden" name="BrandID" id="BrandID" />
+        <input type="hidden" name="ImgNO" id="ImgNO" />
+        <input type="hidden" name="GroupID" id="GroupID" />
+        <input type="hidden" name="SortValue" id="SortValue" />
+        </form>
+    </div>
+}

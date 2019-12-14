@@ -1,0 +1,83 @@
+﻿@using Shangpin.Ocs.Web.Infrastructure
+@using Shangpin.Ocs.Entity.Extenstion.Outlet
+@using Shangpin.Ocs.Service.Outlet
+@model Shangpin.Entity.Common.RecordPage<Shangpin.Ocs.Entity.Extenstion.Outlet.SubjectProductRef>
+<script type="text/javascript">
+    $(function () {
+        $("input[name='ProductNoCheckBox']").click(function () {
+            $("input[name='ProductNoCheckBox']").each(function () {
+                if (this.checked) {
+                    $(this).removeAttr("checked");
+                }
+            });
+            $(this).attr("checked", "checked");
+            $("#ProductNo").val(this.value);
+            $("#SubjectCategoryNo").val($(this).attr("categoryNo"));
+            $("#SubjectNo").val($(this).attr("subjectNo"));
+        });
+    });
+</script>
+<table class="mx-table">
+    <thead>
+        <tr>
+            <th width="10%">
+                选择
+            </th>
+            <th width="90%" align="left" colspan="4">
+                商品
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Items != null && Model.Items.Count() > 0)
+        {
+            var flag = 0; foreach (var product in Model.Items)
+            {
+                flag = flag + 1;
+                <tr class="@(flag % 2 == 0 ? "cross" : "")">
+                    <td>
+                        <input type="checkbox" name="ProductNoCheckBox" value="@product.ProductNo" subjectno="@product.SubjectNo" categoryno="@product.CategoryNo" , />
+                    </td>
+                    <td>
+                        <img width="75" height="100" src="/ReadPic/GetPic.ashx?width=75&height=100&pictureFileNo=@product.ProductPicFile&type=1">
+                    </td>
+                    <td style="text-align: left;">
+                        商品编号：@product.ProductNo
+                        <br />
+                        商品货号：@product.GoodsNo
+                        <br />
+                        商品名称：@product.ProductName
+                        <br />
+                        所属品牌：@product.BrandEnName (@product.BrandCnName)
+                    </td>
+                    <td style="text-align: left;">
+                        @if (product.IsShelf == 1)
+                        { @Html.Raw("未上架");
+                        }
+                        else if (product.IsShelf == 2)
+                        { @Html.Raw("已上架");
+                        }
+                        else if (product.IsShelf == 3)
+                        { @Html.Raw("已下架");
+                        }
+                        @{ ProductInventory inventory = new SWfsProductService().GetInventoryByProductNo(product.ProductNo);
+                         int Quantity = inventory.SumQuantity; int LockQuantity = inventory.SumLockQuantity;
+                        }
+                        <br />
+                        可用库存:@Quantity
+                        <br />
+                        锁定库存:@LockQuantity<br />
+                        库龄:@(Shangpin.Ocs.Service.Shangpin.SWfsNewProductService.GetErpProductAgeingSingle(product.ProductNo))
+                    </td>
+                    <td style="text-align: left;">
+                        市场价:@product.MarketPrice
+                        <br />
+                        奥莱价:@product.LimitedVipPrice
+                    </td>
+                </tr> }
+        }
+    </tbody>
+</table>
+<div class="spPage">
+    @Html.Raw(@Html.PagerX("SearchProduct", Model.CurrentPage, Model.ItemsPerPage, Model.TotalItems))
+</div>

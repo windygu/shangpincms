@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Areas/Shangpin/Scripts/validata/jquery-1.8.2.js"></script>
+<script src="~/Areas/Shangpin/Scripts/validata/jquery.form.js"></script>
+<script src="~/Areas/Shangpin/Scripts/validata/jquery.metadata.js"></script>
+<script src="~/Areas/Shangpin/Scripts/validata/jquery.validate.js"></script>
+<script src="~/Areas/Shangpin/Scripts/validata/messages_cn.js"></script>
+<script src="~/Areas/Shangpin/Scripts/validata/validate.form.js"></script>
+<link href="~/Areas/Shangpin/Scripts/css/validate.css" rel="stylesheet" />
+<form action="/Admin/News/Edit" method="post">
+    <p>
+        <label>
+            标题
+        </label>
+        <input class="text-input small-input {required:true}"
+               type="text" id="TITLE" name="TITLE" value="" />
+    </p>
+    <input class="button" type="submit" value="Submit" />
+</form>

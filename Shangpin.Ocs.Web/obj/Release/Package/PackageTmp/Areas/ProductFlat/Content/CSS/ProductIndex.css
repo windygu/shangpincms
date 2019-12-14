@@ -1,0 +1,218 @@
+﻿#SearchPara {
+ width:auto;
+ height:200px;
+ clear:both;
+ border:1px solid gray;
+ padding:3px;
+}
+
+.SearchItem 
+{
+ margin-top:20px;
+ width:auto;
+ height:25px;
+ clear:both;
+}
+
+.SearchInput {
+    width:60px;
+    height:20px;
+    line-height:20px;
+    padding:1px;
+    border:1px solid #cccccc;
+    padding-left:3px;
+    font-size:12px;
+    font-family:Arial;
+}
+
+#SelBrand {
+    width: 350px;
+}
+
+.ProductSortBtn {
+    width: 100px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    letter-spacing: 2px;
+    color: white;
+    border:0px none white;
+    background: url(/Areas/ProductFlat/Content/BtnBg.gif) no-repeat 0px 0px;
+    cursor:pointer;
+}
+
+#ProductName {
+    width: 140px;
+    color: #666;
+    font-size: 12px;
+    display: none;
+}
+
+#ProductIndexTitle {
+ width:auto;
+ clear:both;
+ background-color:white;
+ border-bottom:2px solid black;
+ height:29px;
+}
+
+#ProductIndexTitle a {
+    width:131px;
+    padding-left:10px;
+    height:29px;
+    line-height:29px;
+    text-align:left;
+    color:black;
+    font-size:14px;
+    display:block;
+    float:left;
+    background:url(/Areas/ProductFlat/Content/TitleBg1.gif) no-repeat 0px 0px;
+}
+
+#ProductIndexTitle .CurTitle {
+    background:url(/Areas/ProductFlat/Content/TitleBg2.gif) no-repeat 0px 0px;
+}
+
+.MoudleTitle {
+    width: auto;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    background-color: #3e70aa;
+    border: 1px solid gray;
+    color: white;
+    letter-spacing: 2px;
+    font-family: 微软雅黑;
+    margin-top: 5px;
+    clear:both;
+}
+
+.ProductListItem {
+    width:auto;
+    height:100px;
+    clear:both;
+    margin-top:5px;
+    border:1px solid #797979;
+}
+
+.ProductListItemChk {
+    width:20px;
+    height:58px;
+    float:left;
+    padding-left:5px;
+    padding-top:40px;
+    background-color:#f0f4f5;
+}
+
+.ProductListItemImg {
+    width:74px;
+    height:94px;
+    float:left;
+    padding:3px 10px;
+}
+
+.ProductListItemImg img {
+    width: 70px;
+    height: 90px;
+    padding:1px;
+    border:1px solid #cccccc;
+    display:block;
+    clear:both;
+    float:left;
+}
+
+.ProductListItemDetail {
+    width:auto;
+    height:100px;
+    float:left;
+}
+
+.ProductListItemJoin {
+    width:100px;
+    height:60px;
+    float:left;
+    text-align:right;
+    padding-top:40px;
+}
+
+.ProductListItemDetail ul {
+    float:left;
+    height:100px;
+    display:block;
+}
+
+.ProductListItemDetail ul li{
+    float:left;
+    height:25px;
+    line-height:25px;
+    display:block;
+    clear:both;
+    text-align:left;
+    overflow:hidden;
+}
+
+.ItemBold {
+    font-weight:bold;
+    font-size:14px;
+}
+
+.JoinToSort {
+    width:100px;
+    padding:2px;
+    height:18px;
+    line-height:18px;
+    border:1px solid gray;
+    text-align:center;
+}
+
+#NoProduct {
+    width:100%;
+    height:40px;
+    line-height:40px;
+    font-size:16px;
+    font-weight:bold;
+    color:red;
+    font-family:"微软雅黑";
+    display:none;
+    text-align:center;
+}
+
+#ProductListBar {
+    width:auto;
+    height:25px;
+    clear:both;
+    margin-top:2px;
+}
+
+#ChkCtrl {
+    width:250px;
+    height:25px;
+    float:left;
+    line-height:25px;
+}
+
+#BtnAllSelect {
+    float: left;
+}
+
+#BtnMulityJoin {
+    margin-left: 5px;
+    float:left;
+}
+
+.spPage {
+    width:700px;
+    height:25px;
+    line-height:25px;
+    float:right;
+    text-align:right;
+    padding-right:25px;
+}
+
+.HiddenField {
+ display:none;
+ visibility:hidden;
+}
+

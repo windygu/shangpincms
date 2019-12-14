@@ -1,0 +1,184 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.Outlet
+@using Shangpin.Ocs.Web.Infrastructure
+@using Shangpin.Ocs.Service.Outlet
+@{
+    ViewBag.Title = "活动排期";
+    Layout = "~/Areas/Outlet/Views/Shared/_Layout.cshtml";
+}
+@{
+    int page = ViewBag.pageIndex != null ? (int)ViewBag.pageIndex : 1;
+    int pageSize = ViewBag.PageSize != null ? (int)ViewBag.PageSize : 10;
+    int totalCount = ViewBag.TotalCount != null ? (int)ViewBag.TotalCount : 0;
+    IList<Shangpin.Entity.Wfs.SWfsChannelSord> channelSordList = ViewBag.ChannelSordList;
+    List<SubjectInfo> list = ViewBag.SubjectList as List<SubjectInfo>;
+}
+<link href="/Areas/Outlet/Content/css/tipswindown.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+    .difcolor
+    {
+        color: red;
+        clear: both;
+    }
+</style>
+@section HeadScript{
+    <script src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+    <script src="/Areas/Outlet/Scripts/plug/tipswindown.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="/Areas/Outlet/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/plug/ERPBrand.js"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/plug/autoComplete.js"></script>
+    <script language="javascript" type="text/javascript">
+        $(function () {
+            $("#QueryBrandName").selectBrandNew('QueryBrandNo', 'QueryBrandName', false, '', ''); //执行品牌选择操作
+        });
+        //修改活动时间
+        function UpdateSubjectTime(subjectNo) {
+            tipsWindown("修改活动时间", "iframe:/outlet/SubjectConsole/EditSubjectTime?subjectNo=" + subjectNo, "600", "350", "true", "", "true", "text");
+                   
+        }
+        //取消修改并且关闭弹出层
+        function TrueInfo() {
+            $("#windown-close").trigger("click");
+        }
+        //保存后返回数据
+        function ClickRowNew(id, value, h) {
+            $("#time_td_" + id).empty();
+            $("#time_td_" + id).html(value);
+            $("#time_td_h_" + id).empty();
+            $("#time_td_h_" + id).html(h + "H");
+            $("#windown-close").trigger("click");
+            $("#selectSubjectWaiting").submit();
+        }
+    </script>
+}
+<h1>
+    OCS > 奥莱CMS > 活动控制台 > 活动排期
+</h1>
+<form method="get" action="/outlet/SubjectConsole/SubjectWaiting" id="selectSubjectWaiting">
+<div style="height: 40px; position: relative;">
+    <table border="0" class="mx-table" style="text-align: left; width: 600px;">
+        <tr>
+            <td align="left" style="text-align: left;">
+                <input type="hidden" value="@ViewBag.BrandNo"  id="QuerybranchNo" name="QuerybranchNo"/>
+                <input name="QueryBrandName" id="QueryBrandName" onfocus="if(this.value == '品牌') this.value = ''" onblur="if(this.value == '') this.value = '品牌'"
+                    style="width: 100px; color: #666; font-size: 12px;" value="@(!string.IsNullOrEmpty(ViewBag.BrandName) ? ViewBag.BrandName : "品牌")"/>
+            </td>
+            <td align="left">
+                <select name="ChannelSord">
+                    <option value="">分类</option>
+                    @foreach (var channel in channelSordList)
+                    {
+                        <option value="@channel.SordNo" @(ViewBag.ChannelSord == channel.SordNo ? "selected=selected" : "")>@channel.SordName
+                        </option>
+                    }
+                </select>
+            </td>
+            <td align="left">
+                <div style="float: left; position: relative; width: 300px;">
+                    <span>开始时间</span>
+                    <input id="StartTime" name="startTime" value="@ViewBag.StartTime" maxlength="30"  class="Wdate" type="text" onclick="WdatePicker()" readonly="readonly" style="width:100px;" />
+                    <span>至</span>
+                    <input id="EndTime" name="endTime" value="@ViewBag.EndTime" maxlength="30" class="Wdate" type="text" onclick="WdatePicker()" readonly="readonly" style="width:100px;" />
+                </div>
+            </td>
+            <td>
+                <input class="button" type="submit" id="btnConfirmSubmit" value="查 询" />
+            </td>
+        </tr>
+    </table>
+</div>
+</form>
+<table cellpadding="1" cellspacing="1" class="mx-table">
+    <thead>
+        <tr>
+            <th>
+                预览图
+            </th>
+            <th>
+                活动编号
+            </th>
+            <th>
+                活动名称
+            </th>
+            <th>
+                品牌
+            </th>
+            <th>
+                BU
+            </th>
+            <th>
+                分类
+            </th>
+            <th>
+                日期
+            </th>
+            <th>
+                操作
+            </th>
+        </tr>
+    </thead>
+    @if (list != null && list.Count() > 0)
+    {
+        var flag = 0;
+        foreach (var subject in list)
+        {
+
+            IList<string> sordlist = null;
+            flag = flag + 1;    
+            
+        <tbody>
+            <tr class="@(flag % 2 == 0 ? "cross" : "")">
+                <td>
+                    @if (!string.IsNullOrEmpty(subject.BelongsSubjectPic))
+                    {
+                        <img width="100" height="100" src="/ReadPic/GetPic.ashx?width=100&height=100&pictureFileNo=@(subject.SubjectTemplate == 4 ? subject.TitlePic1 : subject.BelongsSubjectPic)&type=2 ">
+                    }
+                    else
+                    {  <img width="100" height="100" src="" alt="没有添加图片" />}
+                </td>
+                <td>
+                    @subject.SubjectNo
+                </td>
+                <td>
+                    @subject.SubjectName
+                </td>
+                <td>
+                    @(!string.IsNullOrEmpty(subject.BrandEnName) ? subject.BrandEnName : subject.BrandCnName)
+                </td>
+                <td>
+                    @(!string.IsNullOrEmpty(subject.BU) ? subject.BU.Equals("0") ? "其它" : "BU" + subject.BU : "")
+                </td>
+                <td>
+                    @if (subject.ChannelSordList != null)
+                    {
+                        sordlist = subject.ChannelSordList.Select(s => s.SordNo).ToList();
+                        foreach (Shangpin.Entity.Wfs.SWfsChannelSord sord in channelSordList)
+                        {
+                            if (sordlist.Contains(sord.SordNo))
+                            {
+                        @sord.SordName<br />
+                            }
+                        }
+                    }
+                </td>
+                <td>
+                    <div id="time_td_@subject.SubjectNo" style="height:auto;">
+                        @if (subject.IsPreheat == 1)
+                        {
+                            <span class="@(subject.IsPreheatTimeColor ? "difcolor" : "")">@("预热" + subject.PreheatTime.ToString("yyyy-MM-dd/HH:mm"))
+                            </span>  <br /> 
+                           
+                        }
+                        <span class="@(subject.IsStartTimeColor ? "difcolor" : "")">开始@(subject.DateBegin.ToString("yyyy-MM-dd/HH:mm"))</span><br />
+                        <span class="@(subject.IsEndTimeColor ? "difcolor" : "")">结束@(subject.DateEnd.ToString("yyyy-MM-dd/HH:mm"))</span>
+                    </div>
+                </td>
+                <td>
+                    <a href="#" onclick="UpdateSubjectTime(@subject.SubjectNo)">修改日期</a>
+                </td>
+        </tbody>
+        }
+    }
+</table>
+<div class="spPage">
+    @Html.Raw(@Html.PagerX("page", page, pageSize, totalCount))
+</div>

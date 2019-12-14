@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7FE7BE6E-0CC4-4678-B77B-1CB9BA6B3B46}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ConfigFileCollection</RootNamespace>
+    <AssemblyName>ConfigFileCollection</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="App\AppSetting.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="App\ShangPin.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Dapper\_dbconnection.properties" />
+    <None Include="Dapper\_dbtablemapping.properties" />
+    <None Include="Dapper\_needcachedurl.properties" />
+    <None Include="Dapper\_readonlysqlmapping.properties" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App\CommentItemConfig.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App\IndexOcsCategoryConfig.xml" />
+    <Content Include="App\ShoesNewProductDate.xml" />
+    <Content Include="Dapper\ComBeziCommon_Common.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\ComBeziWfs_AppIndex.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\ComBeziWfs_Common.xml" />
+    <Content Include="Dapper\ComBeziWfs_FlagShip.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\ComBeziWfs_HomePage.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\ComBeziWfs_IndexHotProduct.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\ComBeziWfs_NewShelfBrandProduct.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\ComBeziWfs_Order.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\ComBeziWfs_Outlet.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\ComBeziWfs_OutletSubject.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\ComBeziWfs_Outlet_EpSubjectConsole.xml" />
+    <Content Include="Dapper\ComBeziWfs_Outlet_SubjectConsole.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\ComBeziWfs_Promotion.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\ComBeziWfs_Login.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\ComBeziWfs_Shangpin.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\ComBeziWfs_ProductLabel.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\ComBeziWfs_Style.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\ComBeziWfs_Venue.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\NewsChannelsService.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\SWfsPopElements.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\SWfsPictureManager.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\SWfsPopElements.xml" />
+    <Content Include="Dapper\SWfsRecommLink.xml" />
+    <Content Include="Dapper\SWfsSearchPriceInterval.xml" />
+    <Content Include="Dapper\NewComming.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App\NewCommingDate.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\SWfsIndexNewArrival.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\SWfsIndexNewArrivalProductList.xml" />
+    <Content Include="Dapper\_f_combezipic.xml" />
+    <Content Include="Dapper\_f_combezipiclab.xml" />
+    <Content Include="Dapper\_f_combezipiclab_nolock.xml" />
+    <Content Include="Dapper\_f_combezipic_nolock.xml" />
+    <Content Include="Dapper\_f_combeziwfs.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\_f_combeziwfssub.xml" />
+    <Content Include="Dapper\_f_combeziwfssub_nolock.xml" />
+    <Content Include="Dapper\_f_combeziwfs_nolock.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\ComBeziWfs_Brand.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\ComBeziWfs_Subject.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\ComBeziWfs_ShangpinChannel.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\ComBeziWfs_ProductDetail.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\ComBeziWfs_Outlet_MarketOption.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\ComBeziWfs_SortFlat.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\ComBeziWfs_ProductDetailTemplate.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Dapper\_f_shangpinproduct.xml" />
+    <Content Include="Dapper\_f_shangpinproduct_nolock.xml" />
+    <Content Include="Dapper\_f_spfproduct.xml" />
+    <Content Include="Dapper\_f_spfproduct_nolock.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,40 @@
+﻿@{
+    Layout = null;
+    Shangpin.Entity.Wfs.SWfsBrandFlagShipStoreRegion obj = null;
+    Dictionary<int, string> stylelist = new Dictionary<int, string>();
+    stylelist.Add(1, "data-type=\"subject\" data-subjectno=\"{0}\" data-subjectname=\"{1}\" ");
+    stylelist.Add(2, "data-type=\"detail\" data-productid=\"{0}\" ");
+    stylelist.Add(3, "data-type=\"navigation\" data-brandno=\"" + Request.QueryString["brandNO"] + "\" data-brandname=\"" + Request.QueryString["brandname"] + "\" data-navno=\"{0}\" data-navname=\"{1}\" ");
+    stylelist.Add(4, "data-type=\"link\" data-url=\"{0}\" ");
+    
+}
+@using Shangpin.Framework.WebMvc
+@model IEnumerable<Shangpin.Entity.Wfs.SWfsBrandFlagShipStoreRegion>
+<div class="brand_imgList clr">
+    @for (int i = 1; i <= 2; i++)
+    {
+        if (Model.Count(p => p.RegionID == i) == 1)
+        {
+            obj = Model.Single(p => p.RegionID == i);
+            switch (i)
+            {
+                case 1:
+                    <a style="width:320px; height:170px;" opratorRegion="@i" relationtype="@obj.RelationType" @(Html.Raw(string.Format(stylelist[obj.RelationType],obj.RelationContent,obj.Direction)))>
+                        <img width="320" height="170" lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 640, 340))" data-lazy-uid="0_1388630005753" style="opacity: 1;">
+                    </a>
+                break;
+                case 2:
+                    <a style="width:320px; height:170px;" opratorRegion="@i" relationtype="@obj.RelationType" @(Html.Raw(string.Format(stylelist[obj.RelationType],obj.RelationContent,obj.Direction)))>
+                        <img width="320" height="170" lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 640, 340))" data-lazy-uid="0_1388630005753" style="opacity: 1;">
+                    </a>
+                break;
+                }
+        }
+        else
+        {
+           <a style="width:320px; height:170px;"  opratorRegion="@i" relationtype="1" data-type="link" data-url="">
+                <img width="320" height="170" data-lazy-uid="0_1388629512563" style="opacity: 1;"/>
+           </a>
+        }
+    }
+</div>

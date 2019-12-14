@@ -1,0 +1,24 @@
+﻿@using Shangpin.Ocs.Web.Infrastructure
+@using Shangpin.Ocs.Entity.Extenstion.Outlet
+@using Shangpin.Ocs.Service.Outlet
+@{
+    List<string> piclist=ViewBag.PicList as List<string>;
+    int pageIndex=  (int)ViewBag.Current;
+    int pageSize = (int)ViewBag.PageSize;
+    int total = (int)ViewBag.Total;
+    
+}
+<ul id="picBox">
+@if (piclist != null && piclist.Count>0)
+{
+    foreach (var item in piclist)
+    {
+       <li><p><img src="/ReadPic/GetPic.ashx?width=100&amp;height=100&amp;pictureFileNo=@(item)&amp;type=2" picno="@item"></p>
+<input value="@item"><span class="left" copyTxt="@item" title="@item">复制链接</span><span class="right">删除</span>
+</li>
+    }
+}
+</ul>
+@*<div class="pageBox">
+@Html.Raw(@Html.AjaxPage("SearchPicList", pageIndex, pageSize, total))
+</div>*@

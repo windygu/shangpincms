@@ -1,0 +1,1677 @@
+﻿@{
+    Layout = null;
+    Shangpin.Ocs.Entity.Extenstion.ShangPin.SWfsMeetingRelationRegionContent obj = null;
+    string ShangpinActiveHrefUrlShow = "http://www.shangpin.com/women/subject/{0}?MeetingNO={1}&ClickRegionID={2}";
+    string AoLaiActiveHrefUrlShow = "http://www.aolai.com/subject/index/{0}/0?MeetingNO={1}&ClickRegionID={2}";
+    string AoLaiSpecialHrefUrlShow = "http://www.aolai.com/topic/index/{0}?MeetingNO={1}&ClickRegionID={2}";
+    string VenueHrefUrlShow = "http://www.shangpin.com/Venue/Index/{0}?MeetingNO={1}&ClickRegionID={2}";
+}
+@model IEnumerable<Shangpin.Ocs.Entity.Extenstion.ShangPin.SWfsMeetingRelationRegionContent>
+
+<div class="sp_ifc_top">
+    <!-- top banner -->
+    <dl class="topBanner clr">
+        <dd class="flt" opratorRegion="1" relationtype="@{
+            if (Model.Count(p => p.RegionID == 1) == 1)
+            {
+                obj = Model.Single(p => p.RegionID == 1);
+                @obj.RelationType
+            }
+            else
+            {
+                obj = null;
+                @(3)
+            }
+            }">
+            @{if (obj != null)
+              {
+                  if (obj.RelationType == 1 || obj.RelationType == 2 || obj.RelationType == 4)
+                  {
+                      <a href="@(string.Format(VenueHrefUrlShow, obj.RelationContent, obj.MettingNO, 1))" target="_blank">
+                        <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 477, 88))"  width="477" height="88">
+                     </a>
+                  }
+                  else
+                  {
+                      if (obj.RelationContent.IndexOf('#') > 0)
+                      {
+                          <a id="@obj.RelationContent.Substring(1)" name="@obj.RelationContent.Substring(1)"></a>
+                          <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 477, 88))"  width="477" height="88">
+                      }
+                      else
+                      { 
+                         <a href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=1")" target="_blank">
+                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 477, 88))"  width="477" height="88">
+                         </a>
+                      }
+                  }
+
+              }
+              else
+              {
+                    <a href="#">
+                        <img  width="477" height="88">
+                    </a>
+              }
+              }
+            
+        </dd>
+        <dd class="frt" opratorRegion="2" relationtype="@{
+            if (Model.Count(p => p.RegionID == 2) == 1)
+            {
+                obj = Model.Single(p => p.RegionID == 2);
+                @obj.RelationType
+            }
+            else
+            {
+                obj = null;
+                    @(3)
+            }
+            }">
+            
+            @{if (obj != null)
+              {
+                  if (obj.RelationType == 1 || obj.RelationType == 2 || obj.RelationType == 4)
+                  {
+                      <a href="@(string.Format(VenueHrefUrlShow, obj.RelationContent, obj.MettingNO, 1))" target="_blank">
+                        <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 477, 88))"  width="477" height="88">
+                     </a>
+                  }
+                  else
+                  {
+                      if (obj.RelationContent.IndexOf('#') > 0)
+                      {
+                          <a id="@obj.RelationContent.Substring(1)" name="@obj.RelationContent.Substring(1)"></a>
+                          <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 477, 88))"  width="477" height="88">
+                      }
+                      else
+                      { 
+                         <a href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=1")" target="_blank">
+                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 477, 88))"  width="477" height="88">
+                         </a>
+                      }
+                  }
+              }
+              else
+              {
+                    <a href="#">
+                        <img  width="477" height="88">
+                    </a>
+              }
+              }
+        </dd>
+    </dl>
+    <!-- top banner -->
+</div>
+<div class="sp_ifc_list">
+<div class="box">
+    <!-- 有大牌 start -->
+    <div class="vCode_list">
+        <a rnav="ranv" id="bigBrand" navtitle="轻奢有大牌" name="bigBrand" rnav="ranv"></a>
+        <h2 opratorRegion="3" relationtype="@{
+            if (Model.Count(p => p.RegionID == 3) == 1)
+            {
+                obj = Model.Single(p => p.RegionID == 3);
+                @obj.RelationType
+            }
+            else
+            {
+                obj = null;
+                @(3)
+            }
+            }">
+            @{
+                if (Model.Count(p => p.RegionID == 3) == 1)
+                {
+                    
+                       <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 215, 50))" width="215" height="50"/>
+                    
+                }
+                else
+                {
+                    <a >
+                    <img width="215" height="50">
+                    </a>
+                }
+                }
+        </h2>
+        <dl class="clr">
+            <dd class="flt" opratorRegion="4" relationtype="@{
+                if (Model.Count(p => p.RegionID == 4) == 1)
+                {
+                    obj = Model.Single(p => p.RegionID == 4);
+                     @obj.RelationType
+                }
+                else
+                {
+                    obj = null;
+                    @(3)
+                }
+                     
+                }">
+                @{
+                    if (obj != null)
+                    {
+                        if (obj.RelationType == 1 || obj.RelationType == 2 || obj.RelationType == 4)
+                        {
+                          <a href="@(string.Format(VenueHrefUrlShow, obj.RelationContent, obj.MettingNO, 1))" target="_blank">
+                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 477, 142))"  width="477" height="142">
+                         </a>
+                        }
+                        else
+                        {
+                            if (obj.RelationContent.IndexOf('#') > 0)
+                            {
+                              <a id="@obj.RelationContent.Substring(1)" name="@obj.RelationContent.Substring(1)"></a>
+                              <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 477, 142))"  width="477" height="142">
+                            }
+                            else
+                            { 
+                                 <a href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=1")" target="_blank">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 477, 142))"  width="477" height="142">
+                                 </a>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <a href="#">
+                            <img width="477" height="142">
+                        </a>
+                    }
+                    }
+                
+            </dd>
+            <dd class="frt" opratorRegion="5" relationtype="@{
+                if (Model.Count(p => p.RegionID == 5) == 1)
+                {
+                    obj = Model.Single(p => p.RegionID == 5);
+                     @obj.RelationType
+                }
+                else
+                {
+                    obj = null;
+                    @(3)
+                }
+                }">
+                @{
+                    if (obj != null)
+                    {
+                        if (obj.RelationType == 1 || obj.RelationType == 2 || obj.RelationType == 4)
+                        {
+                          <a href="@(string.Format(VenueHrefUrlShow, obj.RelationContent, obj.MettingNO, 1))" target="_blank">
+                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 477, 142))"  width="477" height="142">
+                         </a>
+                        }
+                        else
+                        {
+                            if (obj.RelationContent.IndexOf('#') > 0)
+                            {
+                              <a id="@obj.RelationContent.Substring(1)" name="@obj.RelationContent.Substring(1)"></a>
+                              <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 477, 142))"  width="477" height="142">
+                            }
+                            else
+                            { 
+                                 <a href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=1")" target="_blank">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 477, 142))"  width="477" height="142">
+                                 </a>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <a href="#">
+                            <img width="477" height="142">
+                        </a>
+                    }
+                    }
+            </dd>
+        </dl>
+        <ul class="clr">
+        @{
+            for (int i = 6; i <= 23; i++)
+            {
+                if (Model.Count(p => p.RegionID == i) == 1)
+                {
+                    obj = Model.Single(p => p.RegionID == i);
+                    <li opratorRegion="@i" relationtype="@obj.RelationType">
+                    @if (obj.RelationType == 1 || obj.RelationType == 2 || obj.RelationType == 4)
+                    {
+                          <a href="@(string.Format(VenueHrefUrlShow, obj.RelationContent, obj.MettingNO, 1))" target="_blank">
+                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 316, 190))"  width="316" height="190">
+                         </a>
+                    }
+                    else
+                    {
+                        if (obj.RelationContent.IndexOf('#') >= 0)
+                        {
+                        <a id="@obj.RelationContent.Substring(1)" name="@obj.RelationContent.Substring(1)"></a>
+                        <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 316, 190))" width="316" height="190"/>
+                        }
+                        else
+                        {
+                        <a href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + i)" target="_blank">
+                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 316, 190))" width="316" height="190"/>
+                        </a>
+                        }
+                    }
+                    </li>
+                }
+                else
+                {
+                    <li opratorRegion="@i" relationtype="3" ></li>
+                }
+            }
+            }
+        </ul>
+    </div>
+    <!-- 有大牌 end -->
+    <!-- 追造型 start -->
+    <div class="style_list">
+        <dl class="clr">
+            <dt opratorRegion="24" relationtype="@{
+                if (Model.Count(p => p.RegionID == 24) == 1)
+                {
+                    obj = Model.Single(p => p.RegionID == 24);
+                    @obj.RelationType
+                }
+                else
+                {
+                    obj = null;
+                    @(3)
+                }
+            }">
+            @{
+                if (obj != null)
+                {
+                    switch (obj.RelationType)
+                    {
+                        case 1:
+                            <a rnav="ranv" id="style" name="style" navtitle="轻奢追造型" href="@(string.Format(VenueHrefUrlShow, obj.RelationContent, obj.MettingNO, obj.RegionID))" target="_blank">
+                                <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                            </a>
+                                        break;
+                        case 2:
+                            <a rnav="ranv" id="style" name="style" navtitle="轻奢追造型" >
+                                <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                            </a>
+                                        break;
+                        case 3:
+                            <a rnav="ranv" id="style" name="style" navtitle="轻奢追造型" href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + 18)" target="_blank">
+                                <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                            </a>
+                                        break;
+                        case 4:
+                            <a rnav="ranv" id="style" name="style" navtitle="轻奢追造型">
+                            <img width="231" height="365">
+                            </a>
+                                        break;
+                    }
+
+                }
+                else
+                {
+                    <a rnav="ranv" id="style" name="style" navtitle="轻奢追造型">
+                    <img width="231" height="365">
+                    </a>
+                }
+
+                for (int i = 25; i <= 28; i++)
+                {
+                    if (Model.Count(p => p.RegionID == i) == 1)
+                    {
+                        obj = Model.Single(p => p.RegionID == i);
+                        <dd opratorRegion="@i" relationtype="@obj.RelationType">
+                            @switch (obj.RegionID)
+	                        {
+                                case 25:
+                                    <a href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + i + "#clyd")" target="_blank">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 353, 177))" width="353" height="177" />
+                                    </a>
+                                           break;
+                                           case 26:
+                                    <a href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + i + "#ssny")" target="_blank">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 353, 177))" width="353" height="177" />
+                                    </a>
+                                           break;
+                                           case 27:
+                                    <a href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + i + "#pzpj")" target="_blank">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 353, 177))" width="353" height="177" />
+                                    </a>
+                                           break;
+                                           case 28:
+                                    <a href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + i + "#hazk")" target="_blank">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 353, 177))" width="353" height="177" />
+                                    </a>
+                                           break;
+
+                            }
+                        </dd>
+                    }
+                    else
+                    {
+                        <dd opratorRegion="@i" relationtype="3">
+                        </dd>
+                    }
+                }
+                
+                }
+                
+            </dt>
+        </dl>
+        <ul class="clr">
+            @{
+                for (int i = 29; i <= 32; i++)
+                {
+                    if (Model.Count(p => p.RegionID == i) == 1)
+                    {
+                        obj = Model.Single(p => p.RegionID == i);
+                        <li opratorRegion="@i" relationtype="@obj.RelationType">
+                        @if (obj.RelationType == 1 || obj.RelationType == 2 || obj.RelationType == 4)
+                        {
+                              <a href="@(string.Format(VenueHrefUrlShow, obj.RelationContent, obj.MettingNO, 1))" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))"  width="231" height="365">
+                             </a>
+                        }
+                        else
+                        {
+                            if (obj.RelationContent.IndexOf('#') >= 0)
+                            {
+                            <a id="@obj.RelationContent.Substring(1)" name="@obj.RelationContent.Substring(1)"></a>
+                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365"/>
+                            }
+                            else
+                            {
+                            <a href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + i)" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365"/>
+                            </a>
+                            }
+                        }
+                        </li>
+                    }
+                    else
+                    {
+                        <li opratorRegion="@i" relationtype="3"></li>
+                    }
+                }
+                }
+        </ul>
+    </div>
+    <!-- 追造型 end -->
+    <!-- 箱包会场 start -->
+    <ul class="sp_ifc_demo clr">
+        @{
+            for (int i = 33; i <= 48; i++)
+            {
+                if (i == 33)
+                {
+                    if (Model.Count(p => p.RegionID == i) == 1)
+                    {
+                        obj = Model.Single(p => p.RegionID == i);
+                        <li opratorRegion="@i" relationtype="@obj.RelationType" >
+                            @switch (obj.RelationType)
+                            {
+                                case 1:
+                                    <a rnav="ranv" id="bags" name="bags" navtitle="箱包" href="@(string.Format(VenueHrefUrlShow, obj.RelationContent, obj.MettingNO, i))" target="_blank">
+                                        <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                                    </a>
+                                                break;
+                                case 2:
+                                    <a rnav="ranv" id="bags" name="bags" navtitle="箱包" >
+                                        <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                                    </a>
+                                                break;
+                                case 3:
+                                    <a rnav="ranv" id="bags" name="bags" navtitle="箱包" href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + 18)" target="_blank">
+                                        <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                                    </a>
+                                                break;
+                                case 4:
+                                    <a rnav="ranv" id="bags" name="bags" navtitle="箱包">
+                                    <img width="231" height="365">
+                                    </a>
+                                                break;
+                            }
+                        </li>
+                    }
+                    else
+                    {
+                        <li opratorRegion="@i" relationtype="3" >
+                            <a rnav="ranv" id="bags" name="bags" navtitle="箱包">
+                            <img width="231" height="365">
+                            </a>
+                        </li>
+                    }
+                    continue;
+                }
+
+                if (Model.Count(p => p.RegionID == i) == 1)
+                {
+                    obj = Model.Single(p => p.RegionID == i);
+                    <li opratorRegion="@i" relationtype="@obj.RelationType" @(obj.RelationType == 2 ? "class=txtBox" : null)>
+                    @switch (obj.RelationType)
+                    {
+                        case 1:
+                            <a href="@(string.Format(VenueHrefUrlShow, obj.RelationContent, obj.MettingNO, i))" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                            </a>
+                                       break;
+                        case 2:
+                                       if (obj.WebSite == 1)
+                                       {
+                            <a href="@(string.Format(ShangpinActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                <p>
+                                    <em>@obj.ActiveName</em>
+                                    <span>
+                                        <ins>@obj.ActiveChildName</ins>
+                                        <i>
+                                            @switch (obj.PriceType)
+                                            {
+                                                case 1:
+                                                    @Html.Raw("￥<b>" + obj.PriceName + "</b>起")
+                                               break;
+                                                case 2:
+                                                @Html.Raw("￥<b>" + obj.PriceName + "</b>封顶")
+                                           break;
+                                                case 3:
+                                                @Html.Raw("<b>" + obj.PriceName + "</b>折起")
+                                           break;
+                                                case 4:
+                                                @Html.Raw("<b>" + obj.PriceName + "</b>折封顶")
+                                           break;
+                                                case 5:
+                                                @Html.Raw("低至<b>" + obj.PriceName + "</b>折")
+                                           break;
+                                                case 6:
+                                                @Html.Raw("低至￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 7:
+                                                @Html.Raw("直降￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 8:
+                                                @Html.Raw("最高降￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 9:
+                                                @Html.Raw("全场￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 10:
+                                                @Html.Raw("全场<b>" + obj.PriceName + "</b>折")
+                                           break;
+                                                case 11:
+                                                @Html.Raw("满减￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 12:
+                                                @Html.Raw("全场狂欢")
+                                           break;
+                                            }
+                                        </i>
+                                    </span>
+                                </p>
+                            </a>
+                                       }
+                                       else
+                                       {
+                                           if (obj.IsActive == 0)
+                                           {
+                                <a href="@(string.Format(AoLaiSpecialHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))" target="_blank">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                    <p>
+                                        <em>@obj.ActiveName</em>
+                                        <span>
+                                            <ins>@obj.ActiveChildName</ins>
+                                            <i>@obj.PriceName</i>
+                                        </span>
+                                    </p>
+                                </a>
+                                           }
+                                           else
+                                           {
+                                <a href="@(string.Format(AoLaiActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))" target="_blank">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                    <p>
+                                        <em>@obj.ActiveName</em>
+                                        <span>
+                                            <ins>@obj.ActiveChildName</ins>
+                                            @switch (obj.PriceType)
+                                            {
+                                                case 1:
+                                                    <i>@Html.Raw("<b>" + Math.Round(Convert.ToDecimal(obj.PriceName), 0) + "</b>折起")</i>
+                                                  break;
+                                                case 3:
+                                                    <i>@Html.Raw("全场<b>" + Math.Round(Convert.ToDecimal(obj.PriceName), 0) + "</b>折")</i>
+                                                  break;
+                                                case 4:
+                                                    <i>@Html.Raw("全场￥<b>" + obj.PriceName + "</b>")</i>
+                                                  break;
+                                                case 5:
+                                                    <i>@Html.Raw("￥<b>" + obj.PriceName + "</b>起")</i>
+                                                  break;
+                                            }
+                                        </span>
+                                    </p>
+                                </a>
+                                           }
+                                       }
+                                       break;
+                        case 3:
+                                       if (obj.RelationContent.IndexOf('#') >= 0)
+                                       {
+                            <a id="@obj.RelationContent.Substring(1)" name="@obj.RelationContent.Substring(1)"></a>
+                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                       }
+                                       else
+                                       {
+                            <a href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + i)" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                            </a>
+                                       }
+                                       break;
+                        case 4:
+                            <li opratorRegion="@i" relationtype="@obj.RelationType"></li>
+                                                            break;
+                    }
+                    </li>
+                }
+                else
+                {
+                    <li opratorRegion="@i" relationtype="3"></li>
+                }
+            }
+            }
+    </ul>
+    <!-- 箱包会场 end -->
+    <!-- 女装秀 start -->
+    <ul class="sp_ifc_demo women_demo clr">
+        @{
+            for (int i = 49; i <= 64; i++)
+            {
+                if (i == 49)
+                {
+                    if (Model.Count(p => p.RegionID == i) == 1)
+                    {
+                        obj = Model.Single(p => p.RegionID == i);
+                        <li opratorRegion="@i" relationtype="@obj.RelationType" >
+                            @switch (obj.RelationType)
+                            {
+                                case 1:
+                                    <a rnav="ranv" id="women" name="women" navtitle="女装" href="@(string.Format(VenueHrefUrlShow, obj.RelationContent, obj.MettingNO, i))" target="_blank">
+                                        <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365" >
+                                    </a>
+                                                break;
+                                case 2:
+                                    <a rnav="ranv" id="women" name="women" navtitle="女装" >
+                                        <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                                    </a>
+                                                break;
+                                case 3:
+                                    <a rnav="ranv" id="women" name="women" navtitle="女装" href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + 18)" target="_blank">
+                                        <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                                    </a>
+                                                break;
+                                case 4:
+                                    <a rnav="ranv" id="women" name="women" navtitle="女装">
+                                    <img width="231" height="365">
+                                    </a>
+                                                break;
+                            }
+                        </li>
+                    }
+                    else
+                    {
+                        <li opratorRegion="@i" relationtype="3" >
+                            <a rnav="ranv" id="women" name="women" navtitle="女装">
+                            <img width="231" height="365">
+                            </a>
+                        </li>
+                    }
+                    continue;
+                }
+                if (Model.Count(p => p.RegionID == i) == 1)
+                {
+                    obj = Model.Single(p => p.RegionID == i);
+                    <li opratorRegion="@i" relationtype="@obj.RelationType" @(obj.RelationType == 2 ? "class=txtBox" : null)>
+                    @switch (obj.RelationType)
+                    {
+                        case 1:
+                            <a href="@(string.Format(VenueHrefUrlShow, obj.RelationContent, obj.MettingNO, i))" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                            </a>
+                                       break;
+                        case 2:
+                                       if (obj.WebSite == 1)
+                                       {
+                            <a href="@(string.Format(ShangpinActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                <p>
+                                    <em>@obj.ActiveName</em>
+                                    <span>
+                                        <ins>@obj.ActiveChildName</ins>
+                                        <i>
+                                            @switch (obj.PriceType)
+                                            {
+                                                case 1:
+                                                    @Html.Raw("￥<b>" + obj.PriceName + "</b>起")
+                                               break;
+                                                case 2:
+                                                @Html.Raw("￥<b>" + obj.PriceName + "</b>封顶")
+                                           break;
+                                                case 3:
+                                                @Html.Raw("<b>" + obj.PriceName + "</b>折起")
+                                           break;
+                                                case 4:
+                                                @Html.Raw("<b>" + obj.PriceName + "</b>折封顶")
+                                           break;
+                                                case 5:
+                                                @Html.Raw("低至<b>" + obj.PriceName + "</b>折")
+                                           break;
+                                                case 6:
+                                                @Html.Raw("低至￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 7:
+                                                @Html.Raw("直降￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 8:
+                                                @Html.Raw("最高降￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 9:
+                                                @Html.Raw("全场￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 10:
+                                                @Html.Raw("全场<b>" + obj.PriceName + "</b>折")
+                                           break;
+                                                case 11:
+                                                @Html.Raw("满减￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 12:
+                                                @Html.Raw("全场狂欢")
+                                           break;
+                                            }
+                                        </i>
+                                    </span>
+                                </p>
+                            </a>
+                                       }
+                                       else
+                                       {
+                                           if (obj.IsActive == 0)
+                                           {
+                                <a href="@(string.Format(AoLaiSpecialHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))" target="_blank">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                    <p>
+                                        <em>@obj.ActiveName</em>
+                                        <span>
+                                            <ins>@obj.ActiveChildName</ins>
+                                            <i>@obj.PriceName</i>
+                                        </span>
+                                    </p>
+                                </a>
+                                           }
+                                           else
+                                           {
+                                <a href="@(string.Format(AoLaiActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))" target="_blank">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                    <p>
+                                        <em>@obj.ActiveName</em>
+                                        <span>
+                                            <ins>@obj.ActiveChildName</ins>
+                                            @switch (obj.PriceType)
+                                            {
+                                                case 1:
+                                                    <i>@Html.Raw("<b>" + Math.Round(Convert.ToDecimal(obj.PriceName), 0) + "</b>折起")</i>
+                                                  break;
+                                                case 3:
+                                                    <i>@Html.Raw("全场<b>" + Math.Round(Convert.ToDecimal(obj.PriceName), 0) + "</b>折")</i>
+                                                  break;
+                                                case 4:
+                                                    <i>@Html.Raw("全场￥<b>" + obj.PriceName + "</b>")</i>
+                                                  break;
+                                                case 5:
+                                                    <i>@Html.Raw("￥<b>" + obj.PriceName + "</b>起")</i>
+                                                  break;
+                                            }
+                                        </span>
+                                    </p>
+                                </a>
+                                           }
+                                       }
+                                       break;
+                        case 3:
+                                       if (obj.RelationContent.IndexOf('#') >= 0)
+                                       {
+                            <a id="@obj.RelationContent.Substring(1)" name="@obj.RelationContent.Substring(1)"></a>
+                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                       }
+                                       else
+                                       {
+                            <a href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + i)" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                            </a>
+                                       }
+                                       break;
+                        case 4:
+                            <li opratorRegion="@i" relationtype="@obj.RelationType"></li>
+                                                            break;
+                    }
+                    </li>
+                }
+                else
+                {
+                    <li opratorRegion="@i" relationtype="3"></li>
+                }
+            }
+            }
+    </ul>
+    <!-- 女装秀 end -->
+    <!-- 型男志 start -->
+    <ul class="sp_ifc_demo man_demo clr">
+        @{
+            for (int i = 65; i <= 80; i++)
+            {
+                if (i == 65)
+                {
+                    if (Model.Count(p => p.RegionID == i) == 1)
+                    {
+                        obj = Model.Single(p => p.RegionID == i);
+                        <li opratorRegion="@i" relationtype="@obj.RelationType" >
+                            @switch (obj.RelationType)
+                            {
+                                case 1:
+                                    <a rnav="ranv" id="man" name="man" navtitle="男装" href="@(string.Format(VenueHrefUrlShow, obj.RelationContent, obj.MettingNO, i))" target="_blank">
+                                        <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                                    </a>
+                                                break;
+                                case 2:
+                                    <a rnav="ranv" id="man" name="man" navtitle="男装" >
+                                        <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                                    </a>
+                                                break;
+                                case 3:
+                                    <a rnav="ranv" id="man" name="man" navtitle="男装" href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + 18)" target="_blank">
+                                        <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                                    </a>
+                                                break;
+                                case 4:
+                                    <a rnav="ranv" id="man" name="man" navtitle="男装">
+                                    <img width="231" height="365">
+                                    </a>
+                                                break;
+                            }
+                        </li>
+                    }
+                    else
+                    {
+                        <li opratorRegion="@i" relationtype="3" >
+                            <a rnav="ranv" id="man" name="man" navtitle="男装">
+                            <img width="231" height="365">
+                            </a>
+                        </li>
+                    }
+                    continue;
+                }
+                if (Model.Count(p => p.RegionID == i) == 1)
+                {
+                    obj = Model.Single(p => p.RegionID == i);
+                    <li opratorRegion="@i" relationtype="@obj.RelationType" @(obj.RelationType == 2 ? "class=txtBox" : null)>
+                    @switch (obj.RelationType)
+                    {
+                        case 1:
+                            <a href="@(string.Format(VenueHrefUrlShow, obj.RelationContent, obj.MettingNO, i))" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                            </a>
+                                       break;
+                        case 2:
+                                       if (obj.WebSite == 1)
+                                       {
+                            <a href="@(string.Format(ShangpinActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                <p>
+                                    <em>@obj.ActiveName</em>
+                                    <span>
+                                        <ins>@obj.ActiveChildName</ins>
+                                        <i>
+                                            @switch (obj.PriceType)
+                                            {
+                                                case 1:
+                                                    @Html.Raw("￥<b>" + obj.PriceName + "</b>起")
+                                               break;
+                                                case 2:
+                                                @Html.Raw("￥<b>" + obj.PriceName + "</b>封顶")
+                                           break;
+                                                case 3:
+                                                @Html.Raw("<b>" + obj.PriceName + "</b>折起")
+                                           break;
+                                                case 4:
+                                                @Html.Raw("<b>" + obj.PriceName + "</b>折封顶")
+                                           break;
+                                                case 5:
+                                                @Html.Raw("低至<b>" + obj.PriceName + "</b>折")
+                                           break;
+                                                case 6:
+                                                @Html.Raw("低至￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 7:
+                                                @Html.Raw("直降￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 8:
+                                                @Html.Raw("最高降￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 9:
+                                                @Html.Raw("全场￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 10:
+                                                @Html.Raw("全场<b>" + obj.PriceName + "</b>折")
+                                           break;
+                                                case 11:
+                                                @Html.Raw("满减￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 12:
+                                                @Html.Raw("全场狂欢")
+                                           break;
+                                            }
+                                        </i>
+                                    </span>
+                                </p>
+                            </a>
+                                       }
+                                       else
+                                       {
+                                           if (obj.IsActive == 0)
+                                           {
+                                <a href="@(string.Format(AoLaiSpecialHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))" target="_blank">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                    <p>
+                                        <em>@obj.ActiveName</em>
+                                        <span>
+                                            <ins>@obj.ActiveChildName</ins>
+                                            <i>@obj.PriceName</i>
+                                        </span>
+                                    </p>
+                                </a>
+                                           }
+                                           else
+                                           {
+                                <a href="@(string.Format(AoLaiActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))" target="_blank">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                    <p>
+                                        <em>@obj.ActiveName</em>
+                                        <span>
+                                            <ins>@obj.ActiveChildName</ins>
+                                            @switch (obj.PriceType)
+                                            {
+                                                case 1:
+                                                    <i>@Html.Raw("<b>" + Math.Round(Convert.ToDecimal(obj.PriceName), 0) + "</b>折起")</i>
+                                                  break;
+                                                case 3:
+                                                    <i>@Html.Raw("全场<b>" + Math.Round(Convert.ToDecimal(obj.PriceName), 0) + "</b>折")</i>
+                                                  break;
+                                                case 4:
+                                                    <i>@Html.Raw("全场￥<b>" + obj.PriceName + "</b>")</i>
+                                                  break;
+                                                case 5:
+                                                    <i>@Html.Raw("￥<b>" + obj.PriceName + "</b>起")</i>
+                                                  break;
+                                            }
+                                        </span>
+                                    </p>
+                                </a>
+                                           }
+                                       }
+                                       break;
+                        case 3:
+                                       if (obj.RelationContent.IndexOf('#') >= 0)
+                                       {
+                            <a  id="@obj.RelationContent.Substring(1)" name="@obj.RelationContent.Substring(1)"></a>
+                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                       }
+                                       else
+                                       {
+                            <a href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + i)" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                            </a>
+                                       }
+                                       break;
+                        case 4:
+                            <li opratorRegion="@i" relationtype="@obj.RelationType"></li>
+                                                            break;
+                    }
+                    </li>
+                }
+                else
+                {
+                    <li opratorRegion="@i" relationtype="3"></li>
+                }
+            }
+            }
+    </ul>
+    <!-- 型男志 end -->
+    <!-- 鞋靴控 start -->
+    <ul class="sp_ifc_demo shoes_demo clr">
+        @{
+            for (int i = 81; i <= 96; i++)
+            {
+                if (i == 81)
+                {
+                    if (Model.Count(p => p.RegionID == i) == 1)
+                    {
+                        obj = Model.Single(p => p.RegionID == i);
+                        <li opratorRegion="@i" relationtype="@obj.RelationType" >
+                            @switch (obj.RelationType)
+                            {
+                                case 1:
+                                    <a rnav="ranv" id="shoes" name="shoes" navtitle="鞋靴" href="@(string.Format(VenueHrefUrlShow, obj.RelationContent, obj.MettingNO, i))" target="_blank">
+                                        <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                                    </a>
+                                                break;
+                                case 2:
+                                    <a rnav="ranv" id="shoes" name="shoes" navtitle="鞋靴" >
+                                        <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                                    </a>
+                                                break;
+                                case 3:
+                                    <a rnav="ranv" id="shoes" name="shoes" navtitle="鞋靴" href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + 18)" target="_blank">
+                                        <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                                    </a>
+                                                break;
+                                case 4:
+                                    <a rnav="ranv" id="shoes" name="shoes" navtitle="鞋靴">
+                                    <img width="231" height="365">
+                                    </a>
+                                                break;
+                            }
+                        </li>
+                    }
+                    else
+                    {
+                        <li opratorRegion="@i" relationtype="3" >
+                            <a rnav="ranv" id="shoes" name="shoes" navtitle="鞋靴">
+                            <img width="231" height="365">
+                            </a>
+                        </li>
+                    }
+                    continue;
+                }
+                if (Model.Count(p => p.RegionID == i) == 1)
+                {
+                    obj = Model.Single(p => p.RegionID == i);
+                    <li opratorRegion="@i" relationtype="@obj.RelationType" @(obj.RelationType == 2 ? "class=txtBox" : null)>
+                    @switch (obj.RelationType)
+                    {
+                        case 1:
+                            <a href="@(string.Format(VenueHrefUrlShow, obj.RelationContent, obj.MettingNO, i))" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                            </a>
+                                       break;
+                        case 2:
+                                       if (obj.WebSite == 1)
+                                       {
+                            <a href="@(string.Format(ShangpinActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                <p>
+                                    <em>@obj.ActiveName</em>
+                                    <span>
+                                        <ins>@obj.ActiveChildName</ins>
+                                        <i>
+                                            @switch (obj.PriceType)
+                                            {
+                                                case 1:
+                                                    @Html.Raw("￥<b>" + obj.PriceName + "</b>起")
+                                               break;
+                                                case 2:
+                                                @Html.Raw("￥<b>" + obj.PriceName + "</b>封顶")
+                                           break;
+                                                case 3:
+                                                @Html.Raw("<b>" + obj.PriceName + "</b>折起")
+                                           break;
+                                                case 4:
+                                                @Html.Raw("<b>" + obj.PriceName + "</b>折封顶")
+                                           break;
+                                                case 5:
+                                                @Html.Raw("低至<b>" + obj.PriceName + "</b>折")
+                                           break;
+                                                case 6:
+                                                @Html.Raw("低至￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 7:
+                                                @Html.Raw("直降￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 8:
+                                                @Html.Raw("最高降￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 9:
+                                                @Html.Raw("全场￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 10:
+                                                @Html.Raw("全场<b>" + obj.PriceName + "</b>折")
+                                           break;
+                                                case 11:
+                                                @Html.Raw("满减￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 12:
+                                                @Html.Raw("全场狂欢")
+                                           break;
+                                            }
+                                        </i>
+                                    </span>
+                                </p>
+                            </a>
+                                       }
+                                       else
+                                       {
+                                           if (obj.IsActive == 0)
+                                           {
+                                <a href="@(string.Format(AoLaiSpecialHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))" target="_blank">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                    <p>
+                                        <em>@obj.ActiveName</em>
+                                        <span>
+                                            <ins>@obj.ActiveChildName</ins>
+                                            <i>@obj.PriceName</i>
+                                        </span>
+                                    </p>
+                                </a>
+                                           }
+                                           else
+                                           {
+                                <a href="@(string.Format(AoLaiActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))" target="_blank">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))"/>
+                                    <p>
+                                        <em>@obj.ActiveName</em>
+                                        <span>
+                                            <ins>@obj.ActiveChildName</ins>
+                                            @switch (obj.PriceType)
+                                            {
+                                                case 1:
+                                                    <i>@Html.Raw("<b>" + Math.Round(Convert.ToDecimal(obj.PriceName), 0) + "</b>折起")</i>
+                                                  break;
+                                                case 3:
+                                                    <i>@Html.Raw("全场<b>" + Math.Round(Convert.ToDecimal(obj.PriceName), 0) + "</b>折")</i>
+                                                  break;
+                                                case 4:
+                                                    <i>@Html.Raw("全场￥<b>" + obj.PriceName + "</b>")</i>
+                                                  break;
+                                                case 5:
+                                                    <i>@Html.Raw("￥<b>" + obj.PriceName + "</b>起")</i>
+                                                  break;
+                                            }
+                                        </span>
+                                    </p>
+                                </a>
+                                           }
+                                       }
+                                       break;
+                        case 3:
+                                       if (obj.RelationContent.IndexOf('#') >= 0)
+                                       {
+                            <a id="@obj.RelationContent.Substring(1)" name="@obj.RelationContent.Substring(1)"></a>
+                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                       }
+                                       else
+                                       {
+                            <a href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + i)" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                            </a>
+                                       }
+                                       break;
+                        case 4:
+                            <li opratorRegion="@i" relationtype="@obj.RelationType"></li>
+                                                            break;
+                    }
+                    </li>
+                }
+                else
+                {
+                    <li opratorRegion="@i" relationtype="3"></li>
+                }
+            }
+            }
+    </ul>
+    <!-- 鞋靴控 end -->
+    <!-- 点睛配 start -->
+    <ul class="sp_ifc_demo watches_demo clr">
+         @{
+             for (int i = 97; i <= 112; i++)
+             {
+                 if (i == 97)
+                 {
+                     if (Model.Count(p => p.RegionID == i) == 1)
+                     {
+                         obj = Model.Single(p => p.RegionID == i);
+                        <li opratorRegion="@i" relationtype="@obj.RelationType" >
+                            @switch (obj.RelationType)
+                            {
+                                case 1:
+                                    <a rnav="ranv" id="watches" name="watches" navtitle="腕表配饰" href="@(string.Format(VenueHrefUrlShow, obj.RelationContent, obj.MettingNO, i))" target="_blank">
+                                        <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                                    </a>
+                                                break;
+                                case 2:
+                                    <a rnav="ranv" id="watches" name="watches" navtitle="腕表配饰" >
+                                        <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                                    </a>
+                                                break;
+                                case 3:
+                                    <a rnav="ranv" id="watches" name="watches" navtitle="腕表配饰" href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + 18)" target="_blank">
+                                        <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                                    </a>
+                                                break;
+                                case 4:
+                                    <a rnav="ranv" id="watches" name="watches" navtitle="腕表配饰">
+                                    <img width="231" height="365">
+                                    </a>
+                                                break;
+                            }
+                        </li>
+                     }
+                     else
+                     {
+                        <li opratorRegion="@i" relationtype="3" >
+                            <a rnav="ranv" id="watches" name="watches" navtitle="腕表配饰">
+                            <img width="231" height="365">
+                            </a>
+                        </li>
+                     }
+                     continue;
+                 }
+                 if (Model.Count(p => p.RegionID == i) == 1)
+                 {
+                     obj = Model.Single(p => p.RegionID == i);
+                    <li opratorRegion="@i" relationtype="@obj.RelationType" @(obj.RelationType == 2 ? "class=txtBox" : null)>
+                    @switch (obj.RelationType)
+                    {
+                        case 1:
+                            <a href="@(string.Format(VenueHrefUrlShow, obj.RelationContent, obj.MettingNO, i))" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                            </a>
+                                       break;
+                        case 2:
+                                       if (obj.WebSite == 1)
+                                       {
+                            <a href="@(string.Format(ShangpinActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                <p>
+                                    <em>@obj.ActiveName</em>
+                                    <span>
+                                        <ins>@obj.ActiveChildName</ins>
+                                        <i>
+                                            @switch (obj.PriceType)
+                                            {
+                                                case 1:
+                                                    @Html.Raw("￥<b>" + obj.PriceName + "</b>起")
+                                               break;
+                                                case 2:
+                                                @Html.Raw("￥<b>" + obj.PriceName + "</b>封顶")
+                                           break;
+                                                case 3:
+                                                @Html.Raw("<b>" + obj.PriceName + "</b>折起")
+                                           break;
+                                                case 4:
+                                                @Html.Raw("<b>" + obj.PriceName + "</b>折封顶")
+                                           break;
+                                                case 5:
+                                                @Html.Raw("低至<b>" + obj.PriceName + "</b>折")
+                                           break;
+                                                case 6:
+                                                @Html.Raw("低至￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 7:
+                                                @Html.Raw("直降￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 8:
+                                                @Html.Raw("最高降￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 9:
+                                                @Html.Raw("全场￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 10:
+                                                @Html.Raw("全场<b>" + obj.PriceName + "</b>折")
+                                           break;
+                                                case 11:
+                                                @Html.Raw("满减￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 12:
+                                                @Html.Raw("全场狂欢")
+                                           break;
+                                            }
+                                        </i>
+                                    </span>
+                                </p>
+                            </a>
+                                       }
+                                       else
+                                       {
+                                           if (obj.IsActive == 0)
+                                           {
+                                <a href="@(string.Format(AoLaiSpecialHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))" target="_blank">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                    <p>
+                                        <em>@obj.ActiveName</em>
+                                        <span>
+                                            <ins>@obj.ActiveChildName</ins>
+                                            <i>@obj.PriceName</i>
+                                        </span>
+                                    </p>
+                                </a>
+                                           }
+                                           else
+                                           {
+                                <a href="@(string.Format(AoLaiActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))" target="_blank">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                    <p>
+                                        <em>@obj.ActiveName</em>
+                                        <span>
+                                            <ins>@obj.ActiveChildName</ins>
+                                            @switch (obj.PriceType)
+                                            {
+                                                case 1:
+                                                    <i>@Html.Raw("<b>" + Math.Round(Convert.ToDecimal(obj.PriceName), 0) + "</b>折起")</i>
+                                                  break;
+                                                case 3:
+                                                    <i>@Html.Raw("全场<b>" + Math.Round(Convert.ToDecimal(obj.PriceName), 0) + "</b>折")</i>
+                                                  break;
+                                                case 4:
+                                                    <i>@Html.Raw("全场￥<b>" + obj.PriceName + "</b>")</i>
+                                                  break;
+                                                case 5:
+                                                    <i>@Html.Raw("￥<b>" + obj.PriceName + "</b>起")</i>
+                                                  break;
+                                            }
+                                        </span>
+                                    </p>
+                                </a>
+                                           }
+                                       }
+                                       break;
+                        case 3:
+                                       if (obj.RelationContent.IndexOf('#') >= 0)
+                                       {
+                            <a id="@obj.RelationContent.Substring(1)" name="@obj.RelationContent.Substring(1)"></a>
+                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                       }
+                                       else
+                                       {
+                            <a href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + i)" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                            </a>
+                                       }
+                                       break;
+                        case 4:
+                            <li opratorRegion="@i" relationtype="@obj.RelationType"></li>
+                                                            break;
+                    }
+                    </li>
+                 }
+                 else
+                 {
+                    <li opratorRegion="@i" relationtype="3"></li>
+                 }
+             }
+            }
+    </ul>
+    <!-- 点睛配 end -->
+    <!-- 享生活 start -->
+    <ul class="sp_ifc_demo beauty_demo clr">
+         @{
+             for (int i = 113; i <= 128; i++)
+             {
+                 if (i == 113)
+                 {
+                     if (Model.Count(p => p.RegionID == i) == 1)
+                     {
+                         obj = Model.Single(p => p.RegionID == i);
+                        <li opratorRegion="@i" relationtype="@obj.RelationType" >
+                            @switch (obj.RelationType)
+                            {
+                                case 1:
+                                    <a rnav="ranv" id="beauty" name="beauty" navtitle="美妆家居" href="@(string.Format(VenueHrefUrlShow, obj.RelationContent, obj.MettingNO, i))" target="_blank">
+                                        <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                                    </a>
+                                                break;
+                                case 2:
+                                    <a rnav="ranv" id="beauty" name="beauty" navtitle="美妆家居" >
+                                        <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                                    </a>
+                                                break;
+                                case 3:
+                                    <a rnav="ranv" id="beauty" name="beauty" navtitle="美妆家居" href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + 18)" target="_blank">
+                                        <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                                    </a>
+                                                break;
+                                case 4:
+                                    <a rnav="ranv" id="beauty" name="beauty" navtitle="美妆家居">
+                                    <img width="231" height="365">
+                                    </a>
+                                                break;
+                            }
+                        </li>
+                     }
+                     else
+                     {
+                        <li opratorRegion="@i" relationtype="3" >
+                            <a rnav="ranv" id="beauty" name="beauty" navtitle="美妆家居">
+                            <img width="231" height="365">
+                            </a>
+                        </li>
+                     }
+                     continue;
+                 }
+                 if (Model.Count(p => p.RegionID == i) == 1)
+                 {
+                     obj = Model.Single(p => p.RegionID == i);
+                    <li opratorRegion="@i" relationtype="@obj.RelationType" @(obj.RelationType == 2 ? "class=txtBox" : null)>
+                    @switch (obj.RelationType)
+                    {
+                        case 1:
+                            <a href="@(string.Format(VenueHrefUrlShow, obj.RelationContent, obj.MettingNO, i))" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                            </a>
+                                       break;
+                        case 2:
+                                       if (obj.WebSite == 1)
+                                       {
+                            <a href="@(string.Format(ShangpinActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                <p>
+                                    <em>@obj.ActiveName</em>
+                                    <span>
+                                        <ins>@obj.ActiveChildName</ins>
+                                        <i>
+                                            @switch (obj.PriceType)
+                                            {
+                                                case 1:
+                                                    @Html.Raw("￥<b>" + obj.PriceName + "</b>起")
+                                               break;
+                                                case 2:
+                                                @Html.Raw("￥<b>" + obj.PriceName + "</b>封顶")
+                                           break;
+                                                case 3:
+                                                @Html.Raw("<b>" + obj.PriceName + "</b>折起")
+                                           break;
+                                                case 4:
+                                                @Html.Raw("<b>" + obj.PriceName + "</b>折封顶")
+                                           break;
+                                                case 5:
+                                                @Html.Raw("低至<b>" + obj.PriceName + "</b>折")
+                                           break;
+                                                case 6:
+                                                @Html.Raw("低至￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 7:
+                                                @Html.Raw("直降￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 8:
+                                                @Html.Raw("最高降￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 9:
+                                                @Html.Raw("全场￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 10:
+                                                @Html.Raw("全场<b>" + obj.PriceName + "</b>折")
+                                           break;
+                                                case 11:
+                                                @Html.Raw("满减￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 12:
+                                                @Html.Raw("全场狂欢")
+                                           break;
+                                            }
+                                        </i>
+                                    </span>
+                                </p>
+                            </a>
+                                       }
+                                       else
+                                       {
+                                           if (obj.IsActive == 0)
+                                           {
+                                <a href="@(string.Format(AoLaiSpecialHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))" target="_blank">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                    <p>
+                                        <em>@obj.ActiveName</em>
+                                        <span>
+                                            <ins>@obj.ActiveChildName</ins>
+                                            <i>@obj.PriceName</i>
+                                        </span>
+                                    </p>
+                                </a>
+                                           }
+                                           else
+                                           {
+                                <a href="@(string.Format(AoLaiActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))" target="_blank">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                    <p>
+                                        <em>@obj.ActiveName</em>
+                                        <span>
+                                            <ins>@obj.ActiveChildName</ins>
+                                            @switch (obj.PriceType)
+                                            {
+                                                case 1:
+                                                    <i>@Html.Raw("<b>" + Math.Round(Convert.ToDecimal(obj.PriceName), 0) + "</b>折起")</i>
+                                                  break;
+                                                case 3:
+                                                    <i>@Html.Raw("全场<b>" + Math.Round(Convert.ToDecimal(obj.PriceName), 0) + "</b>折")</i>
+                                                  break;
+                                                case 4:
+                                                    <i>@Html.Raw("全场￥<b>" + obj.PriceName + "</b>")</i>
+                                                  break;
+                                                case 5:
+                                                    <i>@Html.Raw("￥<b>" + obj.PriceName + "</b>起")</i>
+                                                  break;
+                                            }
+                                        </span>
+                                    </p>
+                                </a>
+                                           }
+                                       }
+                                       break;
+                        case 3:
+                                       if (obj.RelationContent.IndexOf('#') >= 0)
+                                       {
+                            <a id="@obj.RelationContent.Substring(1)" name="@obj.RelationContent.Substring(1)"></a>
+                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                       }
+                                       else
+                                       {
+                            <a href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + i)" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                            </a>
+                                       }
+                                       break;
+                        case 4:
+                            <li opratorRegion="@i" relationtype="@obj.RelationType"></li>
+                                                            break;
+                    }
+                    </li>
+                 }
+                 else
+                 {
+                    <li opratorRegion="@i" relationtype="3"></li>
+                 }
+             }
+            }
+    </ul>
+    <!-- 享生活 end -->
+    <!-- 爱折扣 start -->
+    <ul class="sp_ifc_demo sales_demo clr">
+        @{
+            for (int i = 129; i <= 144; i++)
+            {
+                if (i == 129)
+                {
+                    if (Model.Count(p => p.RegionID == i) == 1)
+                    {
+                        obj = Model.Single(p => p.RegionID == i);
+                        <li opratorRegion="@i" relationtype="@obj.RelationType" >
+                            @switch (obj.RelationType)
+                            {
+                                case 1:
+                                    <a rnav="ranv" id="sales" name="sales" navtitle="超值特惠" href="@(string.Format(VenueHrefUrlShow, obj.RelationContent, obj.MettingNO, i))" target="_blank">
+                                        <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                                    </a>
+                                                break;
+                                case 2:
+                                    <a rnav="ranv" id="sales" name="sales" navtitle="超值特惠" >
+                                        <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                                    </a>
+                                                break;
+                                case 3:
+                                    <a rnav="ranv" id="sales" name="sales" navtitle="超值特惠" href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + 18)" target="_blank">
+                                        <img  lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 231, 365))" width="231" height="365">
+                                    </a>
+                                                break;
+                                case 4:
+                                    <a rnav="ranv" id="sales" name="sales" navtitle="超值特惠">
+                                    <img width="231" height="365">
+                                    </a>
+                                                break;
+                            }
+                        </li>
+                    }
+                    else
+                    {
+                        <li opratorRegion="@i" relationtype="3" >
+                            <a rnav="ranv" id="sales" name="sales" navtitle="超值特惠">
+                            <img width="231" height="365">
+                            </a>
+                        </li>
+                    }
+                    continue;
+                }
+                if (Model.Count(p => p.RegionID == i) == 1)
+                {
+                    obj = Model.Single(p => p.RegionID == i);
+                    <li opratorRegion="@i" relationtype="@obj.RelationType" @(obj.RelationType == 2 ? "class=txtBox" : null)>
+                    @switch (obj.RelationType)
+                    {
+                        case 1:
+                            <a href="@(string.Format(VenueHrefUrlShow, obj.RelationContent, obj.MettingNO, i))" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                            </a>
+                                       break;
+                        case 2:
+                                       if (obj.WebSite == 1)
+                                       {
+                            <a href="@(string.Format(ShangpinActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                <p>
+                                    <em>@obj.ActiveName</em>
+                                    <span>
+                                        <ins>@obj.ActiveChildName</ins>
+                                        <i>
+                                            @switch (obj.PriceType)
+                                            {
+                                                case 1:
+                                                    @Html.Raw("￥<b>" + obj.PriceName + "</b>起")
+                                               break;
+                                                case 2:
+                                                @Html.Raw("￥<b>" + obj.PriceName + "</b>封顶")
+                                           break;
+                                                case 3:
+                                                @Html.Raw("<b>" + obj.PriceName + "</b>折起")
+                                           break;
+                                                case 4:
+                                                @Html.Raw("<b>" + obj.PriceName + "</b>折封顶")
+                                           break;
+                                                case 5:
+                                                @Html.Raw("低至<b>" + obj.PriceName + "</b>折")
+                                           break;
+                                                case 6:
+                                                @Html.Raw("低至￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 7:
+                                                @Html.Raw("直降￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 8:
+                                                @Html.Raw("最高降￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 9:
+                                                @Html.Raw("全场￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 10:
+                                                @Html.Raw("全场<b>" + obj.PriceName + "</b>折")
+                                           break;
+                                                case 11:
+                                                @Html.Raw("满减￥<b>" + obj.PriceName + "</b>")
+                                           break;
+                                                case 12:
+                                                @Html.Raw("全场狂欢")
+                                           break;
+                                            }
+                                        </i>
+                                    </span>
+                                </p>
+                            </a>
+                                       }
+                                       else
+                                       {
+                                           if (obj.IsActive == 0)
+                                           {
+                                <a href="@(string.Format(AoLaiSpecialHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))" target="_blank">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                    <p>
+                                        <em>@obj.ActiveName</em>
+                                        <span>
+                                            <ins>@obj.ActiveChildName</ins>
+                                            <i>@obj.PriceName</i>
+                                        </span>
+                                    </p>
+                                </a>
+                                           }
+                                           else
+                                           {
+                                <a href="@(string.Format(AoLaiActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))" target="_blank">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                    <p>
+                                        <em>@obj.ActiveName</em>
+                                        <span>
+                                            <ins>@obj.ActiveChildName</ins>
+                                            @switch (obj.PriceType)
+                                            {
+                                                case 1:
+                                                    <i>@Html.Raw("<b>" + Math.Round(Convert.ToDecimal(obj.PriceName), 0) + "</b>折起")</i>
+                                                  break;
+                                                case 3:
+                                                    <i>@Html.Raw("全场<b>" + Math.Round(Convert.ToDecimal(obj.PriceName), 0) + "</b>折")</i>
+                                                  break;
+                                                case 4:
+                                                    <i>@Html.Raw("全场￥<b>" + obj.PriceName + "</b>")</i>
+                                                  break;
+                                                case 5:
+                                                    <i>@Html.Raw("￥<b>" + obj.PriceName + "</b>起")</i>
+                                                  break;
+                                            }
+                                        </span>
+                                    </p>
+                                </a>
+                                           }
+                                       }
+                                       break;
+                        case 3:
+                                       if (obj.RelationContent.IndexOf('#') >= 0)
+                                       {
+                            <a id="@obj.RelationContent.Substring(1)" name="@obj.RelationContent.Substring(1)"></a>
+                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                                       }
+                                       else
+                                       {
+                            <a href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + i)" target="_blank">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 229, 306))" width="229" height="306"/>
+                            </a>
+                                       }
+                                       break;
+                        case 4:
+                            <li opratorRegion="@i" relationtype="@obj.RelationType"></li>
+                                                            break;
+                    }
+                    </li>
+                }
+                else
+                {
+                    <li opratorRegion="@i" relationtype="3"></li>
+                }
+            }
+            }
+    </ul>
+    <!-- 爱折扣 end -->
+</div>
+</div>

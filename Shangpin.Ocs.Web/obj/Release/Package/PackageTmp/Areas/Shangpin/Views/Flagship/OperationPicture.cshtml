@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "精品旗舰店|广告位编辑";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+<link href="/Areas/Shangpin/Content/css/page/rightcontent/brandcontent.css" rel="stylesheet" type="text/css">
+<script src="~/Areas/Shangpin/Scripts/validata/jquery-1.8.2.js"></script>
+<script src="~/Areas/Shangpin/Scripts/validata/jquery.form.js"></script>
+<script src="~/Areas/Shangpin/Scripts/validata/jquery.metadata.js"></script>
+<script src="~/Areas/Shangpin/Scripts/validata/jquery.validate.js"></script>
+<script src="~/Areas/Shangpin/Scripts/validata/messages_cn.js"></script>
+<script src="~/Areas/Shangpin/Scripts/validata/validate.form.js"></script>
+<link href="~/Areas/Shangpin/Scripts/css/validate.css" rel="stylesheet" />
+<script type="text/javascript">
+    function subafter(result) {
+        window.location = "/Shangpin/Flagship?brandNo=" + result.content.BrandNo
+    }
+    $("input[type=file]").live(($.browser.msie && ($.browser.version == "6.0")) ? 'propertychange' : 'change', function () {
+        $("#img").remove();
+    });
+    $(function () {
+        if ($("#PictureFileNo").val() == "") {
+            $("#img").hide();
+            $("#picFile").addClass("{required:true}");
+        }
+        // {required:true}
+    })
+</script>
+<div id="mx-rightcontent-inner">
+    <h1>
+        OCS &gt; 尚品 &gt; <a href="/Shangpin/Flagship?brandNo=@Request.QueryString["brandNo"]">精品旗舰店管理</a> &gt; 底部运营位管理 &gt; 编辑
+    </h1>
+    <div class="mx-brandcontent-msgbox">
+        <form action="/Shangpin/Flagship/OperationPicture" method="post" enctype="multipart/form-data">
+            <input type="hidden" value="@Model.PictureManageId" name="PictureManageId" />
+            <input type="hidden" value="@Request.QueryString["brandNo"]" name="BrandNo" />
+            <input type="hidden" value="@Model.PictureFileNo" name="PictureFileNo" id="PictureFileNo" />
+            <input type="hidden" value="@Model.PageNo" name="PageNo" />
+            <input type="hidden" value="@Model.PictureIndex" name="PictureIndex" />
+            <input type="hidden" value="@Model.PagePositionNo" name="PagePositionNo" />
+            <input type="hidden" value="@Model.PagePositionName" name="PagePositionName" />
+            <input type="hidden" value="@Model.DateBegin" name="DateBegin" />
+            <input type="hidden" value="@Model.DateEnd" name="DateEnd" />
+            <input type="hidden" value="@Model.SortId" name="SortId" />
+            <input type="hidden" value="@Model.Status" name="Status" />
+            <input type="hidden" value="@Model.DataState" name="DataState" />
+            <input type="hidden" value="@Model.OperatorUserId" name="OperatorUserId" />
+            <input type="hidden" value="@Model.DateCreate" name="DateCreate">
+            <input type="hidden" value="@Model.PictureName" name="PictureName">
+            <dl>
+                <dt>位置：</dt>
+                <dd>
+                    @Model.PagePositionName
+                </dd>
+            </dl>
+            <dl>
+                <dt style=" color:Red;">链接地址：</dt>
+                <dd>
+                    <input id="LinkAddress" type="text" name="LinkAddress" value="@Model.LinkAddress" class="text-input small-input{required:true,url:true}">
+                </dd>
+            </dl>
+            <div id="form1">
+                <dl>
+                    <dt style=" color:Red;">图片上传：</dt>
+                    <dd>
+                        <input type="file" id="picFile" name="picFile" class="text-input small-input" />*尺寸：310*200;格式：jpg;大小：150K以下
+                        <div id="img">
+                            <img src="/ReadPic/GetPic.ashx?width=0&height=0&pictureFileNo=@Model.PictureFileNo&type=2" style="max-width:480px; max-height:260px;" />
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+            <dl>
+                <dt>&nbsp;</dt>
+                <dd>
+                    <button type="submit" value="" class="secondary">
+                        确 定
+                    </button>
+                    <a href="/Shangpin/Flagship?brandNo=@Request.QueryString["brandNo"]" class="secondary">返回</a>
+                </dd>
+            </dl>
+        </form>
+    </div>
+</div>

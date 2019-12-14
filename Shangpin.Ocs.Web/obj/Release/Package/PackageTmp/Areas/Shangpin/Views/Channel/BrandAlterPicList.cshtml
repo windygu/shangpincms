@@ -1,0 +1,126 @@
+﻿@model IList<Shangpin.Entity.Wfs.SWfsListAlterPic>
+@using Shangpin.Ocs.Web.Infrastructure
+@{
+    ViewBag.Title = "品牌轮播图片";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    
+    
+}
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/Venue/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //单击保存
+            $("#save").click(function () {
+                if ($("#LinkName").val().length <= 0) {
+                    alert("名称不能为空");
+                    return;
+                }
+                if ($("#AlterAddress").val().length <= 0) {
+                    alert("链接地址不能为空");
+                    return;
+                }
+                if ($("#LargePicture").val().length==0) {
+                    if ($("#imgfile").val().length <= 0) {
+                        alert("图片不能为空");
+                        return;
+                    }
+                }
+                var len = 30;
+                var nums = $("#LinkName").val().replace(/[^\x00-\xff]/g, "00").length;
+                if (nums > len) {
+                    alert("名称只能在" + len / 2 + "个汉字" + len + "个字符");
+                    return false;
+                }
+                $("#upimgform").ajaxSubmit(function (data) {
+                    data = eval("(" + data + ")");
+                    if (data.result > 0) {
+                        alert(data.message);
+                        $("#AlterPicId").val("");
+                        $("#LargePicture").val("");
+                        $("#LinkName").val("");
+                        $("#AlterAddress").val("");
+                        window.location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                    
+                });
+            });
+        });
+        var editepic = function (alterpicid) {
+            $.get("/shangpin/channel/EditeBrandAlterPic/"+alterpicid, function (data) {
+                $("#AlterPicId").val(data.AlterPicId);
+                $("#LargePicture").val(data.LargePicture);
+                $("#LinkName").val(data.LinkName);
+                $("#AlterAddress").val(data.AlterAddress);
+            });
+        }
+    </script>
+}
+<h1>
+    OCS > 尚品 > <a href="/Shangpin/channel/ChannelList">频道页列表</a> > <a href="/shangpin/channel/BrandAlterPicGroup?channelno=@(Request.QueryString["channelno"])">品牌轮播组 </a>  >品牌轮播图片
+</h1>
+<div>
+    <form action="/shangpin/channel/EditeBrandAlterPic" method="post" id="upimgform" enctype="multipart/form-data">
+        <input type="hidden" name="AlterPicId" id="AlterPicId" />
+        <input type="hidden" name="LargePicture" id="LargePicture" />
+        <input type="hidden" name="channelno" id="channelno" value="@Request.QueryString["channelno"]"/>
+        <input type="hidden" name="GroupId" id="GroupId" value="@Request.QueryString["groupid"]"/>
+        <input type="text" name="LinkName" id="LinkName" placeholder="图片名称" maxlength="30"/>
+        <input type="text" name="AlterAddress" id="AlterAddress" placeholder="链接地址 http://" style="width:300px;"/>
+        <input type="file" name="imgfile" id="imgfile" />
+        <span style="color:red;">316*190 大小为 150kb</span>
+        <input type="button" value="保存" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                                color: #FFFFFF; cursor: pointer;" id="save"/>
+    </form>
+</div>
+<table cellpadding="1" cellspacing="1" class="mx-table">
+    <thead>
+        <tr>
+            <th >
+                预览图
+            </th>
+            <th >
+                图片名称
+            </th>
+            <th >
+                创建时间
+            </th>
+            <th >
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody >
+    @if (Model != null && Model.Count() > 0)
+    {
+        var flag = 0;
+        foreach (var group in Model)
+        {
+            flag = flag + 1;
+            string style = flag % 2 == 0 ? "border:#ccc 0px solid;width:100%; background-color:#f0f0f0;" : "border:#ccc 0px solid;width:100%;";
+        
+            <tr style="@style">
+                <td width="30%" style="text-align: left; padding-left: 10px;">
+                    <img src="/ReadPic/GetPic.ashx?width=160&height=80&pictureFileNo=@(group.LargePicture)&type=2" width="160" height="80"/>
+                </td>
+                <td >
+                    @group.LinkName
+                </td>
+                <td >
+                    @group.CreateDate
+                </td>
+                <td colspan="3" style="text-align: right;">
+                    <a class="button" href="javascript:editepic(@(group.AlterPicId))">
+                        编辑 </a>
+                    <a class="button" onclick="return confirm('是否删除')" href="/shangpin/channel/DeleteBrandAlterPicByID/@(group.AlterPicId)?groupid=@(Request.QueryString["groupid"])&channelno=@(Request.QueryString["channelno"])">删除
+                    </a>
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>
+
+

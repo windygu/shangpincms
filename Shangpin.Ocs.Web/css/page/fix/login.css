@@ -1,0 +1,12 @@
+
+/* CSS Document */
+
+.splogin_block dd input.txt_input{
+	/* line-height:33px; */
+}
+.splogin_block dd.normal_login input{
+	top:0px;
+}
+.splogin_block dd.normal_login a{
+	top:2px;
+}

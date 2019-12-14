@@ -1,0 +1,118 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.ShangPin
+@using Shangpin.Ocs.Web.Infrastructure
+@using Shangpin.Ocs.Service.Shangpin
+@using Shangpin.Ocs.Service.Common
+@model IList<Shangpin.Entity.Wfs.SWfsMeetingOperationDiary>
+@{
+    ViewBag.Title = "会场日志";
+    Layout = "~/Areas/Shangpin/Views/Shared/_VenueLayout.cshtml";
+}
+@{
+    int page = ViewBag.pageIndex != null ? (int)ViewBag.pageIndex : 1;
+    int pageSize = ViewBag.PageSize != null ? (int)ViewBag.PageSize : 20;
+    int totalCount = ViewBag.TotalCount != null ? (int)ViewBag.TotalCount : 0;
+}
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script src="/Areas/Outlet/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+    <script language="javascript" type="text/javascript">
+        function resetForm() {
+            $("input[name='keyword']").val("请输入关键词");
+            $("#startTime").val("");
+            $("#endTime").val("");
+        }
+    </script>
+}
+<h1>
+    OCS > 尚品 > 会场列表 > 会场日志
+</h1>
+<form method="post" action="/shangpin/venue/logmanagelist?meetNo=@ViewBag.MainMeetNo&meetType=@ViewBag.MeetType" id="SearchMeetingLog">
+<table width="auto" border="0" class="mx-table" style="width: 100%;">
+    <tr>
+        <td width="400px" align="left">
+            <span>查询日期：</span>
+            <input id="startTime" name="startTime" value="@ViewBag.StartTime" maxlength="30"  class="Wdate" type="text" readonly="readonly" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:00',skin:'whyGreen',lang:'zh-cn',isShowClear:true,alwaysUseStartDate:true,readOnly:true,maxDate:'#F{$dp.$D(\'endTime\',{d:0});}'})" />
+            <span>至</span>
+            <input id="endTime" name="endTime" value="@ViewBag.EndTime" maxlength="30" class="Wdate" type="text" readonly="readonly" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:00',skin:'whyGreen',lang:'zh-cn',isShowClear:true,alwaysUseStartDate:true,readOnly:true,minDate:'#F{$dp.$D(\'startTime\',{d:0});}'})"/>
+        </td>
+        <td style="text-align: left;">
+            <span>关键词：</span>
+            <input name="keyword"  value="@(!string.IsNullOrEmpty(ViewBag.KeyWord) ? ViewBag.KeyWord : "请输入关键词")"  style="width: 150px; color: #666; font-size: 12px;"
+               onfocus="if(this.value == '请输入关键词') this.value = ''" onblur="if(this.value == '') this.value = '请输入关键词'"  />
+        </td>
+        <td style="text-align:left;">
+            <input class="button" type="submit" value="查 询" />&nbsp;&nbsp;&nbsp;<input class="button"
+                type="button" onclick="javascript:resetForm();" value="重 置" />
+        </td>
+    </tr>
+</table>
+</form>
+<table cellpadding="1" cellspacing="1" class="mx-table">
+    <tbody>
+        <tr>
+            <td width="30%" style="text-align: left;">
+                <h1>
+                    <b>会场日志</b></h1>
+            </td>
+            <td width="70%" style="text-align: right;">
+                @if (ViewBag.MeetType == 1)
+                {
+                    <a id="addChildMeeting" class="button" href="javascript:window.location.href='/Shangpin/Venue/MeetListManage';" name="child">
+                        返回</a>
+                }
+                else if (ViewBag.MeetType == 2)
+                { 
+                    <a id="addChildMeeting" class="button" href="javascript:window.location.href='/Shangpin/Venue/ChildMeetListManage?meetingId=@ViewBag.MID&type=1';" name="child">
+                        返回</a>
+                }
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table class="mx-table" border="0">
+    <thead>
+        <tr>
+            <th style="width: 15%">
+                时间
+            </th>
+            <th style="width: 15%">
+                操作人
+            </th>
+            <th style="width: 20%">
+                动作
+            </th>
+            <th style="width: 50%">
+                内容
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Count() > 0)
+        {
+            int flag = 0;
+            foreach (var item in Model)
+            {
+                flag = flag + 1;
+                string style = flag % 2 == 0 ? "border:#ccc 0px solid;width:100%; background-color:#f0f0f0;" : "border:#ccc 0px solid;width:100%;";
+            <tr style="@style">
+                <td>
+                    @item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss")
+                </td>
+                <td>
+                    @item.OpratePeople
+                </td>
+                <td>
+                    @(EnumService.GetMemberValues<LogActionType>(item.ActionType))
+                </td>
+                <td style="text-align:left;">
+                    @item.OprateInfo
+                </td>
+            </tr>
+            }
+        }
+    </tbody>
+</table>
+<div class="spPage">
+    <!--分页-->
+    @Html.Raw(Html.PagerX("page", page, 20, totalCount))
+</div>

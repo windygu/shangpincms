@@ -1,0 +1,60 @@
+#mx-index-rollimg {
+    position: relative;
+    z-index: 1;
+    top: -2px;
+    min-width: 1200px;
+    _width: 1200px;
+    height: 360px;
+}
+
+#mx-index-rollimg a.imgcontent {
+    display: block;
+    height: 360px;
+    width: 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+#mx-index-rollimg-titlearea {
+    position: absolute;
+    width: 100%;
+    height: 40px;
+    bottom: 0;
+    background: #000;
+    color: #fff;
+    opacity: 0.65;
+    z-index: 101;
+}
+
+#mx-index-rollimg-titlearea h6 {
+    line-height: 40px;
+    font-size: 14px;
+}
+
+#mx-index-rollimg-selectarea {
+    position: absolute;
+    width: 100%;
+    height: 40px;
+    bottom: 0;
+    z-index: 102;
+}
+
+#mx-index-rollimg-selectarea a {
+    display: block;
+    float: left;
+    width: 16px;
+    height: 16px;
+    background-color: #fff;
+    overflow: hidden;
+    text-indent: 22px;
+    border-radius: 16px;
+    margin: 13px 0 0 5px;
+}
+
+#mx-index-rollimg-selectarea a.cur {
+    background: #0d7dcb;
+}

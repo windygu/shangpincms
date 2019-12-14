@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Shangpin.Entity.Wfs.SWfsProductTemplate>
+@using Shangpin.Ocs.Web.Infrastructure;
+@{
+    ViewBag.Title = "产品模板列表";
+    Layout = "~/Areas/Shangpin/Views/Shared/_LayoutProduct.cshtml";
+    int pageIndex = ViewBag.pageIndex;
+    int pageSize = ViewBag.pageSize;
+    int totalCount = ViewBag.totalCount;
+}
+@section HeadScript{
+    
+}
+<h1>
+    OCS > 尚品 > 模板管理
+</h1>
+<div>
+    <form action="/shangpin/product/TemplateList" method="get">
+    <input type="text" placeholder="模板编号" name="templateno" value="@Request.QueryString["templateno"]"/>
+    <input type="text" placeholder="模板名称" name="templatename" value="@Request.QueryString["templatename"]"/>
+    <input type="submit" value="查询" />&nbsp;&nbsp;<a href="/shangpin/product/EditeTemplate">添加模板</a>
+    </form>
+</div>
+<table class="mx-table" border="0">
+    <thead>
+        <tr>
+            <th>
+                模板编号
+            </th>
+            <th>
+                模板名称
+            </th>
+            <th>
+                创建时间
+            </th>
+            <th>
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            <tr class="@(i % 2 == 0 ? "cross" : "")">
+                <td>
+                    @Model.ElementAt(i).TemplateNO
+                </td>
+                <td>
+                    @Model.ElementAt(i).TemplateName
+                </td>
+                <td>
+                    @Model.ElementAt(i).CreateDate.ToString("yyyy-MM-dd HH:mm:ss")
+                </td>
+                <td>
+                    <a href="/shangpin/product/EditeTemplate/@Model.ElementAt(i).TemplateID" class="button">编辑</a>
+                    <a href="/shangpin/product/deleteTemplate/@Model.ElementAt(i).TemplateID" class="button" onclick="return confirm('是否删除');">删除</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="spPage">
+    <!--分页-->
+    @if (totalCount > 0)
+    {
+        @Html.Raw(Html.PagerX("page", pageIndex, pageSize, totalCount))
+    }
+</div>

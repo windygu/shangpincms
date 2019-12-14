@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Shangpin.Ocs.Entity.Extenstion.ShangPin.CategoryExtendForAlias>
+@using Shangpin.Ocs.Web.Infrastructure
+@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/plug/comm.js" charset="utf-8" type="text/javascript"></script>
+    <script src="/Areas/Shangpin/Scripts/Alias/Alias.js" charset="utf-8" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            document.onkeydown = function (e) {
+                var ev = document.all ? window.event : e;
+                if (ev.keyCode == 13) {
+                    categoryserach();
+                }
+
+            }
+        });
+    </script>
+}
+<h1>
+    OCS > 尚品 > 别名管理 ><a href="/Shangpin/seo/CategoryAlias.html?categoryno=@ViewBag.CategoryNo">@ViewBag.Title</a></h1>
+
+<table style=" margin-top:10px;">
+     <tr>
+     
+     <td>分类名称：</td><td>
+     <input id="CategoryNo" value="@ViewBag.CategoryNo" type="hidden" />
+     <input id="categoryName" value="@ViewBag.CategoryName" maxlength="30" />&nbsp;&nbsp;</td>
+     <td>别名：</td><td><input id="aliasName" value="@ViewBag.AliasName" maxlength="30" />&nbsp;&nbsp;
+     <input type="button" value="搜索" onclick="categoryserach();" onkeypress = "return KeyDown()" /></td>
+     </tr>
+    </table>
+<table class="mx-table">
+    <thead>
+        <tr>
+         <th width="10%">
+                分类编号
+            </th>
+            <th width="7%">
+                分类名称
+            </th>
+            <th width="12%">
+                分类层级
+            </th>
+            <th  width="4%">
+              显示
+            </th>
+            <th width="6%">
+                分类别名
+            </th>
+        </tr>
+    </thead>
+    @foreach (var m in Model)
+    {
+        <tr>
+            <td>@m.CategoryNo
+            </td>
+            <td>@m.CategoryName
+            </td>
+            <td>@m.CName
+            </td>
+            <td>
+            @(m.VisibleState==1?"是":"否")
+            </td>
+            <td>
+                @Html.TextBox(m.CategoryNo, m.ObjectAlias)
+                <input type="button" value="保存" onclick="AliasSave('@m.CategoryNo',1,@ViewBag.Gender)" />
+            </td>
+        </tr>
+    }
+    <tbody>
+    </tbody>
+</table>
+<div class="spPage" style="text-align: center; margin-top: 10px;">@Html.Raw(Html.PagerX("page", (int)ViewBag.PageIndex, (int)ViewBag.PageSize, (int)ViewBag.TotalCount))</div>

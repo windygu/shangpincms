@@ -1,0 +1,69 @@
+﻿@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Ocs.Entity.Extenstion.Outlet;
+@{
+    int totalCount = (int)ViewBag.Count;
+    int currentPage = (int)ViewBag.CurPage;
+    int pageSize = (int)ViewBag.PageSize;
+
+    ViewBag.Title = "预告页列表|尚品OCS管理系统";
+    IList<Shangpin.Entity.Wfs.SWfsAolaiAdvancePagePic> list = (IList<Shangpin.Entity.Wfs.SWfsAolaiAdvancePagePic>)ViewBag.List;
+}
+
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+}
+<h1>
+    <a href="/outlet/notice/index">预告页列表</a> > @ViewBag.PageName  >图片管理</h1>
+
+<input type="hidden" id="CurSordName" name="CurSordName" />
+<table class="mx-table">
+    <thead>
+        <tr>
+            <th width="20%">
+                图片名称
+            </th>
+            <th width="10%">
+                创建时间
+            </th>
+             <th width="10%">
+                图片顺序
+            </th>
+            <th width="40%">
+                图片链接地址
+            </th>
+            <th width="20%">
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var flag = 0;
+            foreach (var item in list)
+            {
+                flag = flag + 1;
+                                 
+            <tr class="@(flag % 2 == 0 ? "cross" : "")">
+                <td>@item.PictureName
+                </td>
+                <td>@item.DateCreate
+                </td>
+                <td>@item.Sort</td>
+                <td>
+                @item.PictureLink
+                </td>
+                <td>
+                    <a href="/outlet/notice/PicManage?act=edit&id=@item.SwfsAolaiNoticePageId&picId=@item.SWfsAolaiNoticePagPicId">编辑</a>
+                    <a onclick="return confirm('确定删除?')" href="/outlet/notice/PicManage?act=del&id=@item.SwfsAolaiNoticePageId&picId=@item.SWfsAolaiNoticePagPicId">删除</a> 
+                </td>
+            </tr>
+                                 
+            }
+        }
+    </tbody>
+</table>
+<div class="spPage">@Html.Raw(Html.PagerX("page", currentPage, pageSize, totalCount))</div>
+<div style="padding:5px;"><button onclick="window.location.href='/outlet/notice/index?islimitedOutlet=@Request.QueryString["islimitedOutlet"]'" type="button">返 回</button></div>
+<div class="clr" id="mx-rightcontent-fixbar">
+    <a id="mx-btn-add" href="/outlet/notice/PicManage?act=create&id=@ViewBag.SwfsAolaiNoticePageId"></a>
+</div>

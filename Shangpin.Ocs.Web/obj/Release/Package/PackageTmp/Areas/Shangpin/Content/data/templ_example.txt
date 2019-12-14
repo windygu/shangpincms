@@ -1,0 +1,25 @@
+<div class="sp_brfs_wrapper" templ_id="q2Urt9ZeE3" templ_type="sp_brfs" templ_extend="fG7d9810hU">
+    <div class="sp_brfs_inner" style="height:1150px">
+        <span templ_label="1" style="width:475px; height:140px; line-height:140px; top:0px; left:0px;">
+        $$content{1}
+        </span>
+        <span templ_label="2" style="width:475px; height:280px; line-height:280px; top:0; right:0px">
+        $$content{2}
+        </span>
+        <span templ_label="3" style="width:475px; height:280px; line-height:280px; top:144px; left:0;">
+        $$content{3}
+        </span>
+        <span templ_label="4" style="width:475px; height:560px; line-height:560px; top:284px; right:0;">
+        $$content{4}
+        </span>
+        <span templ_label="5" style="width:475px; height:140px; line-height:140px; top:428px; left:0;">
+        $$content{5}
+        </span>
+        <span templ_label="6" style="width:475px; height:560px; line-height:560px; top:572px; left:0;">
+        $$content{6}
+        </span>
+        <span templ_label="7" style="width:475px; height:284px; line-height:284px; top:848px; right:0;">
+        $$content{7}
+        </span>
+    </div>
+</div>

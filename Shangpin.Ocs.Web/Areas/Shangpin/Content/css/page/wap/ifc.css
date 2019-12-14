@@ -1,0 +1,368 @@
+@charset "utf-8";
+/* CSS Document */
+
+.clr:after, .clearfix:after {
+	content: "";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden
+}
+
+.spTop{width:320px;height:235px;margin:0 auto;overflow:hidden;}
+
+.alContent{
+	margin-top:45px;
+}
+
+.leftFix{
+	position:fixed;
+	left:50%;
+	top:0px;
+	z-index:10;
+	margin-left:-160px;
+	width:320px;
+	height:45px;
+}
+.addFixed{
+	position:fixed;
+	left:50%;
+	top:0px;
+	z-index:10;
+	margin-left:-160px;
+}
+.leftFix p{
+	display:block;
+	font-size:0;
+	position:absolute;
+}
+.leftFix p a{
+	position:absolute;
+	top:8px;
+	width:80px;
+	height:30px;
+	line-height:30px;
+	overflow:hidden;
+	text-align:center;
+	color:#fff;
+}
+.leftFix p a.navLink{
+	left:10px;
+	background:url(/images/ifc/topNav_leftbtn.png) no-repeat 0 0;
+	background-size:100%;
+}
+.leftFix p a.navLink:hover, .leftFix p a.navLink:active{
+	background:url(/images/ifc/topNav_leftHbtn.png) no-repeat 0 0;
+	background-size:100%;
+}
+.leftFix p a.backLink{
+	right:10px;
+	background:url(/images/ifc/topNav_rightbtn.png) no-repeat 0 0;
+	background-size:100%;
+}
+.leftFix p a.backLink:hover, .leftFix p a.backLink:active{
+	background:url(/images/ifc/topNav_rightHbtn.png) no-repeat 0 0;
+	background-size:100%;
+}
+
+.leftFix p a.subNav{
+	left:10px;
+	background:url(/images/ifc/subTopNav_leftbtn.png) no-repeat 0 0;
+	background-size:100%;
+}
+.leftFix p a.subNav:hover, .leftFix p a.subNav:active{
+	background:url(/images/ifc/subTopNav_leftHbtn.png) no-repeat 0 0;
+	background-size:100%;
+}
+.leftFix p a.subBack{
+	right:10px;
+	background:url(/images/ifc/subTopNav_rightbtn.png) no-repeat 0 0;
+	background-size:100%;
+}
+.leftFix p a.subBack:hover, .leftFix p a.subBack:active{
+	background:url(/images/ifc/subTopNav_rightHbtn.png) no-repeat 0 0;
+	background-size:100%;
+}
+
+.nvaLayer{
+	width:100%;
+	height:130%;
+	position:absolute;
+	left:0;
+	top:0;
+	background-color:rgba(0,0,0,.8);
+	clear:both;
+	z-index:9999;
+	overflow:hidden;
+	display:none;
+}
+.nvaLayer ul{
+	padding:15px 0 0 23px;
+	clear:both;
+	width:290px;
+}
+.nvaLayer ul li{
+	width:105px;
+	height:100px;
+	overflow:hidden;
+	margin:0 5px 5px 0;
+	float:left;
+}
+.nvaLayer ul li a{
+	display:block;
+	height:100px;
+	width:105px;
+	overflow:hidden;
+	background-repeat:no-repeat;
+	background-size:100%;
+	font-weight:0;
+	background-position:0 0;
+}
+.nvaLayer ul li a.brand{
+	background-image:url(/images/ifc/1.png);
+}
+.nvaLayer ul li a.brand.curr{
+	background-image:url(/images/ifc/hover1.png);
+}
+.nvaLayer ul li a.man{
+	background-image:url(/images/ifc/2.png);
+}
+.nvaLayer ul li a.man.curr{
+	background-image:url(/images/ifc/hover2.png);
+}
+.nvaLayer ul li a.women{
+	background-image:url(/images/ifc/3.png);
+}
+.nvaLayer ul li a.women.curr{
+	background-image:url(/images/ifc/hover3.png);
+}
+.nvaLayer ul li a.bags{
+	background-image:url(/images/ifc/4.png);
+}
+.nvaLayer ul li a.bags.curr{
+	background-image:url(/images/ifc/hover4.png);
+}
+.nvaLayer ul li a.shoes{
+	background-image:url(/images/ifc/5.png);
+}
+.nvaLayer ul li a.shoes.curr{
+	background-image:url(/images/ifc/hover5.png);
+}
+.nvaLayer ul li a.watches{
+	background-image:url(/images/ifc/6.png);
+}
+.nvaLayer ul li a.watches.curr{
+	background-image:url(/images/ifc/hover6.png);
+}
+.nvaLayer ul li a.beauty{
+	background-image:url(/images/ifc/7.png);
+}
+.nvaLayer ul li a.beauty.curr{
+	background-image:url(/images/ifc/hover7.png);
+}
+.nvaLayer ul li a.star{
+	background-image:url(/images/ifc/8.png);
+}
+.nvaLayer ul li a.star.curr{
+	background-image:url(/images/ifc/hover8.png);
+}
+
+/* 分会场链接 */
+.nvaLayer ul li a.brandPage{
+	background-image:url(/images/ifc/page1.png);
+}
+.nvaLayer ul li a.brandPage.curr{
+	background-image:url(/images/ifc/pageHover1.png);
+}
+.nvaLayer ul li a.manPage{
+	background-image:url(/images/ifc/page2.png);
+}
+.nvaLayer ul li a.manPage.curr{
+	background-image:url(/images/ifc/pageHover2.png);
+}
+.nvaLayer ul li a.womenPage{
+	background-image:url(/images/ifc/page3.png);
+}
+.nvaLayer ul li a.womenPage.curr{
+	background-image:url(/images/ifc/pageHover3.png);
+}
+.nvaLayer ul li a.bagsPage{
+	background-image:url(/images/ifc/page4.png);
+}
+.nvaLayer ul li a.bagsPage.curr{
+	background-image:url(/images/ifc/pageHover4.png);
+}
+.nvaLayer ul li a.shoesPage{
+	background-image:url(/images/ifc/page5.png);
+}
+.nvaLayer ul li a.shoesPage.curr{
+	background-image:url(/images/ifc/pageHover5.png);
+}
+.nvaLayer ul li a.watchesPage{
+	background-image:url(/images/ifc/page6.png);
+}
+.nvaLayer ul li a.watchesPage.curr{
+	background-image:url(/images/ifc/pageHover6.png);
+}
+.nvaLayer ul li a.beautyPage{
+	background-image:url(/images/ifc/page7.png);
+}
+.nvaLayer ul li a.beautyPage.curr{
+	background-image:url(/images/ifc/pageHover7.png);
+}
+.nvaLayer ul li a.starPage{
+	background-image:url(/images/ifc/page8.png);
+}
+.nvaLayer ul li a.starPage.curr{
+	background-image:url(/images/ifc/pageHover8.png);
+}
+
+.nvaLayer .share_link{
+	width:70px;
+	float:right;
+	margin-top:40px;
+}
+.nvaLayer .share_link a{
+	display:block;
+	width:35px;
+	height:48px;
+	margin:0 auto;
+	overflow:hidden;
+	margin-top:25px;
+}
+
+.ifcList{margin:0 auto; font-size:0; width:320px;}
+.ifcList li{width:145px;height:248px;vertical-align:top;margin:0 0 10px 10px;float:left;overflow:hidden; background-color:#ccc;}
+.ifcList li a{display:block;}
+.ifcList li img{width:145px; height:248px;}
+.ifcList li.txtBox{
+	width:143px;
+	height:246px;
+	border:1px solid #000;
+	background-color:#fff;
+}
+.ifcList li.txtBox img{
+	width:143px;
+	height:180px;
+}
+.ifcList li.txtBox p{
+	display:block;
+	padding:5px 5px 0;
+	border-top:1px solid #000;
+	font-size:14px;
+}
+.ifcList li.txtBox a em, .ifcList li.txtBox a b {
+	display: block;
+	text-align: center;
+	height: 18px;
+	line-height: 18px;
+	color: #000;
+	overflow: hidden;
+	margin: 0 auto;
+	font-family: "Microsoft yahei", "微软雅黑";
+	font-size:12px;
+	font-weight: normal;
+}
+.ifcList li.txtBox a em {
+	font-family:Arial;
+}
+.ifcList li.txtBox a span{display:block; height:18px; line-height:18px; text-align:center; color:#f00;}
+.ifcList li.txtBox a span i{font-weight:bold;}
+
+.topList{
+	margin:9px auto 0;
+	height:60px;
+	padding-bottom:11px;
+	background:url(/images/ifc/topline.png) repeat-x 0 bottom;
+}
+.topList li{
+	width:150px;
+	height:60px;
+	overflow:hidden;
+	margin:0 0 0 7px;
+}
+.topList li img{
+	width:150px;
+	height:60px;
+}
+
+.ifcList h2{
+	width:306px;
+	height:35px;
+	overflow:hidden;
+	margin:0 auto;
+}
+.ifcList li.vcode{width:150px;height:60px;margin:0 0 10px 7px;}
+.ifcList li.vcode img{width:150px;height:60px;}
+.ifcList li.hot{width:150px;height:130px;margin:0 0 10px 7px;}
+.ifcList li.hot img{width:150px;height:130px;}
+
+
+
+/*分会场*/
+.clr:after{content: "";display: block;height: 0;clear: both;visibility: hidden;}
+.clr{zoom: 1;}
+.ifcTop{width:320px;height:110px;margin:0 auto 10px;overflow:hidden;}
+
+.branchList li.txtBox{height:255px;}
+.branchList li.txtBox a span{display:block; height:18px; line-height:18px; text-align:center;}
+.branchList li.txtBox a span i{font-weight:bold;}
+
+.branchList li.txtBox img{height:192px;}
+.branchList li.txtBox a span.bagTxt{color:#3dac81;}
+.branchList li.txtBox a span.shoeTxt{color:#f95020;}
+.branchList li.txtBox a span.womenTxt{color:#ed4373;}
+.branchList li.txtBox a span.manTxt{color:#3167af;}
+.branchList li.txtBox a span.accTxt{color:#f29400;}
+.branchList li.txtBox a span.beautyTxt{color:#77ac00;}
+.branchList li.txtBox a span.styleTxt{color:#b42dce;}
+.branchList li.txtBox a span.saleTxt{color:#de001f;}
+
+.ifcTag{width:300px; margin:0 auto; padding:0 0 10px;}
+.ifcTag a{display:block; height:32px; line-height:32px; float:left;}
+.ifcTag a.none{widtdh:0;height:0;border:0 none;}
+.ifcTag a:last-child{margin-right:0;}
+
+.bagTag a{width:94px; border:1px solid #228e64; text-align:center; margin-right:6px; color:#333;}
+.bagTag a.curr{background-color:#3dac81; color:#fff;}
+
+.shoeTag a{width:94px; border:1px solid #ea613a; text-align:center; margin-right:6px; color:#333;}
+.shoeTag a.curr{background-color:#ff7d58; color:#fff;}
+
+.womenTag a{width:94px; border:1px solid #cc3656; text-align:center; margin-right:6px; color:#333;}
+.womenTag a.curr{background-color:#ed4373; color:#fff;}
+.womenTag a:nth-child(4){margin-right:0;}
+.womenTag a:nth-child(5){margin-top:5px;}
+.womenTag a:nth-child(6){margin-top:5px;}
+.womenTag a:nth-child(7){margin-top:5px;}
+
+.manTag a{width:94px; border:1px solid #0f4791; text-align:center; margin-right:6px; color:#333;}
+.manTag a.curr{background-color:#3167af; color:#fff;}
+.manTag a:nth-child(4){margin-right:0;}
+.manTag a:nth-child(5){margin-top:5px;}
+.manTag a:nth-child(6){margin-top:5px;}
+.manTag a:nth-child(7){margin-top:5px;}
+
+.accTag a{width:143px; border:1px solid #c6a414; text-align:center; margin-right:10px; color:#333;}
+.accTag a.curr{background-color:#e7b700; color:#fff;}
+.accTag a:nth-child(3){margin-right:0;}
+.accTag a:nth-child(4){margin-top:5px;}
+.accTag a:nth-child(5){margin-top:5px;}
+
+.beautyTag a{width:94px; border:1px solid #80971b; text-align:center; margin-right:6px; color:#333;}
+.beautyTag a.curr{background-color:#98b22d; color:#fff;}
+.beautyTag a:nth-child(4){margin-right:0;}
+.beautyTag a:nth-child(5){margin-top:5px;}
+.beautyTag a:nth-child(6){margin-top:5px;}
+
+.styleTag a{width:94px; border:1px solid #943aa7; text-align:center; margin-right:6px; color:#333;}
+.styleTag a.curr{background-color:#b845ce; color:#fff;}
+.styleTag a:nth-child(4){margin-right:0;}
+.styleTag a:nth-child(5){margin-top:5px;}
+.styleTag a:nth-child(6){margin-top:5px;}
+
+.saleTag a{width:143px; border:1px solid #b31228; text-align:center; margin-right:10px; color:#333;}
+.saleTag a.curr{background-color:#de2741; color:#fff;}
+.saleTag a:nth-child(3){margin-right:0;}
+.saleTag a:nth-child(4){margin-top:5px;}
+.saleTag a:nth-child(5){margin-top:5px;}

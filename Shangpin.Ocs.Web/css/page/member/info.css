@@ -1,0 +1,94 @@
+/*基本信息*/
+.member_content .member_tebcell{ padding:20px; color:#666;}
+#member_userphoto{ float:left; width:100px;}
+#member_userphoto p{ text-align:center; padding:10px 0;}
+#member_userphoto p em{ color:#333;}
+#member_userphoto a.weibo{ display:block; height:18px; line-height:18px; color:#fff; background:#d2be7f; text-align:center; margin-top:5px;}
+#member_user_content{ float:right; width:600px;}
+.member_user_top{ margin-bottom:12px; padding-bottom:12px;border-bottom:1px solid #e4e4e4;}
+.member_user_top dl{ width:100%; overflow:hidden; }
+.member_user_top dl dt{ float:left;line-height:22px;}
+.member_user_top dl dd{ float:left;line-height:22px; vertical-align:middle;}
+.member_user_top dl dd em { color:#333; font-weight:bold;}
+.member_user_top dl dd b{ font-weight:bold;}
+.member_user_top dl dd a.member_levelBtn{ display:inline-block; margin-right:8px;}
+.member_user_top dl dd a.member_levelBtn span{ display:block;}
+
+/*#member_user_content table{  width:100%;}
+#member_user_content table th,#member_user_content table td{ vertical-align:middle; padding:10px 0;}
+#member_user_content table th{ width:80px;}
+#member_user_content table th i{ color:#ea1616; font-size:16px; display:inline-block; vertical-align:middle; width:12px;}
+#member_user_content table td input.member_info_cntext{ padding:6px 10px;line-height: 16px;
+height: 16px;*line-height:18px; border:1px solid #e4e4e4; color:#666; width:200px;vertical-align:middle;}
+#member_user_content table td input.member_info_cntext:focus{ border-color:#aaa;}
+#member_user_content table td input.member_info_cntextaddress{ width:360px;}
+#member_user_content table td select{ vertical-align:middle; margin-right:5px;}
+#member_user_content table td label{ float:left; margin-right:12px;}
+#member_user_content table td label input{float:left; margin-right:5px;}*/
+
+
+/*我的尺码*/
+.member_userinfo_mysize{ width:100%;}
+.member_userinfo_mysize th{ font-weight:bold;padding:20px 0 10px; vertical-align:middle;}
+#mysize_msg{ font-weight:normal; line-height:29px; display:none;}
+.member_userinfo_mysize td{ padding:6px 0; vertical-align:middle;}
+.member_userinfo_mysize td input{ display:inline-block; *display:inline; *vertical-align:middle; width:30px; text-align:center; margin-right:5px; border:1px solid #fff; padding:3px 5px; background:#fff; height:14px; line-height:14px;}
+.member_userinfo_mysizeedit td input{ border:1px solid #ddd;}
+.member_userinfo_mysizeedit td input:focus{ border-color:#999;}
+.mysize_savebtn,.mysize_canlebtn{ display:none;}
+
+/*我的会员等级*/
+#member_info_grade p.member_info_username{ padding:10px 0; text-align:left;}
+#member_info_grade p.member_info_username em{ color:#333; }
+#member_info_grade .member_info_gradecn h3{ font-size:12px; color:#666; font-weight:bold; margin:15px auto 5px;}
+#member_info_grade .member_info_gradecn p{ line-height:24px;}
+
+/*等级地图*/
+.prize_link, .close_prize, .ladder_ico, .arrow_down, .arrow_up{background: url(/images/page/member/info/prize_ico.png) no-repeat;
+}
+#level_map{ padding:18px 0 20px; border-bottom:1px solid #e4e4e4;}
+#ladder_map{ width:435px; margin:60px auto 0; height:110px; position:relative; border-bottom:1px solid  #dbdbdb}
+#ladder_map div{ position:absolute; width:29px; bottom:0; border-left:1px solid #dbdbdb;}
+.ladder_ico{ display:block; width:29px; height:29px; position:absolute; top:-29px; left:-15px;}
+.ladder_one{ height:25px;}
+.ladder_two{ height:50px; left:144px;}
+.ladder_three{ height:75px; left:288px;}
+.ladder_four{ height:100px; left:434px;}
+/*灰色图标*/
+.level_one{ background-position:-107px 0}
+.level_two{ background-position: -107px -30px}
+.level_three{ background-position:-107px -60px;}
+.level_four{ background-position:-107px -90px}
+/*金色图标*/
+.level_one_g{ background-position:-77px 0;}
+.level_two_g{ background-position:-77px -30px;}
+.level_three_g{ background-position:-77px -60px;}
+.level_four_g{ background-position:-77px -90px;}
+.loadder_tips{ width:100px; height:30px; background:#707070; border:1px solid #333333; line-height:30px; text-align:center; color:#ffffff; position:absolute;}
+.arrow_down{ display:block; width:7px; height:5px; position:absolute; background-position:-101px -119px; left:47px; top:30px;}
+/*标识依次在四个图标的上面*/
+.bp_one{left:-50px; top:5px;}
+.bp_two{ left:94px; top:-20px;}
+.bp_three{ left:238px; top:-45px;}
+.bp_four{ left:384px; top:-70px;}
+.ladder_msg{ width:553px; margin:20px auto 0}
+.ladder_list{ width:580px;}
+.ladder_list_item{ float:left; width:118px; margin:0 27px 0 0; text-align:center}
+.ladder_list li dl{ padding:0 15px; height:90px;}
+.ladder_list li dl dt{ margin-bottom:10px;}
+.ladder_list li dl dd{ margin-bottom:6px; color:#999999}
+.tips_content{ background:#707070; border:1px solid #333333; padding:15px 12px; width:92px; position:relative; color:#ffffff; text-align:left;}
+.tips_content li{line-height:22px;}
+.arrow_up{ display:block; width:7px; height:5px; background-position:-91px -119px; position:absolute; left:54px; top:-5px;}
+
+
+/*链接颜色*/
+.member_info_linkyellow:link,.member_info_linkyellow:visited{ color:#ac8c48;}
+a.member_info_giftcard{ font-weight:bold;}
+
+/*按钮样式*/
+.member_info_subbtn,.member_info_canclebtn,.mysize_editbtn,.mysize_savebtn,.mysize_canlebtn{ float:left; padding:6px 20px; _padding:6px 10px; background:#f2f1f1; border:1px solid #dadada; margin-right:10px; border-radius:3px; color:#333; cursor:pointer;}
+.member_info_subbtn:active,.member_info_subbtn:hover,.member_info_canclebtn:active,.member_info_canclebtn:hover,.mysize_editbtn:active,.mysize_editbtn:hover,.mysize_savebtn:active,.mysize_savebtn:hover,.mysize_canlebtn:active,.mysize_canlebtn:hover{ background:#eee; border-color:#ccc;}
+.member_info_subbtn:active,.member_info_canclebtn:active,.mysize_editbtn:active,.mysize_savebtn:active,.mysize_canlebtn:active{ background:#efefef; border-color:#ddd;}
+
+

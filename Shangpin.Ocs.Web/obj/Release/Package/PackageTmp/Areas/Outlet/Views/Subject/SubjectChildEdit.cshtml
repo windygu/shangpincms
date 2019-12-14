@@ -1,0 +1,149 @@
+﻿@using Shangpin.Ocs.Service.Outlet;
+@model Shangpin.Entity.Wfs.SWfsSubjectCategory
+@{
+    Layout = null;
+    SWfsSubjectService service = new SWfsSubjectService();
+    string loginCookieName = Shangpin.Framework.Configuration.AppSettingManager.AppSettings["LoginCookieName"].ToString();
+    string AUTHID = Request.Cookies[loginCookieName].Value;
+}
+
+@section HeadScript{
+    <script src="/Areas/Outlet/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+
+}
+<script src="/Areas/Outlet/Scripts/kindeditor-4.1.10/kindeditor.js"></script>
+<script src="/Areas/Outlet/Scripts/kindeditor-4.1.10/CommKindeditor.js"></script>
+<div class="mx-rightcontent-msgbox" id="mx-rightcontent-addbox">
+    <input type="hidden" id="authid" value="@(AUTHID)" />
+    <form id="formEdit" method="post" action="/outlet/subject/AjaxSubjectChildEdit" enctype="multipart/form-data">
+        <dl>
+            <dt style="color: Red">所属活动: </dt>
+            <dd>
+                <span>@service.GetSubjectInfo(Model.SubjectNo).SubjectName</span>
+            </dd>
+        </dl>
+        <dl>
+            <dt style="color: red">分组名称: </dt>
+            <dd>
+                <input id="CategoryNo" type="hidden" name="CategoryNo" value="@Model.CategoryNo" />
+                <input id="CategoryName" type="text" name="CategoryName" maxlength="12" value="@Model.CategoryName" />
+            </dd>
+        </dl>
+        <dl>
+            <dt style="color: red">商品列表显示方式: </dt>
+            <dd>
+                <select id="BuyType" name="BuyType">
+                    <option value="3" @(Model.BuyType == 3 ? "selected='selected'" : "")>3列</option>
+                    <option value="4" @(Model.BuyType == 4 ? "selected='selected'" : "")>4列</option>
+                </select>
+            </dd>
+        </dl>
+        <dl>
+            <dt style="color: red">活动显示方式：</dt>
+            <dd>
+                <input type="radio" value="1" name="TopPic" id="TopPicImg" @(Model.ShowType == 1 ? "checked=checked" : "") onclick="onClickSubmitTypeCategory(1)" />
+                <label for="TopPicImg">
+                    广告图
+                </label>
+                <input type="radio" value="2" name="TopPic" id="TopPicImg1" @(Model.ShowType == 2 ? "checked=checked" : "") onclick="onClickSubmitTypeCategory(2)" />
+                <label for="TopPicImg">
+                    代码
+                </label>
+            </dd>
+        </dl>
+        <dl class="hotblockShow" @(Model.ShowType == 1 ? "style='display:block'" : "style='display:none'")>
+            <dt style="color: Red">广告图: </dt>
+            <dd>
+                <input id="AdPicfile" type="file" name="AdPicfile" />尺寸:宽度940，高度不限
+                <br />
+                <img alt="" src="/ReadPic/GetPic.ashx?width=100&height=60&pictureFileNo=@Model.AdPic&type=2" />
+                <input id="hidAdPicUp" type="hidden" name="hidAdPicUp" value="@Model.AdPic" />
+
+            </dd>
+        </dl>
+        <dl class="hotblockCategory" @(Model.ShowType == 2 ? "style='display:block'" : "style='display:none'")>
+            <dt style="color: red">代码：</dt>
+            <dd>
+                请输入网页html代码：
+                <br />
+                <textarea id="HeadWebHtml" name="txtWebHtmlText" rows="5" cols="80">@HttpUtility.HtmlDecode(Model.WebHtmlText)</textarea>                <br />
+                请输入移动端html代码：
+                <br />
+                <textarea id="HeadMobileHtml" name="txtMobileHtmlText" rows="5" cols="80">@HttpUtility.HtmlDecode(Model.MobileHtmlText)</textarea>
+            </dd>
+        </dl>
+        <dl>
+            <dt>&nbsp;</dt>
+            <dd>
+                <button type="button" id="btnSave" name="" value="" class="secondary" onclick="return checkSubmit();">
+                    确 定
+                </button>
+                <button type="button" id="btnCancle" name="" value="" onclick="Cancle();">
+                    取 消
+                </button>
+            </dd>
+        </dl>
+    </form>
+</div>
+<script type="text/javascript">
+    //初始化加载时的显示判断
+    $(document).ready(function () {
+        //获取当前选中的radio的值
+        var val = $('input[name="TopPic"]:checked').val();
+        if (val == 1) {
+            $(".hotblockShow").show();
+            $(".hotblockCategory").hide();
+        }
+        else {
+            $(".hotblockShow").hide();
+            $(".hotblockCategory").show();
+        }
+    });
+    function onClickSubmitTypeCategory(type) {
+        if (type == 1) {
+            $(".hotblockCategory").hide();
+            $(".hotblockShow").show();
+        }
+        else {
+            $(".hotblockCategory").show();
+            $(".hotblockShow").hide();
+            // alert("sss" + $(this).val());
+        }
+    }
+
+    function Cancle() {
+        $("#mx-rightcontent-fixbarbg").css({ "height": 79, "overflow-y": "hidden" });
+        $("#mx-rightcontent-fixbar").css({ "bottom": 0 });
+    }
+
+    function checkSubmit() {
+
+        $("#HeadWebHtml").val(escape(editor1.html()));
+        $("#HeadMobileHtml").val(escape(editor2.html()));
+        if ($("#CategoryName").val() == "") {
+            alert("请输入活动子类名称！");
+            return false;
+        }
+        $('#formEdit').ajaxSubmit({
+            success: function (html, status) {
+                if (typeof (html) == "string") {
+                    var rs = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+                    data = eval("(" + rs + ")");
+                }
+                else {
+                    data = html;
+                }
+                if (data.result == "1") {
+                    alert(data.message);
+                    window.location.href = gettimestampurl(window.location.href);
+                    //window.location.reload();
+                    return true;
+                } else {
+                    alert(data.message);
+                    return false;
+                }
+            }
+        });
+    }
+
+</script>

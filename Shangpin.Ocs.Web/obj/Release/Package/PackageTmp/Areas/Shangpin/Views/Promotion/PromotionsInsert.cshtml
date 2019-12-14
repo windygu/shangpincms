@@ -1,0 +1,196 @@
+﻿@using Shangpin.Entity.Wfs
+@model Shangpin.Entity.Wfs.SWfsProductPromotionTip
+@{
+    ViewBag.Title = "促销提示编辑";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    if (Model.MemberSet == null)
+    {
+        Model.MemberSet = "";
+    }
+}
+<html>
+<script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script src="/Areas/Shangpin/Scripts/plug/comm.js" type="text/javascript"></script>
+<script type="text/javascript" src="/Areas/outlet/Scripts/page/index/popDiv.js"></script>
+<head>
+<script type="text/jscript">
+    $(function () {
+        var aa = $("#isAllproduct2").val();
+        var cc = $("#isAllproduct1").val();
+        if ($("#isAllproduct2").prop("checked")) {
+            $("#form1").show();
+        } else if ($("#isAllproduct1").prop("checked")) {
+            $("#form1").hide();
+        }
+    });
+</script>
+    <script type="text/javascript">
+        function quanbu() {
+            var set = document.getElementById("MemberSet0");
+            if (set.checked == true) {
+                $("#MemberSet1").attr("disabled", true);
+                $("#MemberSet2").attr("disabled", true);
+                $("#MemberSet3").attr("disabled", true);
+                $("#MemberSet4").attr("disabled", true);
+            } else {
+                $("#MemberSet1").attr("disabled", false);
+                $("#MemberSet2").attr("disabled", false);
+                $("#MemberSet3").attr("disabled", false);
+                $("#MemberSet4").attr("disabled", false);
+
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        function isall() {
+            //            var is = document.getElementById("isAllproduct2").value;
+            //            if (is == "0") {
+            //                document.getElementById("ProductNo").display = true;
+            //            } else {
+            //            document.getElementById("ProductNo").display = false;
+            //            }
+            if ($("#isAllproduct1").prop("checked")) {
+                $("#form1").hide();
+            } else {
+                $("#form1").show();
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        (function (window, $, undefined) {
+            $(function () {
+                $(".mx-table input[name='IsAllProduct']").change(function () {
+                    if ($("#isAllproduct1").prop("checked")) {
+                        $("#form1").hide();
+                    } else if ($("#isAllproduct2").prop("checked")) {
+                        $("#form1").show();
+                    }
+                });
+            });
+        })(window, jQuery);
+    </script>
+</head>
+<h1>
+    CMS > 尚品 > <a href="#">促销提示管理</a> > 促销提示 > 编辑</h1>
+@using (Html.BeginForm("PromotionsInsert", "Promotion", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true);
+    <table class="mx-table">
+        <thead>
+            <tr style="height: 50px">
+                <td width="13%" style="font-size: 15px;">
+                    促销提示名称:
+                </td>
+                <td>
+                    <input type="text" id="PromotionInfoName" name="PromotionInfoName" maxlength="20" value="@(Model.PromotionInfoName)" />
+                </td>
+            </tr>
+            <tr style="height: 50px;">
+                <td width="13%" style="font-size: 15px;">
+                    有效期:
+                </td>
+                <td>
+                    <input id="startdate" name="StartDate" class="Wdate" value="@Model.StartDate.ToString("yyyy-MM-dd HH:mm:ss")" type="text" onclick="WdatePicker()" readonly="readonly" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'enddate\')||\'2020-10-01\'}'})" style=" width:150px;"/>至
+                    <input id="enddate" name="EndDate" class="Wdate" value="@Model.EndDate.ToString("yyyy-MM-dd HH:mm:ss")" type="text" onclick="WdatePicker()" readonly="readonly" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'startdate\')}',maxDate:'2020-10-01'})" style=" width:150px;"/>
+                </td>
+            </tr>
+            <tr style="height: 50px;">
+                <td width="13%" style="font-size: 15px;">
+                    促销提示语:
+                </td>
+                <td>
+                    @*<input type="text" id="@(Model.TipContent)" value="@(Model.TipContent)" name="TipContent"/>*@
+                    @Html.TextAreaFor(model => model.TipContent, new { @cols = "40", rows = "5" })
+                    @Html.ValidationMessageFor(model => model.TipContent)
+                </td>
+            </tr>
+            <tr style="height: 50px;">
+                <td width="13%" style="font-size: 15px;">
+                    会员设置:
+                </td>
+                <td>
+                    <input type="checkbox" id="MemberSet0" name="MemberSet" onclick="quanbu()" value="0" @(Model.MemberSet == "0" || string.IsNullOrEmpty(Model.MemberSet) ? "checked" : "") />全部会员
+                    <input type="checkbox" id="MemberSet1" name="MemberSet" value="0001" @(Model.MemberSet.IndexOf("0001") >= 0 ? "checked" : "") />正式会员
+                    <input type="checkbox" id="MemberSet2" name="MemberSet" value="0002" @(Model.MemberSet.IndexOf("0002") >= 0 ? "checked" : "") />黄金会员
+                    <input type="checkbox" id="MemberSet3" name="MemberSet" value="0003" @(Model.MemberSet.IndexOf("0003") >= 0 ? "checked" : "") />白金会员
+                    <input type="checkbox" id="MemberSet4" name="MemberSet" value="0004" @(Model.MemberSet.IndexOf("0004") >= 0 ? "checked" : "") />钻石会员
+                </td>
+            </tr>
+            <tr style="height: 50px;">
+                <td width="14%" style="font-size: 15px;">
+                    商品设置:
+                </td>
+                <td>
+                    <input type="radio" name="IsAllProduct" id="isAllproduct1" checked="checked" value="1" @(Model.IsAllProduct == true ? "checked" : null) />全部商品
+                    <input type="radio" name="IsAllProduct" id="isAllproduct2" value="0" @(Model.IsAllProduct == false ? "checked" : null) onclick="isall()" style=" margin:5px;" />按商品编号
+                    @{
+                                 IEnumerable<SWfsProductPromotionTipRef> list = new Shangpin.Ocs.Service.Shangpin.SWfsBrandService().PromotionTipRefID(Model.PromotionInfoId);
+                                 string lis = "";
+                                 
+                                 for (int i = 0; i < list.Count(); i++)
+                                 {
+                                     lis += list.ElementAt(i).ProductNo+',';
+                                 }
+                                 if (lis.Length > 0)
+                                 { 
+                                    <div id="form1" style="display: none;">
+                            <textarea cols="40" rows="5" name="ProductNo">@lis.Substring(0, lis.Length - 1)</textarea>商品编号分割请用"英文的逗号"
+                        </div>
+                                 }
+                                 else
+                                 { 
+                                    <div id="form1" style="display: none;">
+                            <textarea cols="40" rows="5" name="ProductNo">@lis</textarea>商品编号分割请用"英文的逗号"
+                        </div>
+                                 }
+                                 
+                    }
+                </td>
+            </tr>
+            <tr style="height: 50px;">
+                <td width="8%" style="font-size: 15px;">
+                    操作:
+                </td>
+                <td>
+                    @Html.HiddenFor(model => model.PromotionInfoId)
+                    <input type="submit" value="保存" onclick="return bao()" style="width: 60px; height: 30px;" />
+                    <button type="button" onclick="window.location.href='/shangpin/Promotion/PromotionsList.html'"
+                        style="width: 60px; height: 30px;">
+                        取消</button>
+                </td>
+            </tr>
+        </thead>
+    </table>
+    
+    
+}
+@ViewData["tip"]
+</html>
+<script type="text/javascript">
+    function bao() {
+        //判断是否选择了开始时间
+        if ($("#startdate").val() == "") {
+            alert("请选择开始时间！");
+            return false;
+        }
+        //判断是否选择了停止时间
+        if ($("#enddate").val() == "") {
+            alert("请选择停止时间！");
+            return false;
+        }
+        var info = document.getElementById("PromotionInfoName").value;
+        if (info == "") {
+            alert("促销名称不能为空!");
+            return false;
+        }
+        if (info.length > 20) {
+            alert("促销名称不能大于20字符!");
+            return false;
+        }
+        var tip = document.getElementById("TipContent").value;
+        if (tip.length > 40) {
+            alert("提示语不能超过40字符!");
+            return false;
+        }
+    }
+</script>

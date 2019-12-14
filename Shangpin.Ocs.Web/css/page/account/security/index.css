@@ -1,0 +1,119 @@
+/* ============== Account security ============== */
+
+
+/*密码强度提示*/
+.testresult {
+	clear:both;
+	margin-left:130px;
+	background:#BFBFBF;
+	width:242px;
+	color:#fff;
+}
+.testresult div {
+	overflow:hidden;
+	background:#ccc;
+	height:17px;
+	line-height:17px;
+	width:0;
+	text-align:center;
+}
+.shortPass div {
+	width:60px;
+	background:#e5232a;
+}
+em.shortPass{
+	color:#e5232a;
+	font-weight:bold;
+}
+.badPass div{
+	width:120px;
+	background:#f00;
+}
+em.badPass{
+	color:#f00;
+	font-weight:bold;
+}
+.goodPass div {
+	width:180px;
+	background:orange;
+}
+em.goodPass{
+	color:orange;
+	font-weight:bold;
+}
+.strongPass div {
+	width:242px;
+	background:#080;
+}
+em.strongPass{
+	color:#080;
+	font-weight:bold;
+}
+
+.starPass i{
+	display:inline-block;
+	width:22px;
+	height:22px;
+	_height:24px;
+	overflow:hidden;
+	vertical-align:middle;
+	margin-right:8px;
+	background:url(/images/page/account/account_icon.gif) no-repeat 0 -235px;
+}
+.starPass i.curr{
+	background:url(/images/page/account/account_icon.gif) no-repeat 0 -205px;
+}
+.starPass em{
+	margin-left:10px;
+	_line-height:35px;
+	zoom:1;
+}
+
+
+/*安全中心*/
+.securityBlock{
+	padding:0 35px 30px;
+	background:#fff;
+}
+.securityBlock dl{
+	width:100%;
+	float:left;
+	border-bottom:3px solid #fafafa;
+	padding:10px 0;
+}
+.securityBlock dt, .securityBlock dd{
+	line-height:35px;
+	float:left;
+	color:#666;
+}
+.securityBlock dt{
+	width:115px;
+	color:#333;
+	text-align:left;
+}
+.securityBlock dt em{
+	font-weight:bold;
+	padding-left:25px;
+	font-size:14px;
+	background:url(/images/page/account/account_icon.gif) no-repeat -180px -44px;
+}
+.securityBlock dt em.error{
+	background:url(/images/page/account/account_icon.gif) no-repeat -180px -204px;
+}
+.securityBlock dd{
+	width:54%;
+}
+.securityBlock dd .testresult{
+	margin:0;
+}
+.securityBlock dd p{
+	padding:7px 0;
+	line-height:160%;
+}
+.securityBlock dd .payBox{
+	line-height:35px;
+}
+.securityBlock dd.hander{
+	width:25%;
+	text-align:center;
+}

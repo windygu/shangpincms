@@ -1,0 +1,29 @@
+#mx-index-icons {
+    width: 820px;
+    overflow: hidden;
+    padding: 30px 0 0 20px;
+}
+
+#mx-index-icons a {
+    display: block;
+    float: left;
+    width: 100px;
+    overflow: hidden;
+    text-align: center;
+}
+
+#mx-index-icons span {
+    display: block;
+    text-align: center;
+}
+
+#mx-index-icons span img {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px #666;
+}
+
+#mx-index-icons i {
+    display: block;
+    padding: 6px 0 0;
+}

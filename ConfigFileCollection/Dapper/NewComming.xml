@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--查询产品列表-->
+<statements>
+<statement id="ComBeziWfs_SWfsProduct_NewSelectSWfsProductList">
+  WITH   temp
+  AS ( SELECT p.ProductNo,
+  p.ProductModel AS GoodsNo,
+  ProductName,
+  pe.ProductShowPic AS ProductPicFile,
+  p.BrandNo,
+  b.BrandCnName,
+  b.BrandEnName,
+  ROW_NUMBER() OVER ( ORDER BY p.ProductNO ) AS row
+  FROM  SpProduct AS p ( NOLOCK )
+  INNER JOIN SpfProductExtend AS pe ( NOLOCK ) ON pe.ProductNo = p.ProductNo
+  INNER JOIN (SELECT ProductNo FROM dbo.SpfSkuExtend skue ( NOLOCK ) WHERE skue.PcSaleState=2  GROUP BY ProductNo) AS t ON t.ProductNo=p.ProductNo
+  LEFT JOIN SpBrand AS b ( NOLOCK ) ON p.BrandNo = b.BrandNo
+  WHERE    1=1 and pe.ProductShowPic &lt;> '' AND pe.TypeFlag = 1
+  #if($Keyword!='')
+  AND (p.ProductName like '%'+@KeyWord+ '%' OR p.ProductNo =@KeyWord OR  p.ProductModel =@KeyWord)
+  #end
+  #if($CategoryNo !='')
+  and p.CategoryNo like '%' + @CategoryNo + '%'
+  #end
+  #if($Gender !='')
+  and p.ProductType=@Gender
+  #end
+  #if($BrandNO !='')
+  and  b.BrandNo=@BrandNO
+  #end
+  #if($StartDateShelf!='')
+  and b.PcShelfDate &gt; @StartDateShelf
+  #end
+  #if($EndDateShelf!='')
+  and b.PcShelfDate &lt; @EndDateShelf
+  #end
+  )
+  SELECT  *
+  FROM    temp
+  where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+</statement>
+
+
+<statement id="ComBeziWfs_SWfsProduct_NewSelectSWfsProductCount">
+  select count(0)
+  FROM  SpProduct AS p ( NOLOCK )
+  INNER JOIN SpfProductExtend AS pe ( NOLOCK ) ON pe.ProductNo = p.ProductNo
+  INNER JOIN (SELECT ProductNo FROM dbo.SpfSkuExtend skue ( NOLOCK ) WHERE skue.PcSaleState=2  GROUP BY ProductNo) AS t ON t.ProductNo=p.ProductNo
+  LEFT JOIN SpBrand AS b ( NOLOCK ) ON p.BrandNo = b.BrandNo
+  WHERE    1=1 and pe.ProductShowPic &lt;> '' AND pe.TypeFlag = 1
+  #if($Keyword!='')
+  AND (p.ProductName like '%'+@KeyWord+ '%' OR p.ProductNo =@KeyWord OR  p.ProductModel =@KeyWord)
+  #end
+  #if($CategoryNo !='')
+  and p.CategoryNo like '%' + @CategoryNo + '%'
+  #end
+  #if($Gender !='')
+  and p.ProductType=@Gender
+  #end
+  #if($BrandNO !='')
+  and  b.BrandNo=@BrandNO
+  #end
+  #if($StartDateShelf!='')
+  and b.PcShelfDate &gt; @StartDateShelf
+  #end
+  #if($EndDateShelf!='')
+  and b.PcShelfDate &lt; @EndDateShelf
+  #end
+</statement>
+
+<statement id="ComBeziWfs_SWfsGlobalConfig_UpdateTitle">
+    update SWfsGlobalConfig set ConfigValue=@ConfigValue where FunctionNo='IndexNewArrival'
+  </statement>
+</statements>

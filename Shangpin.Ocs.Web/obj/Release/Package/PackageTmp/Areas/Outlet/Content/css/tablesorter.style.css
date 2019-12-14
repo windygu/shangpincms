@@ -1,0 +1,21 @@
+
+table.mx-table thead tr .header
+{
+    background-image: url(/Areas/Outlet/Images/ex/bg.gif);
+    background-repeat: no-repeat;
+    background-position: center right;
+    cursor: pointer;
+    width:100px;
+}
+table.mx-table thead tr .headerSortUp
+{
+    background-image: url(/Areas/Outlet/Images/ex/asc.gif);
+    background-position: right;
+    width:100px;
+}
+table.mx-table thead tr .headerSortDown
+{
+    background-image: url(/Areas/Outlet/Images/ex/desc.gif);
+    background-position: right;
+    width:100px;
+}

@@ -1,0 +1,243 @@
+﻿@model List<NewShelfListModel>
+@using Shangpin.Ocs.Web.Infrastructure
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin
+@{
+    ViewBag.Title = "最新上架管理";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    int page = Convert.ToInt32(ViewBag.page);
+    int pageSize = ViewBag.pageSize;
+    int totalCount = ViewBag.totalCount;
+}
+@section HeadStyle{
+    <link href="/Areas/Shangpin/Content/css/page/rightcontent/brandcontent.css" rel="stylesheet" type="text/css" charset="utf-8" />
+    <style type="text/css">
+        .mod_tag {
+            background: none repeat scroll 0 0 #fff;
+            border: 1px solid black;
+            border-radius: 5px;
+            line-height: 24px;
+            padding: 8px 10px;
+            position: absolute;
+            display: none;
+        }
+
+        .button_div a {
+            color: blue;
+            font-size: 14px;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+    </style>
+}
+@section HeadScript
+{
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/lib/jquery.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js"></script>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#Add_data").click(function () {
+            if ('@ViewBag.type' != null && '@ViewBag.type' != "") {
+                return alert('@ViewBag.type');
+            }
+            $("#CreateTime").val("");
+            $("#NewArrivalId").val("0");
+            $("#span_title").html("新增上线");
+            var x = $(this)[0].offsetLeft;
+            var y = $(this)[0].offsetTop;
+            var h = $(this)[0].offsetHeight;
+            $("#Add_div").css({ "top": y + h, "left": x - 250 });//设置DIV坐标
+            $("#Add_div").show("slow");
+        });
+    });
+
+    //点击编辑按钮弹出的DIV
+    function Editor(obj, NewArrivalId) {
+        $("#NewArrivalId").val(NewArrivalId);
+        $("#span_title").html("修改上线");
+        var x = $(obj)[0].offsetLeft;
+        var y = $(obj)[0].offsetTop;
+        var h = $(obj)[0].offsetHeight;
+        $("#CreateTime").val($(obj).parent().prev().html());
+        $("#Add_div").css({ "top": y + h, "left": x - 250 });//设置DIV坐标
+        $("#Add_div").show("slow");
+    }
+    //弹出的DIV的确定事件
+    function OperationNewShelf() {
+        var NewArrivalId = $("#NewArrivalId").val();
+        var BrandNo = $("#BrandNo").val();
+        var NewShelfDate = $("#CreateTime").val();
+        $.post("OperationNewShelf", { NewArrivalId: NewArrivalId, BrandNo: BrandNo, NewShelfDate: NewShelfDate }, function (data) {
+            if (data.message == "操作成功") {
+                alert(data.message);
+                location.href = window.location.href;
+            } else {
+                alert(data.message);
+            }
+        }, "json");
+    }
+
+    //删除按钮的操作
+    function DeleteProductList(NewArrivalId) {
+        var Isdelete = confirm("是否确定要删除");
+        if (Isdelete) {
+            $.post("DeleteProductList", { NewArrivalId: NewArrivalId }, function (data) {
+                if (data.message == "删除成功") {
+                    alert(data.message);
+                    window.location.href = window.location.href;
+                } else {
+                    alert(data.message);
+                }
+            }, "json");
+        }
+    }
+</script>
+<h1>OCS > 尚品 > <a href="/Shangpin/Flagship/Index?brandNo=@Request.QueryString["brandNo"]">精品旗舰店</a> > 最新上架管理</h1>
+<form method="get" action="/Shangpin/Boutique/NewShelfList">
+    <table class="mx-table">
+        <tbody>
+            <tr>
+                <td style="text-align:left">
+                    <span>上架时间：</span>
+                    <input type="hidden" value="@ViewBag.brandNo" id="BrandNo" name="BrandNo" />
+                    <input type="text" id="startDate" readonly="readonly" name="startDate" value="@Request.QueryString["startDate"]" class="Wdate" style="width:150px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd'})" />
+                    至
+                    <input type="text" id="endDate" readonly="readonly" name="endDate" value="@Request.QueryString["endDate"]" class="Wdate" style="width:150px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" />
+                    &nbsp;
+                    <input type="submit" value="检索" />
+                </td>
+                <td></td>
+                <td>
+                    <a class="button" href="javascript:;" id="Add_data">新增</a>
+                    <a class="button" href="/Shangpin/Flagship/Index?brandNo=@Request.QueryString["brandNo"]">取消</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+<table class="mx-table" border="0">
+    <thead>
+        <tr>
+            <th>上新商品</th>
+            <th>上架时间</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (item.OneRowProductList.Count() == 0 && item.TwoRowProductList.Count() == 0)
+                    {
+                        <span>每行暂无六件商品请点击管理商品进行添加</span>
+                    }
+                    else
+                    {
+                        @*<table>
+                                <tr style="height:50px;">
+                                    @for (int i = 0; i < 6; i++)
+                                    {
+                                        <td style="width:50px; background-color:red">
+                                            @if (item.OneRowProductList != null && i < item.OneRowProductList.Count())
+                                            {
+                                                <img alt="@item.OneRowProductList[i].ProductName" width="50" height="50" src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@item.OneRowProductList[i].ProductPicFile&type=1" />
+                                            }
+                                        </td>
+                                    }
+                                </tr>
+                                <tr style="height:50px;">
+                                    @for (int i = 0; i < 6; i++)
+                                    {
+                                        <td style="width:50px; background-color:red">
+                                            @if (item.TwoRowProductList != null && i < item.TwoRowProductList.Count())
+                                            {
+                                                <img alt="@item.TwoRowProductList[i].ProductName" width="50" height="50" src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@item.TwoRowProductList[i].ProductPicFile&type=1" />
+                                            }
+                                        </td>
+                                    }
+                                </tr>
+                            </table>*@
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (item.OneRowProductList != null && i < item.OneRowProductList.Count())
+                            {
+                                <img alt="@item.OneRowProductList[i].ProductName" width="50" height="50" src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@item.OneRowProductList[i].ProductPicFile&type=1" />
+                            }
+                            else
+                            {
+                                <img alt="暂无商品" width="50" height="50" src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=&type=1" />
+                            }
+                        }
+                        <br/>
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (item.TwoRowProductList != null && i < item.TwoRowProductList.Count())
+                            {
+                                <img alt="@item.TwoRowProductList[i].ProductName" width="50" height="50" src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@item.TwoRowProductList[i].ProductPicFile&type=1" />
+                            }
+                            else 
+                            {
+                                <img alt="暂无商品" width="50" height="50" src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=&type=1" />
+                            }
+                        }
+                        @*foreach (var item_product in item.OneRowProductList)
+                        {
+                            <img alt="@item_product.ProductName" width="50" height="50" src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@item_product.ProductPicFile&type=1" />
+                        }
+                        <br />
+                        foreach (var item_product in item.TwoRowProductList)
+                        {
+                            <img alt="@item_product.ProductName" width="50" height="50" src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@item_product.ProductPicFile&type=1" />
+                        }*@
+                    }
+                </td>
+                <td>@item.Arrival.NewShelfDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                <td>
+                    <a class="button" href="NewShelfProductListManage?brandNo=@Request.QueryString["brandNo"]&DateShelf=@item.Arrival.NewShelfDate&ArrivalId=@item.Arrival.NewArrivalId">管理商品</a>
+                    <a class="button" href="javascript:;" onclick="Editor(this,'@item.Arrival.NewArrivalId')">编辑</a>
+                    <a class="button" href="javascript:;" onclick="DeleteProductList('@item.Arrival.NewArrivalId')">删除</a>
+                </td>
+            </tr>
+        }}
+
+    </tbody>
+</table>
+<div class="spPage">
+    @Html.Raw(@Html.PagerX("page", page, pageSize, totalCount))
+</div>
+<div class="mod_tag" style="width:280px;" id="Add_div">
+    <table class="mx-table">
+        <tr style="height:10px;">
+            <td>
+                @*<span style="cursor:pointer;float:right;" onclick="$('#Add_div').hide('slow')" class="close">x</span>*@
+                <p style="font-size:16px;" id="span_title">新增上线</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                上新日期：
+                @if (ViewBag.disabledDays == "")
+                {
+                    <input type="text" style="width:200px;height:30px;border:1px black solid;" onclick="WdatePicker({dateFmt:'yyyy-MM-dd @ViewBag.DetailTime', opposite: true, minDate:'%y-%M-{%d}'}) " name="CreateTime" id="CreateTime" />
+                }
+                else
+                {
+                    <input type="text" style="width:200px;height:30px;border:1px black solid;" onclick="WdatePicker({dateFmt:'yyyy-MM-dd @ViewBag.DetailTime', opposite: true,disabledDays: [@ViewBag.disabledDays], minDate:'%y-%M-{%d}'}) " name="CreateTime" id="CreateTime" />
+                }
+            </td>
+        </tr>
+        <tr>
+            <td style="color:red">注释：添加时间已存在上新上商品则无法提交</td>
+        </tr>
+        <tr>
+            <td>
+                <div class="button_div">
+                    <input type="hidden" value="0" id="NewArrivalId" />
+                    <a class="green" onclick="OperationNewShelf()" name="save" href="javascript:void(0);">确定</a>
+                    <a onclick="$('#Add_div').hide('slow')" name="cancel" href="javascript:void(0);">取消</a>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

@@ -1,0 +1,117 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.Outlet
+@using Shangpin.Ocs.Web.Infrastructure
+@using Shangpin.Ocs.Service.Common
+@{
+    ViewBag.Title = "促销秒杀管理|尚品OCS管理系统";
+   
+    
+}
+@model Dictionary<DateTime, List<SpikeProductManage>>
+<script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script src="/Areas/Outlet/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+<script>
+    $(function () {
+        $("#SelectDate").val("@(ViewBag.date != null ? Convert.ToDateTime(ViewBag.date).ToString("yyyy年MM月") : DateTime.Now.ToString("yyyy年MM月"))");
+    })
+    function GoUrl(type) {
+    if(type==6)
+    {
+      window.location.href = "/outlet/channel/Spike";
+      return;
+    }
+    if(type==7)
+    {
+      window.location.href = "/outlet/indexfouctpic/index";
+      return;
+    }
+    else
+    {
+        window.location.href = "/outlet/channel/SubjectList?type=" + type + "&channel=sy&channelName=首页";
+        }
+    }
+</script>
+<style>
+.mx-table td ul{ margin:0; padding:0; float:none;}
+.mx-table td ul li{ width:110px; height:150px; float:left; font-size:14px;}
+.mx-table td  span{ display:block; font-weight:bold;}
+</style>
+<h1><a href="/outlet/channel/index">频道管理</a> > 频道活动推荐 > 首页</h1>
+
+<form method="get" action="/outlet/channel/Spike" id="frmSWfsSubjectSearch">
+<table class="mx-table">
+    <tr>
+       <td style="text-align:left;">
+          <input id="productNoName" type="text" name="productNoName"  onblur="if(this.value == '') this.value = '商品名称/商品编号'" onfocus="if(this.value == '商品名称/商品编号') this.value = ''" value="@(string.IsNullOrEmpty(ViewBag.productNoName) ? "商品名称/商品编号" : ViewBag.productNoName)" />
+                 <input id="SubjectNo" type="text" name="SubjectNo"  onblur="if(this.value == '') this.value = '活动编号'"  onfocus="if(this.value == '活动编号') this.value = ''" value="@(string.IsNullOrEmpty(ViewBag.SubjectNo) ? "活动编号" : ViewBag.SubjectNo)" />
+
+        展示日期:<input id="SelectDate" maxlength="30"  class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy年MM月',vel:'date'})" readonly="readonly"  />
+        <input type="hidden" id="date" value="@(ViewBag.date??DateTime.Now.ToString("yyyy-MM-dd"))"  name="date"/>
+        
+            <input class="button" type="submit" value="查询" />
+        </td>
+    </tr>
+</table>
+</form>
+<div class="handle" style="padding: 0; text-align: left;">
+    
+        <button type="button" id="btnTypeOne" class="button" onclick="GoUrl(1)">
+            今日活动推荐</button>
+     
+        <button type="button" id="btnTypeOne" class="button" onclick="GoUrl(5)">
+            今日品牌推荐</button>
+     
+        <button type="button" id="btnTypeSpike" class="button" onclick="GoUrl(6)" style="color:Red")>
+            促销秒杀</button>
+     
+        <button type="button" id="btnTypeFive" class="button" onclick="GoUrl(7)" >
+            轮播图</button>
+ 
+
+</div>
+@if (Model != null && Model.Keys.Count > 0)
+{
+    var flag = 0;
+   <table class="mx-table">
+<thead>
+            <tr>
+                <th width="20%">日期</th>
+                <th width="80%">秒杀商品</th>
+            </tr>
+        </thead>
+<tbody>
+@foreach (KeyValuePair<DateTime, List<SpikeProductManage>> item in Model)
+{
+    flag = flag + 1;
+    <tr class="@(flag % 2 == 0 ? "cross" : "")">
+<td ><span>日期:@item.Key.ToString("yyyy年MM月dd日")</span></td>
+<td>
+<ul>
+@foreach (SpikeProductManage keyValue in item.Value)
+{
+   string url = string.Empty;
+    if(keyValue.Type==0)
+    {
+       url = AppSettingManager.AppSettings["AolaiDomain"] + "women/product/detail/"+keyValue.SubjectCategoryNo+"/1/"+keyValue.ProductNo;
+    }
+    else
+    {
+        url = AppSettingManager.AppSettings["AolaiDomain"] + "Subject/Index/"+keyValue.SubjectNo;
+    }
+   <li><a href="@url" target="_blank"><img width="75" height="100" src="/ReadPic/GetPic.ashx?width=75&amp;height=100&amp;pictureFileNo=@keyValue.ShowProductPicFileNo&amp;type=0" border="0" title="@keyValue.ProductName"></a><br />
+    <a href="/outlet/channel/spikeproduct?act=edit&Id=@keyValue.ID">编辑</a><span>@keyValue.ShowTime.ToShortTimeString()</span>
+   </li>
+}        
+
+</ul>
+</td>
+</tr>
+    
+}
+</tbody>
+</table>
+}
+<div class="spPage">@Html.Raw(Html.PagerX("page", (int)ViewBag.pageIndex, (int)ViewBag.pageSize, (int)ViewBag.totalCount))</div>
+<div class="clr" id="mx-rightcontent-fixbar">
+    <a id="mx-btn-add" href="/outlet/channel/spikeproduct"></a>@*<a id="mx-btn-del" href="#"></a><a id="mx-btn-search"
+        href="#"></a>@*<a id="mx-btn-folder" href="#"></a>*@
+</div>

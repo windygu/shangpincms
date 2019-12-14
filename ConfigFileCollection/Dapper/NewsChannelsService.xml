@@ -1,0 +1,519 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <!--获取所有的上新列表信息-->
+  <statement id="ComBeziWfs_SWfsIndexNewArrival_SelectAllList">
+    select * from SWfsIndexNewArrival where Status=1 and DataState=1 and pageno=@PageNo 
+    #if($PagePositionNo!='')    
+      and PagePositionNo=@PagePositionNo
+    #end
+    #if($TitleName!='')
+      and NewArrivalTitle like '%'+@TitleName+'%'
+    #end
+    #if($StartTime!='')
+      and StartDate >=@StartTime
+    #end
+    #if($EndTime!='')
+      and StartDate &lt;=@EndTime
+    #end
+    order by StartDate desc
+  </statement>
+  <!--獲取最近的上新信息-->
+  <statement id="ComBeziWfs_SWfsIndexNewArrival_SelectNewArrivalInfo" >
+    SELECT TOP 1 * 
+    FROM SWfsIndexNewArrival
+    WHERE  1=1
+    and PageNo=@PageNo
+    and PagePositionNo=@PagePositionNo
+    and Status=1 AND DataState=1
+    and (GETDATE()>=StartDate) ORDER BY StartDate DESC
+  </statement>
+  <!--根据上新id获取商品详细信息-->
+  <statement id="ComBeziWfs_SWfsIndexNewArrival_GetShoesNewProductList">
+    <!--select
+    nap.NewArrivalProductListId,
+    wp.ProductNo,
+    wp.GoodsNo,
+    nap.Status,
+    wp.IsShelf,
+    wp.ProductName,
+    wp.ProductPicFile,
+    wp.SellPrice,
+    wp.PlatinumPrice,
+    wp.DiamondPrice,
+    wp.LimitedPrice,
+    wp.LimitedVipPrice,
+    wp.MarketPrice,
+    wp.PromotionPrice,
+    wb.BrandCnName,
+    wb.BrandEnName,
+    nap.NewArrivalId,
+    nap.sortvalue,
+    row_number() over(order by sortvalue desc) as row
+    from WfsProduct wp
+    inner join SWfsIndexNewArrivalProductList nap
+    on wp.productno=nap.productno
+    left join WfsBrand wb on wp.BrandNo = wb.BrandNo
+    where nap.NewArrivalId=@NewArrivalId  and nap.DataState=1
+    and nap.status=1 and wp.IsLimitedOutlet=1-->
+    <!--SELECT   x.NewArrivalProductListId ,
+    a.ProductNo ,
+    a.ProductModel AS GoodsNo ,
+    x.Status ,
+    b.PcShowState IsShelf ,
+    a.ProductName ,
+    e.ProductShowPic AS ProductPicFile ,
+    c.GoldPrice AS SellPrice ,
+    c.PlatinumPrice ,
+    c.DiamondPrice ,
+    c.StandardPrice AS LimitedPrice ,
+    c.MarketPrice ,
+    c.PromotionPrice ,
+    d.BrandCnName ,
+    d.BrandEnName ,
+    x.NewArrivalId ,
+    x.sortvalue ,
+    ROW_NUMBER() OVER ( ORDER BY sortvalue DESC ) AS row
+    FROM     SpProduct a
+    INNER JOIN SWfsIndexNewArrivalProductList x ON x.productno = a.productno
+    LEFT JOIN SpfSkuExtend AS b ( NOLOCK ) ON b.ProductNo = a.ProductNo
+    LEFT JOIN SpfSkuPrice AS c ( NOLOCK ) ON c.SkuNo = b.SkuNo
+    LEFT JOIN SpfProductExtend AS e ( NOLOCK ) ON e.ProductNo = a.ProductNo
+    LEFT JOIN SpBrand AS d ( NOLOCK ) ON a.BrandNo = d.BrandNo
+    WHERE    x.NewArrivalId = @NewArrivalId
+    AND x.DataState = 1
+    AND b.PcShowState = 1
+    AND e.TypeFlag = 1-->
+    
+   SELECT   x.NewArrivalProductListId ,
+    a.ProductNo ,
+    a.ProductModel AS GoodsNo ,
+    x.Status ,
+    a.ProductName ,
+    e.ProductShowPic AS ProductPicFile ,
+    d.BrandCnName ,
+    d.BrandEnName ,
+    x.NewArrivalId ,
+    x.sortvalue ,
+    ROW_NUMBER() OVER ( ORDER BY sortvalue DESC ) AS row
+    FROM     SpProduct a
+    INNER JOIN SWfsIndexNewArrivalProductList x ON x.productno = a.productno 
+    LEFT JOIN SpfProductExtend AS e ( NOLOCK ) ON e.ProductNo = a.ProductNo
+    LEFT JOIN SpBrand AS d ( NOLOCK ) ON a.BrandNo = d.BrandNo
+    WHERE    x.NewArrivalId = @NewArrivalId
+    AND x.DataState = 1 
+	  and x.Status =1 
+    AND e.TypeFlag = 1 
+	  and a.DataState=1 
+  </statement>
+  <!--删除上新商品信息-->
+  <statement id="ComBeziWfs_SWfsIndexNewArrivalProductList_DelShoesNewProduct">
+    update SWfsIndexNewArrivalProductList set DataState=255 where NewArrivalProductListId=@NewArrivalProductListId
+  </statement>
+  <!--删除上新信息-->
+  <statement id="ComBeziWfs_SWfsIndexNewArrival_DelShoesNewById">
+    update SWfsIndexNewArrival set DataState=255 where NewArrivalId=@NewArrivalId
+  </statement>
+  <!--删除上新下的商品信息-->
+  <statement id="ComBeziWfs_SWfsIndexNewArrivalProductList_DelNewProductsByNid">
+    update SWfsIndexNewArrivalProductList set DataState=255 where NewArrivalId=@NewArrivalId
+  </statement>
+  <!--根据编号获取时间信息-->
+  <statement id="ComBeziWfs_SWfsGlobalConfig_SelectConfigValueByNo">
+    select * from SWfsGlobalConfig where FunctionNo=@FunctionNo
+  </statement>
+  <!--更改上新标题-->
+  <statement id="ComBeziWfs_SWfsGlobalConfig_UpdateConfigValueByNo">
+    update SWfsGlobalConfig set ConfigValue=@ConfigValue where FunctionNo='ShoesNewArrival'
+  </statement>
+  <!--获取某上新商品下的最大排序值-->
+  <statement id="ComBeziWfs_SWfsIndexNewArrivalProductList_SelectMaxSort">
+    select max(sortvalue) from SWfsIndexNewArrivalProductList where NewArrivalId=@NewArrivalId
+  </statement>
+  <statement id="ComBeziWfs_SWfsProduct_SelectProductCount">
+    <!--select count(ProductNo) from  WfsProduct with(nolock)
+    left join WfsBrand with(nolock) on WfsProduct.BrandNo = WfsBrand.BrandNo where [IsLimitedOutlet]=1
+    #if($Keyword!='')
+    and (ProductName like '%'+@KeyWord+ '%' or ProductNo =@KeyWord or GoodsNo =@KeyWord)
+    #end
+    #if($CategoryNo !='')
+    and CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and GenderStyle=@Gender
+    #end
+    #if($BrandNO !='')
+    and WfsProduct.BrandNO=@BrandNO
+    #end
+    #if($StartDateShelf!='')
+    and DateShelf &gt;= @StartDateShelf
+    #end
+    #if($EndDateShelf!='')
+    and DateShelf &lt;= @EndDateShelf
+    #end-->
+    <!--select count(a.ProductNo)
+    FROM     SpProduct AS a ( NOLOCK )
+    LEFT JOIN SpfSkuExtend AS b ( NOLOCK ) ON b.ProductNo = a.ProductNo
+    LEFT JOIN SpfSkuPrice AS c ( NOLOCK ) ON c.SkuNo = b.SkuNo
+    LEFT JOIN SpfProductExtend AS e ( NOLOCK ) ON e.ProductNo = a.ProductNo
+    LEFT JOIN SpBrand AS d ( NOLOCK ) ON a.BrandNo = d.BrandNo
+    WHERE    b.PcShowState = 1 and e.TypeFlag=1 and a.DataState = 1
+    and e.Status=1 and e.DataState=1 and b.DataState=1 
+    #if($Keyword!='')
+    AND (a.ProductName like '%'+@KeyWord+ '%' OR a.ProductNo =@KeyWord OR  a.ProductModel =@KeyWord)
+    #end
+    #if($CategoryNo !='')
+    and a.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and a.ProductType=@Gender
+    #end
+    #if($BrandNO !='')
+    and  d.BrandNo=@BrandNO
+    #end
+    #if($StartDateShelf!='')
+    and b.PcShelfDate &gt;= @StartDateShelf
+    #end
+    #if($EndDateShelf!='')
+    and b.PcShelfDate &lt;= @EndDateShelf
+    #end-->
+    select
+    count(0)
+    from SpProduct as a with(nolock)
+    INNER join SpfProductExtend as e(nolock) on e.ProductNo=a.ProductNo
+    INNER JOIN (SELECT ProductNo FROM dbo.SpfSkuExtend skue (NOLOCK) WHERE skue.PcSaleState=2  GROUP BY ProductNo) AS t ON t.ProductNo=a.ProductNo
+    left join SpBrand as c with(nolock) on a.BrandNo = c.BrandNo
+    where e.TypeFlag=1 and a.DataState = 1 and e.ProductShowPic &lt;> ''
+    and e.Status=1 and e.DataState=1
+    #if($Keyword!='')
+    and (a.ProductName like '%'+@KeyWord+ '%' or a.ProductNo =@KeyWord or a.ProductModel =@KeyWord)
+    #end
+    #if($CategoryNo !='')
+    and a.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and a.ProductType=@Gender
+    #end
+    #if($BrandNO !='')
+    and a.BrandNO=@BrandNO
+    #end
+  </statement>
+  <!--查询产品列表信息-->
+  <statement id="ComBeziWfs_SWfsProduct_SelectAllProductList">
+    <!--with temp as (select
+    ProductNo,
+    GoodsNo,
+    Status,
+    IsShelf,
+    ProductName,
+    ProductPicFile,
+    SellPrice,
+    PlatinumPrice,
+    DiamondPrice,
+    LimitedPrice,
+    LimitedVipPrice,
+    MarketPrice,
+    PromotionPrice,
+    WfsProduct.BrandNo,
+    WfsBrand.BrandCnName,
+    WfsBrand.BrandEnName,row_number() over(order by ProductNo)as row
+    from WfsProduct with(nolock)
+    left join WfsBrand with(nolock) on WfsProduct.BrandNo = WfsBrand.BrandNo where [IsLimitedOutlet]=1
+    #if($Keyword!='')
+    and (ProductName like '%'+@KeyWord+ '%' or ProductNo =@KeyWord or GoodsNo =@KeyWord)
+    #end
+    #if($CategoryNo !='')
+    and CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and GenderStyle=@Gender
+    #end
+    #if($BrandNO !='')
+    and WfsProduct.BrandNO=@BrandNO
+    #end
+    #if($StartDateShelf!='')
+    and DateShelf &gt;= @StartDateShelf
+    #end
+    #if($EndDateShelf!='')
+    and DateShelf &lt;= @EndDateShelf
+    #end
+    )
+    select * from temp  where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize-->
+    <!--
+    WITH   temp
+    AS ( SELECT   a.ProductNo ,
+    a.ProductModel AS GoodsNo ,
+    b.PcShowState IsShelf ,
+    ProductName ,
+    b.MainPicNo AS ProductPicFile ,
+    c.GoldPrice AS SellPrice ,
+    PlatinumPrice ,
+    DiamondPrice ,
+    c.StandardPrice AS LimitedPrice ,
+    MarketPrice ,
+    PromotionPrice ,
+    a.BrandNo ,
+    d.BrandCnName ,
+    d.BrandEnName ,
+    ROW_NUMBER() OVER ( ORDER BY ProductNo ) AS row
+    FROM     SpProduct AS a ( NOLOCK )
+    LEFT JOIN SpfSkuExtend AS b ( NOLOCK ) ON b.ProductNo = a.ProductNo
+    LEFT JOIN SpfSkuPrice AS c ( NOLOCK ) ON c.SkuNo = b.SkuNo
+    LEFT JOIN SpfProductExtend AS e ( NOLOCK ) ON e.ProductNo = a.ProductNo
+    LEFT JOIN SpBrand AS d ( NOLOCK ) ON a.BrandNo = d.BrandNo
+    WHERE    b.PcShowState = 1
+    #if($Keyword!='')
+    AND (a.ProductName like '%'+@KeyWord+ '%' OR a.ProductNo =@KeyWord OR  a.ProductModel =@KeyWord)
+    #end
+    #if($CategoryNo !='')
+    and a.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and a.ProductType=@Gender
+    #end
+    #if($BrandNO !='')
+    and  d.BrandNo=@BrandNO
+    #end
+    #if($StartDateShelf!='')
+    and b.PcShelfDate &gt;= @StartDateShelf
+    #end
+    #if($EndDateShelf!='')
+    and b.PcShelfDate &lt;= @EndDateShelf
+    #end
+    )
+    SELECT  *
+    FROM    temp
+    WHERE   row BETWEEN ( @pageIndex - 1 ) * @pageSize + 1
+    AND     @pageIndex * @pageSize-->
+    
+    WITH   temp
+    AS ( SELECT   a.ProductNo ,
+    a.ProductModel AS GoodsNo ,
+    ProductName ,
+    e.ProductShowPic AS ProductPicFile ,
+    a.BrandNo ,
+    d.BrandCnName ,
+    d.BrandEnName ,
+    ROW_NUMBER() OVER ( ORDER BY a.ProductNo ) AS row
+    FROM     SpProduct AS a ( NOLOCK )
+    LEFT JOIN SpfProductExtend AS e ( NOLOCK ) ON e.ProductNo = a.ProductNo
+    LEFT JOIN SpBrand AS d ( NOLOCK ) ON a.BrandNo = d.BrandNo
+    WHERE  e.TypeFlag=1 and a.DataState = 1
+    and e.Status=1 and e.DataState=1
+    #if($Keyword!='')
+    AND (a.ProductName like '%'+@KeyWord+ '%' OR a.ProductNo =@KeyWord OR  a.ProductModel =@KeyWord)
+    #end
+    #if($CategoryNo !='')
+    and a.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and a.ProductType=@Gender
+    #end
+    #if($BrandNO !='')
+    and  d.BrandNo=@BrandNO
+    #end
+    )
+    SELECT  *
+    FROM    temp
+    WHERE   row BETWEEN ( @pageIndex - 1 ) * @pageSize + 1
+    AND     @pageIndex * @pageSize
+  </statement>
+  <!--添加商品（多条数据）-->
+  <statement id="ComBeziWfs_SWfsIndexNewArrivalProductList_InsertProducts">
+    $sqlstring
+  </statement>
+  <!--根据产品编号获取产品信息-->
+  <statement id="ComBeziWfs_WfsProduct_SelectProductInfoByNo">
+    select SpProduct.productNo,SpfProductExtend.ProductShowPic as ProductPicFile from SpProduct(nolock)
+    inner join SpfProductExtend(nolock) on SpProduct.ProductNo=SpfProductExtend.ProductNo
+    where SpfProductExtend.TypeFlag=1 and SpProduct.ProductNo=@ProductNo
+  </statement>
+  <!--获取上新下某频道的最大排序值-->
+  <statement id="ComBeziWfs_SWfsIndexNewArrival_SelectMaxSort">
+    select sortvalue from SWfsIndexNewArrival where status = 1 and datastate = 1 and PageNo=@PageNo and PagePositionNo=@PagePositionNo 
+  </statement>
+  <!--根据上新编号获取上新信息-->
+  <statement id="ComBeziWfs_SWfsIndexNewArrival_SelectNewArrivalByNid">
+    select * from SWfsIndexNewArrival where status = 1 and datastate = 1 and NewArrivalId=@NewArrivalId
+  </statement>
+  <!--查询上新时间-->
+  <statement id="ComBeziWfs_SWfsIndexNewArrival_SelectNewDate">
+    select count(0) from  SWfsIndexNewArrival where StartDate=@StartDate and DataState=1 and status=1 and NewArrivalId != @NewArrivalId and PageNo=@PageNo and PagePositionNo=@PagePositionNo
+  </statement>
+  <!--插入上新信息，并返回主键列-->
+  <statement id="ComBeziWfs_SWfsIndexNewArrival_InsertNewArrival">
+    insert into SWfsIndexNewArrival(NewArrivalTitle,SortValue,WebSiteNo,PagePositionNo,PagePositionName,PageNo,CreateDate,StartDate,Status,DataState,OperateUserId) values(@NewArrivalTitle,@SortValue,@WebSiteNo,@PagePositionNo,@PagePositionName,@PageNo,@CreateDate,@StartDate,@Status,@DataState,@OperateUserId) SELECT @@IDENTITY;
+  </statement>
+  <!--根据频道编号获取上新预告信息-->
+  <statement id="ComBeziWfs_SWfsNewArrivalNotice_SelectNewNoticeByPageNo">
+    select top 1 NewArrivalNoticName,NewArrivalNoticDate
+    from SWfsNewArrivalNotice
+    where status=1 and datastate = 1
+    and NewArrivalNoticDate>getdate()
+    and PageNo=@PageNo
+    order by NewArrivalNoticDate
+  </statement>
+  <statement id="ComBeziWfs_SWfsIndexModule_GetChanelFloors">
+    select  * from SWfsIndexModule (nolock) where    dataState=1 and PageNo=@PageNo and WebSiteNo=@WebSiteNo order by sort asc
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewArrivalNotice_GetNewArrivalNoticeList">
+
+    select NewArrivalNoticeId,NewArrivalNoticName,NewArrivalNoticDate,WebSiteNo,PageNo,PagePositionNo,PagePositonName,[Status],DataState,OperateUserId,CreateDate,UpdateDate,UpdateOperateUserId from SWfsNewArrivalNotice(nolock) where PageNo=@PageNo and WebsiteNo=@WebsiteNo and [Status]='1' and DataState='1' and NewArrivalNoticName like '%'+ @KeyWord + '%'
+    #if($BeginTime!='')
+    and NewArrivalNoticDate >= @BeginTime
+    #end
+    #if($EndTime!='')
+    and  NewArrivalNoticDate &lt;= @EndTime
+    #end
+    order by  NewArrivalNoticDate desc
+
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewArrivalNotice_IsExitNewArrivalNoticeList">
+    select NewArrivalNoticeId from SWfsNewArrivalNotice(nolock) where PageNo=@PageNo and NewArrivalNoticDate between @NewArrivalNoticDateStart and  @NewArrivalNoticDateEnd and [Status]='1' and DataState='1'
+  </statement>
+  <!--获取楼层广告图分页-->
+  <statement id="ComBeziWfs_SWfsOperationPicture_GetSWfsOperationPicturePage">
+    with temp as(
+    select *,row_number() over(order by DateCreate desc) as _row
+    from SWfsOperationPicture (nolock) where 1=1
+    and PictureName like '%'+cast(@PictureName as nvarchar)+'%'
+    #if($DateBegin!='')
+    and DateBegin >= @DateBegin
+    #end
+    #if($DateEnd!='')
+    and  DateBegin &lt;= @DateEnd
+    #end
+    #if($PictureIndex!=-1)
+    and  PictureIndex = @PictureIndex
+    #end
+    and PagePositionNo=@PagePositionNo
+    and WebSiteNo=@WebSiteNo
+    and PageNo=@PageNo
+    and DataState=1  
+    )select *  from temp where _row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!--获取楼层广告图总数-->
+  <statement id="ComBeziWfs_SWfsOperationPicture_GetSWfsOperationPictureCount">
+    select
+    count(1)
+    from SWfsOperationPicture (nolock) where 1=1
+    and PictureName like '%'+cast(@PictureName as nvarchar)+'%'
+    #if($DateBegin!='')
+    and DateBegin >= @DateBegin
+    #end
+    #if($DateEnd!='')
+    and  DateBegin &lt;= @DateEnd
+    #end
+    #if($PictureIndex!=-1)
+    and  PictureIndex = @PictureIndex
+    #end
+    and PagePositionNo=@PagePositionNo
+    and PageNo=@PageNo
+    and WebSiteNo=@WebSiteNo
+    and DataState=1
+  </statement>
+  <!--楼层广告图-->
+  <statement id="ComBeziWfs_SWfsOperationPicture_GetChannelSWfsOperationPicture">
+    declare @TopCount int
+    set @TopCount=@tops
+    #if($ADShowType=='0')
+    SELECT top (@TopCount) pic.*
+    FROM SWfsIndexModule (nolock)  module
+    left join SWfsOperationPicture (nolock)   pic
+    on cast(module.moduleid as varchar(255) )=pic.PagePositionNo
+    where pic.datastate=1
+    and getdate()>pic.DateBegin
+    and module.moduleid=@ModuleId
+    and pic.PictureIndex=0
+    and pic.WebSiteNo=module.WebSiteNo
+    and pic.PageNo=module.PageNo
+    order by pic.DateBegin Desc
+    #end
+    #if($ADShowType=='1')
+    SELECT top (@TopCount)  pic.*
+    FROM SWfsIndexModule (nolock)  module
+    left join SWfsOperationPicture (nolock)   pic
+    on cast(module.moduleid as varchar(255) )=pic.PagePositionNo
+    where pic.datastate=1
+    and getdate()>pic.DateBegin
+    and module.moduleid=@ModuleId
+    and pic.PictureIndex=0
+    and pic.WebSiteNo=module.WebSiteNo
+    and pic.PageNo=module.PageNo
+    order by pic.DateBegin Desc
+    #end
+    #if($ADShowType=='5')
+    select * from  (SELECT   top (@TopCount)  pic.*
+    FROM SWfsIndexModule (nolock)  module
+    left join SWfsOperationPicture (nolock)   pic
+    on cast(module.moduleid as varchar(255) )=pic.PagePositionNo
+    where pic.datastate=1
+    and getdate()>=pic.DateBegin
+    and module.moduleid=@ModuleId
+    and pic.PictureIndex=0
+    and pic.WebSiteNo=module.WebSiteNo
+    and pic.PageNo=module.PageNo
+    order by pic.DateBegin Desc ) as p0
+    UNION
+    select * from ( SELECT top (@TopCount) pic.*
+    FROM SWfsIndexModule (nolock)  module
+    left join SWfsOperationPicture (nolock)   pic
+    on cast(module.moduleid as varchar(255) )=pic.PagePositionNo
+    where pic.datastate=1
+    and getdate()>=pic.DateBegin
+    and module.moduleid=@ModuleId
+    and pic.PictureIndex=1
+    and pic.WebSiteNo=module.WebSiteNo
+    and pic.PageNo=module.PageNo
+    order by pic.DateBegin Desc ) as p1
+    UNION
+    select * from ( SELECT top (@TopCount)  pic.*
+    FROM SWfsIndexModule (nolock)  module
+    left join SWfsOperationPicture (nolock)   pic
+    on cast(module.moduleid as varchar(255) )=pic.PagePositionNo
+    where pic.datastate=1
+    and getdate()>=pic.DateBegin
+    and module.moduleid=@ModuleId
+    and pic.PictureIndex=2
+    and pic.WebSiteNo=module.WebSiteNo
+    and pic.PageNo=module.PageNo
+    order by pic.DateBegin Desc ) as p2
+    UNION
+    select * from ( SELECT top (@TopCount) pic.*
+    FROM SWfsIndexModule (nolock)  module
+    left join SWfsOperationPicture (nolock)   pic
+    on cast(module.moduleid as varchar(255) )=pic.PagePositionNo
+    where pic.datastate=1
+    and getdate()>=pic.DateBegin
+    and module.moduleid=@ModuleId
+    and pic.PictureIndex=3
+    and pic.WebSiteNo=module.WebSiteNo
+    and pic.PageNo=module.PageNo
+    order by pic.DateBegin Desc ) as p3
+    UNION
+    select * from ( SELECT top (@TopCount) pic.*
+    FROM SWfsIndexModule (nolock)  module
+    left join SWfsOperationPicture (nolock)   pic
+    on cast(module.moduleid as varchar(255) )=pic.PagePositionNo
+    where pic.datastate=1
+    and getdate()>=pic.DateBegin
+    and module.moduleid=@ModuleId
+    and pic.PictureIndex=4
+    and pic.WebSiteNo=module.WebSiteNo
+    and pic.PageNo=module.PageNo
+    order by pic.DateBegin Desc ) as p4
+    #end
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewArrivalNotice_GetStatusNewsNotice">
+    select top 1 [Status] from SWfsNewArrivalNotice where pageNo=@pageNo and WebSiteNo=@WebSiteNo and [Status]=1 and DataState=1
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewArrivalNotice_UpdateStatusNewsNotice">
+    update SWfsNewArrivalNotice set [Status]=@DataState where PageNo=@PageNo and WebSiteNo=@WebSiteNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsOperationPicture_GetStatusBananaPicture">
+    select top 1 [Status] from SWfsOperationPicture where pageNo=@pageNo and WebSiteNo=@WebSiteNo and PagePositionNo=@PagePositionNo and [Status]=1 and DataState=1
+  </statement>
+  <statement id="ComBeziWfs_SWfsOperationPicture_UpdateStatusBananaPicture">
+    update SWfsOperationPicture set [Status]=@Status where PageNo=@PageNo and WebSiteNo=@WebSiteNo and PagePositionNo=@PagePositionNo
+  </statement>
+
+</statements>

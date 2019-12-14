@@ -1,0 +1,332 @@
+/* ============== member invite ============== */
+
+.Invite_notice{
+	color:#666;
+	line-height: 180%;
+    margin: 15px 0 0px;
+}
+a.ac_blue:link ,a.ac_blue:visited{
+	font-size:12px;
+	font-family:"宋体";
+	color:#01589f !important;
+}
+a.ac_blue:hover ,a.ac_blue:active{
+	text-decoration:underline;
+}
+
+
+
+#member_myInvite{
+	margin:20px 0 0;
+}
+#member_myInvite .total_table{
+	width:100%;
+	height:120px;
+	border:1px solid #f0f0f0;
+	background-color:#fefefe;
+	text-align:center;
+	vertical-align:middle;
+}
+#member_myInvite .total_table td{
+	border-right:1px solid #f0f0f0;
+	font-size:14px;
+	color:#333;
+	line-height:27px;
+	font-family:"微软雅黑";
+}
+#member_myInvite .total_table span{
+	display:block;
+	color:#e5232a;
+	font-size:18px;
+}
+
+/*tab切换*/
+.member_menu{
+	margin-top:20px;
+}
+.member_content{
+	padding:20px 0;
+}
+.member_content .chart{
+	padding:0 90px;
+}
+
+.invite_chart{
+	width:100%;
+	font-family:"宋体";
+	font-size:12px;
+	padding-bottom:40px;
+}
+.invite_chart .chart_txt{
+	line-height:40px;
+	color:#333;
+	font-family:"宋体";
+	position:relative;
+}
+.invite_chart .chart_txt span{
+	line-height:30px;
+	display:inline-block;
+	position:absolute;
+	right:0;
+	color:#666;
+    top: 5px;
+    *top: -6px;
+}
+
+.invite_chart .chart_txt span em {
+    color: #e5232a;
+    padding: 0 5px;
+}
+
+.chart_progress{
+	width:100%;
+}
+.chart_progress p{
+	display:block;
+	padding:0 0 0 2px;
+	height:15px;
+	background:url(/images/page/invite/progress_bgLeft.png) no-repeat;
+	_background:url(/images/page/invite/progress_bgLeft_ie6.png) no-repeat;
+	overflow:hidden;
+}
+.chart_progress p span{
+	display:block;
+	width:15px;
+	float:right;
+	height:15px;
+	background:url(/images/page/invite/progress_bgRight.png) no-repeat right top #fcfcfc;
+	_background:url(/images/page/invite/progress_bgRight_ie6.png) no-repeat right #fcfcfc;
+	overflow:hidden;
+}
+.chart_progress p a{
+	display:block;
+	width:7%;
+	float:left;
+	height:14px;
+	background:url(/images/page/invite/progressIn_bgLeft.png) no-repeat;
+	_background:url(/images/page/invite/progressIn_bgLeft_ie6.png) no-repeat;
+	overflow:hidden;
+}
+.chart_progress p a em{
+	display:block;
+	height:14px;
+	margin-left:10px;
+	background:url(/images/page/invite/progressIn_bgRight.png) no-repeat right top #e5232a;
+	overflow:hidden;
+}
+.chart_progress .chart_tips{
+	position:absolute;
+	border:1px solid #e5e5e5;
+	background-color:#fefefe;
+	color:#666;
+	padding:15px 20px;
+	width:225px;
+	-webkit-border-radius:.3em;
+	-moz-border-radius:.3em;
+	border-radius:.3em;
+	line-height:21px;
+	z-index:1000;
+	display:none;
+}
+.chart_progress .chart_tips em{
+	color:#e5232a;
+}
+.chart_progress .chart_tips i{
+	display:block;
+	background:url(/images/public/sp_newHeader.gif) no-repeat -5px -90px;
+	height:15px;
+	width:15px;
+	position:absolute;
+	top:-10px;
+	left:35px;
+}
+.chart_progress dl{
+	padding:0 5%;
+}
+.chart_progress dd{
+	width:25%;
+	float:left;
+	color:#666;
+	line-height:19px;
+	text-align:center;
+	padding:25px 0 0 0;
+	background:url(/images/page/invite/progress_line.png) no-repeat top center;
+}
+
+
+.myInvite_list table{
+	width:100%;
+}
+.myInvite_list table th{
+	color:#666;
+	line-height:40px;
+	border-bottom:1px solid #f2f2f2;
+	text-align:left;
+	padding-left:100px;
+}
+.myInvite_list table td{
+	color:#666;
+	line-height:40px;
+	border-bottom:1px solid #f2f2f2;
+	text-align:center;
+	width:30%;
+}
+.myInvite_list table .title th, .myInvite_list table .title td{
+	font-weight:700;
+}
+
+
+.member_myInviteFrom{
+	margin-top:20px;
+	background-color:#fcfcfc;
+	border:1px solid #f0f0f0;
+	padding:0 27px;
+	-webkit-border-radius:.3em;
+	-moz-border-radius:.3em;
+	border-radius:.3em;
+}
+
+.invite_from li{
+	padding:10px 0 30px;
+	border-bottom:1px dotted #ccc;
+}
+.invite_from li.borderNone{
+	border:none;
+}
+.invite_from h5{
+	color:#333;
+	font-family:"宋体";
+	font-size:14px;
+	font-weight:700;
+	height:40px;
+	line-height:40px;
+}
+.invite_from h5 span{
+	display:inline-block;
+	color:#666;
+	font-size:12px;
+	font-weight:normal;
+	padding-left:20px;
+	line-height:30px;
+}
+
+.invite_from .share_txt{
+	display:block;
+	background-color:#fff;
+	border:1px solid #d0d0d0;
+	color:#666;
+	line-height:24px;
+	padding:15px 20px;
+}
+
+.invite_from .share_btn{
+	margin-top:15px;
+	width:100%;
+}
+.invite_from .share_btn a{
+	display:inline-block;
+	height:36px;
+	line-height:36px;
+	padding:0 10px 0 38px;
+	border:1px solid #bfbfbf;
+	-webkit-border-radius:.3em;
+	-moz-border-radius:.3em;
+	border-radius:.3em;
+	-webkit-box-shadow:1px 1px 3px 0px #bfbfbf;
+	-moz-box-shadow:1px 1px 3px 0px #bfbfbf;
+	box-shadow:1px 1px 3px 0px #bfbfbf;
+	background:url(/images/page/invite/invite_icon.gif) no-repeat;
+	margin-right:25px;
+	*margin-right:24px;
+}
+.invite_from .share_btn a.weibo{
+	background-position:10px 6px;
+}
+.invite_from .share_btn a.qweibo{
+	background-position:2px -36px;
+}
+.invite_from .share_btn a.douban{
+	background-position:10px -70px;
+}
+.invite_from .share_btn a.renren{
+	background-position:10px -105px;
+}
+.invite_from .share_btn a.qzone{
+	background-position:10px -139px;
+	margin-right:0;
+}
+
+.invite_from input{
+	width:570px;
+	border:1px solid #d6d6d6;
+	color:#000;
+	height:24px;
+	line-height:24px;
+	padding:3px 8px;
+}
+
+.invite_from textarea{
+	width:570px;
+	border:1px solid #d6d6d6;
+	color:#adadad;
+	height:55px;
+	line-height:21px;
+	padding:8px;
+	overflow:auto;
+	resize:none;
+    vertical-align: bottom;
+}
+#shareArea{
+	color:#666;
+	width:97%;
+	height:65px;
+}
+.invite_from textarea.focus{
+	background:#fff;
+	color:#333;
+}
+
+.invite_from .inviteSueecess{
+	display:block;
+	margin-top:5px;
+	text-align:right;
+	display:none;
+}
+#member_right i.form_succeed{
+	margin:0 30px;
+}
+
+a.myInviteFrom_btn{
+	display:inline-block;
+	width:120px;
+	height:31px;
+	line-height:30px;
+	-webkit-border-radius:.3em;
+	-moz-border-radius:.3em;
+	border-radius:.3em;
+	text-align:center;
+	font-size:14px;
+	color:#fff !important;
+	vertical-align:bottom;
+}
+a.myInviteFrom_btn:link, a.myInviteFrom_btn:visited{
+	background:url(/images/page/invite/myInviteFrom_btnCbg.png) repeat-x;
+}
+a.myInviteFrom_btn:hover, a.myInviteFrom_btn:active{
+	background:url(/images/page/invite/myInviteFrom_btnHbg.png) repeat-x;
+}
+
+
+.member_myInviteQRcode{
+	margin-top:20px;
+	width:116px;
+	height:116px;
+	background:url(/images/page/invite/QRcodeBg.jpg) no-repeat 0 top;
+	padding:79px 550px 7px 104px;
+	overflow:hidden;
+}
+.member_myInviteQRcode img{
+	width:116px;
+	height:116px;
+	display:block;
+}

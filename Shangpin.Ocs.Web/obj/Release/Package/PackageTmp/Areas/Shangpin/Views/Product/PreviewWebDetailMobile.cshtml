@@ -1,0 +1,926 @@
+﻿@{
+    ViewBag.Title = "网站预览";
+    IEnumerable<string> picList = ViewBag.PicList;
+    Shangpin.Ocs.Entity.Extenstion.ShangPin.Product pObj = ViewBag.ProductInfo;
+    if (pObj == null)
+    {
+        pObj = new Shangpin.Ocs.Entity.Extenstion.ShangPin.Product() { ProductTitle = "商品预览" };
+    }
+}
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+<!-- 开启对web app程序的支持 -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<!-- 全屏模式浏览 -->
+<meta name="apple-touch-fullscreen" content="yes">
+<!-- 改变Safari状态栏的外观 -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<title>尚品奥莱-触摸屏版</title>
+    <style type="text/css">
+        @@charset "utf-8";
+/* CSS Document */
+*{/*-webkit-tap-highlight-color:rgba(0, 0, 0, 0);*/ margin:0;padding:0;}
+body{background:#333; font-size:14px; -webkit-touch-callout:none; -webkit-user-select:none; -webkit-text-size-adjust:none; font-family:arial; background:#fff;}
+ul,ol,li{list-style:none;}
+h1,h2,h3,h4,h5,h6{font-size:100%;}
+a, fieldset, img{border:none; -webkit-tap-highlight-color:rgba(0, 0, 0, 0);}
+input,img{vertical-align:middle;}
+i,em{font-style:normal;}
+table{border-collapse:collapse;border-spacing:0;}
+input[type=text],input[type=password],input[type=number],input[type=url],input[type=email],input[type=tel]{font-size:14px; -webkit-tap-highlight-color:rgba(0, 0, 0, 0); -webkit-appearance:none; appearance:none;  outline:none; -webkit-border-radius:0; border-radius:0;}
+input[type=checkbox],input[type=radio],select{vertical-align:middle;}
+select{font-size:16px;height:30px;line-height:30px;}
+textarea{font-size:14px;border:1px #ccc solid;-webkit-box-shadow:inset 0 2px 2px #999;box-shadow:inset 0 2px 2px #999;}
+header,nav,section,footer{display:block;}
+.txt_center { text-align:center;}
+.txt_right { text-align:right;}
+a, a:link, a:visited, a:hover, a:active{text-decoration:none;}
+
+.clr:after{
+    content: "";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+	zoom: 1
+}
+
+/* 弹出对话框样式 */
+#popup_container{font-family: helvetica; font-size:16px; font-weight:bold; width:310px; min-width: 300px; /* Dialog will be no smaller than this */ max-width: 600px; /* Dialog will wrap after this width */ opacity:0.75; background: #fff; border: 0; color: #fff; -moz-border-radius: 0.3em; -webkit-border-radius: 0.3em; border-radius: 0.3em; -webkit-box-shadow: rgba(0, 0, 0, 0.4) 0 0.1em 5px;}
+#popup_title{font-size: 14px; font-weight: bold; text-align: center; line-height:30px; color: #333; cursor: default; padding: 0em; margin: 0em; display:none;}
+#popup_content{padding: 15px; margin: 0em;}
+#popup_content button{background:#666; border:0; color:white; -webkit-box-shadow:rgba(255, 255, 255, 0.1) 0 0.1em 0; width:100px; height:40px; margin:0 0.2em; padding:.3em .6em; -webkit-border-radius:0.5em; border-radius:0.5em; overflow:hidden; font-size:0.7em; font-weight:bold;}
+#popup_content button:active{background:#333;}
+#popup_message{text-align: center; height:30px; margin-top:10px; padding:6px 0;}
+#popup_message img{vertical-align:central;}
+#popup_panel{text-align: center; margin: .5em 0em 0em .5em;}
+#popup_prompt{margin: .5em 0em;}
+
+/* 新提示层 */
+#popup_container{opacity:1; color:#000; font-weight:normal; line-height:1.5; width:280px; min-width:280px;}
+#popup_container .title_closeBtn{width:25px; height:25px; line-height:25px; text-align:center; position:absolute; top:5px; right:5px; font-size:28px; color:#333; background:rgba(153,153,153,0.7); -webkit-border-radius:0.5em; border-radius:0.5em; -webkit-tap-highlight-color:rgba(0, 0, 0, 0);}
+#popup_content{padding:0; position:relative;}
+#popup_message{margin:0; min-height:40px; padding:20px 20px 10px;}
+#popup_message p{font-size:14px; line-height:22px; min-height:40px; text-align:left;}
+
+#popup_panel{text-align:left; margin:0; height:60px; text-align:center;}
+#popup_content button{display:inline-block; margin:0 5px; background:-webkit-gradient(linear,left top,left bottom,color-stop(0,#e3b502),color-stop(0.5,#deb001),color-stop(1,#d3a400)); background:-moz-linear-gradient(top, #e3b502, #deb001 50%, #d3a400 100%); background:-o-repeating-linear-gradient(top, #e3b502, #deb001 50%, #d3a400 100%); color:#fff; height:40px; -webkit-border-radius:5px; border-radius:5px; text-align:center;  font-size:16px; border:none; width:40%;}
+#popup_content button:hover{background:#bf9705; color:#723c0d;}
+#popup_content button#popup_cancel{background: -moz-linear-gradient(top, #ededed, #e0e0e0 100%); background:-o-repeating-linear-gradient(top, #ededed, #e0e0e0 100%); background:-webkit-gradient(linear,left top,left bottom,from(#ededed),to(#e0e0e0)); color:#484848;}
+#popup_content button#popup_cancel:hover{background:#d5d5d5;}
+/* 弹出对话框样式 */
+
+/* ====================   头部通用  ================= */
+header{width:100%;height:43px; position:relative; background:url(../images/topBg.png) repeat-x 0 0; border-bottom:1px solid #b5b5b5;}
+#alLogo{width:120px;height:30px;position:absolute;left:10px;top:10px;background:url(../images/logo2.png) no-repeat; background-size:100%;}
+#alLogo a{display:block;height:100%;text-indent:-9999px;overflow:hidden;}
+
+header h2{width:150px; height:43px; line-height:43px; font-size:14px;}
+header h2 a.backBtn{display:inline-block; width:43px; height:42px; line-height:42px; border-right:1px solid #b5b5b5; margin:1px 9px 0 0; background:url(../images/back.png) no-repeat center center;}
+
+.alUser_icon{position:absolute; right:10px; top:10px;}
+.alUser_icon ul{width:auto; height:31px; clear:both;}
+.alUser_icon ul li{width:31px; height:31px; overflow:hidden; margin-left:15px; float:left;}
+.alUser_icon a{display:block; width:31px; height:32px;}
+
+.alMenu{height:28px;line-height:28px;background:#f7f7f7; border-top:1px solid #f3f3f3; border-bottom:1px solid #e4e4e4;}
+.alMenu ul{display:-webkit-box; display:-moz-box; display:box; width:100%;}
+.alMenu li{-webkit-box-flex:1;-moz-box-flex:1;box-flex:1;text-align:center;border-right:1px solid #e4e4e4;}
+.alMenu li:last-child{border-right:0;}
+.alMenu li.cur{font-size:14px;position:relative;background-color:#666;}
+.alMenu li a{display:block;height:28px;line-height:28px;overflow:hidden;color:#000; font-size:14px;}
+.alMenu li.cur a{color:#fff;}
+
+.alNav{height:28px; line-height:28px; background:#f7f7f7; border-top:1px solid #f3f3f3; border-bottom:1px solid #e4e4e4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.alNav ul{/*margin:0 3px 0 0; */overflow:hidden; display:-webkit-box; display:-moz-box; display: -o-box; display:box; -webkit-box-lines:single; -moz-box-lines:single; -o-box-lines:single; box-lines:single;}
+.alNav li{padding:0 25px 0 10px; background:url(../images/list/bread.png) no-repeat right top; color:#333;}
+.alNav li:last-child{padding-right:0; background:none;}
+.alNav li a{display:block; color:#333;}
+
+.tagList{width:320px; margin:10px auto 0; letter-spacing:-4px;}
+.tagList a{margin:3px 0 18px 14px; min-width:42px; padding:0 10px; height:30px; line-height:32px;  text-align:center; color:#000; display:inline-block; overflow:hidden; letter-spacing:normal; background-color:#e4e4e4;}
+
+.tagNav{width:100%;}
+.tagNav li{line-height:38px;width:100%;background:#fff;cursor:pointer;}
+.tagNav span{display:block;color:#000;padding-left:18px;border-bottom:1px solid #e4e4e4;position:relative;}
+.tagNav span i{display:block;position:absolute;top:0;right:18px; width:14px; background:url(../images/index/icon-slide-down.png) no-repeat center center;}
+.tagNav span i.up{background-image:url(../images/index/icon-slide-up.png);}
+.tagNav .tagList{display:none;width:100%;border-bottom:1px solid #e4e4e4;}
+
+.tagList{width:320px;margin:0 auto; letter-spacing:-10px; } 
+.tagList a{width:47px;margin:14px 0 14px 14px; min-width:42px;  padding:0 10px; height:30px; line-height:32px;  text-align:center; color:#000; display:inline-block; overflow:hidden; letter-spacing:normal; background-color:#e4e4e4;}
+
+.tagListbrand{width:320px; margin:0 auto; letter-spacing:-10px; } 
+.tagListbrand a{width:72px; margin:3px 0 22px 14px; min-width:70px;  padding:0 10px; height:30px; line-height:32px;  text-align:center; color:#000; display:inline-block; overflow:hidden; letter-spacing:normal; background-color:#e4e4e4;}
+
+.tagNav{width:100%;}
+.tagNav li{line-height:38px;width:100%;background:#fff;cursor:pointer;}
+.tagNav span{display:block;color:#000;padding-left:18px;border-bottom:1px solid #e4e4e4;position:relative;}
+.tagNav span i{display:block;position:absolute;top:0;right:18px; width:14px; background:url(../images/index/icon-slide-down.png) no-repeat center center;}
+.tagNav span i.up{background-image:url(../images/index/icon-slide-up.png);}
+.tagNav .tagList{display:none;width:100%;border-bottom:1px solid #e4e4e4;}
+
+.tagList{width:320px;margin:0 auto; letter-spacing:-10px; } 
+.tagList a{width:47px;margin:14px 0 14px 14px; min-width:42px;  padding:0 10px; height:30px; line-height:32px;  text-align:center; color:#000; display:inline-block; overflow:hidden; letter-spacing:normal; background-color:#e4e4e4;}
+
+.tagListbrand{width:320px; margin:0 auto; letter-spacing:-10px; } 
+.tagListbrand a{width:72px; margin:3px 0 22px 14px; min-width:70px;  padding:0 10px; height:30px; line-height:32px;  text-align:center; color:#000; display:inline-block; overflow:hidden; letter-spacing:normal; background-color:#e4e4e4;}
+
+.tagNav{width:100%;}
+.tagNav li{line-height:38px;width:100%;background:#fff;cursor:pointer;}
+.tagNav span{display:block;color:#000;padding-left:18px;border-bottom:1px solid #e4e4e4;position:relative;}
+.tagNav span i{display:block;position:absolute;top:0;right:18px; width:14px; background:url(../images/index/icon-slide-down.png) no-repeat center center;}
+.tagNav span i.up{background-image:url(../images/index/icon-slide-up.png);}
+.tagNav .tagList{display:none;width:100%;border-bottom:1px solid #e4e4e4;}
+
+
+
+body .alContent{width:100%; min-width:320px; overflow:hidden;}
+
+.list_moreLink{display:block; height:44px; line-height:44px; overflow:hidden; text-align:center; color:#36393e; border-bottom:1px solid #ededed; background-color:#fff;}
+.list_backTopBtn{display:block; width:90px; height:45px; line-height:45px; margin:15px auto; text-align:center; color:#36393e; background:url(../images/backTop.png) no-repeat 65px center #ededed; background-size:8px 10px; -webkit-border-radius:5px; border-radius:5px;}
+
+.alBuy_btn{width:100%; text-align:center;}
+.alBuy_btn dd{padding:0;}
+.alBuy_btn a{height:45px; display:block; line-height:45px; margin:0 0 10px 0; -webkit-border-radius:5px; border-radius:5px; text-align:center; font-size:16px; font-weight:bold;}
+.alBuy_btn a:link, .alBuy_btn a:visited{background:-webkit-gradient(linear,left top,left bottom,color-stop(0,#e3b502),color-stop(0.5,#deb001),color-stop(1,#d3a400)); background:-moz-linear-gradient(top, #e3b502, #deb001 50%, #d3a400 100%); background:-o-repeating-linear-gradient(top, #e3b502, #deb001 50%, #d3a400 100%); color:#fff;}
+.alBuy_btn a:hover, .alBuy_btn a:active{background:-webkit-gradient(linear,left top,left bottom,color-stop(0,#bf9705),color-stop(0.5,#bf9705),color-stop(1,#bf9705)); background:-moz-linear-gradient(top, #bf9705, #bf9705 50%, #bf9705 100%); background:-o-repeating-linear-gradient(top, #bf9705, #bf9705 50%, #bf9705 100%); color:#723c0d;}
+
+.alBuy_btn a.overBtn:link, .alBuy_btn a.overBtn:visited{background:-webkit-gradient(linear,left top,left bottom,color-stop(0,#ededed),color-stop(0.5,#ededed),color-stop(1,#ededed)); background:-moz-linear-gradient(top, #ededed, #ededed 50%, #ededed 100%); background:-o-repeating-linear-gradient(top, #ededed, #ededed 50%, #ededed 100%); color:#d5d5d5;}
+
+.alBuy_btn a.moreBtn:link, .alBuy_btn a.moreBtn:visited{background: -moz-linear-gradient(top, #ededed, #e0e0e0 100%); background:-o-repeating-linear-gradient(top, #ededed, #e0e0e0 100%); background:-webkit-gradient(linear,left top,left bottom,from(#ededed),to(#e0e0e0)); color:#484848;}
+.alBuy_btn a.moreBtn:hover, .alBuy_btn a.moreBtn:active{background: -moz-linear-gradient(top, #d5d5d5, #d5d5d5 100%); background:-o-repeating-linear-gradient(top, #d5d5d5, #d5d5d5 100%); background:-webkit-gradient(linear,left top,left bottom,from(#d5d5d5),to(#d5d5d5));}
+
+.topBack{position:relative; height:44px; line-height:44px; border-bottom:1px solid #d5d5d5; background-color:#fff; text-align:center;}
+.topBack a.backBtn{position:absolute; top:0; left:0; width:44px; height:44px; line-height:44px; background:url(../images/back.png) no-repeat center center; background-size:8px 13px; z-index:100;}
+.topBack a.white_back{background:url(../images/back2.png) no-repeat center center; background-size:8px 13px;}
+
+.pageContent{position:relative; margin:0 auto;}
+.tabs_Cell:not(:first-of-type){display:none;}
+
+/* 旧版按钮 */
+.alList_submitBtn{ display:block;  margin:10px 40px 20px; background:-webkit-gradient(linear,left top,left bottom,color-stop(0,#e3b502),color-stop(0.5,#deb001),color-stop(1,#d3a400)); background:-moz-linear-gradient(top, #e3b502, #deb001 50%, #d3a400 100%); background:-o-repeating-linear-gradient(top, #e3b502, #deb001 50%, #d3a400 100%); color:#fff; height:45px;line-height:45px; -webkit-border-radius:5px; border-radius:5px; text-align:center;  font-size:16px; border:none;}
+.alList_submitBtn:hover{background:-webkit-gradient(linear,left top,left bottom,color-stop(0,#bf9705),color-stop(0.5,#bf9705),color-stop(1,#bf9705)); background:-moz-linear-gradient(top, #bf9705, #bf9705 50%, #bf9705 100%); background:-o-repeating-linear-gradient(top, #bf9705, #bf9705 50%, #bf9705 100%); color:#723c0d;}
+.alList_moreBtn{ display:block;  margin:10px 40px 20px; background: -moz-linear-gradient(top, #ededed, #e0e0e0 100%); background:-o-repeating-linear-gradient(top, #ededed, #e0e0e0 100%); background:-webkit-gradient(linear,left top,left bottom,from(#ededed),to(#e0e0e0)); color:#484848; height:45px; line-height:45px; -webkit-border-radius:5px; border-radius:5px; text-align:center; font-size:16px;}
+.alList_moreBtn:hover{background: -moz-linear-gradient(top, #d5d5d5, #d5d5d5 100%); background:-o-repeating-linear-gradient(top, #d5d5d5, #d5d5d5 100%); background:-webkit-gradient(linear,left top,left bottom,from(#d5d5d5),to(#d5d5d5));}
+.alOrder_buyBtn{ display:block;  margin:20px 20px 0; background:-webkit-gradient(linear,left top,left bottom,color-stop(0,#e3b502),color-stop(0.5,#deb001),color-stop(1,#d3a400)); background:-moz-linear-gradient(top, #e3b502, #deb001 50%, #d3a400 100%); background:-o-repeating-linear-gradient(top, #e3b502, #deb001 50%, #d3a400 100%); color:#fff; height:45px; line-height:45px; -webkit-border-radius:5px; border-radius:5px; text-align:center;  font-size:18px;}
+.alOrder_buyBtn:hover{background:-webkit-gradient(linear,left top,left bottom,color-stop(0,#bf9705),color-stop(0.5,#bf9705),color-stop(1,#bf9705)); background:-moz-linear-gradient(top, #bf9705, #bf9705 50%, #bf9705 100%); background:-o-repeating-linear-gradient(top, #bf9705, #bf9705 50%, #bf9705 100%); color:#723c0d;}
+
+.alOrder_buyWhiteBtn{height:36px; display:block; line-height:36px; margin:20px 20px 0;  background-color:#fffff; border:1px solid #DAD5D5; -webkit-border-radius:5px; border-radius:5px; text-align:center; color:#000000; font-size:18px;}
+#invoice .alList_submitBtn, #invoice .alList_moreBtn { display:inline-block; width:40%; margin:10px; }
+.invoice_submitBtn{vertical-align:top; -webkit-border-radius:6px; border-radius:6px; height:45px; line-height:45px;}
+.appContent{width:320px; margin:0 auto;}
+.dataContent{text-align:center; padding-top:210px; background:url(../images/wifi.png) no-repeat center 100px; background-size:90px;}
+.dataContent h3{font-size:16px; color:#484848; line-height:200%;}
+.dataContent p{font-size:12px; color:#838383; line-height:180%; padding-bottom:10px;}
+
+
+/*========================分类列表=============================*/
+.tagNav .categoryList{display:none;width:100%;border-bottom:1px solid #e4e4e4;}
+.categoryList a{border-radius: 5px;width:72px;margin:3px 0 5px 9px; min-width:42px;  padding:0 10px; height:30px; line-height:32px;  text-align:center; color:#000; display:inline-block; overflow:hidden; letter-spacing:normal; background-color:#f7f7f7;}
+.errorMsg{border:none; color:#b51111; padding:0; height:0px; line-height:25px; text-align:center;}
+
+/* APP下载 */
+.app_box{width:260px; margin:40px auto 0; text-align:center;}
+.app_box h2{font-size:18px; color:#484848; line-height:40px;}
+.app_box p{line-height:24px; color:#838383; font-weight:bold;}
+.app_box span{display:block; padding:25px 0; width:210px; margin:0 auto;}
+.app_box span a{display:block; height:100px; width:100px; background-position:0 0; background-repeat:no-repeat; background-size:100px 100px; float:left;}
+.app_box span a.iphone{background-image:url(../images/iphone.jpg); margin-right:10px;}
+.app_box span a.android{background-image:url(../images/android.jpg); margin-right:0;}
+
+
+/* ====================   尾部通用  ================= */
+footer{width:100%; border-top:1px solid #dbdbdb;}
+
+.alDownload_AppBtn{width:260px; margin:0 auto; padding:13px 0;}
+.alDownload_AppBtn dd{height:40px; line-height:20px; overflow:hidden; clear:both;}
+.alDownload_AppBtn dd a{display:block; color:#333; font-size:12px; float:left;}
+.alDownload_AppBtn dd a:last-child{float:right;}
+.alDownload_AppBtn dd img{vertical-align:middle;}
+
+.alService{height:30px; padding:5px 0 10px 0;}
+.alNotice{display:-webkit-box; display:-moz-box; display:-o-box; display:box; width:100%;}
+.alNotice li{height:30px; line-height:30px; -webkit-box-flex:1; -moz-box-flex:1; -o-box-flex:1; box-flex:1; color:#333; text-align:center;}
+.alNotice li a{display:block; color:#333; text-align:center;}
+.alNotice li img{vertical-align:middle;}
+
+.alCopyright{text-align:center; background:#f5f5f5; padding:5px 0 0 0;}
+.alCopyright p{height:35px; line-height:35px;}
+.alCopyright p a{margin:0 8px; color:#333;}
+.alCopyright p a.tel{color:#000;}
+.alCopyright p a.userBtn{color:#b51111;}
+.alScrollTop{display:block; padding:5px 0; height:30px; line-height:30px; color:#333; overflow:hidden;}
+.alScrollTop img{vertical-align:text-top;}
+
+
+/*微信公共尾部*/
+.wx_foot{border-top:0 none; width:300px; margin:0 auto;}
+
+.wx_menu{height:30px; padding:30px 0 5px 0;}
+.wx_menu{display:-webkit-box; display:-moz-box; display:-o-box; display:box; width:100%;}
+.wx_menu li{height:30px; line-height:30px; -webkit-box-flex:1; -moz-box-flex:1; -o-box-flex:1; box-flex:1; color:#2d6ccb; text-align:center;}
+.wx_menu li a{display:block; color:#2d6ccb; text-align:center;}
+
+.wxCopyright{border-top:1px solid #dbdbdb; width:280px; margin:0 auto; text-align:center; line-height:160%; padding:5px 0; font-size:12px; color:#838383;}
+.wxCopyright span{display:block; color:#484848; line-height:200%; font-size:14px;}
+
+.black_bg{background-color:#000; width:100%;}
+.black_bg .wx_menu li, .black_bg .wx_menu li a{color:#8aaedf;}
+.black_bg .wxCopyright{border-top:1px solid #484848; color:#484848;}
+.black_bg .wxCopyright span{color:#484848;}
+
+.topFix{
+	/*position:fixed;
+	left:50%;
+	top:0px;
+	z-index:10;
+	margin-left:-50%;*/
+	width:100%;
+}
+.topFix section{
+	display:block;
+	font-size:0;
+	/*position:absolute;*/
+	width:100%;
+}
+
+.leftFix{
+	position:fixed;
+	left:50%;
+	top:0px;
+	z-index:10;
+	margin-left:-160px;
+	width:320px;
+	height:45px;
+}
+.addFixed{
+	position:fixed;
+	left:50%;
+	top:0px;
+	z-index:10;
+	margin-left:-160px;
+}
+.leftFix p{
+	display:block;
+	font-size:0;
+	position:absolute;
+}
+.leftFix p a{
+	position:absolute;
+	top:8px;
+	width:50px;
+	height:30px;
+	line-height:30px;
+	overflow:hidden;
+	text-align:center;
+	color:#fff;
+}
+.leftFix p a.pageBack{
+	left:10px;
+	background:url(../images/ifc/top_btn.png) no-repeat 0 0;
+	background-size:100%;
+}
+.leftFix p a.pageBack:hover, .leftFix p a.pageBack:active{
+	background:url(../images/ifc/top_Hbtn.png) no-repeat 0 0;
+	background-size:100%;
+}
+
+.pageContent{position:relative;}
+.tabs_Cell:not(:first-of-type){display:none;}
+    </style>
+    <style type="text/css">
+        @@charset "utf-8";
+/* CSS Document */
+
+.detail_block {
+	width: 100%;
+	clear: both;
+}
+.detail_block header {
+	height: auto;
+	line-height: 30px;
+	border-bottom: 1px solid #dbdbdb;
+	padding: 0 10px;
+}
+.detail_block header h3 {
+	padding: 0 30px 0 10px;
+	color: #333;
+	font-weight: normal;
+	line-height: 120%;
+	font-weight: 700;
+	font-size: 14px;
+	padding: 10px 0 0 0;
+}
+.detail_block header h3 em {
+	font-weight: normal;
+	font-size: 14px;
+	display: block;
+}
+.detail_block header span {
+	display: block;
+	color: #666;
+	font-size: 12px;
+}
+#J_m-slider {
+	width: 320px;
+	height: 320px;
+	margin: 0 auto;
+	overflow: hidden;
+	position: relative;
+	padding: 10px 0 0 0;
+}
+#J_m-slider .slider-outer {
+	width: 225px;
+	height: 300px;
+	overflow: hidden;
+	position: relative;
+	margin: 0 auto;
+}
+#J_m-slider ul {
+	width: 1600px;
+	height: 300px;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+#J_m-slider ul li {
+	width: 225px;
+	height: 300px;
+	overflow: hidden;
+	float: left;
+}
+#J_m-slider .slider-status {
+	width: 100%;
+	height: 10px;
+	bottom: 10px;
+	left: 0;
+	text-align: center;
+}
+#J_m-slider .slider-status span {
+	display: inline-block;
+	width: 6px;
+	height: 6px;
+	background-color: #a9a9a9;
+	;
+	border-radius: 3px;
+	line-height: 3px;
+	cursor: pointer;
+	margin: 0 5px 0 0;
+}
+#J_m-slider .slider-status span.sel {
+	background-color: #98000d;
+}
+#J_m-slider .pg-btn {
+	width: 37px;
+	height: 300px;
+	line-height: 300px;
+	text-indent: -9999px;
+	background: url(/images/index/icon-slide-next.png) no-repeat center center;
+	position: absolute;
+	top: 0px;
+}
+#J_m-slider .pg-btn a {
+	display: block;
+	width: 37px;
+	height: 300px;
+	text-align: center;
+}
+#J_m-slider .prev {
+	-webkit-transform: rotate(180deg);
+	-moz-transform: rotate(180deg);
+	-o-transform: rotate(180deg);
+	transform: rotate(180deg);
+	left: 0;
+}
+#J_m-slider .next {
+	right: 0;
+}
+.alProdInfo {
+	background: #f1f1f1;
+	padding: 10px;
+}
+.alProdInfo dl {
+	display: block;
+}
+.alProdInfo dt, .alProdInfo dd {
+	display: block;
+	vertical-align: middle;
+}
+.alProdInfo dt {
+	line-height: 35px;
+	color: #666;
+	width: 100%;
+}
+.alProdInfo dd {
+	padding: 0 0 0 15px;
+	color: #c00808;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.alProdInfo dd del {
+	color: #999;
+}
+.alProdInfo .fillColor {
+	padding: 5px 0 5px 15px;
+}
+.alProdInfo .fillColor span {
+	width: 36px;
+	height: 36px;
+	display: inline-block;
+	border: 1px solid #686868;
+	margin: 0 10px 5px 0;
+	overflow: hidden;
+	position: relative;
+}
+.alProdInfo .fillColor span img {
+	border: 1px solid #fff;
+	vertical-align: top;
+}
+.alProdInfo .fillColor span i {
+	display: block;
+	width: 12px;
+	height: 12px;
+	position: absolute;
+	right: 1px;
+	bottom: 1px;
+	display: none;
+}
+.alProdInfo .fillColor span i img {
+	display: block;
+	float: left;
+	border: none;
+}
+.alProdInfo .fillColor span.cur {
+	border: 1px solid #B9966A;
+}
+.alProdInfo .fillColor span.cur img {
+	border: 1px solid #B9966A;
+}
+.alProdInfo .fillColor span.cur i {
+	display: block;
+}
+.alProdInfo .fillColor span.cur i img {
+	border: none;
+}
+.alProdInfo .fillSize {
+	padding: 5px 0 5px 15px;
+}
+.alProdInfo .fillSize span {
+	min-width: 36px;
+	height: 36px;
+	background: #fff;
+	color: #000;
+	font-weight: normal;
+	line-height: 36px;
+	text-align: center;
+	display: inline-block;
+	border: 1px solid #adadad;
+	margin: 0 10px 5px 0;
+	overflow: hidden;
+}
+.alProdInfo .fillSize span a {
+	color: #000;
+	display: block;
+	border: 1px solid #fff;
+	height: 34px;
+	line-height: 34px;
+	position: relative;
+}
+.alProdInfo .fillSize span a i {
+	display: block;
+	width: 12px;
+	height: 12px;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	display: none;
+}
+.alProdInfo .fillSize span i img {
+	display: block;
+	float: left;
+}
+.alProdInfo .fillSize span.cur {
+	border: 1px solid #B9966A;
+}
+.alProdInfo .fillSize span.cur a {
+	border: 1px solid #B9966A;
+}
+.alProdInfo .fillSize span.cur a i {
+	display: block;
+}
+.alProdInfo .fillNumber select {
+	height: 28px;
+	line-height: 28px;
+	width: 60px;
+	text-align: center;
+	border: 1px solid #ccc;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	-o-appearance: none;
+	-webkit-border-radius: 0px;
+	border-radius: 0px;
+}
+#alProdInfo {
+	line-height: 35px;
+	padding: 5px 0;
+}
+.alProdInfo .size_link {
+	color: #00f;
+	display: block;
+	line-height: 30px;
+}
+.alProdInfo .alBuy_btn {
+	width: 100%;
+	text-align: center;
+}
+.alProdInfo .alBuy_btn dd {
+	padding: 0;
+}
+.alProdInfo .alBuy_btn a {
+	height: 43px;
+	display: inline-block;
+	line-height: 43px;
+	margin: 0 30px 10px; /*background:-webkit-gradient(linear,left top,left bottom,color-stop(0,#c22323),color-stop(0.5,#b91d1d),color-stop(1,#ae1616)); background:-moz-linear-gradient(top, #c22323, #b91d1d 50%, #ae1616 100%); background:-o-repeating-linear-gradient(top, #c22323, #b91d1d 50%, #ae1616 100%); border:1px solid #de7f7f; color:#fff;*/
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	text-align: center;
+	font-size: 16px;
+	width: 43%;
+	color: #fff;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #E3B502), color-stop(0.5, #DEB001), color-stop(1, #D3A400));
+	background: -moz-linear-gradient(top, #e3b502, #deb001 50%, #d3a400 100%);
+	background: -o-repeating-linear-gradient(top, #e3b502, #deb001 50%, #d3a400 100%);
+}
+.alProdInfo .alBuy_btn a:hover {
+	background: #BF9705;
+	color: #723C0D;
+}
+.alProdInfo .alBuy_btn a.alList_moreBtn {
+	background: -moz-linear-gradient(top, #ededed, #e0e0e0 100%);
+	background: -o-repeating-linear-gradient(top, #ededed, #e0e0e0 100%);
+	background: -webkit-gradient(linear, left top, left bottom, from(#EDEDED), to(#E0E0E0));
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	text-align: center;
+	color: #484848;
+	border: none;
+}
+.alProdInfo .alBuy_btn a.alList_moreBtn:hover {
+	background: #D5D5D5;
+	color: #484848;
+}
+.alProdInfo .alBuy_overbtn a {
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ededed), color-stop(0.5, #e9eae9), color-stop(1, #e0e0df));
+	background: -moz-linear-gradient(top, #ededed, #e9eae9 50%, #e0e0df 100%);
+	background: -o-repeating-linear-gradient(top, #ededed, #e9eae9 50%, #e0e0df 100%);
+	color: #d5d5d5;
+}
+.alProdInfo .alBuy_overbtn a:hover {
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ededed), color-stop(0.5, #e9eae9), color-stop(1, #e0e0df));
+	background: -moz-linear-gradient(top, #ededed, #e9eae9 50%, #e0e0df 100%);
+	background: -o-repeating-linear-gradient(top, #ededed, #e9eae9 50%, #e0e0df 100%);
+	color: #d5d5d5;
+}
+.alProdInfo .alShareBtn {
+	text-align: right;
+	padding: 0;
+	width: 100%;
+}
+.alProdInfo .alShareBtn dd {
+	padding: 0 10px 0 0;
+	height: 35px;
+	line-height: 35px;
+}
+.alProdInfo .alShareBtn dd img {
+	vertical-align: text-top;
+}
+.alProdInfo .alShareBtn a {
+	display: block;
+	color: #666;
+}
+.alProd_intro {
+	border-top: 2px solid #dd0017;
+}
+.alProd_introMenu {
+	height: 38px;
+	line-height: 38px;
+	background: #fff;
+	border-bottom: 1px #ccc solid;
+}
+.alProd_introMenu ul {
+	display: -webkit-box;
+	display: -moz-box;
+	display: box;
+	width: 100%;
+}
+.alProd_introMenu li {
+	-webkit-box-flex: 1;
+	-moz-box-flex: 1;
+	box-flex: 1;
+	text-align: center;
+	border-right: 1px #ccc solid;
+}
+.alProd_introMenu li:last-child {
+	border-right: 0;
+}
+.alProd_introMenu li.cur {
+	font-size: 14px;
+	position: relative;
+	background-color: #f1f1f1;
+}
+.alProd_introMenu li a {
+	display: block;
+	height: 38px;
+	line-height: 38px;
+	overflow: hidden;
+	color: #000;
+	font-size: 14px;
+}
+.alProd_introMenu li.cur a {
+	color: #000;
+}
+.alProd_introCell {
+	padding: 10px;
+}
+.alProd_introCell h1 {
+	font-size: 14px;
+	line-height: 40px;
+	margin: 5px 0;
+}
+.alProd_introCell p {
+	color: #666;
+	line-height: 160%;
+}
+/*弹出层*/
+#popup_container {
+	opacity: 1;
+	color: #000;
+	font-weight: normal;
+	line-height: 1.5;
+	width: 250px;
+	background-color: #fff;
+}
+#popup_content {
+	padding: 0;
+}
+#popup_title {
+	position: relative;
+	border: 0 none;
+}
+#popup_title .title_close {
+	width: 26px;
+	height: 26px;
+	position: absolute;
+	top: -8px;
+	right: -8px;
+	background: url(../../images/close.png) no-repeat 0 0;
+	background-size: 26px 26px;
+	cursor: pointer;
+	z-index: 99999;
+}
+#popup_message {
+	height: auto;
+	margin: 0;
+	padding: 20px;
+	text-shadow: none;
+}
+#popup_message p {
+	font-size: 12px;
+	padding: 20px 0;
+	line-height: 180%;
+}
+#popup_container p i {
+	color: #e13624;
+}
+
+    </style>
+
+<!-- icon -->
+<link rel="apple-touch-icon" href="/images/touch-icon-iphone.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/images/touch-icon-ipad.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/images/touch-icon-iphone4.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/images/touch-icon-newipad.png">
+<!-- 启动自定义图片(png, 320X640) -->
+<link rel="apple-touch-startup-image" sizes="72x72" href="/images/logo/loading.png">
+
+<script type="text/javascript" src="/Areas/Shangpin/Scripts/lib/jquery.js" charset="utf-8"></script>  
+ <script type="text/javascript">
+     $(document).ready(function () {
+         $("img[lazy]").each(function () {
+             $(this).attr("src", $(this).attr("lazy")).removeAttr("lazy");
+         });
+     });
+ </script>
+</head>
+
+<body>
+
+<header>
+  <h1 id="alLogo">
+    <a href="#">尚品奥莱</a>
+  </h1>
+  <nav class="alUser_icon">
+   <ul>
+    <li><a href="#"><img src="/images/cart_icon.png" width="31" height="31" alt="购物袋"></a></li>
+    <li><a href="#"><img src="/images/order_icon.png" width="31" height="31" alt="订单"></a></li>
+    <li><a href="#"><img src="/images/user_icon.png" width="31" height="31" alt="账户"></a></li>
+   </ul>
+  </nav>
+</header>
+
+<nav class="alNav">
+  <ul>
+    <li><a href="/html/index.html">女士</a></li>
+    <li><a href="/html/list.html">最新特卖</a></li>
+    <li>ULTIMAEDIZIONE 意大利奢华饰品专场</li>
+  </ul>
+</nav>
+
+<div class="alContent">
+  
+  <section class="detail_block">
+    <header>
+  	  <h3>PATRIZIA PEPE<em>@pObj.ProductName</em></h3>
+      <span>商品编号：@pObj.ProductNo</span>
+    </header>
+      
+    <!-- 图片轮播 Start -->
+    <div class="content" id="J_m-slider">
+        <div class="slider-outer">
+            <ul class="slider-wrap">
+                <li><img alt="" width="225" height="300" src="/ReadPic/GetPic.ashx?width=0&height=0&pictureFileNo=@(picList.Count()>0? picList.ElementAt(0):"")&type=1"></li>
+            	<li><img alt="" width="225" height="300" src="/ReadPic/GetPic.ashx?width=0&height=0&pictureFileNo=@(picList.Count()>0? picList.ElementAt(0):"")&type=1"></li>
+            </ul>
+        </div>
+        <div class="prev pg-btn"><a>上一页</a></div>
+        <div class="slider-status" ></div>
+        <div class="next pg-btn"><a>下一页</a></div>
+    </div>
+    <!-- 图片轮播 End -->
+    
+    <div class="alProdInfo">
+      <dl>
+        <dt>价格：</dt>
+        <dd><strong>&yen;@pObj.MarketPrice</strong>　<del>&yen;@pObj.LimitedPrice</del></dd>
+      </dl>
+      <dl>
+        <dt>颜色：</dt>
+        <dd class="fillColor">
+          @for (int i = 0; i < picList.Count(); i++)
+          {
+            <span data-title="@i">
+                <img width="34" height="34" src="/ReadPic/GetPic.ashx?width=0&height=0&pictureFileNo=@(picList.ElementAt(i))&type=1"  class="img_cursor" style="opacity: 1;" />
+            </span>
+          }
+        </dd>
+        <input type="hidden" id="colorVal" value="0">
+      </dl>
+      <dl>
+        <dt>尺码：</dt>
+        <dd class="fillSize">
+          <span class="cur" data-title="0"><a href="#">s<i><img src="/images/cur_icon.png" width="12" height="12"></i></a></span>
+          <span data-title="1"><a href="#">s<i><img src="/images/cur_icon.png" width="12" height="12"></i></a></span>
+        </dd>
+        <input type="hidden" id="sizeVal" value="0">
+      </dl>
+      <dl>
+        <dt>数量：</dt>
+        <dd class="fillNumber">
+          <select>
+            <option value="1" selected="selected">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </dd>
+      </dl>
+      <dl>
+        <dd id="alProdInfo">请选择尺码</dd>
+      </dl>
+      <dl class="alBuy_btn">
+        <dd><a href="#" class="alList_moreBtn">加入收藏</a><a href="login.html">立刻购买</a></dd>
+      </dl>
+      <dl class="alBuy_btn alBuy_overbtn">
+        <dd><a href="#" class="alList_moreBtn">加入收藏</a><a href="javascript:;">已售罄</a></dd>
+      </dl>
+      <dl class="alShareBtn">
+        <dd><a href="#">分享到：<img src="/images/sina_icon.png" width="16" height="16"></a></dd>
+      </dl>
+    </div>
+    
+    <div class="alService">
+      <ul class="alNotice">
+        <li><img src="/images/zp_icon.png" width="30" height="30" alt="正品保证"> 正品保证</li>
+        <li><img src="/images/my_icon.png" width="30" height="30" alt="免运费"> 免运费　</li>
+        <li><img src="/images/sc_icon.png" width="30" height="30" alt="支持试穿"> 支持试穿</li>
+      </ul>
+    </div>
+    
+    <section class="alProd_intro">
+      <nav class="alProd_introMenu">
+        <ul>
+         <li class="cur"><a href="javascript:;">商品详情</a></li>
+         <li><a href="javascript:;">售后服务</a></li>
+         <li><a href="javascript:;">品牌介绍</a></li>
+        </ul>
+      </nav>
+
+      @if (!string.IsNullOrEmpty(ViewBag.DetailHTML))
+      {
+          <div class="alProd_introCell">
+            @Html.Raw(ViewBag.DetailHTML)
+          </div>
+      }
+      
+      @*<div class="alProd_introCell">
+        <h1>买手推荐</h1>
+		<p>Armani 男士系带运动鞋，采用斜纹帆布拼接皮革制成，在精致工艺的打造下，设计Logo字母图案，注入豪华质感与年轻活力，橡胶鞋底防滑耐磨，集休闲与运动实用性于一体，成为年轻大众受欢迎的鞋款。</p>
+        <h1>基本信息</h1>
+        <p>商品名称： 男士系带运动鞋<br />
+        商品货号： X4X009.XAD87.A562<br />
+        商品材质： 帆布、牛皮<br />
+        品牌属地： 意大利<br />
+        商品产地： 匈牙利<br />
+        附带鞋履原厂配件： 防尘袋/包装盒<br />
+        颜色： 卡其色</p>
+      </div>
+      
+      <div class="alProd_introCell" style="display:none;">
+        <h1>2买手推荐</h1>
+		<p>Armani 男士系带运动鞋，采用斜纹帆布拼接皮革制成，在精致工艺的打造下，设计Logo字母图案，注入豪华质感与年轻活力，橡胶鞋底防滑耐磨，集休闲与运动实用性于一体，成为年轻大众受欢迎的鞋款。</p>
+        <h1>基本信息</h1>
+        <p>商品名称： 男士系带运动鞋<br />
+        商品货号： X4X009.XAD87.A562<br />
+        商品材质： 帆布、牛皮<br />
+        品牌属地： 意大利<br />
+        商品产地： 匈牙利<br />
+        附带鞋履原厂配件： 防尘袋/包装盒<br />
+        颜色： 卡其色</p>
+      </div>
+      
+      <div class="alProd_introCell" style="display:none;">
+        
+	        <h1>品牌介绍</h1>
+			<p></p><p style="TEXT-ALIGN: left; MARGIN: 0cm 0cm 0pt; mso-pagination: widow-orphan; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto" class="MsoNormal" align="left"><b style="mso-bidi-font-weight: normal"><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt" lang="EN-US">&nbsp;Dolce&amp;Gabbana</span></b><b><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt">品牌简介：</span></b><b style="mso-bidi-font-weight: normal"><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt" lang="EN-US"><!--?xml:namespace prefix = o ns = "urn:schemas-microsoft-com:office:office" /--><o:p></o:p></span></b></p>
+<p style="TEXT-ALIGN: left; MARGIN: 0cm 0cm 0pt; mso-pagination: widow-orphan; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto" class="MsoNormal" align="left"><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt" lang="EN-US"></span>&nbsp;</p>
+<p style="TEXT-ALIGN: left; MARGIN: 0cm 0cm 0pt; mso-pagination: widow-orphan; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto" class="MsoNormal" align="left"><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt" lang="EN-US"></span><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt">英文名：<span lang="EN-US">Dolce&amp;Gabbana<br></span>中文名：杜嘉班纳<span lang="EN-US"><br></span>创始人：<span lang="EN-US">Domenico Dolce</span>、<span lang="EN-US">Stefano Gabbana&nbsp;&nbsp; <br></span>杜嘉班纳<span lang="EN-US"> (Dolce&amp;Gabbana) </span>取自<span lang="EN-US">2</span>位意大利设计师的名字，杜梅尼科<span lang="EN-US">· </span>多尔奇<span lang="EN-US"> (Domenico Dolce) </span>和斯蒂芬诺<span lang="EN-US">·</span>嘉班纳<span lang="EN-US"> (Stefano Gabbana)</span>。杜嘉班纳<span lang="EN-US"> (Dolce&amp;Gabbana) </span>的作风非常独特，创业之初步不但婉拒交付大成衣工厂代工生产，坚持自己制版、裁缝、样品和装饰配件及所有服装，还只任用非职业模特儿走秀，对于当时讲究排场的时装界，是相当独树一格的。杜嘉班纳<span lang="EN-US"> (Dolce&amp;Gabbana) </span>的展示会中，经常播放古典音乐，而化妆、地中海发型及具有一头黑发和南方女子身材的模特所经营出的南意大利西西里岛风情，几乎以成为杜嘉班纳<span lang="EN-US"> (Dolce&amp;Gabbana) </span>独特的标志风格。<span lang="EN-US"><o:p></o:p></span></span></p>
+<p style="TEXT-ALIGN: left; MARGIN: 0cm 0cm 0pt; mso-pagination: widow-orphan; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto" class="MsoNormal" align="left"><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt">杜嘉班纳<span lang="EN-US"> (Dolce&amp;Gabbana) </span>首次在时装界脱颖而出是于<span lang="EN-US">1985</span>年在米兰时装秀上展示他们的以三种名称命名的新概念产品系列。杜嘉班纳<span lang="EN-US"> (Dolce&amp;Gabbana) </span>的服装一直都以天主教妇女身上的黑色作为最主要的用色，南欧宗教色彩也转移为图案的表现上。除了南意大利西西里岛的创作灵感，强调性感的曲线，像是内衣式的背心剪裁搭配西装，是杜嘉班纳<span lang="EN-US"> (Dolce&amp;Gabbana) </span>最典型的服装造型。&nbsp;</span></p>
+<div align="center">
+<p style="TEXT-ALIGN: center; MARGIN: 0cm 0cm 0pt; mso-pagination: widow-orphan" class="MsoNormal" align="center"><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt">两位设计师合影<span lang="EN-US">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <o:p></o:p></span></span></p>
+<p style="TEXT-ALIGN: center; MARGIN: 0cm 0cm 0pt; mso-pagination: widow-orphan" class="MsoNormal" align="center"><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt" lang="EN-US">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt" lang="EN-US">&nbsp;</span><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt">两位设计师同时也是一对高品位的同性恋人，他们将他们的意大利精神变成一面旗帜。两位设计师将他们感性而独特的风格演绎并推行到全球。两位年轻的设计师面向年轻人，并从年轻人身上撷取灵感。两位设计师深受好莱坞明星的青睐，是他们最喜爱的设计师；两位设计师为当今所有摇滚乐歌星设计服装，并获选为无可争议的设计先锋人物。二人让<span lang="EN-US">Dolce&amp;Gabbana</span>（杜嘉班纳）以<span lang="EN-US">"</span>使影星看起来像影星<span lang="EN-US">"</span>而闻名，他们的服装受到诸如<span lang="EN-US">Isabella Rossellini</span>（伊莎贝拉<span lang="EN-US">•</span>罗塞利尼）<span lang="EN-US">, Madonna</span>（麦当娜）<span lang="EN-US">, Demi Moore</span>（戴米<span lang="EN-US">•</span>摩尔）、<span lang="EN-US"> Nicole Kidman</span>（妮可<span lang="EN-US">•</span>基德曼）、<span lang="EN-US">Monica Bellucci</span>（莫尼卡<span lang="EN-US">•</span>贝鲁奇）、<span lang="EN-US">Kylie Minogue</span>（凯莉<span lang="EN-US">•</span>米洛）、<span lang="EN-US">Victoria Beckham</span>（维多利亚<span lang="EN-US">•</span>贝克汉姆）、<span lang="EN-US">Angelina Jolie</span>（安吉丽娜<span lang="EN-US">•</span>朱莉）众多名人的青睐。<span lang="EN-US"><o:p></o:p></span></span></p>
+<p style="TEXT-ALIGN: center; MARGIN: 0cm 0cm 0pt; mso-pagination: widow-orphan" class="MsoNormal" align="center"><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt" lang="EN-US">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt">这一品牌是标有<span lang="EN-US">"</span>意大利制造<span lang="EN-US">"</span>的产品的新生代的顶级代表，很快便享誉全球。首次的成功给予了<span lang="EN-US">Dolce&amp;Gabbana</span>（杜嘉班纳）极大的信心，得以使他们在时装设计上沿着其自己独特的视角继续创造属于他们自己的时装品牌。自此，其产品经营范围便渐渐扩大开来。<span lang="EN-US"><o:p></o:p></span></span></p>
+<p style="TEXT-ALIGN: left; MARGIN: 0cm 0cm 0pt; mso-pagination: widow-orphan" class="MsoNormal" align="left"><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt" lang="EN-US">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt" lang="EN-US">&nbsp;Dolce&amp;Gabbana</span><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt">（杜嘉班纳）是梦想的表达：一个以独特的服装设计和高水平的剪裁而著称的豪华品牌。 <span lang="EN-US"><o:p></o:p></span></span></p>
+<p style="TEXT-ALIGN: left; MARGIN: 0cm 0cm 0pt; mso-pagination: widow-orphan" class="MsoNormal" align="left"><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt" lang="EN-US">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt" lang="EN-US">Dolce&amp;Gabbana</span><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt">（杜嘉班纳）品牌多年来不断发展壮大，但总是保持自己的标准。 一种独特的风格，非传统豪华的表达，一季接一季地将创新和强烈的独特地中海烙印相结合。对立的特征构成最深刻的本质。<span lang="EN-US"> Domenico Dolce</span>曾讲过：<span lang="EN-US">"</span>我们最关心的是创造最好的，而不是一味地追随时髦<span lang="EN-US">……"</span>。<span lang="EN-US">Dolce&amp;Gabbana</span>（杜嘉班纳）这一来自意大利的最<span lang="EN-US">Hot</span>的时装店获得了富于奇想的年轻一代及追求前卫一族的钟爱。<span lang="EN-US">Dolce&amp;Gabbana</span>（杜嘉班纳）的店面风格可以定义为乐观、现代与具有触摸火箭般的时速感。<span lang="EN-US"><o:p></o:p></span></span></p>
+</div>
+<div align="left">&nbsp;</div>
+<div align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt" lang="EN-US"><strong>D&amp;G</strong></span><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt">在<span lang="EN-US">1994</span>年推出，是<span lang="EN-US">Dolce&amp;Gabbana</span>（杜嘉班纳）公司更年轻、更华丽的产品线。<span lang="EN-US">D&amp;G</span>是一个兼容并蓄的现代品牌，代表都市的魅力，展现着不断变化的世界。<span lang="EN-US">D&amp;G</span>通常以都市为设计灵感的休闲风格服饰为主，在价格上也相对较低，与注重奢华的款式和质料、价格较高、变化较少的<span lang="EN-US">Dolce&amp;Gabbana</span>（杜嘉班纳）相区别。<span lang="EN-US">D&amp;G</span>尝试着引领潮流，而不是跟随潮流。很多人以为<span lang="EN-US">D&amp;G</span>是<span lang="EN-US">Dolce&amp;Gabbana</span>（杜嘉班纳）的缩写，其实它们是两个截然不同的系列。而<span lang="EN-US">Dolce&amp;Gabbana</span>（杜嘉班纳）的皮具及鞋子中常出现<span lang="EN-US">“DG”</span>的标记，可以理解为<span lang="EN-US">DG</span>才是<span lang="EN-US">Dolce&amp;Gabbana</span>（杜嘉班纳）的缩写。</span> 
+<p style="TEXT-ALIGN: left; MARGIN: 0cm 0cm 0pt; mso-pagination: widow-orphan" class="MsoNormal" align="left"><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt" lang="EN-US">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt">作为<span lang="EN-US">Dolce&amp;Gabbana</span>（杜嘉班纳）的副线，延续一线品牌精神的同时，更加入幽默风趣而狂放的元素，以此来吸引年轻人，狂野的豹纹曾经一度是<span lang="EN-US">D&amp;G</span>的代表性图案，成为年轻人向往的欧洲风格的流行标志。</span><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt" lang="EN-US">&nbsp;<o:p></o:p></span></p>
+<p style="TEXT-ALIGN: left; MARGIN: 0cm 0cm 0pt; mso-pagination: widow-orphan" class="MsoNormal" align="left"><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt" lang="EN-US">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt" lang="EN-US">D&amp;G</span><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt">不论在款式及颜色上，都显得年轻许多。而在设计上，则大量运用了各种具有弹性的材质，加上鲜艳的颜色，使其服装时髦且容易穿着。<span lang="EN-US">D&amp;G</span>也正是年轻人精神的体现，代表着自由、个性的年轻化风格，身上有时还带着些反叛的味道。<span lang="EN-US"><o:p></o:p></span></span></p>
+<p style="TEXT-ALIGN: left; MARGIN: 0cm 0cm 0pt; mso-pagination: widow-orphan; mso-margin-top-alt: auto; mso-margin-bottom-alt: auto" class="MsoNormal" align="left"><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt" lang="EN-US">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt" lang="EN-US">D&amp;G</span><span style="FONT-FAMILY: '微软雅黑','sans-serif'; FONT-SIZE: 9pt; mso-bidi-font-family: Arial; mso-font-kerning: 0pt">以独特的设计成为给时尚圈带来活力四射的风格与创意的品牌。<span lang="EN-US">D&amp;G</span>除了是一种风格外，它更代表了一种生活方式：这个品牌说的是年轻人的语言，以完全自由地试验材料和形状为乐。<span lang="EN-US"> D&amp;G</span>生活在没有地理边界的当代大都会，从中汲取刺激、灵感，然后转化成富有设计内涵的时装系列，充满讽刺和反对随波逐流。 <span lang="EN-US"><o:p></o:p></span></span></p></div>
+<div align="left"><br>&nbsp;</div><p></p>
+	    
+      </div>*@
+      
+    </section>
+      
+  </section>
+  
+</div>
+
+<footer>
+
+  <dl class="alDownload_AppBtn">
+    <dd><a href="#">尚品奥莱客户端<br />iPhone　版下载 <img src="/images/app_btn.png" width="143" height="40" alt="iPhoneapp"></a></dd>
+  </dl>
+  
+  <div class="alService">
+    <ul class="alNotice">
+      <li><img src="/images/zp_icon.png" width="30" height="30" alt="正品保证"> 正品保证</li>
+      <li><img src="/images/my_icon.png" width="30" height="30" alt="免运费"> 免运费　</li>
+      <li><img src="/images/sc_icon.png" width="30" height="30" alt="支持试穿"> 支持试穿</li>
+    </ul>
+  </div>
+  
+  <div class="alCopyright">
+    <p> <a href="#" class="userBtn">vgnxpjty,正式会员</a> </p>
+    <p> <a href="#">首页</a>  <a href="#">购物袋</a>  <a href="#">查看订单</a>  <a href="#">我的账户</a> </p>
+    <p>客服电话：4006-900-900</p>
+     <a href="javascript:;" class="alScrollTop"><img src="/images/scrollTop_icon.png" width="13" height="14" alt="回顶部"> 回顶部</a>
+  </div>
+  
+  
+</footer>
+
+</body>
+</html>
+
+ 
+
+ 

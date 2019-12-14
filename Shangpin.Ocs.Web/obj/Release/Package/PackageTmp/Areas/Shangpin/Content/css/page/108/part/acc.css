@@ -1,0 +1,17 @@
+.sp_ifc_bags {
+	background: url(/images/page/ifc/acc/main_bg.jpg) no-repeat center top;
+}
+.sp_bagstitle_tab a {
+	width: 239px;
+}
+.sp_bagstitle_tab a.cur {
+	background: url(/images/page/ifc/acc/title_tab_icon.png) no-repeat center top;
+	border-color: #d2a718;
+}
+.sp_ifc_bagscn li a span ins {
+	color: #fec708;
+}
+.ifc_right_box h3 {
+	background-image:url(/images/page/ifc/acc.png);
+	font-size:12px;
+}

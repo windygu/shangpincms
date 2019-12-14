@@ -1,0 +1,105 @@
+﻿@{ 
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+
+<link href="/Areas/Outlet/Content/css/init.css" rel="stylesheet" type="text/css" charset="utf-8" />
+<link href="/Areas/Outlet/Content/css/page/rightcontent/rightcontent.css" rel="stylesheet" type="text/css" charset="utf-8" />
+<script type="text/javascript" src="/Areas/Outlet/Scripts/lib/jquery.js" charset="utf-8"></script>
+<script type="text/javascript" src="/Areas/ShangPin/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script language="javascript" type="text/javascript">
+    $(function () {
+        $("#btnCancle").bind("click", function () {
+            location.href = '/shangpin/detail/questanswermanager.html';
+        });
+    });
+
+    function checkSubmit() {
+        if ($("#myQuestion").val() == "") {
+            alert("请填写问题!");
+            return false;
+        }
+        if ($("#yourAnwser").val() == "") {
+            alert("请填写答复!");
+            return false;
+        }
+        if ($("#sort").val() == "") {
+            alert("请填写排序!");
+            return false;
+        }
+        if ($("#StartTime").val() == "") {
+            alert("请填写问题时间!");
+            return false;
+        }
+        if ($("#EndTime").val() == "") {
+            alert("请填写答复时间!");
+            return false;
+        }
+
+        $.ajax({
+            url: "/shangpin/detail/CreateQANew",
+            type: "post",
+            data: $("form").serialize(),
+            dataType: "json",
+            success: function (data) {
+                if (data.result == "1") {
+                    alert(data.message);
+                    window.location.href = '/shangpin/detail/QuestAnswerManager.html';
+                    //parent.window.location.reload();
+                }
+                else {
+                    alert(data.message);
+                    return false;
+                }
+            }
+        });
+    }
+</script>
+<div id="mx-rightcontent-addbox" class="mx-rightcontent-msgbox" style="height:300px;">
+    <form id="form1">
+    <dl>
+        <dt style="width: 13%;">咨询：</dt>
+        <dd>
+            <textarea name="myQuestion" id="myQuestion"rows="5" cols="40" style="margin: 0px; width: 482px; height: 60px;">@ViewBag.Quest</textarea>
+        </dd>
+    </dl>
+    <dl>
+        <dt style="width: 13%;">回答：</dt>
+        <dd>
+            <textarea name="yourAnwser" id="yourAnwser" rows="5" cols="40" style="margin: 0px; width: 482px; height: 60px;">@ViewBag.Answer</textarea>
+        </dd>
+    </dl>
+    <dl>
+        <dt style="width: 13%;">排序：</dt>
+        <dd style="width: 35%;">
+            <input type="text" name="sort" id="sort" value="@ViewBag.Sort" placeholder="请输入整数值" />
+        </dd>
+        <dt style="width: 13%;">是否显示：</dt>
+        <dd style="width: 30%;">
+            <select name="IsShow" id="IsShow" style="width:70px;">
+                <option selected="selected" value="1" @(ViewBag.IsShow==1?"selected=selected" :null)>显示</option>
+                <option value="0" @(ViewBag.IsShow==0?"selected=selected" :null)>不显示</option>
+            </select>
+        </dd>
+    </dl>
+    @*<dl>
+        <dt style="width: 13%;">咨询时间：</dt>
+        <dd>
+            <input id="StartTime" type="text" name="StartTime" value="@ViewBag.DateQuest"  class="Wdate" readonly="readonly"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',skin:'whyGreen',lang:'zh-cn',isShowClear:true,alwaysUseStartDate:true,readOnly:true,maxDate:'#F{$dp.$D(\'EndTime\',{d:0});}'})"/>
+        </dd>
+    </dl>
+    <dl>
+        <dt style="width: 13%;">回复时间：</dt>
+        <dd>
+            <input id="EndTime" type="text" name="EndTime" value="@ViewBag.DateAnswer"  class="Wdate" readonly="readonly"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',skin:'whyGreen',lang:'zh-cn',isShowClear:true,alwaysUseStartDate:true,readOnly:true,minDate:'#F{$dp.$D(\'StartTime\',{d:0});}'})"/>
+        </dd>
+    </dl>*@
+    <dl>
+        <dt>&nbsp;</dt>
+        <dd>
+            <button type="button" id="btnSave" name="" value="" class="secondary" onclick="return checkSubmit();">确 定</button>
+            <button type="button" id="btnCancle" name="" value="">取 消</button>
+        </dd>
+    </dl>
+    <input type="hidden" name="isEdit" value="@ViewBag.IsEdit" /><input type="hidden" name="questAnswerId" value="@ViewBag.QuestAnswerId" />
+    </form>
+</div>

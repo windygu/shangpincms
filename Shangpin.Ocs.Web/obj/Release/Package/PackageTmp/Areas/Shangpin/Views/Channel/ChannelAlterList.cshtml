@@ -1,0 +1,204 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.ShangPin
+@using Shangpin.Entity.Wfs
+@using Shangpin.Ocs.Web.Infrastructure;
+@model IEnumerable<SWfsListAlterGroup>
+@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    //int totalCount = 10;
+    //int currentPage = 1;
+    IList<SWfsListAlterGroup> model = ViewBag.list;
+    int totalCount = ViewBag.totalcount;
+    int currentPage = ViewBag.PageIndex;
+    int pageSize = 20;
+    ViewBag.Title = "频道轮播图管理";
+    Shangpin.Ocs.Service.Shangpin.SWfsChannelService channelDal = new Shangpin.Ocs.Service.Shangpin.SWfsChannelService();
+    IEnumerable<Shangpin.Entity.Wfs.SWfsSpChannelBrand> brandImgNOList = null;
+    IEnumerable<SelectListItem> manchanneloption = new List<SelectListItem>()
+    {
+        new SelectListItem{Text="服饰CLOTHING",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["MenClothing"]},
+        new SelectListItem{Text="箱包BAGS",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["MenBags"]},
+        new SelectListItem{Text="鞋靴SHOES",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["MenShoes"]},
+        new SelectListItem{Text="配饰ACCESSORIES",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["MenAccessories"]},
+        new SelectListItem{Text="腕表眼镜WATCHES",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["MenWatches"]},
+        new SelectListItem{Text="美妆BEAUT",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["MenBeauty"]},
+        new SelectListItem{Text="家居HOME",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["MenHomes"]},
+    };
+    IEnumerable<SelectListItem> womanchanneloption = new List<SelectListItem>()
+    {
+        new SelectListItem{Text="服饰CLOTHING",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["WomenClothing"]},
+        new SelectListItem{Text="箱包BAGS",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["WomenBags"]},
+        new SelectListItem{Text="鞋靴SHOES",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["WomenShoes"]},
+        new SelectListItem{Text="配饰ACCESSORIES",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["WomenAccessories"]},
+        new SelectListItem{Text="腕表眼镜WATCHES",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["WomenWatches"]},
+        new SelectListItem{Text="美妆BEAUT",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["WomenBeauty"]},
+        new SelectListItem{Text="家居HOME",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["WomenHomes"]},
+    };
+                    
+}
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/lib/jquery.js" type="text/javascript"></script>
+}
+<h1>
+    OCS > 尚品 > <a href="ChannelList.html">频道管理</a> >频道轮播</h1>
+<script type="text/javascript">
+    function sou(objvalue) {
+
+        $.post("/shangpin/Channel/CategoryByManOrWomanChange.html", { 'aa': objvalue }, function (data) {
+            $("#Category").html(data);
+
+        });
+    }
+</script>
+<form action="/Shangpin/Channel/ChannelAlterList.html" method="get">
+<div>
+    @*<select name="Gender" onchange="sou(this.value)" style="float: left;">
+        <option value='-1'>性别</option>
+        <option id="gender1" value='0' @(Request.Params["Gender"] == "0" ? "selected='selected'" : "")>
+            女</option>
+        <option id="gender2" value='1' @(Request.Params["Gender"] == "1" ? "selected='selected'" : "")>
+            男</option>
+    </select>
+    @{   
+        IEnumerable<SelectListItem> list = new List<SelectListItem>() { new SelectListItem { Text = "品类", Value = "-1" }};
+        if(Request.QueryString["Gender"] == "0")
+        {
+            list= new List<SelectListItem>()
+            {
+                new SelectListItem{Text="品类",Value="-1"},
+                new SelectListItem{Text="女士箱包",Value=Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenBags"]},
+                new SelectListItem{Text="女士服饰",Value=Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenClothing"]},
+                new SelectListItem{Text="女士鞋靴",Value=Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenShoes"]},
+                new SelectListItem{Text="女士配饰",Value=Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenAccessories"]},
+                new SelectListItem{Text="女士家居",Value=Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenHomes"]},
+                new SelectListItem{Text="女士美妆",Value=Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenBeauty"]},
+                new SelectListItem{Text="女士腕表",Value=Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenWatches"]},
+            };
+        }
+        else if (Request.QueryString["Gender"] == "1")
+        {
+        
+            list= new List<SelectListItem>()
+            {
+                 new SelectListItem{Text="品类",Value="-1"},
+                new SelectListItem{Text="男士箱包",Value=Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenBags"]},
+                new SelectListItem{Text="男士服饰",Value=Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenClothing"]},
+                new SelectListItem{Text="男士鞋靴",Value=Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenShoes"]},
+                new SelectListItem{Text="男士配饰",Value=Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenAccessories"]},
+                new SelectListItem{Text="男士家居",Value=Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenHomes"]},
+                new SelectListItem{Text="男士美妆",Value=Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenBeauty"]},
+                new SelectListItem{Text="男士腕表",Value=Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenWatches"]},
+            };
+        }
+        
+        if (list.Count(p => p.Value == Request.QueryString["Category"]) == 1)
+        {
+            list.Single(p => p.Value == Request.QueryString["Category"]).Selected = true;
+        }
+    }
+    @Html.DropDownList("Category", list)
+    <button type="submit">
+        提交查询</button>*@
+    @*<input type="reset" value="重置" style=" width:50px; height:22px;" />*@ @*<button type="button" onclick="window.location.href='/shangpin/brand/AlterCreate.html'">
+                新建</button>*@
+</div>
+</form>
+<table class="mx-table" style="height: 100px;">
+    <thead>
+        <tr>
+            <th width="80%">
+                频道轮播图
+            </th>
+            <th>
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (null != model && model.Count > 0)
+        {
+            var flag = 0;
+            foreach (var item in model)
+            {
+                
+                flag = flag + 1;
+                <tr class="@(flag % 2 == 0 ? "cross" : "")"> <td>
+                @{
+                IEnumerable<SWfsListAlterPic> list2 = new Shangpin.Ocs.Service.Shangpin.SWfsBrandService().getSWfsListAlterGroupListID(item.GroupId);
+                foreach (var imgitem in list2)
+                {
+                    <img src="/ReadPic/GetPic.ashx?width=150&height=65&pictureFileNo=@(imgitem.LargePicture)&type=2"/>
+                }
+                }
+                </td> <td> <p style="padding:0 5px; text-align:left; line-height180%;">分组名称: @(item.GroupName)<br
+                /> 分组状态: @(item.Status == 0 ? "关闭" : "开启")
+                设置:<a id="@item.GroupId" href="javascript:;" onclick="isOpen(@(list2.Count()),@item.GroupId,this,'@item.Category')">@(item.Status == 0 ? "开启" : "关闭")</a><br />
+                分组所属: 
+                @*@if (item.Gender == 0)*@
+                @if (item.Category.IndexOf("A01") == 0)
+                {
+		                    @Html.Raw("女士 > " + womanchanneloption.Single(p => p.Value == item.Category).Text)
+                            <br />
+                            <a href="http://www.shangpin.com/"></a>                                                                                                    
+                }
+                else if (item.Category.IndexOf("A02") == 0)
+                {
+                            @Html.Raw("男士 > " + manchanneloption.Single(p => p.Value == item.Category).Text)
+                }
+                <br />
+                </p>
+                <a class="button" href="/shangpin/Channel/AlterCreate.html?id=@item.GroupId&channelno=@Request.QueryString["channelno"]">编辑</a>
+                <a class="button" href="/shangpin/Channel/AlterimageCreate.html?groupId=@item.GroupId&channelno=@Request.QueryString["channelno"]">图片管理</a><br />
+                <a class="button" href="/shangpin/Channel/AlterGropDelete.html?groupid=@item.GroupId&channelno=@Request.QueryString["channelno"]" onclick="return confirm('您确定删除吗?')" style=" margin-top:5px;">删除</a>
+                <a class="button" href="javascript:clearPicHistory('@item.Category');">清除缓存</a>
+            </td> </tr>
+            }
+        }
+    </tbody>
+</table>
+<div class="spPage">@Html.Raw(Html.PagerX("page", currentPage, pageSize, totalCount))</div>
+<div class="clr" id="mx-rightcontent-fixbar">
+    <a id="mx-btn-add" href="/Shangpin/Channel/AlterCreate.html?channelno=@Request.QueryString["channelno"]"></a>
+</div>
+<script type="text/javascript">
+    function clearPicHistory(catogry) {
+        $.post("/Shangpin/List/clearPicCach.html", { 'category': catogry }, function (data) {
+            if (data > 0) {
+                alert("清除成功");
+            } else {
+                alert("清除异常");
+            }
+        });
+    }
+
+    function isOpen(total, objid, obj, category) {
+        if (objid == 0) {
+            return false;
+        }
+        if ($(obj).text() == "开启") {
+            if (total < 2) {
+                alert("图片不够2张，请查看图片！");
+                return false;
+            }
+            if (!confirm("您确定修改吗？如果修改同品类下的状态全部为关闭")) {
+                return false;
+            }
+            else {
+                $.get("/Shangpin/Channel/AlterlistStatus.html", { 'groupId': objid, status: 1, category: category }, function (data) {
+                    window.location.href = window.location.href;
+                    if (data > 0) {
+                        $(obj).html("关闭");
+                    }
+                });
+            }
+            
+        }
+        else {//关闭
+            $.get("/Shangpin/Channel/AlterlistStatus.html", { 'groupId': objid, status: 0 }, function (data) {
+                window.location.href = window.location.href;
+                if (data > 0) {
+                    $(obj).html("开启");
+                }
+            });
+        }
+    }
+</script>

@@ -1,0 +1,146 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td, address, caption, cite, code, dfn, em, strong, th, var {
+    font: 400 12px Arial, "宋体";
+}
+
+#spbrand-indexfinder{
+    padding: 12px 0;
+}
+
+#spbrand-indexfinder span{
+    font-size: 12px;
+    float: left;
+    line-height: 20px;
+    color: #666;
+}
+
+#spbrand-indexfinder a:link, #spbrand-indexfinder a:visited{
+    font-size: 16px;
+    float: left;
+    line-height: 20px;
+    color: #000;
+    margin-right: 8px;
+    width: 20px;
+    text-align: center;
+    display: inline;
+}
+
+#spbrand-indexfinder a:hover, #spbrand-indexfinder a:active{
+    color: #fff;
+    background-color: #000;
+}
+
+#spbrand-indexfinder a.spec:link, #spbrand-indexfinder a.spec:visited{
+    font-size: 12px;
+    float: right;
+    width: auto;
+    margin: 0;
+    color: #666;
+}
+
+#spbrand-indexfinder a.spec:hover, #spbrand-indexfinder a.spec:active{
+    background-color: #fff;
+    color: #000;
+}
+
+#spbrand-adv{
+    margin-top: -10px;
+}
+
+#spbrand-adv a{
+    display: block;
+    width: 221px;
+    height: 131px;
+    overflow: hidden;
+    background-color: #efefef;
+    float: left;
+    margin: 10px 0 0 10px;
+    display: inline;
+}
+
+#spbrand-adv a.first{
+    width: 457px;
+    height: 272px;
+    margin-left: 0;
+}
+
+div.spbrand-indexwrapper{
+    margin-top: 10px;
+}
+
+div.spbrand-indexwrapper h4{
+    height: 37px;
+    border-bottom: 1px solid #ededed;
+    position: relative;
+}
+
+div.spbrand-indexwrapper h4 span{
+    position: absolute;
+    display: block;
+    right: 0;
+    bottom: -1px;
+}
+
+div.spbrand-indexwrapper h4 span a{
+    display: block;
+    float: left;
+    width: 40px;
+    text-align: center;
+    line-height: 24px;
+    border-top: 1px solid #fff;
+}
+
+div.spbrand-indexwrapper h4 span a.cur{
+    background-color: #f5f5f0;
+    border: 1px solid #ededed;
+    border-bottom-color: #f5f5f0;
+}
+
+div.spbrand-swipewrapper{
+    background-color: #f5f5f0;
+    padding: 0 0 8px 0;
+}
+
+.puzboxer{
+    width: 220px;
+    height: 220px;
+    float: left;
+    margin: 8px 0 0 8px;
+    display: inline;
+    position: relative;
+}
+
+.puzboxer span{
+    position: absolute;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.puzboxer span a{
+    display: block;
+}
+
+.m1, .m2, .m3{
+    width: 106px;
+    height: 106px;
+}
+
+.m2, .m4{
+    height: 220px;
+}
+
+.m3, .m4{
+    width: 220px;
+}
+
+.p1, .p2, .p3{
+    top: 0;
+    left: 0;
+}
+
+.p2, .p4{
+    left: 114px;
+}
+
+.p3, .p4{
+    top: 114px;
+}

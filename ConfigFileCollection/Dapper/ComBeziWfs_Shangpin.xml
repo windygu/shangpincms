@@ -1,0 +1,1534 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <statement id="ComBeziWfs_WfsBrand_AliasList">
+    SELECT  * FROM
+    (
+    SELECT  brandno,
+    brandcnname,
+    brandenname,
+    s.ObjectAlias,
+    isshow,
+    'a' AS AliasOrder
+    FROM SpBrand(nolock) brand
+    LEFT JOIN SWfsCategoryBrandAlias(nolock)  s
+    ON s.ObjectNo=brand.brandno
+    WHERE ObjectAlias IS NULL OR ObjectAlias=''
+
+    UNION ALL
+
+    SELECT  brandno,
+    brandcnname,
+    brandenname,
+    s.ObjectAlias,
+    isshow,
+    'b' AS AliasOrder
+    FROM SpBrand(nolock)  brand
+    LEFT JOIN SWfsCategoryBrandAlias(nolock)  s
+    ON s.ObjectNo=brand.brandno
+    WHERE ObjectAlias IS NOT NULL AND ObjectAlias!=''
+    )temp
+    WHERE 1=1
+    #if($BrandName!="")
+    And temp.brandcnname like '%'+ cast(@BrandName as nvarchar)  +'%'
+    #end
+    #if($AliasName!="")
+    And  temp.ObjectAlias like '%'+ cast(@AliasName as nvarchar)  +'%'
+    #end
+  </statement>
+
+  <statement id="ComBeziWfs_WfsBrand_AliasListCount">
+    SELECT COUNT(1)
+    FROM SpBrand brand(nolock)
+    LEFT JOIN SWfsCategoryBrandAlias(nolock)  s
+    ON s.ObjectNo=brand.brandno
+    WHERE 1=1
+    #if($BrandName!="")
+    And brand.brandcnname like '%'+ cast(@BrandName as nvarchar)  +'%'
+    #end
+    #if($AliasName!="")
+    And  s.ObjectAlias like '%'+ cast(@AliasName as nvarchar)  +'%'
+    #end
+  </statement>
+
+  <statement id="ComBeziWfs_WfsBrand_NoBrandAliasCount">
+    SELECT COUNT(1)
+    FROM  SWfsCategoryBrandAlias(nolock) alias
+    LEFT  JOIN  SpBrand brand(nolock)
+    ON alias.ObjectNo=brand.brandno
+    WHERE  TypeID=2 and brand.brandno is null
+  </statement>
+
+  <statement id="ComBeziWfs_WfsBrand_NoBrandAliasList">
+    SELECT
+    KeyID,
+    alias.ObjectNo,
+    alias.ObjectAlias
+    FROM  SWfsCategoryBrandAlias(nolock) alias
+    LEFT  JOIN  SpBrand brand(nolock)
+    ON alias.ObjectNo=brand.brandno
+    WHERE  TypeID=2 and brand.brandno is null
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsCategory_NoCategoryAliasListCount">
+    SELECT COUNT(1)
+    FROM  SWfsCategoryBrandAlias(nolock) alias
+    LEFT  JOIN  SpfShopCategory category(nolock)
+    ON alias.ObjectNo=category.CategoryNo
+    WHERE  TypeID=1 and alias.Gender=@Gender and category.CategoryNo is null
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsCategory_NoCategoryAliasList">
+    SELECT
+    KeyID,
+    alias.ObjectNo,
+    alias.ObjectAlias
+    FROM  SWfsCategoryBrandAlias(nolock) alias
+    LEFT  JOIN  SpfShopCategory category(nolock)
+    ON alias.ObjectNo=category.CategoryNo
+    WHERE  TypeID=1 and alias.Gender=@Gender and category.CategoryNo is null
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsCategoryBrandAlias_List" primarykey="KeyID">
+    SELECT
+    KeyID,TypeID,ObjectNo,ObjectAlias,Gender
+    FROM SWfsCategoryBrandAlias(nolock)
+    WHERE Gender=@Gender AND TypeID=@TypeID AND ObjectNo=@ObjectNo
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsCategoryBrandAlias_BrandList" primarykey="KeyID">
+    SELECT
+    KeyID,TypeID,ObjectNo,ObjectAlias,alias.Gender
+    FROM SWfsCategoryBrandAlias(nolock) alias
+    <!--JOIN WfsBrand(nolock)  brand
+    ON alias.ObjectNo=brand.brandno-->
+    WHERE alias.Gender=@Gender AND TypeID=@TypeID AND ObjectAlias=@ObjectAlias
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsCategoryBrandAlias_CategoryList" primarykey="KeyID">
+    SELECT
+    KeyID,TypeID,ObjectNo,ObjectAlias,alias.Gender
+    FROM SWfsCategoryBrandAlias(nolock) alias
+    <!--JOIN SWfsCategory(nolock)  category
+    ON alias.ObjectNo=category.CategoryNo-->
+    WHERE alias.Gender=@Gender AND TypeID=@TypeID AND ObjectAlias=@ObjectAlias
+  </statement>
+  <statement id="ComBeziWfs_SWfsCategoryBrandAlias_DeleteById" primarykey="KeyID">
+    DELETE FROM SWfsCategoryBrandAlias
+    WHERE KeyID=@KeyID
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsCategory_AliasList">
+    WITH cte(CategoryNo,CategoryName,CName,ParentNo,VisibleState) AS
+    (
+    SELECT  CategoryNo,CategoryCName as CategoryName, convert(varchar(max), CategoryCName) CName , ParentCategoryNo as ParentNo,[Status] VisibleState
+    FROM SpfShopCategory(nolock)
+    WHERE ParentCategoryNo='ROOT' AND CategoryNo=@CategoryNo
+
+    UNION ALL
+    SELECT c.CategoryNo,
+    c.CategoryCName as CategoryName,
+    convert(varchar(max), t.CName+'->'+c.CategoryCName) CName,
+    c.ParentCategoryNo as ParentNo,
+    c.[status] as VisibleState
+    FROM SpfShopCategory(nolock)  c
+    INNER JOIN cte t
+    ON c.ParentCategoryNo =t.CategoryNo
+
+    ),
+    fenye AS
+    (
+    SELECT TOP(1000000) *,ROW_NUMBER() over(Order By AliasOrder,CategoryNo) rowId FROM
+    (
+    SELECT *,'a' AliasOrder FROM  cte c
+    LEFT JOIN SWfsCategoryBrandAlias s
+    ON s.ObjectNo=c.CategoryNo WHERE ObjectAlias IS NULL OR ObjectAlias=''
+    UNION ALL
+    SELECT *,'b' AliasOrder FROM  cte c
+    LEFT JOIN SWfsCategoryBrandAlias s
+    ON s.ObjectNo=c.CategoryNo WHERE ObjectAlias IS NOT NULL AND ObjectAlias !=''
+    )c
+    Where 1=1
+    #if($CategoryName!="")
+    AND  CategoryName like '%'+ cast(@CategoryName as nvarchar)  +'%'
+    #end
+    #if($AliasName!="")
+    AND  ObjectAlias like '%'+ cast(@AliasName as nvarchar)  +'%'
+    #end
+
+    ORDER BY AliasOrder,CategoryNo
+    )
+    SELECT *FROM fenye WHERE  RowId Between @prePage and @nextPage
+
+  </statement>
+
+
+  <statement id="ComBeziWfs_SWfsCategory_AliasListCount">
+    WITH cte(CategoryNo,CategoryName,CName,ParentNo) AS
+    (
+    SELECT  CategoryNo,CategoryCName as CategoryName, convert(varchar(max), CategoryCName) CName , ParentCategoryNo  FROM SpfShopCategory(nolock)
+    WHERE ParentCategoryNo='ROOT' AND CategoryNo=@CategoryNo
+
+    UNION ALL
+    SELECT c.CategoryNo,
+    c.CategoryCName,
+    convert(varchar(max), t.CName+'->'+c.CategoryCName) CName,
+    c.ParentCategoryNo FROM SpfShopCategory (nolock) c
+    INNER JOIN cte t
+    ON c.ParentCategoryNo =t.CategoryNo
+
+    )
+    SELECT COUNT(1) FROM cte c
+    LEFT JOIN SWfsCategoryBrandAlias s
+    ON s.ObjectNo=c.CategoryNo
+    WHERE 1=1
+    #if($CategoryName!="")
+    AND CategoryName like '%'+ cast(@CategoryName as nvarchar)  +'%'
+    #end
+    #if($AliasName!="")
+    AND ObjectAlias like '%'+ cast(@AliasName as nvarchar)  +'%'
+    #end
+  </statement>
+
+  <statement id="ComBeziWfs_WfsCmsContent_GetWfsCmsContentListBySitNo">
+    <!--select wfscc.* from  WfsCmsContentCategory  wfsccc join  WfsCmsContent  wfscc on wfsccc.CmsContentCategoryId=wfscc.CmsContentCategoryId
+    where wfsccc.CmsContentCategoryName =@CmsContentCategoryName  and wfscc.SiteNo = @sitNo
+    #if($Title!='')
+    and  Title like '%'+@Title + '%'
+    #end
+    #if($PublishTime!='')
+    and datediff(day,PublishTime,@PublishTime)=0
+    #end
+    order by PublishTime  desc-->
+    select * from   WfsCmsContent
+    where  CmsContentCategoryId=4  and SiteNo = @siteNo
+    #if($Title!='')
+    and  Title like '%'+cast(@Title as varchar) + '%'
+    #end
+    #if($ShowStatus!='')
+    and ShowStatus=@ShowStatus
+    #end
+    #if($DateBegin!='')
+    and DateBegin>=@DateBegin
+    #end
+    #if($DateEnd!='')
+    and DateBegin &lt;=@DateEnd
+    #end
+    #if($PositionId!='')
+    and PositionId in @PositionId
+    #end
+    #if( $PositionParentId!='')
+    and PositionParentId=@PositionParentId
+    #end
+    order by PublishTime  desc
+  </statement>
+  <!--查询拉幕列表-->
+  <statement id="ComBeziWfs_WfsCmsContent_SWfsCurtainList">
+    with temp as(select CurtainId,CurtainTitle,CurtainStatus,StartShowTime,EndShowTime,CurtainLinkAddress,CurtainImage,CreateTime,row_number() over(order by CreateTime desc) as row from SWfsCurtain with (NoLock)
+    where 1=1
+    #if($CurtainTitle != '')
+    and SWfsCurtain.CurtainTitle like '%'+cast(@CurtainTitle as nvarchar)+'%'
+    #end
+    #if($CurtainStatus != '')
+    and SWfsCurtain.CurtainStatus = @CurtainStatus
+    #end
+    #if($StartShowTime != '')
+    and SWfsCurtain.StartShowTime >= @StartShowTime
+    #end
+    #if($EndShowTime != '')
+    and SWfsCurtain.EndShowTime &lt;= @EndShowTime
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!--查询拉幕列表_返回总条数-->
+  <statement id="ComBeziWfs_WfsCmsContent_SWfsCurtain_Count">
+    select count(CurtainTitle) from SWfsCurtain
+    where 1=1
+    #if($CurtainTitle != '')
+    and SWfsCurtain.CurtainTitle like '%'+cast(@CurtainTitle as nvarchar)+'%'
+    #end
+    #if($CurtainStatus != '')
+    and SWfsCurtain.CurtainStatus = @CurtainStatus
+    #end
+    #if($StartShowTime != '')
+    and SWfsCurtain.StartShowTime >= @StartShowTime
+    #end
+    #if($EndShowTime != '')
+    and SWfsCurtain.EndShowTime &lt;= @EndShowTime
+    #end
+  </statement>
+  <!--删除一条数据-->
+  <statement id="ComBeziWfs_WfsCmsContent_SWfsCurtain_delete">
+    delete SWfsCurtain where CurtainId=@curtainId
+  </statement>
+  <!--按ID查询单条数据-->
+  <statement id="ComBeziWfs_WfsCmsContent_SWfsCurtain_ID">
+    select CurtainId,CurtainTitle,CurtainStatus,StartShowTime,EndShowTime,CurtainLinkAddress,CurtainImage,CreateTime from SWfsCurtain where CurtainId = @curtainId
+  </statement>
+
+  <!--V码列表-->
+  <statement id="ComBeziWfs_WfsCmsContent_SWfsVActivity_List">
+    with temp as(select s.ActivityId,s.ListingoutletFlag,s.ActivityName,s.ActivityCode,s.ActivityStatus,s.ActivityTypeId,s.ActivityDateStart,s.ActivityDateEnd,s.DeleteFlag,s.DateCreate,row_number() over(order by s.DateCreate desc) as row
+    from SWfsVActivity as s with(nolock) where DeleteFlag=0
+    #if($ActivityCode != '')
+    and s.ActivityCode like '%'+cast(@ActivityCode as varchar)+ '%'
+    #end
+    #if($ActivityName != '')
+    and s.ActivityName like '%'+ cast(@ActivityName as varchar)+ '%'
+    #end
+    #if($ListingOutletFlag !='')
+    and s.ListingoutletFlag=@ListingOutletFlag
+    #end
+    #if($ActivityDateStart != '')
+    and s.ActivityDateStart >= @ActivityDateStart
+    #end
+    #if($ActivityDateEnd != '')
+    and s.ActivityDateEnd &lt;= @ActivityDateEnd
+    #end
+    #if($DateCreate != '')
+    and s.DateCreate >= @DateCreate
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!--V码列表总条数-->
+  <statement id="ComBeziWfs_WfsCmsContent_SWfsVActivity_List_Count">
+    select count(ActivityName) from SWfsVActivity as s with(nolock) where DeleteFlag=0
+    #if($ActivityCode != '')
+    and s.ActivityCode like '%'+cast(@ActivityCode as varchar)+ '%'
+    #end
+    #if($ActivityName != '')
+    and s.ActivityName like '%'+ cast(@ActivityName as varchar)+ '%'
+    #end
+    #if($ListingOutletFlag !='')
+    and s.ListingoutletFlag=@ListingOutletFlag
+    #end
+    #if($ActivityDateStart != '')
+    and s.ActivityDateStart >= @ActivityDateStart
+    #end
+    #if($ActivityDateEnd != '')
+    and s.ActivityDateEnd &lt;= @ActivityDateEnd
+    #end
+    #if($DateCreate != '')
+    and s.DateCreate >= @DateCreate
+    #end
+  </statement>
+  <!--V码所属-->
+  <statement id="ComBeziWfs_WfsCmsContent_SWfsVActivityType_List">
+    select * from SWfsVActivityType
+  </statement>
+  <!--查询一条V码数据-->
+  <statement id="ComBeziWfs_WfsCmsContent_SWfsVActivity_ID">
+    select * from SWfsVActivity where ActivityId = @ActivityId
+  </statement>
+  <!--删除V码-->
+  <statement id="ComBeziWfs_WfsCmsContent_SWfsVActivity_Delete">
+    delete SWfsVActivity where ActivityId = @ActivityId
+  </statement>
+  <!--根据活动编号查询V码-->
+  <statement id="ComBeziWfs_WfsCmsContent_SWfsVActivityCodesRef_List">
+    with temp as(select
+    v.*,a.MailAddress,substring(MailAddress,1,CHARINDEX('@',MailAddress)-1) as UserName,a.UserId,
+    u.UseCodeStatus,u.DateCreate as BindTime,row_number() over(order by u.DateCreate desc) as row
+    from
+    SwfsVActivityCodesRef as v with(nolock)
+    LEFT join dbo.SwfsVUserCodesRef as u with(nolock) ON v.VCode=u.VCode
+    LEFT join SWfsAccount as a on u.UserId=a.UserId
+    where 1=1 and (v.ActivityId = @ActivityId)
+    #if($VCode != '')
+    and v.VCode like '%'+cast(@VCode as varchar)+ '%'
+    #end
+    #if($OperatorId != '')
+    and (v.OperatorId like '%'+cast(@OperatorId as varchar)+ '%' or a.MailAddress  like '%'+cast(@OperatorId as varchar)+ '%')
+    #end
+    #if($UseCodeStatus != ''<![CDATA[&&]]> $UseCodeStatus==0)
+    and v.Vcode not in (select vcode from SwfsVUserCodesRef)
+    #end
+    #if($UseCodeStatus != ''<![CDATA[&&]]> $UseCodeStatus==1)
+    and v.Vcode in (select vcode from SwfsVUserCodesRef)
+    #end
+    #if($VCodeType != '')
+    and v.VCodeType=@VCodeType
+    #end
+    #if($DateCreate != '')
+    and v.DateCreate >= @DateCreate
+    #end
+    #if($EndDate != '')
+    and v.DateCreate &lt;= @EndDate
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!--根据活动编号查询V码总条数-->
+  <statement id="ComBeziWfs_WfsCmsContent_SWfsVActivityCodesRef_List_Count">
+    select
+    count(v.VCode)
+    from
+    SwfsVActivityCodesRef as v with(nolock)
+    LEFT join dbo.SwfsVUserCodesRef as u with(nolock) ON v.VCode=u.VCode
+    LEFT join SWfsAccount as a on u.UserId=a.UserId
+    where 1=1 and (v.ActivityId = @ActivityId)
+    #if($VCode != '')
+    and v.VCode like '%'+cast(@VCode as varchar)+'%'
+    #end
+    #if($OperatorId != '')
+    and (v.OperatorId like '%'+cast(@OperatorId as varchar)+ '%' or a.MailAddress  like '%'+cast(@OperatorId as varchar)+ '%')
+    #end
+    #if($UseCodeStatus != ''<![CDATA[&&]]> $UseCodeStatus==0)
+    and v.Vcode not in (select vcode from SwfsVUserCodesRef)
+    #end
+    #if($UseCodeStatus != ''<![CDATA[&&]]> $UseCodeStatus==1)
+    and v.Vcode in (select vcode from SwfsVUserCodesRef)
+    #end
+    #if($VCodeType != '')
+    and v.VCodeType=@VCodeType
+    #end
+    #if($DateCreate != '')
+    and v.DateCreate >= @DateCreate
+    #end
+    #if($EndDate != '')
+    and v.DateCreate &lt;= @EndDate
+    #end
+  </statement>
+  <!--查询关联专题-->
+  <statement id="ComBeziWfs_WfsCmsContent_SWfsTopics_List">
+    with temp as(
+    select * from (
+    select t.TopicNo,t.TopicName,t.SubHeading,t.Status,t.DateCreate,v.activitytopicsid as DepartmentNo,row_number() over(order by t.DateCreate desc) as row from SWfsTopics as t with(nolock)
+    left join SWfsVActivityTopicsRef as v with(nolock) on t.TopicNo=v.TopicNo
+    where WebSite=1
+    #if($TopicName != '')
+    and t.TopicName like '%'+cast(@TopicName as varchar)+'%'
+    #end
+    #if($Status != '')
+    and t.Status = @Status
+    #end
+    )as temp1
+    where 1=1
+    <!--and v.ActivityId=@ActivityId-->
+    #if($RelatedStatus == 0)
+    and DepartmentNo is null
+    #end
+    #if($RelatedStatus == 1)
+    and DepartmentNo is not null
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!--查询关联专题返回总条数-->
+  <statement id="ComBeziWfs_WfsCmsContent_SWfsTopics_List_Count">
+    select count(TopicNo) from (
+    select t.TopicNo,t.TopicName,t.SubHeading,t.Status,t.DateCreate,v.activitytopicsid as DepartmentNo,row_number() over(order by t.DateCreate desc) as row from SWfsTopics as t with(nolock)
+    left join SWfsVActivityTopicsRef as v with(nolock) on t.TopicNo=v.TopicNo
+    where WebSite=1
+    #if($TopicName != '')
+    and t.TopicName like '%'+cast(@TopicName as varchar)+'%'
+    #end
+    #if($Status != '')
+    and t.Status = @Status
+    #end
+    )as temp1
+    where 1=1
+    #if($RelatedStatus == 0)
+    and DepartmentNo is null
+    #end
+    #if($RelatedStatus == 1)
+    and DepartmentNo is not null
+    #end
+  </statement>
+  <!--查询单个活动-->
+  <statement id="ComBeziWfs_SWfsVActivity_ID">
+    select * from SWfsVActivity where ActivityId = @ActivityId
+  </statement>
+  <!--根据活动编号查询微码-->
+  <statement id="ComBeziWfs_SWfsVActivityCodesRef_List">
+    select * from SWfsVActivityCodesRef where ActivityId = @activityId
+  </statement>
+  <!--查询单个微码-->
+  <statement id="ComBeziWfs_SWfsVActivityCodesRef_ReadByVCode">
+    select * from SwfsVActivityCodesRef with(nolock) where VCode = @VCode
+  </statement>
+  <!--查询绑定微码-->
+  <statement id="ComBeziWfs_SWfsVUserCodesRef_InquiryVCode">
+    select * from SWfsVUserCodesRef with(nolock) where VCode = @VCode
+  </statement>
+  <!--修改微码状态-->
+  <statement id="ComBeziWfs_SWfsVUserCodesRef_UpdateVCode">
+    update SwfsVUserCodesRef set UseCodeStatus = @status where VCode = @vcode and UserId=@UserId
+  </statement>
+  <!--根据编号查询微码-->
+  <statement id="ComBeziWfs_SwfsVActivityCodesRef_VCodeList">
+    select
+    v.*,a.MailAddress,substring(MailAddress,1,CHARINDEX('@',MailAddress)-1) as UserName,
+    u.UseCodeStatus,u.DateCreate as BindTime,row_number() over(order by u.UserId asc) as row
+    from
+    SwfsVActivityCodesRef as v with(nolock)
+    LEFT join dbo.SwfsVUserCodesRef as u with(nolock) ON v.VCode=u.VCode
+    LEFT join SWfsAccount as a on u.UserId=a.UserId
+    where 1=1 and (v.ActivityId = @ActivityId)
+    #if($VCode != '')
+    and v.VCode like '%'+cast(@VCode as varchar)+ '%'
+    #end
+    #if($OperatorId != '')
+    and v.OperatorId like '%'+cast(@OperatorId as varchar)+ '%'
+    #end
+    #if($UseCodeStatus != ''<![CDATA[&&]]> $UseCodeStatus==0)
+    and v.Vcode not in (select vcode from SwfsVUserCodesRef)
+    #end
+    #if($UseCodeStatus != ''<![CDATA[&&]]> $UseCodeStatus==1)
+    and v.Vcode in (select vcode from SwfsVUserCodesRef)
+    #end
+    #if($VCodeType != '')
+    and v.VCodeType=@VCodeType
+    #end
+    #if($DateCreate != '')
+    and v.DateCreate >= @DateCreate
+    #end
+    #if($EndDate != '')
+    and v.DateCreate &lt;= @EndDate
+    #end
+  </statement>
+  <!--取消关注-->
+  <statement id="ComBeziWfs_SWfsVActivityTopicsRef_Delete">
+    delete SWfsVActivityTopicsRef where  ActivityId=@ActivityId and TopicNo = @topicno
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsPictureManager_GetSWfsPictureManagerListTopSwitchV">
+    select *  from SWfsPictureManager where   Gender=@Gender
+    #if($PictureName != '')
+    and PictureName like '%'+@PictureName+ '%'
+    #end
+    #if($Status!= '')
+    and Status=@Status
+    #end
+    #if($StartDate != '')
+    and DateBegin  >= @StartDate
+    #end
+    #if($EndDate != '')
+    and DateBegin  &lt;= @EndDate
+    #end
+    and PagePosition in @PagePosition
+    order by DateCreate
+  </statement>
+  <statement id="ComBeziWfs_SWfsPictureManager_GetSWfsPictureManagerListSP">
+    select *  from SWfsPictureManager where  PagePosition in (67,68,69)
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsPictureManager_GetSWfsPictureManagerListNew">
+    select *  from SWfsPictureManager where Gender=@Gender and  PagePosition in @PagePosition
+  </statement>
+  <statement id="ComBeziWfs_SWfsPictureManager_GetSWfsPictureManagerSingle">
+    select *  from SWfsPictureManager where Gender=@Gender and  PagePosition=@PagePosition
+  </statement>
+
+
+
+  <!--新版首页SQL Start-->
+  <statement id="ComBeziWfs_SWfsPictureManager_GetSWfsPictureManagerByGenderNew">
+    select * from (SELECT TOP 1 *
+    FROM   SWfsPictureManager c
+    WHERE  c.[Status] = 1
+    AND c.Gender = @gender
+    AND c.PagePosition = 81
+    AND c.DateBegin &lt;= GETDATE()
+    ORDER BY
+    c.DateBegin DESC) AS p1
+    UNION
+    SELECT * FROM (
+    SELECT TOP 1 *
+    FROM   SWfsPictureManager c
+    WHERE  c.[Status] = 1
+    AND c.Gender = @gender
+    AND c.PagePosition = 82
+    AND c.DateBegin &lt;= GETDATE()
+    ORDER BY
+    c.DateBegin DESC) AS p2
+    UNION
+    SELECT * FROM (
+    SELECT TOP 1 *
+    FROM   SWfsPictureManager c
+    WHERE  c.[Status] = 1
+    AND c.Gender = @gender
+    AND c.PagePosition = 83
+    AND c.DateBegin &lt;= GETDATE()
+    ORDER BY
+    c.DateBegin DESC) AS p3
+    UNION
+    SELECT * FROM (
+    SELECT TOP 1 *
+    FROM   SWfsPictureManager c
+    WHERE  c.[Status] = 1
+    AND c.Gender = @gender
+    AND c.PagePosition = 80
+    AND (c.DateBegin &lt;= GETDATE() AND c.DateEnd > GETDATE())
+    ORDER BY
+    c.DateBegin DESC) AS p4
+  </statement>
+
+
+  <statement id="ComBeziWfs_SWfsPictureManager_GetSWfsPictureManagerByGenderBigPicNew">
+    select * from (SELECT TOP 1 *
+    FROM   SWfsPictureManager c
+    WHERE  c.[Status] = 1
+    AND c.Gender = @gender
+    AND c.PagePosition = 84
+    AND c.DateBegin &lt;= GETDATE()
+    ORDER BY
+    c.DateBegin DESC) AS p1
+    UNION
+    SELECT * FROM (
+    SELECT TOP 1 *
+    FROM   SWfsPictureManager c
+    WHERE  c.[Status] = 1
+    AND c.Gender = @gender
+    AND c.PagePosition = 85
+    AND c.DateBegin &lt;= GETDATE()
+    ORDER BY
+    c.DateBegin DESC) AS p2
+    UNION
+    SELECT * FROM (
+    SELECT TOP 1 *
+    FROM   SWfsPictureManager c
+    WHERE  c.[Status] = 1
+    AND c.Gender = @gender
+    AND c.PagePosition = 86
+    AND c.DateBegin &lt;= GETDATE()
+    ORDER BY
+    c.DateBegin DESC) AS p3
+    UNION
+    SELECT * FROM (
+    SELECT TOP 1 *
+    FROM   SWfsPictureManager c
+    WHERE  c.[Status] = 1
+    AND c.Gender = @gender
+    AND c.PagePosition = 87
+    AND c.DateBegin &lt;= GETDATE()
+    ORDER BY
+    c.DateBegin DESC) AS p4
+    UNION
+    SELECT * FROM (
+    SELECT TOP 1 *
+    FROM   SWfsPictureManager c
+    WHERE  c.[Status] = 1
+    AND c.Gender = @gender
+    AND c.PagePosition = 88
+    AND c.DateBegin &lt;= GETDATE()
+    ORDER BY
+    c.DateBegin DESC) AS p5
+    UNION
+    SELECT * FROM (
+    SELECT TOP 1 *
+    FROM   SWfsPictureManager c
+    WHERE  c.[Status] = 1
+    AND c.Gender = @gender
+    AND c.PagePosition = 94
+    AND c.DateBegin &lt;= GETDATE()
+    ORDER BY
+    c.DateBegin DESC) AS p6
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsPictureManager_GetSWfsPictureManagerByGenderSmallPicNew">
+    select * from (SELECT TOP 1 *
+    FROM   SWfsPictureManager c
+    WHERE  c.[Status] = 1
+    AND c.Gender = @gender
+    AND c.PagePosition = 89
+    AND c.DateBegin &lt;= GETDATE()
+    ORDER BY
+    c.DateBegin DESC) AS p1
+    UNION
+    SELECT * FROM (
+    SELECT TOP 1 *
+    FROM   SWfsPictureManager c
+    WHERE  c.[Status] = 1
+    AND c.Gender = @gender
+    AND c.PagePosition = 90
+    AND c.DateBegin &lt;= GETDATE()
+    ORDER BY
+    c.DateBegin DESC) AS p2
+    UNION
+    SELECT * FROM (
+    SELECT TOP 1 *
+    FROM   SWfsPictureManager c
+    WHERE  c.[Status] = 1
+    AND c.Gender = @gender
+    AND c.PagePosition = 91
+    AND c.DateBegin &lt;= GETDATE()
+    ORDER BY
+    c.DateBegin DESC) AS p3
+    UNION
+    SELECT * FROM (
+    SELECT TOP 1 *
+    FROM   SWfsPictureManager c
+    WHERE  c.[Status] = 1
+    AND c.Gender = @gender
+    AND c.PagePosition = 92
+    AND c.DateBegin &lt;= GETDATE()
+    ORDER BY
+    c.DateBegin DESC) AS p4
+    UNION
+    SELECT * FROM (
+    SELECT TOP 1 *
+    FROM   SWfsPictureManager c
+    WHERE  c.[Status] = 1
+    AND c.Gender = @gender
+    AND c.PagePosition = 93
+    AND c.DateBegin &lt;= GETDATE()
+    ORDER BY
+    c.DateBegin DESC) AS p5
+    UNION
+    SELECT * FROM (
+    SELECT TOP 1 *
+    FROM   SWfsPictureManager c
+    WHERE  c.[Status] = 1
+    AND c.Gender = @gender
+    AND c.PagePosition = 95
+    AND c.DateBegin &lt;= GETDATE()
+    ORDER BY
+    c.DateBegin DESC) AS p6
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsPictureManager_GetSWfsPictureManagerByGenderBottonNew">
+    select * from (SELECT TOP 1 *
+    FROM   SWfsPictureManager c
+    WHERE  c.[Status] = 1
+    AND c.Gender = @gender
+    AND c.PagePosition = 67
+    ORDER BY
+    c.DateCreate DESC) AS p1
+    UNION
+    SELECT * FROM (
+    SELECT TOP 1 *
+    FROM   SWfsPictureManager c
+    WHERE  c.[Status] = 1
+    AND c.Gender = @gender
+    AND c.PagePosition = 68
+    ORDER BY
+    c.DateCreate DESC) AS p2
+    UNION
+    SELECT * FROM (
+    SELECT TOP 1 *
+    FROM   SWfsPictureManager c
+    WHERE  c.[Status] = 1
+    AND c.Gender = @gender
+    AND c.PagePosition = 69
+    ORDER BY
+    c.DateCreate DESC) AS p3
+  </statement>
+
+
+  <statement id="ComBeziWfs_SWfsSpChannelRecommendLink_GetSWfsSpChannelRecommendLinkByChannelNO">
+    select * from SWfsSpChannelRecommendLink where ParentID=@ParentID and ChannelNO=@ChannelNO  order by SortValue
+  </statement>
+  <statement id="ComBeziWfs_SWfsHomeSecKill_SelectAll">
+    SELECT [SecKillId]
+    ,[ChannelNo]
+    ,[SecKillTitle]
+    ,[SecKillType]
+    ,[Status]
+    ,[ProductNo]
+    ,[ShowTime]
+    ,[StartTime]
+    ,[LinkAddress]
+    ,[CreateTime]
+    FROM [ComBeziWfs].[dbo].[SWfsHomeSecKill] where status=1
+  </statement>
+  <statement id="ComBeziWfs_SWfsHomeSecKill_DeleteById">
+    Delete from SWfsHomeSecKill where SecKillId=@SecKillId
+  </statement>
+  <statement id="ComBeziWfs_WfsProduct_SelectByProductNo">
+    select
+    ProductNo,
+    GoodsNo,
+    Status,
+    IsShelf,
+    ProductName,
+    ProductPicFile,
+    SellPrice,
+    PlatinumPrice,
+    DiamondPrice,
+    LimitedPrice,
+    LimitedVipPrice,
+    MarketPrice,
+    PromotionPrice,
+    WfsProduct.BrandNo,
+    WfsBrand.BrandCnName,
+    WfsBrand.BrandEnName
+    from WfsProduct with(nolock),
+    sPBrand with(nolock)
+    where
+    WfsProduct.BrandNo = WfsBrand.BrandNo
+    and WfsProduct.productNo=@ProductNo
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsHomeSecKill_SelectList">
+    with temp as(SELECT [SecKillId]
+    ,[ChannelNo]
+    ,[SecKillTitle]
+    ,[SecKillType]
+    ,[Status]
+    ,SWfsHomeSecKill.[ProductNo]
+    ,[ShowTime]
+    ,[StartTime]
+    ,[LinkAddress]
+    ,[CreateTime]
+    ,wfsproduct.productPicFile
+    ,row_number() over(order by createtime desc) as row
+    FROM [ComBeziWfs].[dbo].[SWfsHomeSecKill]
+    left join wfsproduct on SWfsHomeSecKill.productNo=wfsproduct.productNo
+    where 1=1
+    #if($SecKillTitle!='')
+    and SecKillTitle=@SecKillTitle
+    #end
+    #if($ProductNo!='')
+    and SWfsHomeSecKill.ProductNo=@ProductNo
+    #end
+    #if($StartTime!='')
+    and Starttime >=@StartTime
+    #end
+    #if($EndTime!='')
+    and Starttime &lt;=@EndTime
+    #end
+    #if($SecKillStatus!='')
+    and Status=@Status
+    #end
+    #if($SecKillType!='')
+    and SecKillType=@SecKillType
+    #end
+    #if($ChannelNo!='')
+    and ChannelNo=@ChannelNo
+    #end
+    )
+    select * from temp
+    Where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsHomeSecKill_SelectListCount">
+    SELECT count(1)
+    FROM [ComBeziWfs].[dbo].[SWfsHomeSecKill]
+    left join wfsproduct on SWfsHomeSecKill.productNo=wfsproduct.productNo
+    where 1=1
+    #if($SecKillTitle!='')
+    and SecKillTitle=@SecKillTitle
+    #end
+    #if($ProductNo!='')
+    and SWfsHomeSecKill.ProductNo=@ProductNo
+    #end
+    #if($StartTime!='')
+    and Starttime>=@StartTime
+    #end
+    #if($EndTime!='')
+    and Starttime &lt;=@EndTime
+    #end
+    #if($SecKillStatus!='')
+    and Status=@Status
+    #end
+    #if($SecKillType!='')
+    and SecKillType=@SecKillType
+    #end
+    #if($ChannelNo!='')
+    and ChannelNo=@ChannelNo
+    #end
+  </statement>
+  <statement id="ComBeziWfs_SWfsHomeSecKill_SelectById">
+    SELECT [SecKillId]
+    ,[ChannelNo]
+    ,[SecKillTitle]
+    ,[SecKillType]
+    ,SWfsHomeSecKill.[Status]
+    ,SWfsHomeSecKill.[ProductNo]
+    ,[ShowTime]
+    ,[StartTime]
+    ,SWfsHomeSecKill.[LinkAddress]
+    ,[CreateTime]
+    ,b.BrandEnName
+    ,wfsproduct.ProductName
+    ,wfsproduct.productPicFile
+    FROM [ComBeziWfs].[dbo].[SWfsHomeSecKill] with(nolock)
+    left join wfsproduct with(nolock) on SWfsHomeSecKill.productNo=wfsproduct.productNo
+    LEFT JOIN SpBrand AS b WITH ( NOLOCK ) ON a.BrandNo = b.BrandNo
+    LEFT JOIN dbo.SpBrandExtend AS c  WITH ( NOLOCK ) ON a.BrandNO = c.BrandNo
+    where SecKillId=@SecKillId
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsHomeSecKill_GetSWfsHomeSecKillByChannelNO">
+    SELECT TOP 1 *  FROM   SWfsHomeSecKill  c
+    WHERE  c.[Status] = 1    AND c.ChannelNo =@ChannelNo    AND c.ShowTime &lt;= GETDATE()    ORDER BY    c.ShowTime DESC
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsHomeSecKill_GetSWfsHomeSecKillByProductNo">
+    select   p.ProductNo,
+    p.GoodsNo,
+    p.IsShelf,
+    p.ProductName,
+    p.ProductPicFile,
+    p.SellPrice,
+    p.PlatinumPrice,
+    p.DiamondPrice,
+    p.LimitedPrice,
+    p.LimitedVipPrice,
+    p.MarketPrice,
+    p.PromotionPrice,
+
+    p.BrandNo,
+    b.BrandCnName,
+    b.BrandEnName
+    from WfsProduct (nolock) p
+    LEFT JOIN SpBrand AS b WITH ( NOLOCK ) ON a.BrandNo = b.BrandNo
+    LEFT JOIN dbo.SpBrandExtend AS c  WITH ( NOLOCK ) ON a.BrandNO = c.BrandNo
+    on b.BrandNo = p.BrandNo where p.IsShelf = 1 and p.IsLimitedOutlet = 1 and p.VisibleState = 1 and p.ProductPicFile != ''
+    and p.ProductNo=@ProductNo
+  </statement>
+
+  <!--新版首页推荐品牌-->
+  <statement id="ComBeziWfs_SWfsSpChannelRecommendBrand_GetHomeRecommendByChannelNo">
+    with temp as(
+    SELECT a.[RecommendBrandID]
+    ,a.[ChannelNO]
+    ,a.[BrandNO]
+    ,a.[SortValue]
+    ,a.[CreateDate]
+    ,b.[BrandCnName]
+    ,b.[BrandEnName]
+    ,c.[BrandLogo]
+    ,row_number() over(order by a.SortValue) as row
+    FROM [SWfsSpChannelRecommendBrand] as a with(nolock)
+    LEFT JOIN SpBrand AS b WITH ( NOLOCK ) ON a.BrandNo = b.BrandNo
+    LEFT JOIN dbo.SpBrandExtend AS c  WITH ( NOLOCK ) ON a.BrandNO = c.BrandNo
+    WHERE 1=1
+    #if($channelNo!='')
+    AND a.ChannelNo=@channelNo
+    #end
+    #if($brandNoAndBrandName!='')
+    AND (a.BrandNO=@brandNoAndBrandName or b.BrandCnName like '%'+@brandNoAndBrandName+'%' or b.BrandEnName like '%'+@brandNoAndBrandName+'%')
+    #end
+    #if($startTime!='')
+    AND a.CreateDate >= @startTime
+    #end
+    #if($endTime!='')
+    AND @endTime >=a.CreateDate
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <statement id="ComBeziWfs_SWfsSpChannelRecommendBrand_GetHomeRecommendByChannelNoTotalCount">
+    select count(0) FROM [SWfsSpChannelRecommendBrand] as a with(nolock)
+    LEFT JOIN SpBrand AS b WITH ( NOLOCK ) ON a.BrandNo = b.BrandNo
+    LEFT JOIN dbo.SpBrandExtend AS c  WITH ( NOLOCK ) ON a.BrandNO = c.BrandNo
+    WHERE 1=1
+    #if($channelNo!='')
+    AND a.ChannelNo=@channelNo
+    #end
+    #if($brandNoAndBrandName!='')
+    AND (a.BrandNO=@brandNoAndBrandName or b.BrandCnName like '%'+@brandNoAndBrandName+'%' or b.BrandEnName like '%'+@brandNoAndBrandName+'%')
+    #end
+    #if($startTime!='')
+    AND a.CreateDate >= @startTime
+    #end
+    #if($endTime!='')
+    AND @endTime >=a.CreateDate
+    #end
+  </statement>
+  <!--按品牌编号和性别查询是否重复添加-->
+  <statement id="ComBeziWfs_SWfsSpHomeRecommendBrand_IsExistsHomeBrand">
+    select count(0) from SWfsSpHomeRecommendBrand
+    where PageNo=@PageNo and IsRecommendBrand=1 and BrandNo=@BrandNo and PagePositionNo=@PagePositionNo and datastate=1
+    #if($RecommendBrandID!='0')
+    AND RecommendBrandID!=@RecommendBrandID
+    #end
+  </statement>
+  <!--删除首页推荐品牌-->
+  <statement id="ComBeziWfs_SWfsSpHomeRecommendBrand_deleteHomeBrandByID">
+    delete SWfsSpHomeRecommendBrand  where RecommendBrandID=@RecommendBrandID
+  </statement>
+
+  <!--新版首页推荐品牌-->
+  <statement id="ComBeziWfs_SWfsSpHomeRecommendBrand_GetHomePageRecommendByPageNo">
+    <!--with temp as(
+    SELECT
+    a.[BrandNO]
+    ,a.PageNo
+    ,a.PagePositionNo
+    ,a.IsRecommendBrand
+    ,a.PictureFileNo
+    ,a.PagePositionName as FirstName
+    ,b.[BrandCnName]
+    ,b.[BrandEnName]
+    ,b.[BrandLogo]
+    ,row_number() over(order by a.SortId asc,a.updatedate desc) as row
+    FROM [SWfsSpHomeRecommendBrand] as a with(nolock)
+    left join wfsBrand as b with(nolock) on a.BrandNo=b.BrandNo
+    WHERE 1=1
+    #if($PageNo!='')
+    and a.PageNo=@PageNo
+    #end
+    #if($PagePositionNo!='')
+    and a.PagePositionNo=@PagePositionNo
+    #end
+    and a.status=1 and a.datastate=1
+    )select * from temp where row between 1 and 1000-->
+    with temp as(
+    SELECT a.[BrandNO] ,
+    a.PageNo ,
+    a.PagePositionNo ,
+    a.IsRecommendBrand ,
+    a.PictureFileNo ,
+    a.PagePositionName AS FirstName ,
+    b.[BrandCnName] ,
+    b.[BrandEnName] ,
+    c.[BrandLogo] ,
+    ROW_NUMBER() OVER ( ORDER BY a.SortId ASC, a.updatedate DESC ) AS row
+    FROM   [SWfsSpHomeRecommendBrand] AS a WITH ( NOLOCK )
+    LEFT JOIN SpBrand AS b WITH ( NOLOCK ) ON a.BrandNo = b.BrandNo
+    LEFT JOIN SpBrandExtend AS c ON a.BrandNO = c.BrandNo
+    WHERE 1=1
+    #if($PageNo!='')
+    and a.PageNo=@PageNo
+    #end
+    #if($PagePositionNo!='')
+    and a.PagePositionNo=@PagePositionNo
+    #end
+    and a.status=1 and a.datastate=1
+    )select * from temp where row between 1 and 1000
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsCategoryBrandAlias_GetAliasByObjectNo">
+    SELECT ObjectAlias FROM SWfsCategoryBrandAlias (NOLOCK) WHERE TypeID=@typeId  AND ObjectNo=@brandNo
+  </statement>
+
+  <!--复制小运营位-->
+  <statement id="ComBeziWfs_SWfsPictureManager_CopySmallPagePosition">
+    insert into SWfsPictureManager
+    SELECT [PictureFileNo]
+    ,[PictureName]+'副本'
+    ,[LinkAddress]
+    ,[WebSite]
+    ,[Status]
+    ,[Position]
+    ,[OperatorUserId]
+    ,[DateCreate]
+    ,[PagePosition]
+    ,[Keyword]
+    ,[BrandContent]
+    ,[DateBegin]
+    ,[DateEnd]
+    ,[Gender]
+    ,[InvitationCode]
+    ,[BankName]
+    ,[ExpandPicFile]
+    ,[SubTitle]
+    FROM [SWfsPictureManager] WHERE PictureManageId=@PictureManageId
+  </statement>
+  <!--新版首页SQL END-->
+
+  <!--新版V码  查询关联新版活动编号Start-->
+  <statement id="ComBeziWfs_WfsCmsContent_SWfsNewSubject_List">
+    with temp as(
+    select * from (
+    select v.ActivityTopicsId,t.SubjectName,t.SubjectNo,t.SubjectPreName,t.Status,t.DateBegin,t.DateCreate,t.DateEnd,t.DatePre ,row_number() over(order by t.DateCreate desc) as row  from SWfsNewSubject as t with(nolock)
+    left join SWfsVActivityTopicsRef as v with(nolock) on t.SubjectNo=v.TopicNo and v.ActivityId=@ActivityId
+    where 1=1
+    #if($TopicName != '')
+    and (t.SubjectName like '%'+cast(@SubjectName as varchar)+'%' or  t.SubjectPreName like '%'+cast(@SubjectName as varchar)+'%'  or t.SubjectNo like '%'+cast(@SubjectName as varchar)+'%')
+    #end
+    #if($Status != '')
+    and t.Status = @Status
+    #end
+    )as temp1
+    where 1=1
+    #if($RelatedStatus == 0)
+    and ActivityTopicsId is null
+    #end
+    #if($RelatedStatus == 1)
+    and ActivityTopicsId is not null
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!--新版V码  查询关联新版活动编号  返回总条数-->
+  <statement id="ComBeziWfs_WfsCmsContent_SWfsNewSubject_List_Count">
+    select count(SubjectNo) from (
+    select v.ActivityTopicsId,t.SubjectName,t.SubjectNo,t.SubjectPreName,t.Status  from SWfsNewSubject as t with(nolock)
+    left join SWfsVActivityTopicsRef as v with(nolock) on t.SubjectNo=v.TopicNo and v.ActivityId=@ActivityId
+    where 1=1
+    #if($TopicName != '')
+    and (t.SubjectName like '%'+cast(@SubjectName as varchar)+'%' or  t.SubjectPreName like '%'+cast(@SubjectName as varchar)+'%' or t.SubjectNo like '%'+cast(@SubjectName as varchar)+'%' )
+    #end
+    #if($Status != '')
+    and t.Status = @Status
+    #end
+    )
+    as temp1
+    where 1=1
+    #if($RelatedStatus == 0)
+    and ActivityTopicsId is null
+    #end
+    #if($RelatedStatus == 1)
+    and ActivityTopicsId is not null
+    #end
+
+  </statement>
+  <!--新版V码  查询关联新版活动END-->
+
+  <!--取消关注-->
+  <statement id="ComBeziWfs_SWfsVActivityTopicsRef_SingleBySubjectNo">
+    select * from  SWfsVActivityTopicsRef where ActivityId=@ActivityId and TopicNo = @topicno
+  </statement>
+  <!--品牌墙管理 begin-->
+  <statement id="ComBeziWfs_SWfsSpHomeRecommendBrand_GetRecommendBrandByChannelNo">
+    <!--获取品牌墙列表 -->
+    SELECT a.[RecommendBrandID]
+    ,a.BrandNO
+    ,a.WebSiteNo
+    ,a.PageNo
+    ,a.PagePositionNo
+    ,a.PagePositionName
+    ,a.SortId
+    ,a.CreateDate
+    ,a.UpdateDate
+    ,a.DateBegin
+    ,a.Status
+    ,a.PictureFileTitle
+    ,a.PictureIndex
+    ,a.DateBegin
+    ,a.PictureFileNo
+    ,b.BrandCnName
+    ,b.BrandEnName
+    ,c.BrandLogo
+    ,row_number() over(order by a.SortId asc,a.updatedate desc) as row
+    FROM [SWfsSpHomeRecommendBrand] as a with(nolock)
+    LEFT JOIN SpBrand AS b WITH ( NOLOCK ) ON a.BrandNo = b.BrandNo
+    LEFT JOIN dbo.SpBrandExtend AS c  WITH ( NOLOCK ) ON a.BrandNO = c.BrandNo
+    WHERE
+    a.DataState=1 and a.Status=1 AND IsRecommendBrand=@IsRecommendBrand
+    #if($RecommendBrandID!='')
+    AND RecommendBrandID=@RecommendBrandID
+    #end
+    #if($PageNo!='')
+    AND a.PageNo=@PageNo
+    #end
+    #if($PagePositionNo!='')
+    #if($PagePositionNo=='RecommendBrand')
+    AND a.pagePositionNo like '%'+@PagePositionNo+'%'
+    #end
+    #if($PagePositionNo!='RecommendBrand')
+    AND a.pagePositionNo=@PagePositionNo
+    #end
+    #end
+    #if($StartDate!='')
+    AND a.CreateDate>=@StartDate
+    #end
+    #if($EndDate!='')
+    AND a.CreateDate &lt;= @EndDate
+    #end
+    #if($BrandNoAndBrandName!='')
+    AND (a.BrandNo = @BrandNoAndBrandName or b.BrandCnName like '%'+@BrandNoAndBrandName+ '%' or b.BrandEnName like  '%'+@BrandNoAndBrandName+ '%')
+    #end
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsSpHomeRecommendBrand_GetRecommendBrandByRId">
+    SELECT a.[RecommendBrandID]
+    ,a.BrandNO
+    ,a.WebSiteNo
+    ,a.PageNo
+    ,a.PagePositionNo
+    ,a.PagePositionName
+    ,a.SortId
+    ,a.CreateDate
+    ,a.UpdateDate
+    ,a.DateBegin
+    ,a.Status
+    ,a.PictureFileTitle
+    ,a.PictureIndex
+    ,a.DateBegin
+    ,a.PictureIndex
+    ,a.PictureFileNo
+    ,b.BrandCnName
+    ,b.BrandEnName
+    ,be.BrandLogo
+    ,row_number() over(order by a.SortId asc,a.updatedate desc) as row
+    FROM [SWfsSpHomeRecommendBrand] as a with(nolock)
+    left join SpBrand as b with(nolock) on a.BrandNo=b.BrandNo
+    left join SpBrandExtend as be with(nolock) on a.BrandNo=be.BrandNo
+    WHERE
+    RecommendBrandID=@RecommendBrandID
+  </statement>
+
+  <!--pageNo, pagePositionNo, startTime, endTime, brandNoAndBrandName, status, pictureIndex,pageIndex, pageSize, out total-->
+  <statement id="ComBeziWfs_SpHomeRecommendBrandExtends_SelectSpHomeRecommendBrandExtendsList">
+    with temp as (
+    SELECT a.[RecommendBrandID]
+    ,a.BrandNO
+    ,a.WebSiteNo
+    ,a.PageNo
+    ,a.PagePositionNo
+    ,a.PagePositionName
+    ,a.SortId
+    ,a.CreateDate
+    ,a.UpdateDate
+    ,a.DateBegin
+    ,a.Status
+    ,a.PictureFileTitle
+    ,a.PictureIndex
+    ,a.PictureFileNo
+    ,b.BrandCnName
+    ,b.BrandEnName
+    ,be.BrandLogo
+    ,row_number() over(order by a.DateBegin desc) as row
+    FROM [SWfsSpHomeRecommendBrand] as a with(nolock)
+    left join SpBrand as b with(nolock) on a.BrandNo=b.BrandNo
+    left join SpBrandExtend as be with(nolock) on a.BrandNo=be.BrandNo
+    WHERE
+    a.DataState=1  AND IsRecommendBrand=1
+    #if($Status!='-1')
+    and a.Status=@Status
+    #end
+    #if($PageNo!='')
+    AND a.PageNo=@PageNo
+    #end
+    #if($PagePositionNo!='')
+    #if($PagePositionNo=='RecommendBrand')
+    AND a.pagePositionNo like '%'+@PagePositionNo+'%'
+    #end
+    #if($PagePositionNo!='RecommendBrand')
+    AND a.pagePositionNo=@PagePositionNo
+    #end
+    #end
+    #if($StartTime!='')
+    AND a.CreateDate>=@StartTime
+    #end
+    #if($EndTime!='')
+    AND a.CreateDate &lt;= @EndTime
+    #end
+    #if($PictureIndex!='-1')
+    AND a.PictureIndex=@PictureIndex
+    #end
+    #if($BrandNoAndBrandName!='')
+    AND (a.BrandNo = @BrandNoAndBrandName or b.BrandCnName like '%'+@BrandNoAndBrandName+ '%' or b.BrandEnName like  '%'+@BrandNoAndBrandName+ '%')
+    #end
+    )
+    select * from temp  where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+
+
+  <statement id="ComBeziWfs_SpHomeRecommendBrandExtends_SelectSpHomeRecommendBrandExtendsCount">
+    SELECT count(0)
+    FROM [SWfsSpHomeRecommendBrand] as a with(nolock)
+    left join SpBrand as b with(nolock) on a.BrandNo=b.BrandNo
+    left join SpBrandExtend as be with(nolock) on a.BrandNo=be.BrandNo
+    WHERE
+    a.DataState=1 AND IsRecommendBrand=1
+    #if($Status!='-1')
+    and a.Status=@Status
+    #end
+    #if($PageNo!='')
+    AND a.PageNo=@PageNo
+    #end
+    #if($PagePositionNo!='')
+    #if($PagePositionNo=='RecommendBrand')
+    AND a.pagePositionNo like '%'+@PagePositionNo+'%'
+    #end
+    #if($PagePositionNo!='RecommendBrand')
+    AND a.pagePositionNo=@PagePositionNo
+    #end
+    #end
+    #if($StartTime!='')
+    AND a.CreateDate>=@StartTime
+    #end
+    #if($EndTime!='')
+    AND a.CreateDate &lt;= @EndTime
+    #end
+    #if($PictureIndex!='-1')
+    AND a.PictureIndex=@PictureIndex
+    #end
+    #if($BrandNoAndBrandName!='')
+    AND (a.BrandNo = @BrandNoAndBrandName or b.BrandCnName like '%'+@BrandNoAndBrandName+ '%' or b.BrandEnName like  '%'+@BrandNoAndBrandName+ '%')
+    #end
+  </statement>
+
+
+  <statement id="ComBeziWfs_SWfsSpHomeRecommendBrand_GetRecommendBrandByIsRecommendBrand">
+    <!--获取推荐品牌 -->
+    SELECT [RecommendBrandID]
+    ,[ChannelNO]
+    ,[BrandNO]
+    ,[SortValue]
+    ,[CreateDate]
+    ,[PictureFileNo]
+    ,[WebSiteNo]
+    ,[PageNo]
+    ,[PagePositionNo]
+    ,[OperateUserId]
+    ,[UpdateOperateUserId]
+    ,[UpdateDate]
+    ,[Status]
+    ,[DataState]
+    ,[IsRecommendBrand]
+    FROM [ComBeziWfs].[dbo].[SWfsSpHomeRecommendBrand](nolock) where
+    IsRecommendBrand=1 and Status=1 and [IsRecommendBrand]=1 and [ChannelNO]='Home'
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsIndexModule_GetUsableFloor">
+    <!--查询所有可用楼层-->
+    SELECT [ModuleId]
+    ,[ModuleName]
+    ,[ADShowType]
+    ,[Sort]
+    FROM [ComBeziWfs].[dbo].[SWfsIndexModule] where DataState=1 and [Stutas]=1
+    order by [Sort]
+  </statement>
+  <statement id="ComBeziWfs_SWfsSpHomeRecommendBrand_GetRecommendBrand">
+    SELECT [RecommendBrandID]
+    ,[PageNo]
+    ,[BrandNO]
+    ,[SortId]
+    FROM SWfsSpHomeRecommendBrand (nolock) where 1=1
+    and IsRecommendBrand=@IsRecommendBrand and DataState=1 and Status=1
+    #if($PageNo!='')
+    and PageNo=@PageNo
+    #end
+    #if($BrandNO!='')
+    and BrandNO=@BrandNO
+    #end
+    #if($PagePositionNo!='')
+    and PagePositionNo=@PagePositionNo
+    #end
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsSpHomeRecommendBrand_GetRecommendBrandByID">
+    SELECT [RecommendBrandID]
+    ,[PageNo]
+    ,[BrandNO]
+    ,[SortId]
+    FROM SWfsSpHomeRecommendBrand (nolock) where 1=1
+    and [RecommendBrandID]=@RecommendBrandID and DataState=1 and Status=1
+
+  </statement>
+
+  <!--获取上新活动图列表信息-->
+  <statement id="ComBeziWfs_SWfsNewAlterPicture_SelectAllList">
+    select pic.PictureId,pic.PictureName,pic.PcPictureLinkUrl,pic.MobilePictureLinkUrl,pic.BrandNo,
+    pic.Position,pic.PcPictureNo,pic.MobilePictureNo,pic.MobilePictureType,pic.[Status],pic.BeginDate,pic.OperatorUserId,
+    pic.DateCreate,brd.BrandEnName,brd.BrandCnName
+    from SWfsNewAlterPicture pic with (NoLock)
+    LEFT OUTER JOIN spBrand  brd with (NoLock)
+    ON pic.BrandNo = brd.BrandNo
+    where 1=1
+    #if($PicName!='')
+    and pic.PictureName like '%'+@PicName+'%'
+    #end
+    #if($PicPos!='')
+    and pic.Position=@PicPos
+    #end
+    #if($Status!='')
+    and pic.[Status]=@Status
+    #end
+    #if($DateBegin!='')
+    and pic.BeginDate >=@DateBegin
+    #end
+    #if($DateEnd!='')
+    and pic.BeginDate &lt;=@DateEnd
+    #end
+    order by pic.BeginDate desc,pic.DateCreate desc
+  </statement>
+  <!--根据id获取上新活动图信息-->
+  <statement id="ComBeziWfs_SWfsNewAlterPicture_SelectById">
+    select pic.PictureId,pic.PictureName,pic.PcPictureLinkUrl,pic.MobilePictureLinkUrl,pic.BrandNo,
+    pic.Position,pic.PcPictureNo,pic.MobilePictureNo,pic.MobilePictureType,pic.[Status],pic.BeginDate,pic.OperatorUserId,
+    pic.DateCreate,brd.BrandEnName,brd.BrandCnName
+    from SWfsNewAlterPicture pic with (NoLock)
+    LEFT JOIN spbrand  brd with (NoLock)
+    ON pic.BrandNo = brd.BrandNo
+    where pic.PictureId = @PictureId
+  </statement>
+  <!--更新上新活动图状态-->
+  <statement id="ComBeziWfs_SWfsNewAlterPicture_UpdateWfsNewAlterPicById">
+    update SWfsNewAlterPicture set Status=@Status where PictureId=@PictureId
+  </statement>
+  <!--删除上新活动图-->
+  <statement id="ComBeziWfs_SWfsNewAlterPicture_DelWfsNewAlterPicById">
+    delete from SWfsNewAlterPicture where PictureId=@PictureId
+  </statement>
+  <!--获取上新品牌列表信息（新EP表结构）-->
+  <statement id="ComBeziWfs_SWfsNewBrandManage_SelectAllNewBrands">
+    select nbm.NewBrandId,nbm.BrandNo,nbm.Sort,nbm.WeekDays,nbm.OperatorUserId,
+    nbm.DateCreate,brd.BrandEnName,brd.BrandCnName,sbe.BrandLogo
+    from SWfsNewBrandManage nbm with (NoLock)
+    LEFT JOIN dbo.SpBrand  brd with (NoLock)
+    ON nbm.BrandNo = brd.BrandNo
+    LEFT JOIN dbo.SpBrandExtend sbe with (NoLock)
+    ON brd.BrandNo=sbe.BrandNo
+    where 1=1
+    and brd.IsShow=1 and brd.DataState=1
+    and brd.IsValid=1
+    order by nbm.Sort
+  </statement>
+  <!--获取上新品牌列表信息-->
+  <!--<statement id="ComBeziWfs_SWfsNewBrandManage_SelectAllNewBrands">
+    select nbm.NewBrandId,nbm.BrandNo,nbm.Sort,nbm.WeekDays,nbm.OperatorUserId,
+    nbm.DateCreate,brd.BrandEnName,brd.BrandCnName,sbe.BrandLogo
+    from SWfsNewBrandManage nbm with (NoLock)
+    LEFT JOIN dbo.WfsBrand  brd with (NoLock)
+    ON brd.BrandNo=sbe.BrandNo
+    where 1=1
+    order by nbm.Sort
+  </statement>-->
+  <!--根据品牌id获取上新品牌信息-->
+  <statement id="ComBeziWfs_SWfsNewBrandManage_SelectNewBrandInfoByBrandNo">
+    select * from SWfsNewBrandManage with (NoLock)
+    where BrandNo=@BrandNo
+  </statement>
+  <!--获取某日期下的上新品牌信息-->
+  <!--<statement id="ComBeziWfs_SWfsNewBrandManage_SelectNewBrandListByWeek">
+    select nbm.NewBrandId,nbm.BrandNo,nbm.Sort,nbm.WeekDays,nbm.OperatorUserId,
+    nbm.DateCreate,brd.BrandEnName,brd.BrandCnName,brd.BrandLogo,
+    (case when tb2.newCount is null then 0 else tb2.newCount end) NewCount
+    from SWfsNewBrandManage nbm
+    LEFT OUTER JOIN WfsBrand  brd
+    ON nbm.BrandNo = brd.BrandNo
+    left join (select bm.brandno,count(0) newcount from wfsproduct wp
+    join SWfsNewBrandManage bm on wp.brandno=bm.brandno
+    where bm.WeekDays=@WeekDays and wp.FirstDateShelf >=@PreTime
+    and @NowTime>=wp.FirstDateShelf and wp.IsShelf=1
+    and wp.visiblestate =1 and wp.ProductPicFile !=''
+    and wp.IsLimitedOutlet = 1
+    and wp.LimitedPrice >0
+    group by bm.BrandNo)tb2
+    on nbm.brandno = tb2.brandno
+    where 1=1 and nbm.WeekDays=@WeekDays
+    #if($KeyWord!='')
+    and (nbm.BrandNo like '%'+@KeyWord+'%' or brd.BrandEnName like '%'+@KeyWord+'%' or brd.BrandCnName like '%'+@KeyWord+'%')
+    #end
+    #if($DateBegin!='')
+    and nbm.DateCreate >=@DateBegin
+    #end
+    #if($DateEnd!='')
+    and nbm.DateCreate &lt;=@DateEnd
+    #end
+    order by nbm.Sort
+  </statement>-->
+  <!--获取某日期下的上新品牌信息(新的EP表的)-->
+  <statement id="ComBeziWfs_SWfsNewBrandManage_SelectNewBrandListByWeek">
+    select nbm.NewBrandId,nbm.BrandNo,nbm.Sort,nbm.WeekDays,nbm.OperatorUserId,
+    nbm.DateCreate,brd.BrandEnName,brd.BrandCnName,sbe.BrandLogo,
+    (case when tb2.newCount is null then 0 else tb2.newCount end) NewCount
+    from SWfsNewBrandManage nbm with(nolock)
+    LEFT OUTER JOIN dbo.SpBrand  brd with(nolock)
+    ON nbm.BrandNo = brd.BrandNo
+    LEFT JOIN dbo.SpBrandExtend sbe with(nolock)
+    ON brd.BrandNo=sbe.BrandNo
+    left join
+    (select bm.brandno,count(0) newcount from dbo.SpProduct wp with(nolock)
+    join SWfsNewBrandManage bm with(nolock) on wp.brandno=bm.brandno
+    LEFT JOIN dbo.SpfProductExtend spe with(nolock)
+    ON wp.ProductNo=spe.ProductNo
+    where bm.WeekDays=@WeekDays and spe.FirstShelfDate >=@PreTime
+    and @NowTime>=spe.FirstShelfDate
+    AND wp.ProductNo IN
+    (
+    SELECT DISTINCT(b.ProductNo) FROM SpfSkuExtend b with(nolock)
+    LEFT JOIN dbo.SpProduct sppr with(nolock)
+    ON b.ProductNo=sppr.ProductNo
+    WHERE
+    b.PcSaleState=2
+    AND b.PcShowState=1
+    and b.DataState=1
+    --and sppr.OnSalesState=1
+    --and sppr.VisibleState=1
+    AND sppr.BrandNo=bm.BrandNo
+    )
+    AND spe.TypeFlag=1
+    and spe.[Status]=1
+    and spe.DataState =1
+    group by bm.BrandNo)tb2
+    on nbm.brandno = tb2.brandno
+    where 1=1 and nbm.WeekDays=@WeekDays
+    AND brd.IsShow=1 AND brd.DataState=1
+    and brd.IsValid=1 --and sbe.IsSupportShangPin=1
+    #if($KeyWord!='')
+    and (nbm.BrandNo like '%'+@KeyWord+'%' or brd.BrandEnName like '%'+@KeyWord+'%' or brd.BrandCnName like '%'+@KeyWord+'%')
+    #end
+    #if($DateBegin!='')
+    and nbm.DateCreate >=@DateBegin
+    #end
+    #if($DateEnd!='')
+    and nbm.DateCreate &lt;=@DateEnd
+    #end
+    order by nbm.Sort
+  </statement>
+  <!--获取当前日期下所有上新商品信息-->
+  <statement id="ComBeziWfs_SWfsNewProductManage_SelectAllByWeekDays">
+    select BrandNo,count(0) NewCount from SWfsNewProductManage
+    where DataStatus = 1 and WeekDays=@WeekDays group by BrandNo having count(0)>=10
+  </statement>
+  <!--根据日期和品牌编号查询上新商品信息-->
+  <statement id="ComBeziWfs_SWfsNewProductManage_SelectAllByBrandNoAndWeek">
+    select * from SWfsNewProductManage
+    where DataStatus = 1 and BrandNo=@BrandNo and WeekDays=@WeekDays
+  </statement>
+  <!--删除某日期下的所有上新品牌-->
+  <statement id="ComBeziWfs_SWfsNewBrandManage_DelWfsNewBrandByWeek">
+    delete from SWfsNewBrandManage where WeekDays=@WeekDays
+  </statement>
+  <!--删除某日期下的某一上新品牌-->
+  <statement id="ComBeziWfs_SWfsNewBrandManage_DelWfsNewBrandById">
+    delete from SWfsNewBrandManage where NewBrandId=@NewBrandId
+  </statement>
+  <!--根据id获取上新品牌信息-->
+  <statement id="ComBeziWfs_SWfsNewBrandManage_SelectWfsNewBrandById">
+    select * from SWfsNewBrandManage where NewBrandId=@NewBrandId
+  </statement>
+  <!--获取某品牌池子下的最小排序-->
+  <statement id="ComBeziWfs_SWfsNewBrandManage_GetMinSortByWeekDays">
+    select Min(sort) from SWfsNewBrandManage where WeekDays=@WeekDays
+  </statement>
+  <!--根据id获取品牌信息-->
+  <statement id="ComBeziWfs_WfsBrand_SelectBrandByNo">
+    SELECT a.BrandNo,BrandCnName,BrandEnName,BrandLogo FROM dbo.SpBrand a
+    LEFT JOIN
+    SpBrandExtend b ON a.BrandNo=b.BrandNo
+  </statement>
+  <!--根据id获取品牌信息-->
+  <statement id="ComBeziWfs_SWfsSpHomeRecommendBrand_UpdateHomeRecommendBrandPagePositionName">
+    update SWfsSpHomeRecommendBrand set PagePositionName=@PagePositionName where PageNo=@PageNo and PagePositionNo=@PagePositionNo and WebSiteNo=@WebSiteNo and IsRecommendBrand=@IsRecommendBrand
+  </statement>
+  <!--根据品牌编号和时间获取上新活动图信息-->
+  <statement id="ComBeziWfs_SWfsNewAlterPicture_SelectWfsNewAlterPicByNo">
+    select * from SWfsNewAlterPicture where BrandNo=@BrandNo and left(CONVERT(varchar(100), BeginDate, 20),16)=@BeginDate
+  </statement>
+  <!--查找品牌编号是否的条件是否能在商品前台显示-->
+  <statement id="ComBeziWfs_IsBrandNOAccordingConditions">
+    Select Count(1) from SpBrand with(nolock)
+    INNER JOIN SpBrandExtend with(nolock)
+    ON SpBrand.BrandNo = SpBrandExtend.BrandNo
+    WHERE SpBrand.IsShow =1 AND SpBrand.DataState =1 AND SpBrand.IsValid =1 --AND SpBrandExtend.IsSupportShangPin =1
+    and SpBrand.BrandNo=@BrandNo
+  </statement>
+  <!--删除上新品牌表中不符合在尚品显示条件的品牌-->
+  <statement id="ComBeziWfs_DeleteNOAccordingConditionsBrand">
+    DELETE FROM SWfsNewBrandManage WHERE BrandNo IN(
+    SELECT BrandNo FROM SWfsNewBrandManage with(nolock)
+    WHERE BrandNo NOT IN (  
+    SELECT nbm.BrandNo
+    from SWfsNewBrandManage nbm with (NoLock)
+    LEFT JOIN dbo.SpBrand  brd with (NoLock)
+    ON nbm.BrandNo = brd.BrandNo
+    LEFT JOIN dbo.SpBrandExtend sbe with (NoLock)
+    ON brd.BrandNo=sbe.BrandNo
+    where 1=1
+    and brd.IsShow=1 and brd.DataState=1
+    and brd.IsValid=1 --and sbe.IsSupportShangPin=1
+    ))
+  </statement>
+
+  <!--查询所有App推荐产品-->
+  <statement id="ComBeziWfs_SWfsAppRecommendProduct_SelectAllInfo">
+    select Id,ProductNo,SortId,CreateTime,Creator from SWfsAppRecommendProduct order by CreateTime
+  </statement>
+  <statement id="ComBeziWfs_SWfsAppRecommendProduct_SelectInfoByProductNo">
+    select Id,ProductNo,SortId,CreateTime,Creator from SWfsAppRecommendProduct where ProductNo=@ProductNo order by CreateTime
+  </statement>
+  <!--根据Id删除推荐产品信息-->
+  <statement id="ComBeziWfs_SWfsAppRecommendProduct_deleteInfoById">
+    delete from SWfsAppRecommendProduct where ProductNo =@ID
+  </statement>
+  <!--添加App推荐产品-->
+  <statement id="ComBeziWfs_SWfsAppRecommendProduct_InsertInfo">
+    insert into SWfsAppRecommendProduct(ProductNo,SortId,CreateTime,Creator) values(@ProductNo,@SortId,@CreateTime,@Creator)
+  </statement>
+
+</statements>

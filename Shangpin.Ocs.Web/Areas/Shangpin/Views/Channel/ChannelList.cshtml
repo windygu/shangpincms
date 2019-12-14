@@ -1,0 +1,184 @@
+﻿@model IEnumerable<Shangpin.Entity.Wfs.SWfsSpChannel>
+@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Ocs.Service.Common;
+@{
+    ViewBag.Title = "频道页列表";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    int pageIndex = ViewBag.pageIndex;
+    int pageSize = ViewBag.pageSize;
+    int totalCount = ViewBag.totalCount;
+    IEnumerable<SelectListItem> manchanneloption = new List<SelectListItem>()
+    {
+        new SelectListItem{Text="服饰CLOTHING",Value=AppSettingManager.AppSettings["MenClothing"]},
+        new SelectListItem{Text="箱包BAGS",Value=AppSettingManager.AppSettings["MenBags"]},
+        new SelectListItem{Text="鞋靴SHOES",Value=AppSettingManager.AppSettings["MenShoes"]},
+        new SelectListItem{Text="配饰ACCESSORIES",Value=AppSettingManager.AppSettings["MenAccessories"]},
+        new SelectListItem{Text="腕表眼镜WATCHES",Value=AppSettingManager.AppSettings["MenWatches"]},
+        new SelectListItem{Text="美妆BEAUT",Value=AppSettingManager.AppSettings["MenBeauty"]},
+        new SelectListItem{Text="家居HOME",Value=AppSettingManager.AppSettings["MenHomes"]},
+    };
+    IEnumerable<SelectListItem> womanchanneloption = new List<SelectListItem>()   
+    {
+        new SelectListItem{Text="服饰CLOTHING",Value=AppSettingManager.AppSettings["WomenClothing"]},
+        new SelectListItem{Text="箱包BAGS",Value=AppSettingManager.AppSettings["WomenBags"]},
+        new SelectListItem{Text="鞋靴SHOES",Value=AppSettingManager.AppSettings["WomenShoes"]},
+        new SelectListItem{Text="配饰ACCESSORIES",Value=AppSettingManager.AppSettings["WomenAccessories"]},
+        new SelectListItem{Text="腕表眼镜WATCHES",Value=AppSettingManager.AppSettings["WomenWatches"]},
+        new SelectListItem{Text="美妆BEAUT",Value=AppSettingManager.AppSettings["WomenBeauty"]},
+        new SelectListItem{Text="家居HOME",Value=AppSettingManager.AppSettings["WomenHomes"]},
+    };
+    Dictionary<string, string> urlList = new Dictionary<string, string>();
+    urlList.Add(AppSettingManager.AppSettings["WomenClothing"], "http://www.shangpin.com/women/list/clothing");
+    urlList.Add(AppSettingManager.AppSettings["WomenBags"], "http://www.shangpin.com/women/list/bags");
+    urlList.Add(AppSettingManager.AppSettings["WomenShoes"], "http://www.shangpin.com/women/list/shoes");
+    urlList.Add(AppSettingManager.AppSettings["WomenAccessories"], "http://www.shangpin.com/women/list/accessories");
+    urlList.Add(AppSettingManager.AppSettings["WomenWatches"], "http://www.shangpin.com/women/list/watches");
+    urlList.Add(AppSettingManager.AppSettings["WomenBeauty"], "http://www.shangpin.com/women/list/beauty");
+    urlList.Add(AppSettingManager.AppSettings["WomenHomes"], "http://www.shangpin.com/women/list/homes");
+    urlList.Add(AppSettingManager.AppSettings["MenClothing"], "http://www.shangpin.com/men/list/clothing");
+    urlList.Add(AppSettingManager.AppSettings["MenBags"], "http://www.shangpin.com/men/list/bags");
+    urlList.Add(AppSettingManager.AppSettings["MenShoes"], "http://www.shangpin.com/men/list/shoes");
+    urlList.Add(AppSettingManager.AppSettings["MenAccessories"], "http://www.shangpin.com/men/list/accessories");
+    urlList.Add(AppSettingManager.AppSettings["MenWatches"], "http://www.shangpin.com/men/list/watches");
+    urlList.Add(AppSettingManager.AppSettings["MenBeauty"], "http://www.shangpin.com/men/list/beauty");
+    urlList.Add(AppSettingManager.AppSettings["MenHomes"], "http://www.shangpin.com/men/list/homes");
+    
+    if (Request.QueryString["channelgender"] == "0")
+    {
+        if (womanchanneloption.Count(p => p.Value == Request.QueryString["womanchannelno"]) == 1)
+        {
+            womanchanneloption.Single(p => p.Value == Request.QueryString["womanchannelno"]).Selected = true;
+        }
+    }
+    else if (Request.QueryString["channelgender"] == "1")
+    {
+        if (manchanneloption.Count(p => p.Value == Request.QueryString["manchannelno"]) == 1)
+        {
+            manchanneloption.Single(p => p.Value == Request.QueryString["manchannelno"]).Selected = true;
+        }
+    }
+    
+}
+@section HeadScript{
+    <script type="text/javascript">
+        //加载男士或者女士的频道下拉列表
+        function getgenderchannellist(obj) {
+            if ($(obj).val() == 0) {
+                $("#womanchannelno").show();
+                $("#manchannelno").hide();
+            } else {
+                $("#womanchannelno").hide();
+                $("#manchannelno").show();
+            }
+        }
+        //清除缓存
+        function clearChannelCache(channelno) {
+            $.get("/shangpin/channel/ClearChannelCache?channelno="+channelno, function (data) {
+                alert(data);
+            });
+         }
+        $(document).ready(function () {
+            //加载男士或者女士的频道下拉列表
+            if ($("#channelgender").val() == "0") {
+                $("#womanchannelno").show();
+                $("#manchannelno").hide();
+            } else {
+                $("#womanchannelno").hide();
+                $("#manchannelno").show();
+            }
+        });
+    </script>
+}
+<h1>
+    OCS > 尚品 > 频道页列表
+</h1>
+<table class="mx-table">
+    <tr>
+        <td style="text-align:left;">
+            <form action="/shangpin/Channel/ChannelList" method="get">
+            <select name="channelgender" id="channelgender" onchange="getgenderchannellist(this)">
+                <option value="">全部</option>
+                <option value="0" @(Request.QueryString["channelgender"]=="0"?"selected":null)>女士</option>
+                <option value="1"  @(Request.QueryString["channelgender"]=="1"?"selected":null)>男士</option>
+            </select>&nbsp;&nbsp;
+            @Html.DropDownList("womanchannelno", womanchanneloption)&nbsp;&nbsp;
+            @Html.DropDownList("manchannelno", manchanneloption, new { @style = "display:none;" })&nbsp;&nbsp;
+            <input type="submit" value="查询" />&nbsp;&nbsp;<a href="/shangpin/channel/EditeChannel">添加</a>
+            </form>
+        </td>
+        <td></td>
+    </tr>
+</table>
+
+<table width="auto" border="0" class="mx-table" style="width: 100%;">
+    <tr>
+        <td style="text-align:left;">频道列表</td>
+    </tr>
+    <tr class="cross">
+        <td style="text-align:left;">
+            <span style="color:Red;">频道位置</span>:
+            最新
+                <br />
+                <a href="http://www.shangpin.com/"></a>
+            <br />
+            频道地址<a href="http://www.baidu.com">点击</a>
+        </td>
+        <td>
+            <br />
+
+            <a href="#" class="button">导航管理</a>
+            <a href="/shangpin/newshelf/NewActivityList" class="button">上新活动图管理</a>
+            <a href="/shangpin/newshelf/NewBrandList" class="button">上新品牌管理</a>
+            
+            <a href="/shangpin/newshelf/NewShelfProductList" class="button">上新商品管理</a>
+            <a href="javascript:clearChannelCache('aaa')" class="button">清除缓存</a>
+
+        </td>
+    </tr>
+    @for (int i = 0; i < Model.Count(); i++)
+    {
+        <tr class="@(i % 2 == 0 ? "cross" : "")">
+            <td style="text-align:left;">
+                <span style="color:Red;">频道位置</span>:
+                @if (Model.ElementAt(i).ChannelNO.IndexOf("A01") == 0)
+	            {
+		                    @Html.Raw("女士 > " + womanchanneloption.Single(p => p.Value == Model.ElementAt(i).ChannelNO).Text)
+                            <br />
+                            <a href="http://www.shangpin.com/"></a>                                                                                                    
+	            }
+                else if (Model.ElementAt(i).ChannelNO.IndexOf("A02")==0)
+	            {
+                            @Html.Raw("男士 > " + manchanneloption.Single(p => p.Value == Model.ElementAt(i).ChannelNO).Text)
+                }
+                <br />
+                频道地址<a href="@urlList[Model.ElementAt(i).ChannelNO]">点击</a>
+            </td>
+            <td>
+                <br />
+              
+                <a href="/shangpin/channel/editechannel/@Model.ElementAt(i).ChannelID" class="button">编辑</a>
+                <a href="/shangpin/channel/VenueTemplateEditeByID?channelno=@Model.ElementAt(i).ChannelNO" class="button">页面管理</a>
+                <a href="/shangpin/channel/ChannelAlterList.html?channelno=@Model.ElementAt(i).ChannelNO" class="button">头部轮播</a>
+                <a href="/shangpin/channel/ChannelProductGroupManager?channelno=@Model.ElementAt(i).ChannelNO" class="button">促销商品</a>
+                
+        <a href="/shangpin/channel/RecommendBrandList?channelno=@Model.ElementAt(i).ChannelNO" class="button">首页/列表推荐品牌</a>
+                    <a href="javascript:clearChannelCache('@Model.ElementAt(i).ChannelNO')" class="button">清除缓存</a>
+                    @*                <a href="/shangpin/channel/RecommendCategory?channelno=@Model.ElementAt(i).ChannelNO" class="button">推荐分类</a>*@
+
+                @*                <a href="/shangpin/channel/BrandAlterPicGroup?channelno=@Model.ElementAt(i).ChannelNO" class="button">品牌轮播分组</a>*@
+                @*                <a href="/shangpin/channel/ChannelBrandGroupManager?channelno=@Model.ElementAt(i).ChannelNO" class="button">品牌图</a>*@
+
+            @*    <a href="/shangpin/channel/ChannelRecommendLink?channelno=@Model.ElementAt(i).ChannelNO" class="button">频道推荐标题</a>*@
+            @*                <a href="/shangpin/channel/ChannelAdverList.html?channelno=@Model.ElementAt(i).ChannelNO" class="button">头部公告</a>*@
+
+            </td>
+        </tr>
+    }
+</table>
+
+<div class="spPage">
+    @if (totalCount > 0)
+    {
+        @Html.Raw(@Html.PagerX("page", pageIndex, pageSize, totalCount))
+    }
+</div>

@@ -1,0 +1,218 @@
+/*首页主容器*/
+#alIndex_main {
+    width: 88%;
+    margin: 0 auto;
+    background: #fff;
+    float: right;
+    overflow: hidden;
+}
+
+/*商品列表*/
+
+.alIndex_tt {
+    height: 25px;
+    margin-bottom: 13px;
+}
+
+    .alIndex_tt h2 {
+        float: left;
+        font-size: 20px;
+        color: #555;
+        font-weight: bold;
+        height: 26px;
+        line-height: 24px;
+        color: #fff;
+        padding: 0 3px;
+        width: 85px;
+        background: #000;
+    }
+
+    .alIndex_tt a.button {
+        background-color: #4d90fe;
+        border: 1px solid #3079ed;
+        color: #fff;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        font-size: 14px;
+        display: inline-block;
+        padding: 4px 10px;
+        *padding: 3px 0px 0;
+        position: relative;
+        text-decoration: none;
+        -webkit-transition: border-color 0.218s ease 0s;
+        -moz-transition: border-color 0.218s ease 0s;
+        -o-transition: border-color 0.218s ease 0s;
+        transition: border-color 0.218s ease 0s;
+        cursor: pointer;
+        margin: 0 15px 0 0;
+        *zoom: 1;
+    }
+
+        .alIndex_tt a.button:hover {
+            border-color: #1c8ede;
+            -webkit-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+            -moz-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+            box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+        }
+
+
+
+#alActive_list ul {
+    margin-top: 10px;
+    width: 970px;
+    overflow: hidden;
+}
+
+
+[draggable] {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: move;
+}
+
+#alActive_list li.sortable {
+    border: 2px dashed #CCC;
+    float: left;
+    width: 229px;
+    height: 376px;
+    margin: 0 8px 10px 0;
+}
+
+#SortDivShow li.sortable {
+    /*border: 2px dashed #CCC;
+    float: left;
+    height: 45px;
+    width: 100px;
+    color: red;
+    margin: 0 8px 10px 0;*/
+}
+
+#alActive_list .alActive_list_cell {
+    width: 233px;
+    height: 380px;
+    float: left;
+    color: #fff;
+    margin: 0 8px 10px 0;
+    position: relative;
+    text-align: center;
+}
+
+.alActive_list_cell a {
+    display: block;
+    cursor: move;
+}
+
+    .alActive_list_cell a img {
+        width: 210px;
+        height: 280px;
+        font-size: 0;
+        vertical-align: top;
+    }
+
+.alActive_list_info {
+    padding-top: 10px;
+    background: #eaeaea;
+    height: 80px;
+    text-align: left;
+    width: 230px;
+}
+
+    .alActive_list_info p {
+        width: 215px;
+        font-size: 13px;
+        margin: 0;
+        display: block;
+        margin: 0 0 0 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .alActive_list_info span {
+        width: 220px;
+        display: block;
+        height: 40px;
+        line-height: 40px;
+        overflow: hidden;
+        font-size: 13px;
+        margin: 5px 0 0 0;
+        padding: 0 0 0 10px;
+        font-family: "微软雅黑",Microsoft YaHei;
+    }
+
+        .alActive_list_info span em {
+            font-size: 26px;
+            color: #b51111;
+        }
+
+            .alActive_list_info span em i {
+                font-size: 20px;
+            }
+
+        .alActive_list_info span del {
+            color: #000;
+            margin-left: 10px;
+            font-size: 14px;
+        }
+
+
+#alActive_list ul#collection {
+    width: 10%;
+    height: 100%;
+    overflow-y: auto;
+    background-color: #fff;
+    border-right: 1px solid #ccc;
+    position: fixed;
+    top: 104px;
+    left: 210px;
+    /*z-index: 100;*/
+}
+
+#collection .alActive_list_cell {
+    zoom: 0.5;
+    margin-right: 0;
+    -moz-transform: scale(0.5);
+    -moz-transform-origin: top left;
+    height: 400px;
+    /*height:auto;*/
+}
+
+#collection .alActive_list_cell_FF {
+   zoom: 0.5;
+      margin-right: 0;
+    -moz-transform: scale(0.5);
+    -moz-transform-origin: top left;
+    height: 200px;
+    /*height:auto;*/
+}
+
+#collection li.sortable {
+    -moz-transform: scale(0.5);
+    -moz-transform-origin: top left;
+    margin-right: 0;
+    clear: both;
+}
+
+.alActive_list_cell a .pro_saleout {
+    position: absolute;
+    zoom: 1;
+    display: block;
+    left: 0;
+    bottom: 95px;
+    width: 45px;
+    min-height: 22px;
+    _height: 22px;
+    line-height: 21px;
+    background-color: #a2a2a2;
+    color: #eee;
+    margin: 0 11px;
+    text-align: center;
+}
+
+:root .alActive_list_cell a .pro_saleout {
+    filter: none;
+}
+/*for IE9*/

@@ -1,0 +1,1501 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <!--按模板ID删除模板数据-->
+  <statement id="ComBeziWfs_SWfsMeetingTemplateInfo_DeleteMeetingTemplateInfoByID">
+    DELETE SWfsMeetingTemplateInfo WHERE TemplateID=@TemplateID
+  </statement>
+  <!--按模板ID查询模板数据-->
+  <statement id="ComBeziWfs_SWfsMeetingTemplateInfo_FetchEntityByIdentity_TianXiuQuanCancel" primarykey="TemplateID">
+    SELECT [TemplateID]
+    ,[MettingNo]
+    ,[TemplateName]
+    ,[TemplateDirection]
+    ,[TemplateCode]
+    ,[isPreView]
+    ,[isMobile]
+    ,[CssFileName]
+    ,[jsFileName]
+    ,[CreateTime]
+    FROM [SWfsMeetingTemplateInfo] WHERE TemplateID=@TemplateID
+  </statement>
+  <!--分页查询模板数据-->
+  <statement id="ComBeziWfs_SWfsMeetingTemplateInfo_SelectTemplateByPage">
+    with t as( SELECT [TemplateID]
+    ,[MettingNo]
+    ,[TemplateName]
+    ,[TemplateDirection]
+    ,[TemplateCode]
+    ,[isPreView]
+    ,[isMobile]
+    ,[CssFileName]
+    ,[jsFileName]
+    ,[CreateTime]
+    ,row_number() over(order by TemplateID desc) as row
+    FROM [SWfsMeetingTemplateInfo] WHERE 1=1
+    #if($tempNO!='')
+    and MettingNo=@tempNO
+    #end
+    #if($tempName!='')
+    and TemplateName like '%'+@tempName+'%'
+    #end
+    #if($isPreView!='')
+    and isPreView=@isPreView
+    #end
+    #if($isMobile!='')
+    and isMobile=@isMobile
+    #end
+    )
+    select * from t where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!--分页查询模板数据的总条数-->
+  <statement id="ComBeziWfs_SWfsMeetingTemplateInfo_SelectTemplateTotalCount">
+    select count(TemplateID) from SWfsMeetingTemplateInfo WHERE 1=1
+    #if($tempNO!='')
+    and MettingNo=@tempNO
+    #end
+    #if($tempName!='')
+    and TemplateName like '%'+@tempName+'%'
+    #end
+    #if($isPreView!='')
+    and isPreView=@isPreView
+    #end
+    #if($isMobile!='')
+    and isMobile=@isMobile
+    #end
+  </statement>
+  <!--批量删除模板-->
+  <statement id="ComBeziWfs_SWfsMeetingTemplateInfo_DeleteTemplateByIDList">
+    delete [SWfsMeetingTemplateInfo] where [TemplateID] in @idlist
+  </statement>
+  <!--按模板编号查询是否存在相同的模板编号-->
+  <statement id="ComBeziWfs_SWfsMeetingTemplateInfo_IsExistTemplateNO">
+    select count(TemplateID) from SWfsMeetingTemplateInfo where MettingNo=@MettingNo
+  </statement>
+  <!--按模板编号查询模板信息-->
+  <statement id="ComBeziWfs_SWfsMeetingTemplateInfo_SelectObjByTemplateNO">
+    SELECT [TemplateID]
+    ,[MettingNo]
+    ,[TemplateName]
+    ,[TemplateDirection]
+    ,[TemplateCode]
+    ,[isPreView]
+    ,[isMobile]
+    ,[CssFileName]
+    ,[jsFileName]
+    ,[CreateTime]
+    FROM [SWfsMeetingTemplateInfo] WHERE MettingNo=@MettingNo
+  </statement>
+  <!--会场区块关联查询按ID-->
+  <statement id="ComBeziWfs_SWfsMeetingRelationRegion_FetchEntityByIdentity_TianXiuQuanCancel" primarykey="MeetingRelationID">
+    SELECT [MeetingRelationID]
+    ,[MainMeetingNO]
+    ,[MettingNO]
+    ,[RegionID]
+    ,[ImgNO]
+    ,[Direction]
+    ,[RelationType]
+    ,[RelationContent]
+    FROM [SWfsMeetingRelationRegion]
+    WHERE [MeetingRelationID]=@MeetingRelationID
+  </statement>
+  <!--会场区块关联查询按模板编号会场编号区块ID-->
+  <statement id="ComBeziWfs_SWfsMeetingRelationRegion_FetchEntityByCondition">
+    SELECT [MeetingRelationID]
+    ,[MainMeetingNO]
+    ,[MettingNO]
+    ,[RegionID]
+    ,[ImgNO]
+    ,[Direction]
+    ,[RelationType]
+    ,[RelationContent]
+    ,[TemplateNO]
+    ,[AboutID]
+    FROM [ComBeziWfs].[dbo].[SWfsMeetingRelationRegion]
+    WHERE MettingNO=@MeettingNO and TemplateNO=@TemplateNO and RegionID=@RegionID
+  </statement>
+  <!--会场区块关联查询同时连接尚品或者奥莱获取主标题和副标题-->
+  <statement id="ComBeziWfs_SWfsMeetingRelationRegion_SelectMeetingRelationByCondition">
+    with temp as
+    (
+    SELECT a.[MeetingRelationID]
+    ,a.[MainMeetingNO]
+    ,a.[MettingNO]
+    ,a.[RegionID]
+    ,a.[ImgNO]
+    ,a.[Direction]
+    ,a.[RelationType]
+    ,a.[RelationContent]
+    ,a.[TemplateNO]
+    ,c.SubjectName as [ActiveName]
+    ,c.SubjectPreName as [ActiveChildName]
+    ,1 as WebSite
+    ,b.ActiveNO
+    ,1 as IsActive
+    ,c.subjectpricetype as PriceType
+    ,c.pricename as PriceName
+    FROM [SWfsMeetingRelationRegion] as a inner join SWfsMeetingActiveSpecial as b
+    on b.IsActive=1 and b.WebSite=1 and a.[RelationType]=2 and a.AboutID=b.ActiveID inner join SWfsNewSubject as c
+    on b.ActiveNO=c.SubjectNo
+    union
+    SELECT a.[MeetingRelationID]
+    ,a.[MainMeetingNO]
+    ,a.[MettingNO]
+    ,a.[RegionID]
+    ,a.[ImgNO]
+    ,a.[Direction]
+    ,a.[RelationType]
+    ,a.[RelationContent]
+    ,a.[TemplateNO]
+    ,c.SubjectEnName  as [ActiveName]
+    ,c.SubjectName  as [ActiveChildName]
+    ,2 as WebSite
+    ,b.ActiveNO
+    ,1 as IsActive
+    ,c.DiscountType as PriceType
+    ,c.DiscountTypeValue as PriceName
+    FROM [SWfsMeetingRelationRegion] as a inner join SWfsMeetingActiveSpecial as b
+    on b.IsActive=1 and b.WebSite=2 and a.[RelationType]=2 and a.AboutID=b.ActiveID inner join SWfsSubject as c
+    on b.ActiveNO=c.SubjectNo
+    union
+    SELECT a.[MeetingRelationID]
+    ,a.[MainMeetingNO]
+    ,a.[MettingNO]
+    ,a.[RegionID]
+    ,a.[ImgNO]
+    ,a.[Direction]
+    ,a.[RelationType]
+    ,a.[RelationContent]
+    ,a.[TemplateNO]
+    ,c.TopicName as [ActiveName]
+    ,c.SubHeading as [ActiveChildName]
+    ,b.WebSite
+    ,b.ActiveNO
+    ,0 as IsActive
+    ,-1 as PriceType
+    ,'' as PriceName
+    FROM [SWfsMeetingRelationRegion] as a inner join SWfsMeetingActiveSpecial as b
+    on b.IsActive=0 and a.[RelationType]=2 and a.AboutID=b.ActiveID inner join SWfsTopics as c on c.TopicNo=b.ActiveNO
+    union
+    SELECT [MeetingRelationID]
+    ,[MainMeetingNO]
+    ,[MettingNO]
+    ,[RegionID]
+    ,[ImgNO]
+    ,[Direction]
+    ,[RelationType]
+    ,[RelationContent]
+    ,[TemplateNO]
+    ,'' as [ActiveName]
+    ,'' as [ActiveChildName]
+    ,-1 as WebSite
+    ,'' as ActiveNO
+    ,-1 as IsActive
+    ,-1 as PriceType
+    ,'' as PriceName
+    FROM [SWfsMeetingRelationRegion] where relationType!=2
+    )
+    select * from temp
+    WHERE 1=1
+    #if($MainMeetingNO!='')
+    AND MainMeetingNO=@MainMeetingNO
+    #end
+    #if($MettingNO!='')
+    AND MettingNO=@MeetingNO
+    #end
+    #if($RegionID!='')
+    AND RegionID=@RegionID
+    #end
+    #if($RelationType!='')
+    AND RelationType=@RelationType
+    #end
+    #if($TemplateNo!='')
+    AND TemplateNo=@TemplateNo
+    #end
+  </statement>
+  <!---按会场编号和会场模板ID查询会场区块列表信息-->
+  <statement id="ComBeziWfs_SWfsMeetingRelationRegion_SelectMeetingRelationByTemplateNOAndMeetingNO">
+    select * from SWfsMeetingRelationRegion where MettingNO=@MeetingNO and TemplateNO=@TemplateNO order by RegionID asc
+  </statement>
+  <statement id="ComBeziWfs_SWfsMeetingRelationRegion_SelectMeetingRelationNew">
+    select MeetingRelationID,ImgNO,RegionID,RelationType,Direction,RelationContent,AboutID from SWfsMeetingRelationRegion
+    where MettingNO=@MeetingNO and TemplateNO=@TemplateNO
+    order by RegionID asc
+  </statement>
+  
+  <!---按条件删除会场区块关联-->
+  <statement id="ComBeziWfs_SWfsMeetingRelationRegion_DeleteMeetingRelationByCondition">
+    delete SWfsMeetingRelationRegion where MettingNO=@MeetingNO
+    and RegionID=@RegionID and TemplateNO=@TemplateNO
+  </statement>
+  <statement id="ComBeziWfs_SWfsMeetingRelationRegion_DeleteMeetingRelationByID">
+    delete SWfsMeetingRelationRegion where MeetingRelationID=@MeetingRelationID
+  </statement>
+  <!--分页查询会场列表信息-->
+  <statement id="ComBeziWfs_SWfsMeetingInfo_SelectMeetingByPage">
+    with temp as(
+    SELECT [MeetingID]
+    ,[MeetingNO]
+    ,[MeetingName]
+    ,[MeetingDomain]
+    ,[WebOrMobile]
+    ,[SourceFrom]
+    ,[Status]
+    ,[PreViewTime]
+    ,[StartTime]
+    ,[EndTime]
+    ,[ParentID]
+    ,[IsSelect]
+    ,[WebPreViewNO]
+    ,[WebStartNO]
+    ,[WebPreViewCode]
+    ,[WebStartCode]
+    ,[MobilePreViewNO]
+    ,[MobileStartNO]
+    ,[MobilePreViewCode]
+    ,[MobileStartCode]
+    ,[MobileShowImg]
+    ,[CreateTime]
+    ,row_number() over(order by MeetingID desc) as row
+    FROM [SWfsMeetingInfo]
+    WHERE 1=1
+    #if($NameAndDomain!='')
+    AND ([MeetingName] like '%'+@NameAndDomain+'%' or [MeetingDomain]=@NameAndDomain)
+    #end
+    #if($MeetingNO!='')
+    AND [MeetingNO]=@MeetingNO
+    #end
+    #if($Status!='')
+    AND [Status]=@Status
+    #end
+    #if($WebOrMobile!='')
+    AND [WebOrMobile]=@WebOrMobile
+    #end
+    #if($SourceFrom!='')
+    AND [SourceFrom]=@SourceFrom
+    #end
+    #if($ActiveNO!='')
+    AND [MeetingNO] in (SELECT MettingNO FROM SWfsMeetingRelationRegion WHERE RelationContent like '%'+@MeetingNO+'%' AND RelationType=2)
+    #end
+    #if($StartTime!='')
+    AND CAST(CONVERT(VARCHAR(10),StartTime,120) AS DATETIME) >= @StartTime
+    #end
+    #if($EndTime!='')
+    AND CAST(CONVERT(VARCHAR(10),EndTime,120) AS DATETIME) &lt;= @EndTime
+    #end
+    #if($ParentID!='')
+    AND ParentID=@ParentID
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!--分页查询会场总条数-->
+  <statement id="ComBeziWfs_SWfsMeetingInfo_SelectMeetingTotalCount">
+    SELECT COUNT(MeetingID) FROM SWfsMeetingInfo
+    WHERE 1=1
+    #if($NameAndDomain!='')
+    AND ([MeetingName] like '%'+@NameAndDomain+'%' or [MeetingDomain]=@NameAndDomain)
+    #end
+    #if($MeetingNO!='')
+    AND [MeetingNO]=@MeetingNO
+    #end
+    #if($Status!='')
+    AND [Status]=@Status
+    #end
+    #if($WebOrMobile!='')
+    AND [WebOrMobile]=@WebOrMobile
+    #end
+    #if($SourceFrom!='')
+    AND [SourceFrom]=@SourceFrom
+    #end
+    #if($ActiveNO!='')
+    AND [MeetingNO] in (SELECT MettingNO FROM SWfsMeetingRelationRegion WHERE RelationContent like '%'+@MeetingNO+'%' AND RelationType=2)
+    #end
+    #if($StartTime!='')
+    AND StartTime >=  @StartTime
+    #end
+    #if($EndTime!='')
+    AND CAST(CONVERT(VARCHAR(10),EndTime,120) AS DATETIME) &lt;= @EndTime
+    #end
+    #if($ParentID!='')
+    AND ParentID=@ParentID
+    #end
+  </statement>
+  <!--更新已经选中的会场IsSelect-->
+  <statement id="ComBeziWfs_SWfsMeetingInfo_UpdateMeetingIsSelect">
+    update SWfsMeetingInfo set IsSelect=@IsSelect where MeetingID = @MeetingID
+  </statement>
+  <!--更新已经选中的活动专题IsSelect-->
+  <statement id="ComBeziWfs_SWfsMeetingActiveSpecial_UpdateActiveAndSpecialIsSelect">
+    update SWfsMeetingActiveSpecial set IsSelect=@IsSelect where ActiveID = @ActiveID
+  </statement>
+  <!--分页查询活动和专题列表-->
+  <statement id="ComBeziWfs_SWfsMeetingActiveSpecial_SelectSWfsSubjectAndSWfsTopicsByPage">
+    with temp as(
+    #if($ActiveType=='1')
+    select a.ActiveID,b.SubjectNo as ActiveNO,a.MainMeetingNO,a.BrandNO,b.SubjectName as ActiveName,b.Status,
+    b.BelongsSubjectPic as Webpic,b.IPhonePic as Mobilepic,a.BrandLink,a.ActiveLink,a.IsActive,a.IsSelect,
+    CONVERT(varchar(100),b.DateBegin, 20) as ActiveStartTime,
+    CONVERT(varchar(100),b.DateEnd, 20) as ActiveEndTime
+    ,row_number() over(order by a.ActiveID) as row,1 as ActiveType,@WebSource as WebSource
+    from SWfsMeetingActiveSpecial as a inner join SWfsSubject as b
+    on a.ActiveNO=b.SubjectNo and a.IsActive=1 and a.MainMeetingNO=@MeetingNO
+    where 1=1
+    #if($ActiveNOAndName!='')
+    and (b.SubjectNo=@ActiveNOAndName or b.SubjectName like '%'+@ActiveNOAndName+'%')
+    #end
+    #if($Status!='')
+    and b.Status=@Status
+    #end
+    #if($StartTime!='')
+    and CAST(CONVERT(VARCHAR(10),b.DateBegin,120) AS DATETIME) >= @StartTime
+    #end
+    #if($EndTime!='')
+    and CAST(CONVERT(VARCHAR(10),b.DateEnd,120) AS DATETIME)  &lt;= @EndTime
+    #end
+    #end
+
+    #if($ActiveType=='0')
+    select a.ActiveID,b.TopicNo as ActiveNO,a.MainMeetingNO,a.BrandNO,b.TopicName as ActiveName,b.Status,
+    b.TopicPic as Webpic,b.IPhonePicNo as Mobilepic,a.BrandLink,a.ActiveLink,a.IsActive,a.IsSelect,
+    CONVERT(varchar(100),b.DateBegin, 20) as ActiveStartTime,
+    CONVERT(varchar(100),b.DateEnd, 20) as ActiveEndTime
+    ,row_number() over(order by a.ActiveID) as row,0 as ActiveType,b.WebSite as WebSource
+    from SWfsMeetingActiveSpecial as a inner join SWfsTopics as b
+    on a.ActiveNO=b.TopicNo and a.IsActive=0 and a.MainMeetingNO=@MeetingNO
+    where 1=1
+    #if($ActiveNOAndName!='')
+    and (b.TopicNo=@ActiveNOAndName or b.TopicName like '%'+@ActiveNOAndName+'%')
+    #end
+    #if($Status!='')
+    and b.Status=@Status
+    #end
+    #if($WebSource!='')
+    and b.WebSite=@WebSource
+    #end
+    #if($StartTime!='')
+    and CAST(CONVERT(VARCHAR(10),b.DateBegin,120) AS DATETIME) >= @StartTime
+    #end
+    #if($EndTime!='')
+    and CAST(CONVERT(VARCHAR(10),b.DateEnd,120) AS DATETIME)  &lt;= @EndTime
+    #end
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!--查询活动专题总条数-->
+  <statement id="ComBeziWfs_SWfsMeetingActiveSpecial_SelectSWfsSubjectAndSWfsTopicsCount">
+    #if($ActiveType=='1')
+    select Count(a.ActiveID)
+    from SWfsMeetingActiveSpecial as a inner join SWfsSubject as b
+    on a.ActiveNO=b.SubjectNo and a.IsActive=1 and a.MainMeetingNO=@MeetingNO
+    where 1=1
+    #if($ActiveNOAndName!='')
+    and (b.SubjectNo=@ActiveNOAndName or b.SubjectName like '%'+@ActiveNOAndName+'%')
+    #end
+    #if($Status!='')
+    and b.Status=@Status
+    #end
+    #if($StartTime!='')
+    and CAST(CONVERT(VARCHAR(10),b.DateBegin,120) AS DATETIME) >= @StartTime
+    #end
+    #if($EndTime!='')
+    and CAST(CONVERT(VARCHAR(10),b.DateEnd,120) AS DATETIME)  &lt;= @EndTime
+    #end
+    #end
+
+    #if($ActiveType=='0')
+    select Count(a.ActiveID)
+    from SWfsMeetingActiveSpecial as a inner join SWfsTopics as b
+    on a.ActiveNO=b.TopicNo and a.IsActive=0 and a.MainMeetingNO=@MeetingNO
+    where 1=1
+    #if($ActiveNOAndName!='')
+    and (b.TopicNo=@ActiveNOAndName or b.TopicName like '%'+@ActiveNOAndName+'%')
+    #end
+    #if($Status!='')
+    and b.Status=@Status
+    #end
+    #if($WebSource!='')
+    and b.WebSite=@WebSource
+    #end
+    #if($StartTime!='')
+    and CAST(CONVERT(VARCHAR(10),b.DateBegin,120) AS DATETIME) >= @StartTime
+    #end
+    #if($EndTime!='')
+    and CAST(CONVERT(VARCHAR(10),b.DateEnd,120) AS DATETIME)  &lt;= @EndTime
+    #end
+    #end
+  </statement>
+  <!---分页查询尚品奥莱活动和专题列表-->
+  <statement id="ComBeziWfs_SWfsMeetingActiveSpecial_SelectSubjectAndTopicsByPage">
+    with temp as(select *,row_number() over(order by activeid desc) as row from (select a.ActiveID,b.SubjectNo as ActiveNO,a.MainMeetingNO,a.BrandNO,b.SubjectName as ActiveName,b.Status,
+    b.BelongsSubjectPic as Webpic,b.IPhonePic as Mobilepic,a.BrandLink,a.ActiveLink,a.IsActive,a.IsSelect,
+    b.DateBegin,b.DateEnd,1 as ActiveType,2 as WebSource
+    from SWfsMeetingActiveSpecial as a inner join SWfsSubject as b
+    on a.ActiveNO=b.SubjectNo and a.IsActive=1 and a.WebSite=2 and a.MainMeetingNO=@MeetingNO
+    union all
+    select a.ActiveID,b.SubjectNo as ActiveNO,a.MainMeetingNO,a.BrandNO,b.SubjectName as ActiveName,b.Status,
+    '' as Webpic,'' as Mobilepic,a.BrandLink,a.ActiveLink,a.IsActive,a.IsSelect,
+    b.DateBegin,b.DateEnd,1 as ActiveType,1 as WebSource from SWfsMeetingActiveSpecial as a inner join SWfsNewSubject as b
+    on a.ActiveNO=b.SubjectNo and a.IsActive=1 and a.WebSite=1 and a.MainMeetingNO=@MeetingNO
+
+    union all
+    select a.ActiveID,b.TopicNo as ActiveNO,a.MainMeetingNO,a.BrandNO,b.TopicName as ActiveName,b.Status,
+    b.TopicPic as Webpic,b.IPhonePicNo as Mobilepic,a.BrandLink,a.ActiveLink,a.IsActive,a.IsSelect,
+    b.DateBegin,
+    b.DateEnd
+    ,0 as ActiveType,b.WebSite as WebSource
+    from SWfsMeetingActiveSpecial as a inner join SWfsTopics as b
+    on a.ActiveNO=b.TopicNo and a.IsActive=0 and a.MainMeetingNO=@MeetingNO)as aa
+
+    where 1=1
+    #if($ActiveNOAndName!='')
+    and (ActiveNO=@ActiveNOAndName or ActiveName like '%'+@ActiveNOAndName+'%')
+    #end
+    #if($Status!='')
+    and Status=@Status
+    #end
+    #if($StartTime!='')
+    and CAST(CONVERT(VARCHAR(10),aa.DateBegin,120) AS DATETIME) >= @StartTime
+    #end
+    #if($EndTime!='')
+    and CAST(CONVERT(VARCHAR(10),aa.DateEnd,120) AS DATETIME)  &lt;= @EndTime
+    #end
+    #if($WebSource!='')
+    and WebSource=@WebSource
+    #end
+    #if($ActiveType!='')
+    and ActiveType=@ActiveType
+    #end
+    )
+    select ActiveID,
+    ActiveNO,
+    MainMeetingNO,
+    BrandNO,
+    ActiveName,
+    Status,
+    Webpic,
+    Mobilepic,
+    BrandLink,
+    ActiveLink,
+    IsActive,
+    IsSelect,
+    ActiveType,
+    WebSource,
+    CONVERT(varchar(100),temp.DateBegin, 20) as ActiveStartTime,
+    CONVERT(varchar(100),temp.DateEnd, 20) as ActiveEndTime
+    from temp
+    where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+
+  </statement>
+  <!---分页查询尚品奥莱活动和专题总条数-->
+  <statement id="ComBeziWfs_SWfsMeetingActiveSpecial_SelectSubjectAndTopicsCount">
+    with temp as(select a.ActiveID,b.SubjectNo as ActiveNO,a.MainMeetingNO,a.BrandNO,b.SubjectName as ActiveName,b.Status,
+    b.BelongsSubjectPic as Webpic,b.IPhonePic as Mobilepic,a.BrandLink,a.ActiveLink,a.IsActive,a.IsSelect,
+    b.DateBegin,
+    b.DateEnd
+    ,1 as ActiveType,2 as WebSource
+    from SWfsMeetingActiveSpecial as a inner join SWfsSubject as b
+    on a.ActiveNO=b.SubjectNo and a.IsActive=1 and a.WebSite=2 and a.MainMeetingNO=@MeetingNO
+    union all
+    select a.ActiveID,b.SubjectNo as ActiveNO,a.MainMeetingNO,a.BrandNO,b.SubjectName as ActiveName,b.Status,
+    '' as Webpic,'' as Mobilepic,a.BrandLink,a.ActiveLink,a.IsActive,a.IsSelect,
+    b.DateBegin,b.DateEnd,1 as ActiveType,1 as WebSource from SWfsMeetingActiveSpecial as a inner join SWfsNewSubject as b
+    on a.ActiveNO=b.SubjectNo and a.IsActive=1 and a.WebSite=1 and a.MainMeetingNO=@MeetingNO
+
+    union all
+    select a.ActiveID,b.TopicNo as ActiveNO,a.MainMeetingNO,a.BrandNO,b.TopicName as ActiveName,b.Status,
+    b.TopicPic as Webpic,b.IPhonePicNo as Mobilepic,a.BrandLink,a.ActiveLink,a.IsActive,a.IsSelect,
+    b.DateBegin,
+    b.DateEnd
+    ,0 as ActiveType,b.WebSite as WebSource
+    from SWfsMeetingActiveSpecial as a inner join SWfsTopics as b
+    on a.ActiveNO=b.TopicNo and a.IsActive=0 and a.MainMeetingNO=@MeetingNO)
+    select count(ActiveID) from temp
+    where 1=1
+    #if($ActiveNOAndName!='')
+    and (ActiveNO=@ActiveNOAndName or ActiveName like '%'+@ActiveNOAndName+'%')
+    #end
+    #if($Status!='')
+    and Status=@Status
+    #end
+    #if($StartTime!='')
+    and CAST(CONVERT(VARCHAR(10),DateBegin,120) AS DATETIME) >= @StartTime
+    #end
+    #if($EndTime!='')
+    and CAST(CONVERT(VARCHAR(10),DateEnd,120) AS DATETIME)  &lt;= @EndTime
+    #end
+    #if($WebSource!='')
+    and WebSource=@WebSource
+    #end
+    #if($ActiveType!='')
+    and ActiveType=@ActiveType
+    #end
+  </statement>
+  <!---分页查询Web/Mobile会场访问增量统计-->
+  <statement id="ComBeziReport_SWfsMeetingVisitInfo_SelectVenueVisitCha">
+    SELECT top 1 [VisitInfoID]
+    ,[MeetingNO]
+    ,[ClickRegionID]
+    ,[DateStatistics]
+    ,[CreateTime]
+    ,[PV]
+    ,[UV]
+    ,[VIP]
+    ,[GoldenVIP]
+    ,[PlatinaVIP]
+    ,[DiamondVIP]
+    ,[OrderNums]
+    ,[OrderAverge]
+    ,[MobileOrWeb]
+    from SWfsMeetingVisitInfo where MeetingNO=@MeetingNO and ClickRegionID is null and MobileOrWeb=1
+    and DateStatistics =
+    (select max(DateStatistics) from SWfsMeetingVisitInfo where MeetingNO=@MeetingNO and  MobileOrWeb=1 and ClickRegionID is null
+    #if($timeregion=="1")
+    and DateDiff(dd,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="2")
+    and DateDiff(dd,[DateStatistics],dateadd(day,-1,getdate()))=0
+    #end
+    #if($timeregion=="3")
+    and datediff(week,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="4")
+    and datediff(month,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="6")
+    and [DateStatistics] between @StartTime and @EndTime
+    #end
+    )
+    union all
+    SELECT top 1 [VisitInfoID]
+    ,[MeetingNO]
+    ,[ClickRegionID]
+    ,[DateStatistics]
+    ,[CreateTime]
+    ,[PV]
+    ,[UV]
+    ,[VIP]
+    ,[GoldenVIP]
+    ,[PlatinaVIP]
+    ,[DiamondVIP]
+    ,[OrderNums]
+    ,[OrderAverge]
+    ,[MobileOrWeb]
+    from SWfsMeetingVisitInfo where MeetingNO=@MeetingNO and ClickRegionID is null and MobileOrWeb=1
+    and DateStatistics =
+    (select min(DateStatistics) from SWfsMeetingVisitInfo where  MeetingNO=@MeetingNO and MobileOrWeb=1 and ClickRegionID is null
+    #if($timeregion=="1")
+    and DateDiff(dd,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="2")
+    and DateDiff(dd,[DateStatistics],dateadd(day,-1,getdate()))=0
+    #end
+    #if($timeregion=="3")
+    and datediff(week,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="4")
+    and datediff(month,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="6")
+    and [DateStatistics] between @StartTime and @EndTime
+    #end
+    )
+    union all
+    SELECT top 1 [VisitInfoID]
+    ,[MeetingNO]
+    ,[ClickRegionID]
+    ,[DateStatistics]
+    ,[CreateTime]
+    ,[PV]
+    ,[UV]
+    ,[VIP]
+    ,[GoldenVIP]
+    ,[PlatinaVIP]
+    ,[DiamondVIP]
+    ,[OrderNums]
+    ,[OrderAverge]
+    ,[MobileOrWeb]
+    from SWfsMeetingVisitInfo where MeetingNO=@MeetingNO and ClickRegionID is null and MobileOrWeb=0
+    and DateStatistics =
+    (select max(DateStatistics) from SWfsMeetingVisitInfo where  MeetingNO=@MeetingNO and MobileOrWeb=0 and ClickRegionID is null
+    #if($timeregion=="1")
+    and DateDiff(dd,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="2")
+    and DateDiff(dd,[DateStatistics],dateadd(day,-1,getdate()))=0
+    #end
+    #if($timeregion=="3")
+    and datediff(week,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="4")
+    and datediff(month,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="6")
+    and [DateStatistics] between @StartTime and @EndTime
+    #end
+    )
+    union all
+    SELECT top 1 [VisitInfoID]
+    ,[MeetingNO]
+    ,[ClickRegionID]
+    ,[DateStatistics]
+    ,[CreateTime]
+    ,[PV]
+    ,[UV]
+    ,[VIP]
+    ,[GoldenVIP]
+    ,[PlatinaVIP]
+    ,[DiamondVIP]
+    ,[OrderNums]
+    ,[OrderAverge]
+    ,[MobileOrWeb]
+    from SWfsMeetingVisitInfo where MeetingNO=@MeetingNO and ClickRegionID is null and MobileOrWeb=0
+    and DateStatistics =
+    (select min(DateStatistics) from SWfsMeetingVisitInfo where  MeetingNO=@MeetingNO and MobileOrWeb=0 and ClickRegionID is null
+    #if($timeregion=="1")
+    and DateDiff(dd,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="2")
+    and DateDiff(dd,[DateStatistics],dateadd(day,-1,getdate()))=0
+    #end
+    #if($timeregion=="3")
+    and datediff(week,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="4")
+    and datediff(month,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="6")
+    and [DateStatistics] between @StartTime and @EndTime
+    #end
+    )
+  </statement>
+  <!---分页查询Web/Mobile会场区块访问增量统计-->
+  <statement id="ComBeziReport_SWfsMeetingVisitInfo_SelectVenueVisitRegionCha">
+    SELECT top 1 [VisitInfoID]
+    ,[MeetingNO]
+    ,[ClickRegionID]
+    ,[DateStatistics]
+    ,[CreateTime]
+    ,[PV]
+    ,[UV]
+    ,[VIP]
+    ,[GoldenVIP]
+    ,[PlatinaVIP]
+    ,[DiamondVIP]
+    ,[OrderNums]
+    ,[OrderAverge]
+    ,[MobileOrWeb]
+    from SWfsMeetingVisitInfo where MeetingNO=@MeetingNO and ClickRegionID = @ClickRegionID and MobileOrWeb=1
+    and DateStatistics =
+    (select max(DateStatistics) from SWfsMeetingVisitInfo where MeetingNO=@MeetingNO and  MobileOrWeb=1 and ClickRegionID = @ClickRegionID
+    #if($timeregion=="1")
+    and DateDiff(dd,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="2")
+    and DateDiff(dd,[DateStatistics],dateadd(day,-1,getdate()))=0
+    #end
+    #if($timeregion=="3")
+    and datediff(week,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="4")
+    and datediff(month,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="6")
+    and [DateStatistics] between @StartTime and @EndTime
+    #end
+    )
+    union all
+    SELECT top 1 [VisitInfoID]
+    ,[MeetingNO]
+    ,[ClickRegionID]
+    ,[DateStatistics]
+    ,[CreateTime]
+    ,[PV]
+    ,[UV]
+    ,[VIP]
+    ,[GoldenVIP]
+    ,[PlatinaVIP]
+    ,[DiamondVIP]
+    ,[OrderNums]
+    ,[OrderAverge]
+    ,[MobileOrWeb]
+    from SWfsMeetingVisitInfo where MeetingNO=@MeetingNO and ClickRegionID = @ClickRegionID and MobileOrWeb=1
+    and DateStatistics =
+    (select min(DateStatistics) from SWfsMeetingVisitInfo where MeetingNO=@MeetingNO and  MobileOrWeb=1 and ClickRegionID = @ClickRegionID
+    #if($timeregion=="1")
+    and DateDiff(dd,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="2")
+    and DateDiff(dd,[DateStatistics],dateadd(day,-1,getdate()))=0
+    #end
+    #if($timeregion=="3")
+    and datediff(week,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="4")
+    and datediff(month,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="6")
+    and [DateStatistics] between @StartTime and @EndTime
+    #end
+    )
+    union all
+    SELECT top 1 [VisitInfoID]
+    ,[MeetingNO]
+    ,[ClickRegionID]
+    ,[DateStatistics]
+    ,[CreateTime]
+    ,[PV]
+    ,[UV]
+    ,[VIP]
+    ,[GoldenVIP]
+    ,[PlatinaVIP]
+    ,[DiamondVIP]
+    ,[OrderNums]
+    ,[OrderAverge]
+    ,[MobileOrWeb]
+    from SWfsMeetingVisitInfo where MeetingNO=@MeetingNO and ClickRegionID = @ClickRegionID and MobileOrWeb=0
+    and DateStatistics =
+    (select max(DateStatistics) from SWfsMeetingVisitInfo where  MeetingNO=@MeetingNO and MobileOrWeb=0 and ClickRegionID = @ClickRegionID
+    #if($timeregion=="1")
+    and DateDiff(dd,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="2")
+    and DateDiff(dd,[DateStatistics],dateadd(day,-1,getdate()))=0
+    #end
+    #if($timeregion=="3")
+    and datediff(week,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="4")
+    and datediff(month,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="6")
+    and [DateStatistics] between @StartTime and @EndTime
+    #end
+    )
+    union all
+    SELECT top 1 [VisitInfoID]
+    ,[MeetingNO]
+    ,[ClickRegionID]
+    ,[DateStatistics]
+    ,[CreateTime]
+    ,[PV]
+    ,[UV]
+    ,[VIP]
+    ,[GoldenVIP]
+    ,[PlatinaVIP]
+    ,[DiamondVIP]
+    ,[OrderNums]
+    ,[OrderAverge]
+    ,[MobileOrWeb]
+    from SWfsMeetingVisitInfo where MeetingNO=@MeetingNO and ClickRegionID = @ClickRegionID and MobileOrWeb=0
+    and DateStatistics =
+    (select min(DateStatistics) from SWfsMeetingVisitInfo where  MeetingNO=@MeetingNO and MobileOrWeb=0 and ClickRegionID = @ClickRegionID
+    #if($timeregion=="1")
+    and DateDiff(dd,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="2")
+    and DateDiff(dd,[DateStatistics],dateadd(day,-1,getdate()))=0
+    #end
+    #if($timeregion=="3")
+    and datediff(week,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="4")
+    and datediff(month,[DateStatistics],getdate())=0
+    #end
+    #if($timeregion=="6")
+    and [DateStatistics] between @StartTime and @EndTime
+    #end
+    )
+  </statement>
+
+
+  <!--会场和活动专题列表  by zhagnwei 20130911-->
+  <statement id="ComBeziWfs_SWfsMeetingInfo_MeetingDataList">
+    <!--#if($TopNum==1)
+    SELECT count(MeetingID) FROM  SWfsMeetingInfo  AS meet with (NoLock)
+    LEFT JOIN
+    SWfsMeetingInfoHtml AS htmlmeet ON meet.MeetingID=htmlmeet.MettingId
+    #else
+    SELECT htmlmeet.TemplateType FROM  SWfsMeetingInfo  AS meet with (NoLock)
+    LEFT JOIN
+    SWfsMeetingInfoHtml AS htmlmeet ON meet.MeetingID=htmlmeet.MettingId
+    #end
+    WHERE 1=1
+    #if($meetNameOrDomain!='')
+    AND ( meet.MeetingName LIKE '%' + @MeetNameOrDomain + '%' OR meet.MeetingDomain LIKE '%' + @MeetNameOrDomain + '%')
+    #end
+    #if($status!='')
+    AND meet.[Status] = @Status
+    #end
+    #if($webOrMobile!='')
+    AND (meet.WebOrMobile = @WebOrMobile or meet.WebOrMobile=3)
+    #end
+    #if($SourceFrom!='')
+    AND (meet.SourceFrom=@SourceFrom)
+    #end
+    #if($meetStartDateTime!='' <![CDATA[&&]]> $meetEndDateTime!='')
+    AND meet.StartTime <![CDATA[>=]]> @StartTime AND meet.EndTime <![CDATA[<=]]> @EndTime
+    #end
+    #if($meetStartDateTime!='' <![CDATA[&&]]> $meetEndDateTime=='')
+    AND meet.StartTime <![CDATA[>=]]> @StartTime
+    #end
+    #if($meetStartDateTime=='' <![CDATA[&&]]> $meetEndDateTime!='')
+    AND meet.EndTime <![CDATA[<=]]> @EndTime
+    #end
+    #if($topicSubjectType!='')
+    #if($activityNo!='')
+    #if($isSelect==1)
+    AND EXISTS(SELECT mas.MeetingNO FROM SWfsMeetingActiveSpecial AS mas with (NoLock) WHERE mas.MeetingNO = meet.MeetingNO AND IsActive = @IsActive AND ActiveNO = @ActiveNO GROUP BY MeetingNO)
+    #else
+    AND EXISTS(SELECT mas.MainMeetingNO FROM SWfsMeetingActiveSpecial AS mas with (NoLock) WHERE mas.MainMeetingNO = meet.MeetingNO AND IsActive = @IsActive AND ActiveNO = @ActiveNO GROUP BY MainMeetingNO)
+    #end
+    #else
+    #if($isSelect==1)
+    AND EXISTS(SELECT mas.MeetingNO FROM SWfsMeetingActiveSpecial AS mas with (NoLock) WHERE mas.MeetingNO = meet.MeetingNO AND IsActive = @IsActive GROUP BY MeetingNO)
+    #else
+    AND EXISTS(SELECT mas.MainMeetingNO FROM SWfsMeetingActiveSpecial AS mas with (NoLock) WHERE mas.MainMeetingNO = meet.MeetingNO AND IsActive = @IsActive GROUP BY MainMeetingNO)
+    #end
+    #end
+    #end
+    #if($isSelect==0)
+    AND meet.ParentID=0
+    #end
+    #if($isSelect==1 <![CDATA[&&]]> $meetId!='')
+    AND meet.ParentID=@MeetingID
+    #end-->
+
+
+    #if($TopNum==1)
+    SELECT count(MeetingID) FROM  SWfsMeetingInfo  AS meet with (NoLock)
+    <!--LEFT JOIN
+    SWfsMeetingInfoHtml AS htmlmeet ON meet.MeetingID=htmlmeet.MettingId-->
+    #else
+    SELECT MeetingID,MeetingNO,MeetingName,MeetingDomain,WebOrMobile,SourceFrom,Status,PreViewTime
+    ,StartTime,EndTime,ParentID,IsSelect,WebPreViewNO,WebStartNO,meet.WebPreViewCode,meet.WebStartCode
+    ,MobilePreViewNO,MobileStartNO,meet.MobilePreViewCode,meet.MobileStartCode,MobileShowImg,CreateTime,htmlmeet.TemplateType FROM  SWfsMeetingInfo  AS meet with (NoLock)
+    LEFT JOIN
+    SWfsMeetingInfoHtml AS htmlmeet ON meet.MeetingID=htmlmeet.MettingId
+    #end
+    WHERE 1=1
+    #if($meetNameOrDomain!='')
+    AND ( meet.MeetingName LIKE '%' + @MeetNameOrDomain + '%' OR meet.MeetingDomain LIKE '%' + @MeetNameOrDomain + '%')
+    #end
+    #if($status!='')
+    AND meet.[Status] = @Status
+    #end
+    #if($webOrMobile!='')
+    AND (meet.WebOrMobile = @WebOrMobile or meet.WebOrMobile=3)
+    #end
+    #if($SourceFrom!='')
+    AND (meet.SourceFrom=@SourceFrom)
+    #end
+    #if($meetStartDateTime!='' <![CDATA[&&]]> $meetEndDateTime!='')
+    AND meet.StartTime <![CDATA[>=]]> @StartTime AND meet.EndTime <![CDATA[<=]]> @EndTime
+    #end
+    #if($meetStartDateTime!='' <![CDATA[&&]]> $meetEndDateTime=='')
+    AND meet.StartTime <![CDATA[>=]]> @StartTime
+    #end
+    #if($meetStartDateTime=='' <![CDATA[&&]]> $meetEndDateTime!='')
+    AND meet.EndTime <![CDATA[<=]]> @EndTime
+    #end
+    #if($topicSubjectType!='')
+    #if($activityNo!='')
+    #if($isSelect==1)
+    AND EXISTS(SELECT mas.MeetingNO FROM SWfsMeetingActiveSpecial AS mas with (NoLock) WHERE mas.MeetingNO = meet.MeetingNO AND IsActive = @IsActive AND ActiveNO = @ActiveNO GROUP BY MeetingNO)
+    #else
+    AND EXISTS(SELECT mas.MainMeetingNO FROM SWfsMeetingActiveSpecial AS mas with (NoLock) WHERE mas.MainMeetingNO = meet.MeetingNO AND IsActive = @IsActive AND ActiveNO = @ActiveNO GROUP BY MainMeetingNO)
+    #end
+    #else
+    #if($isSelect==1)
+    AND EXISTS(SELECT mas.MeetingNO FROM SWfsMeetingActiveSpecial AS mas with (NoLock) WHERE mas.MeetingNO = meet.MeetingNO AND IsActive = @IsActive GROUP BY MeetingNO)
+    #else
+    AND EXISTS(SELECT mas.MainMeetingNO FROM SWfsMeetingActiveSpecial AS mas with (NoLock) WHERE mas.MainMeetingNO = meet.MeetingNO AND IsActive = @IsActive GROUP BY MainMeetingNO)
+    #end
+    #end
+    #end
+    #if($isSelect==0)
+    AND meet.ParentID=0
+    #end
+    #if($isSelect==1 <![CDATA[&&]]> $meetId!='')
+    AND meet.ParentID=@MeetingID
+    #end
+    
+
+  </statement>
+
+  <!--按会场ID查询会场数据-->
+  <statement id="ComBeziWfs_SWfsMeetingInfo_FetchEntityByIdentity_TianXiuQuanCancel" primarykey="MeetingID">
+    SELECT * FROM [SWfsMeetingInfo] with (NoLock) WHERE MeetingID=@MeetingID
+  </statement>
+
+  <!--获取会场专题活动列表 by zhagnwei 20130914-->
+  <statement id="ComBeziWfs_SWfsMeetingActiveSpecial_MeetingSubjectTopicList">
+    #if($TopicSubjectType==1)
+    #if($WebSiteType==1)
+    SELECT
+    #if($TopNum==0)
+    mas.[ActiveID] ,
+    mas.[ActiveNO] ,
+    mas.[MainMeetingNO] ,
+    mas.[MeetingNO] ,
+    mas.[BrandNO] ,
+    mas.[ActiveName] ,
+    mas.[ImgNo] ,
+    mas.[BrandLink] ,
+    mas.[ActiveLink] ,
+    mas.[CreateTime] ,
+    mas.[IsActive] ,
+    mas.[IsSelect] ,
+    sub.[SubjectName] ,
+    sub.[ChannelNo] ,
+    sub.[Status] ,
+    sub.[DateBegin] AS StartTime ,
+    sub.[DateEnd] AS EndTime ,
+    sub.TitlePic2,
+    sub.BelongsSubjectPic
+    #else
+    count(mas.[ActiveID])
+    #end
+    FROM  (SELECT * FROM dbo.SWfsMeetingActiveSpecial with (NoLock) WHERE IsActive = @IsActive AND WebSite=2) AS mas
+    LEFT OUTER JOIN dbo.SWfsSubject AS sub with (NoLock) ON mas.ActiveNO = sub.SubjectNo
+    WHERE   mas.IsActive = @IsActive AND MainMeetingNO=@MainMeetingNO
+    #if($MeetingType==1)
+    AND mas.MeetingNO=@MeetingNo
+    #else
+    AND mas.MeetingNO=0
+    #end
+    #if($SubjectTopicName!='')
+    AND sub.[SubjectName] LIKE '%'+@ActiveName+'%'
+    #end
+    #if($ActivityTopicNo!='')
+    AND mas.[ActiveNO] = @ActiveNO
+    #end
+    #if($Status!='')
+    AND sub.[Status] = @Status
+    #end
+    #if($StartDateTime!='' <![CDATA[&&]]> $EndDateTime!='')
+    AND sub.[DateBegin] <![CDATA[>=]]> @StartTime AND sub.[DateEnd] <![CDATA[<=]]> @EndTime
+    #end
+    #if($StartDateTime!='' <![CDATA[&&]]> $EndDateTime=='')
+    AND sub.[DateBegin] <![CDATA[>=]]> @StartTime
+    #end
+    #if($StartDateTime=='' <![CDATA[&&]]> $EndDateTime!='')
+    AND sub.[DateEnd] <![CDATA[<=]]> @EndTime
+    #end
+    #if($ChannelNo!='')
+    AND sub.[ChannelNo] like '%'+@ChannelNo+'%'
+    #end
+    #elseif($WebSiteType==0)
+    SELECT
+    #if($TopNum==0)
+    mas.[ActiveID] ,
+    mas.[ActiveNO] ,
+    mas.[MainMeetingNO] ,
+    mas.[MeetingNO] ,
+    mas.[BrandNO] ,
+    mas.[ActiveName] ,
+    mas.[ImgNo] ,
+    mas.[BrandLink] ,
+    mas.[ActiveLink] ,
+    mas.[CreateTime] ,
+    mas.[IsActive] ,
+    mas.[IsSelect] ,
+    sub.[SubjectName] ,
+    sub.ChannelType AS ChannelNo ,
+    sub.[Status] ,
+    sub.[DateBegin] AS StartTime ,
+    sub.[DateEnd] AS EndTime ,
+    sub.SubjectTemplateTopPicNo AS BelongsSubjectPic
+    #else
+    count(mas.[ActiveID])
+    #end
+    FROM  (SELECT * FROM dbo.SWfsMeetingActiveSpecial with (NoLock) WHERE IsActive = @IsActive AND WebSite=1) AS mas
+    LEFT OUTER JOIN dbo.SWfsNewSubject AS sub with (NoLock) ON mas.ActiveNO = sub.SubjectNo
+    WHERE   mas.IsActive = @IsActive AND MainMeetingNO=@MainMeetingNO
+    #if($MeetingType==1)
+    AND mas.MeetingNO=@MeetingNo
+    #else
+    AND mas.MeetingNO=0
+    #end
+    #if($SubjectTopicName!='')
+    AND sub.[SubjectName] LIKE '%'+@ActiveName+'%'
+    #end
+    #if($ActivityTopicNo!='')
+    AND mas.[ActiveNO] = @ActiveNO
+    #end
+    #if($Status!='')
+    AND sub.[Status] = @Status
+    #end
+    #if($StartDateTime!='' <![CDATA[&&]]> $EndDateTime!='')
+    AND sub.[DateBegin] <![CDATA[>=]]> @StartTime AND sub.[DateEnd] <![CDATA[<=]]> @EndTime
+    #end
+    #if($StartDateTime!='' <![CDATA[&&]]> $EndDateTime=='')
+    AND sub.[DateBegin] <![CDATA[>=]]> @StartTime
+    #end
+    #if($StartDateTime=='' <![CDATA[&&]]> $EndDateTime!='')
+    AND sub.[DateEnd] <![CDATA[<=]]> @EndTime
+    #end
+    #if($ChannelNo!='')
+    AND sub.[ChannelType] like '%'+@ChannelNo+'%'
+    #end
+    #end
+    #end
+
+    #if($TopicSubjectType==0)
+    SELECT
+    #if($TopNum==0)
+    mas.[ActiveID] ,
+    mas.[ActiveNO] ,
+    mas.[MainMeetingNO] ,
+    mas.[MeetingNO] ,
+    mas.[BrandNO] ,
+    mas.[ActiveName] ,
+    mas.[ImgNo] ,
+    mas.[BrandLink] ,
+    mas.[ActiveLink] ,
+    mas.[CreateTime] ,
+    mas.[IsActive] ,
+    mas.[IsSelect],
+    tp.TopicName,
+    tp.SubHeading,
+    tp.TopicURL,
+    tp.TopicPic,
+    tp.[Status],
+    tp.Gender,
+    tp.[DateBegin] AS StartTime ,
+    tp.[DateEnd] AS EndTime
+    #else
+    count(mas.[ActiveID])
+    #end
+    FROM (SELECT * FROM dbo.SWfsMeetingActiveSpecial with (NoLock) WHERE IsActive = @IsActive) AS mas
+    LEFT OUTER JOIN dbo.SWfsTopics AS tp with (NoLock) ON mas.ActiveNO = tp.TopicNo
+    WHERE   MainMeetingNO=@MainMeetingNO
+    #if($MeetingType==1)
+    AND mas.MeetingNO=@MeetingNo
+    #else
+    AND mas.MeetingNO=0
+    #end
+    #if($SubjectTopicName!='')
+    AND tp.TopicName LIKE '%'+@ActiveName+'%'
+    #end
+    #if($ActivityTopicNo!='')
+    AND mas.[ActiveNO] = @ActiveNO
+    #end
+    #if($Status!='')
+    AND tp.[Status] = @Status
+    #end
+    #if($StartDateTime!='' <![CDATA[&&]]> $EndDateTime!='')
+    AND tp.[DateBegin] <![CDATA[>=]]> @StartTime AND tp.[DateEnd] <![CDATA[<=]]> @EndTime
+    #end
+    #if($StartDateTime!='' <![CDATA[&&]]> $EndDateTime=='')
+    AND tp.[DateBegin] <![CDATA[>=]]> @StartTime
+    #end
+    #if($StartDateTime=='' <![CDATA[&&]]> $EndDateTime!='')
+    AND tp.[DateEnd] <![CDATA[<=]]> @EndTime
+    #end
+    #end
+  </statement>
+  <statement id="ComBeziWfs_SWfsMeetingActiveSpecial_DelMeetingActiveRelation">
+    DELETE from SWfsMeetingActiveSpecial where ActiveID=@ActiveID
+  </statement>
+  <!--根据会场编号获取已关联的专题活动 by zhangwei 20130917-->
+  <statement id="ComBeziWfs_SWfsMeetingActiveSpecial_GetMeetingActiveSpecialList">
+    SELECT * FROM dbo.SWfsMeetingActiveSpecial with (NoLock) WHERE MainMeetingNO=@MainMeetingNO
+    #if($meetingNO==0 <![CDATA[||]]> $meetingNO=='')
+    AND MeetingNO='0'
+    #else
+    AND MeetingNO=@MeetingNO
+    #end
+    #if($isActive!='')
+    AND IsActive=@IsActive
+    #end
+    ORDER BY CreateTime DESC
+  </statement>
+  <!--查询操作日志 by zhangwei 20130922-->
+  <statement id="ComBeziWfs_SWfsMeetingOperationDiary_GetMeetingLogDataList">
+    SELECT
+    #if($TopNum==0)
+    *
+    #else
+    count(DiaryID)
+    #end
+    FROM dbo.SWfsMeetingOperationDiary with (NoLock)
+    WHERE MeetingNO=@MeetingNo
+    #if($KeyWord!='')
+    #if($ActionType>0)
+    AND (OpratePeople LIKE '%' + @KeyWord + '%'
+    OR ActionType = @ActionType
+    OR OprateInfo LIKE '%' + @KeyWord + '%')
+    #else
+    AND (OpratePeople LIKE '%' + @KeyWord + '%'
+    OR OprateInfo LIKE '%' + @KeyWord + '%')
+    #end
+    #end
+
+    #if($StartDateTime!='' <![CDATA[&&]]> $EndDateTime!='')
+    AND CreateTime <![CDATA[>=]]> @StartTime AND CreateTime <![CDATA[<=]]> @EndTime
+    #end
+    #if($StartDateTime!='' <![CDATA[&&]]> $EndDateTime=='')
+    AND CreateTime <![CDATA[>=]]> @StartTime
+    #end
+    #if($StartDateTime=='' <![CDATA[&&]]> $EndDateTime!='')
+    AND CreateTime <![CDATA[<=]]> @EndTime
+    #end
+  </statement>
+  <!--判断会场域名是否重复-->
+  <statement id="ComBeziWfs_SWfsMeetingInfo_CheckMeetingDomainIsExist">
+    SELECT Count(MeetingID) FROM dbo.SWfsMeetingInfo WHERE MeetingID!=@MeetingID AND MeetingDomain=@MeetingDomain
+  </statement>
+  <!--尚品活动列表-->
+  <statement id="ComBeziWfs_SWfsNewSubject_GetNewSubjectList">
+    SELECT
+    #if($TopNum==1)
+    count(1)
+    #else
+    *
+    #end
+    FROM SWfsNewSubject with (NoLock)
+    WHERE 1=1
+    #if($ProductNo!='')
+    and SWfsNewSubject.SubjectNo IN(SELECT sc.SubjectNo FROM dbo.SWfsNewSubjectProductRef AS spref, dbo.SWfsNewSubjectCategory AS sc WHERE spref.CategoryNo=sc.CategoryNo AND spref.ProductNo=@ProductNo)
+    #end
+    #if($KeyWord !='')
+    and (SWfsNewSubject.SubjectName like '%'+@KeyWord+ '%' or SWfsNewSubject.SubjectNo like '%'+@KeyWord+ '%')
+    #end
+    #if($Status!='')
+    and SWfsNewSubject.[Status]=@Status
+    #end
+    #if($StartTime!='')
+    and SWfsNewSubject.DateEnd >@StartTime
+    #end
+    #if($EndTime!='')
+    and SWfsNewSubject.DateEnd &lt;=@EndTime
+    #end
+    #if($ChannelNo!='')
+    and SWfsNewSubject.ChannelType like  '%'+@ChannelNo+ '%'
+    #end
+  </statement>
+
+  <!--判断会场编号是否重复-->
+  <statement id="ComBeziWfs_SWfsMeetingInfo_CheckMeetingNoIsExist">
+    SELECT Count(1) FROM dbo.SWfsMeetingInfo WHERE MeetingNO=@MeetingNO
+  </statement>
+
+  <!--根据会场编号删除会场及相关信息（主分会场、专题活动、区块）-->
+  <statement id="ComBeziWfs_SWfsMeetingInfo_DelMeeting">
+    DELETE FROM SWfsMeetingInfo WHERE MeetingNO=@MeetingNO
+  </statement>
+
+  <statement id="ComBeziWfs_SwfsSkillGroup_GetSwfsSkillGroupList">
+    SELECT * FROM [SwfsSkillGroup](nolock) WHERE meetingid=@MeetingId
+  </statement>
+  <statement id="ComBeziWfs_SwfsSkillGroup_GetSwfsSkillGroupListCount">
+    SELECT count(1) FROM [SwfsSkillGroup](nolock) WHERE meetingid=@MeetingId
+  </statement>
+  <statement id="ComBeziWfs_SwfsSkillGroup_FetchEntityByIdentity_TianXiuQuanCancel"  primarykey="Id">
+    SELECT * FROM [SwfsSkillGroup](nolock) WHERE Id=@Id
+  </statement>
+  <statement id="ComBeziWfs_SwfsSkillGroup_DeleteSwfsSkillGroupByGroupId" >
+    DELETE FROM [SwfsSkillGroup] WHERE Id=@GroupId
+  </statement>
+  <statement id="ComBeziWfs_SwfsSkillGroup_DeleteSwfsSkillGroupProductByGroupId" >
+    DELETE FROM [SWfsSkillProduct] WHERE SkillGroupId=@GroupId
+  </statement>
+  <!--获取秒杀产品列表-->
+  <statement id="ComBeziWfs_SWfsSkillProduct_GetSkillProductList">
+    SELECT a.[Id]
+    ,a.[SkillGroupId]
+    ,a.[ProductNo]
+    ,a.[ProductFileNo]
+    ,a.[CreateTime]
+    ,a.[CreateUser]
+    ,a.[ModifyTime]
+    ,a.[ModifyUser]
+    ,a.[IsVoid]
+    ,a.[SortValue],
+    b.ProductModel as GoodsNo,
+    b.ProductModel,
+    b.ProductName,
+    e.ProductShowPic as ProductPicFile,
+    e.ProductShowPic,
+    d.GoldPrice as SellPrice,
+    d.GoldPrice,
+    d.PlatinumPrice,
+    d.DiamondPrice,
+    d.StandardPrice as LimitedPrice,
+    d.StandardPrice ,
+    d.MarketPrice,
+    d.PromotionPrice
+    FROM [SWfsSkillProduct](nolock) as a
+    left join SpProduct(nolock) as b on a.ProductNo=b.ProductNo
+    left join SpfProductExtend(nolock) as e on e.ProductNo=a.ProductNo
+    left join SpfSkuExtend(nolock) as c on a.ProductNo=c.ProductNo
+    left join SpfSkuPrice(nolock) as d on d.SkuNo=c.SkuNo
+    where a.SkillGroupId=@SkillGroupId order by a.sortvalue asc
+  </statement>
+  <!--删除秒杀产品-->
+  <statement id="ComBeziWfs_SWfsSkillProduct_DeleteSkillProductByID">
+    DELETE FROM [SWfsSkillProduct]
+    WHERE Id=@Id
+  </statement>
+  <!--批量删除秒杀产品-->
+  <statement id="ComBeziWfs_SWfsSkillProduct_DeleteSkillProductByIDList">
+    DELETE FROM [SWfsSkillProduct]
+    WHERE Id in @idList
+  </statement>
+  <statement id="ComBeziWfs_WfsProduct_SelectSkillProductList">
+    with temp as(select
+    a.ProductNo,
+    a.ProductModel as GoodsNo,
+    a.ProductModel,
+    b.PcSaleState,
+    a.ProductName,
+    e.ProductShowPic as ProductPicFile,
+    e.ProductShowPic ,
+    c.GoldPrice as SellPrice,
+    c.GoldPrice,
+    c.PlatinumPrice,
+    c.DiamondPrice,
+    c.StandardPrice as LimitedPrice,
+    c.StandardPrice,
+    c.MarketPrice,
+    c.PromotionPrice,
+    d.BrandNo,
+    row_number() over(order by a.ProductId desc)as row
+    from SpProduct as a(nolock)
+    left join SpfProductExtend as e(nolock) on e.ProductNo=a.ProductNo
+    left join SpfSkuExtend as b(nolock) on b.ProductNo=a.ProductNo
+    left join SpfSkuPrice as c(nolock)  on b.SkuNo=c.SkuNo
+    left join SpBrand as d(nolock) on d.BrandNo=a.BrandNo
+    where 1 =1
+    #if($Keyword!='')
+    and (a.ProductName like '%'+@KeyWord+ '%' or a.ProductNo like '%'+@KeyWord+ '%' or a.ProductModel like '%'+@KeyWord+ '%')
+    #end
+    #if($PNOList!='')
+    and  a.ProductNo in @PNOList
+    #end
+    #if($CategoryNo !='')
+    and a.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and a.ProductSex=@Gender
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <statement id="ComBeziWfs_WfsProduct_SelectSkillProductListTotalCount">
+    select count(ProductNo) from SpProduct as a(nolock)
+    left join SpfProductExtend as e(nolock) on e.ProductNo=a.ProductNo
+    left join SpfSkuExtend as b(nolock) on b.ProductNo=a.ProductNo
+    left join SpfSkuPrice as c(nolock)  on b.SkuNo=c.SkuNo
+    left join SpBrand as d(nolock) on d.BrandNo=a.BrandNo
+    where 1 =1
+    #if($Keyword!='')
+    and (a.ProductName like '%'+@KeyWord+ '%' or a.ProductNo like '%'+@KeyWord+ '%' or a.ProductModel like '%'+@KeyWord+ '%')
+    #end
+    #if($PNOList!='')
+    and  a.ProductNo in @PNOList
+    #end
+    #if($CategoryNo !='')
+    and a.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and a.ProductSex=@Gender
+    #end
+  </statement>
+
+
+  <!--查询会场导航列表-->
+  <statement id="ComBeziWfs_WfsProduct_SelectSWfsMeetingNavigationList">
+    with temp as(
+    SELECT [NavNO]
+    ,[NavName]
+    ,[NavStatus]
+    ,[NavLink]
+    ,[NavType]
+    ,[ParentNO]
+    ,[NavOrder]
+    ,[MeetingID]
+    ,[DateCreate]
+    ,row_number() over(order by navorder desc,navno asc) as row
+    FROM [SWfsMeetingNavigation]
+    WHERE 1=1
+    #if($NavName!='')
+    and NavName like '%'+@NavName+'%'
+    #end
+    #if($NavStatus!='')
+    and NavStatus = @NavStatus
+    #end
+    #if($NavLink!='')
+    and NavLink = @NavLink
+    #end
+    #if($NavType!='')
+    and NavType = @NavType
+    #end
+    #if($ParentNO!='')
+    and ParentNO = @ParentNO
+    #end
+    #if($MeetingID!='')
+    and MeetingID = @MeetingID
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!--查询会场导航列表总条数-->
+  <statement id="ComBeziWfs_WfsProduct_SelectSWfsMeetingNavigationTotalCount">
+    SELECT COUNT([NavNO]) FROM [SWfsMeetingNavigation] WHERE 1=1
+    #if($NavName!='')
+    and NavName like '%'+@NavName+'%'
+    #end
+    #if($NavStatus!='')
+    and NavStatus = @NavStatus
+    #end
+    #if($NavLink!='')
+    and NavLink = @NavLink
+    #end
+    #if($NavType!='')
+    and NavType = @NavType
+    #end
+    #if($ParentNO!='')
+    and ParentNO = @ParentNO
+    #end
+    #if($MeetingID!='')
+    and MeetingID = @MeetingID
+    #end
+  </statement>
+  <!--删除二级导航-->
+  <statement id="ComBeziWfs_SWfsMeetingNavigation_DeleteSecondNav">
+    delete SWfsMeetingNavigation where NavNO=@NavNO or ParentNO=@NavNO
+  </statement>
+  <statement id="ComBeziWfs_SWfsMeetingNavigation_DeleteThirdNav">
+    delete SWfsMeetingNavigation where NavNO=@NavNO
+  </statement>
+  <!--递归查询会场导航-->
+  <statement id="ComBeziWfs_SWfsMeetingNavigation_GetAllNav">
+    with temp(NavNO) as(
+    select NavNO from SWfsMeetingNavigation where navno=@NavNO
+    union all
+    select a.NavNO from SWfsMeetingNavigation as a,temp as b
+    where a.parentno=b.NavNO
+    )select NavNO from temp
+  </statement>
+  <!--批量删除会场导航-->
+  <statement id="ComBeziWfs_SWfsMeetingNavigation_DeleteAllNav">
+    delete SWfsMeetingNavigation where navno in @idlist
+  </statement>
+  <!--查询会场导航是否存在-->
+  <statement id="ComBeziWfs_SWfsMeetingNavigationPublish_IsExistNavPublist">
+    select NavPublishID from SWfsMeetingNavigationPublish where MeetingID=@MeetingID
+  </statement>
+  <!--微信-->
+  <statement id="ComBeziWfs_SWfsHotProduct_SelectByProductNo">
+    select
+    HotProductId,
+    ProductNo,
+    Status,
+    PicFileNo,
+    Description,
+    StartDate,
+    EndDate,
+    CreateDate
+    from SWfsHotProduct with(nolock)
+    where productno=@ProductNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsHotProduct_SelectAll">
+    with t as(select
+    SWfsHotProduct.HotProductId,
+    SWfsHotProduct.Status,
+    SWfsHotProduct.StartDate,
+    SWfsHotProduct.EndDate,
+    SWfsHotProduct.CreateDate,
+    WfsProduct.ProductNo,
+    WfsProduct.ProductName,
+    WfsProduct.ProductPicFile,
+    WfsProduct.GoodsNo,
+    WfsProduct.MarketPrice,
+    WfsProduct.SellPrice,
+    WfsProduct.PlatinumPrice,
+    WfsProduct.DiamondPrice,
+    WfsProduct.LimitedPrice,
+    WfsProduct.LimitedVipPrice,
+    WfsProduct.PromotionPrice,
+    SUBSTRING(WfsProduct.ProductShowFlag, 4, 1) AS ProductPromotionFlag,
+    WfsProduct.IsShelf,
+    WfsBrand.BrandNo,
+    WfsBrand.BrandCnName,
+    WfsBrand.BrandEnName,
+    WfsProduct.DiscountRate,
+    row_number() over(order by SWfsHotProduct.StartDate desc,SWfsHotProduct.CreateDate desc) as row
+    from  SWfsHotProduct with(nolock)
+    left join
+    WfsProduct  with(nolock)
+    on SWfsHotProduct.productNo=WfsProduct.productNo
+    inner join
+    WfsBrand with(nolock)
+    on
+    WfsProduct.BrandNo=WfsBrand.BrandNo
+    where
+    WfsProduct.IsShelf=1 and WfsProduct.VisibleState=1
+    #if($ProductNo!='')
+    and SWfsHotProduct.productNo=@ProductNo
+    #end
+    #if($SelectTime!='')
+    and @SelectTime>=SWfsHotProduct.StartDate
+    and @SelectTime&lt;=SWfsHotProduct.EndDate
+    #end)
+    select * from t where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsHotProduct_SelectAllcount">
+    select count(1)
+    from  SWfsHotProduct with(nolock)
+    left join
+    WfsProduct  with(nolock)
+    on SWfsHotProduct.productNo=WfsProduct.productNo
+    inner join
+    WfsBrand with(nolock)
+    on
+    WfsProduct.BrandNo=WfsBrand.BrandNo
+    where
+    WfsProduct.IsShelf=1 and WfsProduct.VisibleState=1
+    #if($ProductNo!='')
+    and SWfsHotProduct.productNo=@ProductNo
+    #end
+    #if($SelectTime!='')
+    and @SelectTime>=SWfsHotProduct.StartDate
+    and @SelectTime&lt;=SWfsHotProduct.EndDate
+    #end
+  </statement>
+  <statement id="ComBeziWfs_SWfsHotProduct_DeleteById">
+    delete from SWfsHotProduct where HotProductId=@HotProductId
+  </statement>
+  <!--根据模版id，类型，原文件名，获取集合 by lijibo-->
+  <statement id="ComBeziWfs_SWfsMeetingTemplatePicInfo_GetPicInfoListByCondThree">
+    SELECT  *
+    FROM    SWfsMeetingTemplatePicInfo
+    WHERE TemplateID = @TemplateID
+    AND [Type] = @Type
+    AND [FileName] = @FileName
+  </statement>
+  <!--根据模版id，类型，获取集合 by lijibo-->
+  <statement id="ComBeziWfs_SWfsMeetingTemplatePicInfo_GetPicInfoListByCondTwo">
+    SELECT  *
+    FROM    SWfsMeetingTemplatePicInfo
+    WHERE TemplateID = @TemplateID
+    #if($Type!=-2)
+    AND [Type] = @Type
+    #end
+  </statement>
+  <statement id="ComBeziWfs_SWfsMeetingMetaInfo_MetaInfoByMeetingID">
+    select * from SWfsMeetingMetaInfo where MeetingID=@MeetingID
+  </statement>
+  <statement id="ComBeziWfs_SWfsMeetingTemplatePicInfo_SelectObjByTemplateNO">
+    select * from SWfsMeetingTemplatePicInfo where TemplateID=@TemplateID
+    AND Type=@Type
+  </statement>
+  <statement id="ComBeziWfs_SWfsMeetingTemplateInfo_TemplateByMeetingNO">
+    SELECT TemplateName FROM dbo.SWfsMeetingTemplateInfo where MettingNo=@MettingNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsMeetingInfoHtml_GetHtmlByMeetingId">
+    SELECT * FROM dbo.SWfsMeetingInfoHtml where MettingId=@MettingId
+  </statement>
+  <statement id="ComBeziWfs_SWfsMeetingInfoHtml_MeetingDataList">
+    SELECT * FROM dbo.SWfsMeetingInfoHtml
+  </statement>
+</statements>

@@ -1,0 +1,105 @@
+﻿@model IEnumerable<Shangpin.Entity.Wfs.SWfsBrandFlagShipTemplate>
+@using Shangpin.Ocs.Web.Infrastructure;
+@{
+    ViewBag.Title = "旗舰店模板列表";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    int pageIndex = ViewBag.pageIndex;
+    int pageSize = ViewBag.pageSize;
+    int totalCount = ViewBag.totalCount;
+}
+@section HeadScript{
+    <script src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        function getTempContent(objID) {
+            $.post("/Shangpin/brand/EditeTemplateContent", { 'tempID': objID }, function (data) {
+                $("body").append('<div id="windownBG" style="height:' + $(window).width() + 'px;opacity:0.5;z-index: 9999;display:block;left:0px;top:0px;position:absolute;width:100%;background: none repeat scroll 0 0 #000000;"></div>');
+                $("body").append('<div id="tempContentLoad" style="display:block;position:absolute;z-index: 99999;"><div style="text-align:right"><a href="javascript:closediv();">关闭</a></div><textarea cols="100" rows="30" id="tempContent"></textarea><div style="text-align:center;"><a href="javascript:SaveTemplateContent(' + objID + ');">保存</a></div></div>');
+                $("#tempContent").text(data);
+                $("#tempContentLoad").css({ 'display': 'block', 'top': ($(window).height() / 2) + $(window).scrollTop() - ($("#tempContentLoad").height() / 2), 'left': ($(window).width() / 2) - $("#tempContentLoad").width() / 2 });
+            });
+        }
+        function SaveTemplateContent(objID) {
+            $.post("/Shangpin/brand/SaveTempContent", { 'tempID': objID, 'tempContent': $("#tempContent").val() }, function (data) {
+                if (data > 0) {
+                    alert("保存成功");
+                    $("#windownBG").remove();
+                    $("#tempContentLoad").remove();
+                } else {
+                    alert("保存成失败");
+                }
+            });
+        }
+        function closediv() {
+            $("#windownBG").remove();
+            $("#tempContentLoad").remove();
+        }
+    </script>
+}
+<h1>
+    OCS > 尚品 > 模板管理
+</h1>
+<div>
+    <form action="/shangpin/brand/TemplateList" method="get">
+    <input type="text" placeholder="模板编号/模板名称" name="templatenameorno" value="@Request.QueryString["templatenameorno"]"/>
+    <select name="templatetype">
+        <option value="" @(Request.QueryString["templateType"]==""?"selected":null)>全部</option>
+        <option value="1" @(Request.QueryString["templateType"]=="1"?"selected":null)>移动端</option>
+        <option value="2" @(Request.QueryString["templateType"]=="2"?"selected":null)>web端</option>
+    </select>
+    <input id="StartTime" name="starttime" class="Wdate" type="text" style=" width:150px;" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'EndTime\')||\'2020-10-01\'}'})" readonly="readonly" onclick="WdatePicker()" value="@Request.QueryString["starttime"]"  />&nbsp;至&nbsp;
+    <input id="EndTime" name="endtime" class="Wdate" type="text" style=" width:150px;" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'StartTime\')}',maxDate:'2020-10-01'})" readonly="readonly" onclick="WdatePicker()" value="@Request.QueryString["endtime"]"  />
+    <input type="submit" value="查询" />&nbsp;&nbsp;<a href="/shangpin/brand/EditeTemplate">添加模板</a>
+    </form>
+</div>
+<table class="mx-table" border="0">
+    <thead>
+        <tr>
+            <th>
+                模板编号
+            </th>
+            <th>
+                模板名称
+            </th>
+            <th>
+                使用范围
+            </th>
+            <th>
+                创建时间
+            </th>
+            <th>
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            <tr class="@(i % 2 == 0 ? "cross" : "")">
+                <td>
+                    @Model.ElementAt(i).TemplateNO
+                </td>
+                <td>
+                    @Model.ElementAt(i).TemplateName
+                </td>
+                <td>
+                    @(Model.ElementAt(i).TemplateType==1?"移动端":"web端")
+                </td>
+                <td>
+                    @Model.ElementAt(i).CreateDate.ToString("yyyy-MM-dd HH:mm:ss")
+                </td>
+                <td>
+                    <a href="/shangpin/brand/EditeTemplate/@Model.ElementAt(i).TemplateID" class="button">编辑</a>
+                    <a href="/shangpin/brand/DeleteTemplate/@Model.ElementAt(i).TemplateID" class="button">删除</a>
+                    <a href="javascript:getTempContent(@Model.ElementAt(i).TemplateID);" class="button">模板代码编辑</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="spPage">
+    <!--分页-->
+    @if (totalCount > 0)
+    {
+        @Html.Raw(Html.PagerX("page", pageIndex, pageSize, totalCount))
+    }
+</div>

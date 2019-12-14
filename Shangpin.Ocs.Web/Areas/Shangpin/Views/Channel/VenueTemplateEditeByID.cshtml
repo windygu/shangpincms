@@ -1,0 +1,190 @@
+﻿@model Shangpin.Entity.Wfs.SWfsSpChannelDetail
+
+@{
+    ViewBag.Title = "频道页列表";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    string[] csslist = null;
+    string[] jslist = null;
+    }
+
+
+    @{
+        Shangpin.Entity.Wfs.SWfsSpChannelTemplate templateInfo = null;
+        Shangpin.Ocs.Service.Shangpin.SWfsChannelService channelService = new Shangpin.Ocs.Service.Shangpin.SWfsChannelService();
+        templateInfo = channelService.GetSwfsChannelTemplateObjByNO(Model.WebTemplateNO);
+        if (templateInfo != null)
+        {
+            if (!string.IsNullOrEmpty(templateInfo.OcsCssPath))
+            {
+                csslist = templateInfo.OcsCssPath.Split(',');
+            }
+            if (!string.IsNullOrEmpty(templateInfo.OcsJsPath))
+            {
+                jslist = templateInfo.OcsJsPath.Split(',');
+            }
+        }
+            
+      }
+
+      @section HeadStyle{
+        @if (csslist!=null)
+        {
+            for (int i = 0; i < csslist.Length; i++)
+            {
+                <link href="@csslist[i]" rel="stylesheet" type="text/css" charset="utf-8" />
+            }
+        }
+        
+        <style type="text/css">
+        .mx-table{font-size:12px;}
+        .dispalayRegion{display:none;position:absolute;width:960px;background-color:White;height:auto;top:0px;left:0px;font-size:12px;}
+        .dispalayRegion td{padding:10px;}
+        .page{height:20px;line-height:20px;padding:10px 5px;}
+        .page a{padding:0 7px;border:solid 1px #DDDDDD;line-height:20px;background:#fff;height:20px;display:block;float:left;margin-right:2px;color:#88AF42}
+        .page a.page_click{color:#fff;background:#B2DF5E;border:none;padding:1px 8px}
+        .page a.pre{border:solid 1px #F3F3F3;}
+        .go{width:30px;height:20px;background:url("/Areas/Shangpin/Images/layout/go.jpg") no-repeat;border:none;margin:0 5px;cursor:pointer}
+        </style>
+        
+      }
+      @section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/Venue/jquery.utils.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/Areas/Shangpin/Scripts/Venue/jquery.pagers.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/Areas/Shangpin/Scripts/Venue/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/Areas/Shangpin/Scripts/Venue/templaterender.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript" charset="utf-8"></script>
+     @if (jslist!=null)
+     {
+         for (int i = 0; i <jslist.Length; i++)
+                        {
+                            <script src="@jslist[i]" type="text/javascript"></script>
+                        }
+     }
+      }
+    <h1>
+        OCS > 尚品 > <a href="/Shangpin/channel/ChannelList"> 频道页列表 </a> > 频道页会场管理
+    </h1>
+    <br />
+    <div style="margin:0px auto;width:824px;text-align:left;">
+        <input type="submit" value="发布" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;" onclick="publishVenue()"/>
+        <input type="button" value="返回" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;" onclick="window.location.href='/Shangpin/channel/ChannelList'"/>
+    </div>
+    <div id="loadTemplate">
+    @{
+        if (templateInfo != null)
+            {
+                if (!string.IsNullOrEmpty(templateInfo.TemplatePath))//默认加载--预热移动--模板路径
+                {
+                    if (File.Exists(Server.MapPath(templateInfo.TemplatePath)))
+                    {
+                        if (Model != null)
+                        {
+                            //查询填充模板的数据列表
+                            IEnumerable<Shangpin.Entity.Wfs.SWfsSpChannelTemplateRegion> Opratorlist = channelService.GetRegionRelationInfoByCondition(0, Model.ChannelNO, "", "", Model.WebTemplateNO);
+                            if (Opratorlist != null)
+                            {
+                                Html.RenderPartial(templateInfo.TemplatePath, Opratorlist);
+                            }
+                        }
+                    }
+                }
+            }
+        templateInfo = null;
+        channelService = null;
+     }
+    </div><!--模板区块-->
+
+    @section hiddendiv{
+    <div id="regionEdite"  class="dispalayRegion">
+        <form action="/Shangpin/Channel/SaveRegionRelationContent" method="post" enctype="multipart/form-data" id="type2form" accept-charset="utf-8">
+            <table  border="0">
+                <tr>
+                    <td>内容类型:</td>
+                    <td>
+                        <input type="radio" value="2" name="selectedType" />专题/活动
+                        <input type="radio" value="1" name="selectedType" checked="checked"/>自定义链接
+                    </td>
+                </tr>
+                <tr>
+                    <td>图片上传:</td>
+                    <td>
+                        <input type="hidden" value="0" name="RelationID" /><!--主键ID-->
+                        <img src="" alt="" title="yulan" id="yulan"/>
+                        <input type="file" name="imgfile" id="imgfile"/>
+                        <input type="hidden" id="ImgNO" value="ImgNO"  name="ImgNO"/> <!--图片-->
+                        <input type="hidden" value="" name="RegionID"/><!--操作区块ID-->
+                        <input type="hidden" value="" name="RelationType" /><!--关联类型-->
+                        <input type="hidden" value="" name="RelationContent" /><!--关联内容-->
+                        <input type="hidden" value="@Model.WebTemplateNO" name="TemplateNO" id="TemplateNO"/><!--模板编号-->
+                        <input type="hidden" value="@Model.ChannelNO" name="ChannelNO" id="ChannelNO" /><!--会场ID-->
+                    </td>
+                </tr>
+                <tr id="linkEdite">
+                    <td>链接地址:</td>
+                    <td>
+                        <input type="text" value="" name="linkurl" style="width:300px;" maxlength="500"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>文字描述:</td>
+                    <td>
+                        <input type="text" name="Description"  style="width:300px;" maxlength="38"/>
+                    </td>
+                </tr>
+            </table>
+            <div id="activeEdite">
+                <div style="margin:15px 0px;">
+                    <input type="text" placeholder="活动/专题名称/编号"  id="activeNameAndNO" value=""/>
+                    <select id="webSource">
+                        <option value="">所属网站</option>
+                        <option value="1">尚品</option>
+                        <option value="2">奥莱</option>
+                    </select>
+                    <select id="activeType">
+                        <option value="">类型</option>
+                        <option value="1">活动</option>
+                        <option value="0">专题</option>
+                    </select>
+                    <select id="activeStatus">
+                        <option value="">状态</option>
+                        <option value="1">开启</option>
+                        <option value="0">关闭</option>
+                    </select>
+                    专题活动时间:
+                    <input id="activeStartDate" class="Wdate" type="text" style=" width:150px;" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'activeEndDate\')||\'2020-10-01\'}'})" readonly="readonly" onclick="WdatePicker()" value=""  />&nbsp;至&nbsp;
+                    <input id="activeEndDate" class="Wdate" type="text" style=" width:150px;" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'activeStartDate\')}',maxDate:'2020-10-01'})" readonly="readonly" onclick="WdatePicker()" value=""  />
+                    <input type="button" value="查询" onclick="getActiveList(1)"/>
+                </div>
+                <table class="mx-table" border="0" >
+                    <thead>
+                        <tr>
+                            <th>
+                                &nbsp;
+                            </th>
+                            <th>活动/专题名称</th>
+                            <th>类型</th>
+                            <th>网站</th>
+                            <th>编号</th>
+                            <th>当前状态</th>
+                            <th>活动时间</th>
+                        </tr>
+                    </thead>
+                    <tbody id="activeList">
+                    
+                    </tbody>
+                </table>
+                <div class="page">
+                    <div class="setpage" id="setpage"></div>
+                    <span class="l pad_left gray">跳转到 <input type="text" style="width:29px;height:20px;border:solid 1px #E3E3E3;line-height:20px" id="activeIndex"/><input type="button" class="go"  value=" " onclick="getActiveList($('#activeIndex').val())"/></span>
+                </div>
+            </div>
+            <div>
+                <input type="button" value="确定" onclick="SaveRelationContent()"/>
+                <input type="button" value="返回" onclick="$('.dispalayRegion').hide();$('#windownBG').remove();" />
+            </div>
+        </form>
+        <input type="hidden" id="DetailID" name="DetailID" value="@Model.DetailID" />
+    </div>
+    }

@@ -1,0 +1,284 @@
+#spList-left {
+    float: left;
+    width: 200px;
+}
+
+#spList-right {
+    float: left;
+    width: 700px;
+    padding: 0 0 0 30px;
+}
+
+div.spList-categories {
+    padding-bottom: 20px;
+}
+
+.spList-categories strong {
+    display: block;
+    font-weight: 700;
+    padding: 4px 0 6px 2px;
+    margin: 0 0 6px;
+    border-bottom: 1px solid #ccc;
+    background: url(/images/page/list/arrow.gif) no-repeat 190px 10px;
+    cursor: pointer;
+}
+
+.spList-categories strong.collapsed {
+    background-position: 190px -23px;
+}
+
+.spList-categories div.collapsed {
+    display: none;
+}
+
+.spList-categories a:link, .spList-categories a:visited {
+    display: block;
+    line-height: 22px;
+    padding: 0 2px;
+    margin-top: 1px;
+}
+
+.spList-categories a:hover, .spList-categories a:active, .spList-categories a.cur {
+    background-color: #666;
+    color: #fff;
+}
+
+.spList-categories p.mxhide {
+    display: none;
+}
+
+.spList-categories div.allhide {
+    display: none;
+    overflow: hidden;
+}
+
+.spList-categories p.cur a.cur {
+    background-image: url(/images/page/list/close.gif);
+    background-repeat: no-repeat;
+    background-position: 188px center;
+}
+
+.cate-color p.cur a.cur, .cate-size p.cur a.cur {
+    padding: 4px 0 4px 4px;
+}
+
+.cate-size p.cur a.cur {
+
+}
+
+.cate-color p.cur img {
+    border: 1px solid #f1f1f1;
+}
+
+.cate-brand a:link, .cate-brand a:visited {
+    line-height: 14px;
+    padding: 5px 2px;
+}
+
+.spList-categories a i, .spList-categories a ins {
+    display: block;
+    height: 14px;
+    overflow: hidden;
+}
+
+/*.spList-categories a ins {
+    color: #aaa;
+}*/
+
+.spList-categories ul {
+    display: block;
+    padding: 3px 0 3px 14px;
+}
+
+.spList-categories ul li {
+    background: url(/images/page/list/line.gif) no-repeat -2px center;
+    padding: 0 0 0 12px;
+}
+
+/*
+.spList-categories ul a:link, .spList-categories ul a:visited {
+    color: #666;
+    display: inline;
+}
+
+.spList-categories ul a:hover, .spList-categories ul a:active, .spList-categories ul a.cur {
+    font-weight: 700;
+    color: #666;
+    background-color: #fff;
+}
+*/
+
+#spBrandindexerWrapper {
+    background-color: #f6f6f6;
+    padding: 4px 4px 0;
+    margin-bottom: 4px;
+}
+
+#spBrandindexerWrapper i {
+    color: #999;
+    padding-left: 3px;
+    font-style: italic;
+}
+
+.spColorlist, .spSizelist, .spBrandindexer {
+    padding: 5px 0;
+}
+
+.spColorlist a:link, .spColorlist a:visited,
+.spSizelist a:link, .spSizelist a:visited,
+.spBrandindexer a:link, .spBrandindexer a:visited,
+.cate-size p.cur span {
+    float: left;
+    display: block;
+    *display: inline;
+    *zoom: 1;
+    width: 20px;
+    height: 20px;
+    margin: 0 3px 3px 0;
+    padding: 0;
+    border: 1px solid #ddd;
+}
+
+.spSizelist a:link, .spSizelist a:visited,
+.cate-size p.cur span {
+    width: 32px;
+    margin: 0 6px 6px 0;
+    text-align: center;
+    border-color: #ccc;
+}
+
+.spBrandindexer a:link, .spBrandindexer a:visited {
+    width: 18px;
+    line-height: 20px;
+    border: 0;
+    text-align: center;
+    margin: 0 1px 1px 0;
+}
+
+.spColorlist a:hover, .spColorlist a:active, .spColorlist a.cur,
+.spSizelist a:hover, .spSizelist a:active, .spSizelist a.cur {
+    border-color: #555;
+}
+.spColorlist a img, .spColorlist a.cur img{
+	display:block;
+}
+.cate-size p.cur span {
+    margin: 0;
+    border-color: #f1f1f1;
+    background-color: #888;
+}
+
+.spList-banner, .spList-banner-bottom {
+    padding: 0 0 18px;
+    width: 694px;
+    overflow: hidden;
+}
+
+.spList-banner-bottom {
+    margin-top: -14px;
+}
+
+.spList-banner lilbanner, .spList-banner-bottom lilbanner {
+    display: block;
+    width: 345px;
+    height: 340px;
+}
+
+.spList-banner-bottom lilbanner {
+    height: 169px
+}
+
+#spList-fnarea, #spList-fnarea-downer {
+    padding: 0 0 6px;
+    position: relative;
+}
+
+#spList-fnarea-downer {
+    height: 30px;
+}
+
+#spList-sort i, #spList-sort a:link, #spList-sort a:visited {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    padding: 0 5px;
+    margin: 0 1px 0 0;
+    line-height: 16px;
+}
+
+#spList-sort i {
+    /*color: #666;*/
+	color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+#spList-sort a:hover, #spList-sort a:active, #spList-sort a.cur {
+    background-color: #666;
+    color: #fff;
+}
+
+#spList-page-upper, #spList-page-downer {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.spList-page i {
+    color: #666;
+    padding-left: 4px;
+}
+
+.spList-page ins {
+   /* color: #aaa;*/
+    color: #333;
+}
+
+#spList-pagecount {
+    padding: 10px 0;
+    text-align: right;
+}
+
+#spList-pagecount a.curr {
+    background-color: #666;
+    color: #fff;
+}
+
+#spList-pagecount a.over:link, #spList-pagecount a.over:visited, #spList-pagecount a.over:hover, #spList-pagecount a.over:active {
+    background-color: #fff;
+    /*color: #999;*/
+	color: #333;
+    cursor: default;
+}
+
+.spList-page a:link, .spList-page a:visited,
+#spList-pagecount a:link, #spList-pagecount a:visited,
+#spList-pagecount i {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    margin: 0 0 0 2px;
+    font-family: "宋体";
+    padding: 0 5px;
+    line-height: 17px;
+}
+
+.spList-page a:hover, .spList-page a:active, .spList-page a.cur,
+#spList-pagecount a:hover, #spList-pagecount a:active {
+    background-color: #666;
+    color: #fff;
+}
+
+.spList-page span {
+    color: #aaa;
+}
+
+#spList-pagecount i {
+    /*color: #999;*/
+	color: #333;
+}
+
+#spBrandindexer-char {
+    float: left;
+    width: 192px;
+}

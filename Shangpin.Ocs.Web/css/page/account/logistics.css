@@ -1,0 +1,100 @@
+
+/* CSS Document */
+
+/* ============== Account logistics ============== */
+
+.account_logistics{
+	padding:0 10px 30px;
+}
+.account_logistics dl{
+	width:100%;
+}
+.account_logistics *{
+	font-family:"宋体";
+}
+.account_logistics dt{
+	background-color:#707070;
+	color:#fff;
+	padding:0 10px;
+	line-height:27px;
+}
+.account_logistics dd.logi_notice{
+	color:#999;
+	line-height:45px;
+	padding-bottom:10px;
+}
+
+.account_logistics .addr_info{
+	width:215px;
+	border:1px solid #cdcdcd;
+	background-color:#fcfcfc;
+	padding:0 12px;
+	float:left;
+	-webkit-border-radius:.5em;
+	-moz-border-radius:.5em;
+	border-radius:.5em;
+	-webkit-box-shadow:0 0 3px #cdcdcd;
+	-moz-box-shadow:0 0 3px #cdcdcd;
+	box-shadow:0 0 3px #cdcdcd;
+	position:relative;
+}
+.account_logistics .addr_info i{
+	display:block;
+	width:8px;
+	height:14px;
+	overflow:hidden;
+	position:absolute;
+	right:-8px;
+	top:20px;
+	background:url(/images/page/account/account_icon.gif) no-repeat -192px -127px;
+}
+.account_logistics .addr_info li{
+	line-height:22px;
+	color:#666;
+	padding:12px 0;
+}
+.account_logistics .addr_info li.btm_border{
+	border-bottom:1px solid #f1f1f1;
+}
+
+.account_logistics .logi_info{
+	width:683px;
+	border:1px solid #f1f1f1;
+	float:right;
+	margin-bottom:10px;
+}
+.account_logistics .logi_info th{
+	padding:0 15px;
+	line-height:27px;
+	background-color:#f1f1f1;
+}
+.account_logistics .logi_info td{
+	padding:10px 8px;
+}
+.account_logistics .logi_info td span{
+	display:block;
+	color:#707070;
+	line-height:22px;
+}
+.account_logistics .logi_info td span.last{
+	color:#e5232a;
+}
+
+.account_logistics .prod_info{
+	width:100%;
+	border-top:1px solid #f1f1f1;
+	padding:15px 0;
+}
+.account_logistics .prod_info img {
+    display: block;
+    float: left;
+    height: 60px;
+    margin-right: 20px;
+    width: 45px;
+}
+.account_logistics .prod_info p {
+    color: #666666;
+    line-height: 20px;
+    margin-left: 65px;
+	font-family:"微软雅黑";
+}

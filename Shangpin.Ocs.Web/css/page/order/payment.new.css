@@ -1,0 +1,569 @@
+
+/*******
+*payment start
+*******/
+
+
+/*订单支付商品列表*/
+.alOrder_payment {
+	margin:0 auto;
+	color:#333;
+	width:905px;
+}
+.alOrder_payment h2 {
+	width:100%;
+	height:30px;
+	line-height:30px;
+	margin:15px 0 0;
+}
+.alOrder_payment h2.btmline {
+	border-bottom:1px solid #333;
+}
+.alOrder_payment h2 span {
+	display:block;
+	float:left;
+	background:#fff;
+	padding:0 10px 0 0;
+	color:#333;
+	font-size:14px;
+	font-weight:700;
+}
+.alOrder_payment h2 span em {
+	color:#aeaeae;
+	font-size:12px;
+}
+
+.olOrder_payBox{
+	margin:5px 20px 0;
+	border:1px solid #ccc;
+}
+
+.olOrder_payBox dl{
+	padding:10px 45px;
+}
+
+.olOrder_payProd dd{
+	float:left;
+	_width:auto;
+	font-size:0;
+	margin-right:25px;
+}
+.olOrder_payProd dd a{
+	display:inline-block;
+	width:60px;
+	height:80px;
+	overflow:hidden;
+}
+.olOrder_payProd dd a img{
+	display:block;
+	width:60px;
+	height:80px;
+}
+.olOrder_payProd dd em{
+	display:inline-block;
+	width:30px;
+	height:80px;
+	line-height:80px;
+	font-size:30px;
+	text-align:center;
+	vertical-align:top;
+	overflow:hidden;
+}
+.olOrder_payProd dd span{
+	display:block;
+	_float:left;
+	height:30px;
+	line-height:30px;
+	font-size:12px;
+	text-align:center;
+}
+
+.olOrder_payInfo {
+	background-position:left bottom;
+}
+.olOrder_payInfo dd {
+	line-height:30px;
+	color:#333;
+}
+.olOrder_payInfo dd p{
+	color:#AEAEAE;
+}
+.olOrder_payInfo dd a:link,.olOrder_payInfo dd a:visited{
+	color:#b9966a;
+}
+.olOrder_payInfo dd a:hover,.olOrder_payInfo dd a:link:active{
+	color:#c91d1d;
+}
+
+.olOrder_payBox .olOrder_payTotal{
+	background-color:#f5f5f5;
+	text-align:right;
+	padding:10px 5px;
+}
+.olOrder_payTotal dd{
+	height:25px;
+	line-height:25px;
+	font-size:14px;
+	color:#000;
+}
+.olOrder_payTotal dd em{
+	font-size:24px;
+}
+
+.payProd_list {
+	background:none;
+	padding:0;
+}
+.payProd_list dd {
+	width:20%;
+	float:left;
+	margin:10px 0 0 0;
+	text-align:center;
+}
+.payProd_list dd.title {
+	width:60%;
+	text-align:left;
+	height:25px;
+	overflow:hidden;
+}
+.payProd_list dd.title em {
+	font-weight:700;
+	font-family:Arial;
+}
+.payProd_list dd.multi_price{
+	position:relative;
+	top:-15px;
+}
+.payTotal {
+	padding:0;
+	background:none;
+}
+.payTotal dd {
+	padding:10px 10px 0 0;
+	text-align:right;
+	font-weight:700;
+}
+
+
+/*支付方式*/
+.PaymentBank_select_box{
+	padding-bottom:10px;
+}
+
+/*礼品卡支付*/
+.PaymentBank_giftsCard{
+	margin:15px 20px 0;
+	zoom:1;
+}
+.PaymentBank_giftsCard h3{
+	font-size:14px;
+	font-weight:700;
+	line-height:24px;
+	position:relative;
+	color:#333;
+}
+.PaymentBank_giftsCard h3 p{
+	position:absolute;
+	right:0;
+	top:0;
+	line-height:24px;
+	font-size:14px;
+	font-weight:400;
+}
+.PaymentBank_giftsCard h3 span{
+	display:inline-block;
+	display:none;
+	margin-left:10px;
+}
+.PaymentBank_giftsCard h5{
+	line-height:24px;
+	color:#333;
+	font-weight:normal;
+	text-align:right;
+	display:none;
+}
+em.redTxt{
+	color:#c00;
+	font-size:24px;
+	line-height:24px;
+	vertical-align:sub;
+	*vertical-align:middle;
+}
+.giftsCard_disabled h3{
+	color:#ccc;
+}
+
+.PaymentBank_giftsCard .gifts_content{
+	width:100%;
+}
+.gifts_content .giftsList{
+	width:100%;
+	color:#333;
+	margin:10px 0 0 0;
+	border-left:1px solid #ccc;
+	border-top:1px solid #ccc;
+	border-right:1px solid #ccc;
+}
+
+.gifts_content .giftsList th{
+	background:#f8f8f8;
+	line-height:40px;
+	border-bottom:1px solid #ccc;
+	text-align:center;
+}
+.gifts_content .giftsList td{
+	border-bottom:1px solid #ccc;
+	padding:2px 8px;
+	color:#333;
+	text-align:center;
+	line-height:40px;
+}
+.gifts_content .giftsList td.lTxt{
+	text-align:left;
+}
+.gifts_content .giftsList td.redTxt{
+	color:#c00;
+}
+
+.gifts_active h4{
+	font-size:14px;
+	height:30px;
+	line-height:30px;
+	padding-top:10px;
+	text-decoration:underline;
+	padding-left:20px;
+	cursor:pointer;
+	background:url(/images/page/order/gifts_addN.jpg) no-repeat left 20px;
+}
+.gifts_active h4.cur{
+	text-decoration:none;
+	background:url(/images/page/order/gifts_addH.jpg) no-repeat left 23px;
+}
+#gift-activebox{
+	display:none;
+}
+#gift-activebox td{
+	padding:10px 0 0 0;
+	vertical-align:2px;
+	*vertical-align:baseline;
+}
+#gift-activebox td.bigTd{
+	width:200px;
+}
+#gift-activebox td.midTd{
+	width:180px;
+}
+#gift-activebox td.bigTd .active_tips, #gift-activebox td.midTd .active_tips{
+	display:block;
+	visibility:visible;
+	height:25px;
+	line-height:25px;
+	padding:0;
+}
+#gift-activebox td.activeTd{
+	width:140px;
+}
+#gift-activebox .errorMsg td{
+	padding:0;
+	color:#B51111;
+	line-height:25px;
+}
+#gift-activebox input{
+	width:90px;
+	height:22px;
+	line-height:22px;
+	vertical-align:middle;
+	border:1px solid #666;
+}
+.txtright{
+	text-align:right;
+}
+#gift-activebox .big-input{
+	width:200px;
+}
+#gift-activebox .mid-input{
+	width:180px;
+}
+.testcodebox{
+	margin-left:0;
+	width:64px;
+}
+.active_btn:link,.active_btn:visited,.active_btn:hover,.active_btn:active{
+	height:30px;
+	line-height:30px;
+	width:101px;
+	display:block;
+	background:url(/images/page/order/activeBtn.jpg) no-repeat;
+	position:relative;
+	top:-2px;
+}
+
+.gifts_pwd{
+	padding:20px 0 0;
+	text-align:right;
+	display:none;
+}
+.gifts_pwd .gifts-input{
+	border:1px solid #333;
+	width:150px;
+}
+.gifts_pwd em{
+	font-family:"宋体";
+	color:#f00;
+}
+.gifts_pwd span{
+	display:inline-block;
+	line-height:25px;
+	padding:0 0 0 130px;
+}
+.gifts_pwd .gifts_pwdErrorMsg{
+	color:#e5232a;
+	display:block;
+	visibility:hidden;
+}
+.giftsPay_btn:link,.giftsPay_btn:visited,.giftsPay_btn:hover,.giftsPay_btn:active{
+	height:42px;
+	line-height:42px;
+	width:153px;
+	display:inline-block;
+	background:url(/images/page/order/giftsPayBtn.jpg) no-repeat;
+}
+#forget_paypass{
+	line-height:24px;
+	text-decoration:underline !important;
+}
+
+.giftspay_price{
+	height:24px;
+	line-height:24px;
+	text-align:right;
+	margin-top:15px;
+	font-size:14px;
+	display:none;
+}
+
+.PaymentBank_content{
+	margin:15px 20px 0;
+	background:url(/images/page/order/box_line.gif) repeat-x left -7px;
+	padding-top:25px;
+}
+.bank_Type{
+	height:40px;
+	line-height:40px;
+	color:#333;
+	z-index:10;
+}
+.bank_Type span{
+	display:inline-block;
+	width:105px;
+	height:39px;
+	line-height:40px;
+	*line-height:35px;
+	text-align:center;
+	border:1px solid #ccc;
+	border-bottom:none;
+	background-color:#fff;
+	font-size:14px;
+	cursor:pointer;
+	zoom:1;
+}
+.bank_Type span.curr{
+	border-top:3px solid #333;
+	height:38px;
+	line-height:36px;
+	background-color:#f5f5f5;
+}
+
+.bank_Block{
+	border:1px solid #ccc;
+	background-color:#f5f5f5;
+	padding:0 15px;
+}
+.bank_Content{
+	padding:10px 0;
+	min-height:200px;
+	_height:200px;
+}
+.bank_Content dl{
+	width:100%;
+	padding-top:5px;
+	*padding-bottom:20px;
+}
+.bank_Content dl.min{
+	padding-top:45px;
+}
+.bank_Content dl.btm{
+	padding-bottom:20px;
+}
+.bank_Content dt{
+	height:40px;
+	line-height:40px;
+}
+.bank_Content dt.new{
+	padding-left:25px;
+	background:url(/images/page/order/new_icon.png) no-repeat left center;
+	_background:url(/images/page/order/new_icon.gif) no-repeat left center;
+}
+.bank_Content dd{
+	width:100%;
+}
+.bank_Content dd span{
+	float:left;
+	width:155px;
+	height:45px;
+	border:1px solid #999;
+	background-color:#fff;
+	margin:0 12px 20px 0;
+	position:relative;
+	zoom:1;
+}
+.bank_Content dd span.curr{
+	width:151px;
+	height:41px;
+	border:3px solid #b9966a;
+}
+.bank_Content dd span a{
+	display:block;
+	height:45px;
+}
+.bank_Content dd span i{
+	width:30px;
+	height:30px;
+	position:absolute;
+	top:-15px;
+	right:-10px;
+}
+.bank_Content dd span.curr i{
+	top:-17px;
+	right:-12px;
+}
+.bank_Content dd span.curr a{
+	display:block;
+	height:42px;
+}
+.bank_Content dd span i.new{
+	
+}
+.bank_Content dd span i.instalment{
+	background:url(/images/page/order/card_icon.png) no-repeat center center;
+	_background:url(/images/page/order/card_icon.gif) no-repeat center center;
+}
+.bank_Content dd span i.quick{
+	background:url(/images/page/order/card_icon.png) no-repeat center center;
+	_background:url(/images/page/order/card_icon.gif) no-repeat center center;
+}
+.bank_Content dd p.bank_txt{
+	float:left;
+	height:47px;
+	line-height:47px;
+	padding-left:10px;
+}
+.bank_Content dd p.bank_txt input{
+	vertical-align:middle;
+}
+.bank_Content dd p.bank_txt input.text{
+	width:170px;
+	height:22px;
+	line-height:22px;
+	border:1px solid #666;
+	color:#999;
+}
+.bank_Content dd p.bank_txt .phone_txt{
+	display:inline-block;
+	width:180px;
+	*width:170px;
+	line-height:120%;
+	vertical-align:middle;
+	padding-left:5px;
+}
+.bank_Content dd p.bank_txt .bank_lab{
+	display:inline-block;
+	width:120px;
+	padding-left:5px;
+	vertical-align:middle;
+	cursor:pointer;
+}
+.bank_Content dd p.bank_txt em{
+	color:#e5232a;
+}
+.bank_Content .noticeTxt{
+	color:#666;
+	line-height:30px;
+	text-align:right;
+}
+.bank_line{
+	background:url(/images/page/order/bank_line.gif) repeat-x left top;
+}
+
+.PaymentBank_footer{
+	text-align:right;
+	margin:0 20px;
+}
+.gifts_pay{
+	height:40px;
+	line-height:40px;
+}
+.bank_select{
+	height:50px;
+	line-height:48px;
+}
+.bank_select em{
+	display:inline-block;
+}
+.bank_select span{
+	display:inline-block;
+	width:151px;
+	height:41px;
+	border:3px solid #b9966a;
+	position:relative;
+	background-color:#fff;
+	vertical-align:middle;
+	visibility:hidden;
+}
+.bank_select span i{
+	width:30px;
+	height:30px;
+	position:absolute;
+	top:-17px;
+	right:-12px;
+}
+.bank_select span i.new{
+	
+}
+.bank_select span i.instalment{
+	background:url(/images/page/order/card_icon.png) no-repeat center center;
+	_background:url(/images/page/order/card_icon.gif) no-repeat center center;
+}
+.bank_select span i.quick{
+	background:url(/images/page/order/card_icon.png) no-repeat center center;
+	_background:url(/images/page/order/card_icon.gif) no-repeat center center;
+}
+.PaymentBank_errorprm{
+	height:30px;
+	line-height:30px;
+	color:#c00;
+	display:none;
+}
+.PaymentBank_submit{
+	padding-top:10px;
+}
+.PaymentSubmit_btn:link,.PaymentSubmit_btn:visited,.PaymentSubmit_btn:hover,.PaymentSubmit_btn:active{
+	height:42px;
+	line-height:42px;
+	width:156px;
+	display:inline-block;
+	background:url(/images/page/order/paymentBtn.jpg) no-repeat;
+}
+.PaymentBank_timeprm{
+	color:#666;
+	margin:10px 0;
+	font-size:14px;
+}
+.PaymentBank_timeprm em{
+	color:#b51111;
+}
+
+
+/*******
+*payment end
+*******/

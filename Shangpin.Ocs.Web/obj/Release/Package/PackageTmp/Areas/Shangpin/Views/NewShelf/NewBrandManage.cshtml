@@ -1,0 +1,195 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@using Shangpin.Entity.Wfs;
+@using Shangpin.Ocs.Web.Infrastructure;
+@{
+    ViewBag.Title = "品牌上新管理";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    IList<SWfsNewBrandInfo> list = (IList<SWfsNewBrandInfo>)ViewBag.List;
+}
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js"></script>
+    @*<script src="/Areas/Shangpin/Scripts/plug/comm.js" type="text/javascript"></script>*@
+    <link href="/Areas/Shangpin/Content/css/tipswindown.css" rel="stylesheet" type="text/css" />
+    <script src="/Areas/Shangpin/Scripts/plug/tipswindown.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="/Areas/Shangpin/Scripts/plug/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+}
+
+<h1>
+    OCS > 尚品 > <a href="/Shangpin/channel/ChannelList">频道页列表</a> > <a href="/Shangpin/newshelf/NewBrandList">品牌列表</a> > 品牌上新管理
+</h1>
+<form action="/Shangpin/newshelf/NewBrandManage" method="get">
+    <input type="hidden" value="@ViewBag.Week" id="WeekOfDays" name="WeekOfDays" />
+    <table id="tb1">
+        <tr>
+            <td><input name="KeyWord" value="@(!string.IsNullOrEmpty(ViewBag.KeyWord) ? ViewBag.KeyWord : "编号/名称")" onfocus="if (this.value == '编号/名称') this.value = ''" onblur="    if (this.value == '') this.value = '编号/名称'" /></td>
+            <td style="padding-left:30px;">添加时间：</td>
+            <td>
+                <input id="StartTime" name="StartTime" value="@ViewBag.StartTime" maxlength="30" class="Wdate" type="text" onclick="WdatePicker()" readonly="readonly" />
+                <span>至</span>
+                <input id="EndTime" name="EndTime" value="@ViewBag.EndTime" maxlength="30" class="Wdate" type="text" onclick="WdatePicker()" readonly="readonly" />
+            </td>
+            <td>
+                <button type="submit">查询</button>
+                <button type="button" id="btnAddNewBrand">添加</button>
+            </td>
+        </tr>
+    </table>
+</form>
+<table class="mx-table">
+    <thead>
+        <tr>
+            <th>
+                品牌图
+            </th>
+            <th>
+                上新数量
+            </th>
+            <th>
+                品牌名称
+            </th>
+            <th>
+                品牌编号
+            </th>
+            <th>
+                添加时间
+            </th>
+            <th>
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody id="sortable">
+        @if (null != list && list.Count > 0)
+{
+    var minSort = list.Select(a => a.Sort).Min();
+    <input type="hidden" value="@minSort" minsort="@minSort" name="MinSort" />
+    var flag = 0;
+    foreach (var item in list)
+    {
+        flag = flag + 1;
+                <tr class="@(flag % 2 == 0 ? "cross" : "")">
+                    <td>
+                        <input type="hidden" value="@item.NewBrandId" sort="@item.Sort" name="NewBrandSort" />
+                        @if (!string.IsNullOrEmpty(item.BrandLogo))
+                        {
+                            <img alt="" src="/ReadPic/GetPic.ashx?width=75&height=30&pictureFileNo=@item.BrandLogo&type=2" />
+                        }
+                    </td>
+                    <td>@item.NewCount</td>
+                    <td>
+                        @{
+                        var brandName = "";
+                        brandName = item.BrandEnName + "（" + item.BrandCnName + "）";
+                        }
+                        @(brandName != "" ? brandName : "")
+                    </td>
+                    <td>@item.BrandNo</td>
+                    <td>@item.DateCreate</td>
+                    <td>
+                        <a href="javascript:;" onclick="TopOne(this)">置顶</a>
+                        <a href="javascript:;" onclick="UpMove(this)">上移</a>
+                        <a href="javascript:;" onclick="DownMove(this)">下移</a>
+                        <a id="btnDel" href="/shangpin/newshelf/DelNewBrand?act=delWeek&id=@item.NewBrandId&week=@item.WeekDays" onclick="return confirm('您确定删除吗?')">
+                            删除
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<div style="text-align:center;">
+    <button type="button" id="btnSave" class="secondary" onclick="return saveSortVale()">
+        保存排序
+    </button>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("#btnAddNewBrand").click(function () {
+            var obj = $(this);
+            var key = $("#WeekOfDays").val();
+            tipsWindown("上新品牌添加", "iframe:/shangpin/newshelf/NewBrandAdd?week=" + key, "420", "300", "true", "", "true", "text");
+        });
+    });
+    //弹出层选择行 返回数据
+    function ClickRowNew() {
+        $("#windown-close").trigger("click");
+    }
+
+    //清除模板选择
+    function TrueInfo() {
+        $("#windown-close").trigger("click");
+        window.location.reload();
+    }
+</script>
+<script type="text/javascript">
+    function UpMove(obj) {//上移
+        var thisTr = $(obj).parent().parent();//先获取的当前tr节点
+        var thisindex = thisTr.index();
+        if (thisindex == 0) {
+            return alert("已经是第一个了");
+        }
+        var prevTr = thisTr.prev();//再获取tr的上一个兄弟节点
+        var thisSort = thisTr.find("input").attr("sort");//获取排序值
+        var prevSort = prevTr.find("input").attr("sort");//获取上一个兄弟节点的排序值
+        thisTr.find("input").attr("sort", prevSort);//把上一个兄弟的排序值辅助给自己
+        prevTr.find("input").attr("sort", thisSort);//把自己的排序值赋值给上一个兄弟节点
+        thisTr.remove();
+        prevTr.before(thisTr);
+    }
+    function DownMove(obj) {//下移
+        var thisTr = $(obj).parent().parent();//先获取的当前tr节点
+        var thisindex = thisTr.index();
+        if (thisindex == thisTr.parent().children().length - 1) {
+            return alert("已经是最后一个了");
+        }
+        var nextTr = thisTr.next();
+        var thisSort = thisTr.find("input").attr("sort");//获取排序值
+        var nextSort = nextTr.find("input").attr("sort");//获取下一个兄弟节点的排序值
+        thisTr.find("input").attr("sort", nextSort);//把上一个兄弟的排序值辅助给自己
+        nextTr.find("input").attr("sort", thisSort);//把自己的排序值赋值给上一个兄弟节点
+        thisTr.remove();
+        nextTr.after(thisTr);
+    }
+
+    function TopOne(obj)//置顶
+    {
+        var thisTr = $(obj).parent().parent();//先获取的当前tr节点
+        var thisindex = thisTr.index();
+        if (thisindex == 0) {
+            return alert("已经是第一个了");
+        }
+        $("#sortable").find("tr").first().before(thisTr);//把自己的排序放到第一个
+        var minSort = $("input[name='MinSort']").val();//获取列表最小排序值
+        var id = thisTr.find("input").val();//获取当前品牌的ID
+        var week = $("input:hidden").eq(0).val();//获取当前属于哪个池子
+        //alert(minSort - 1);
+        thisTr.find("input").attr("sort", minSort - 1);//把当前排序最小值-1辅助给自己
+        @*$.post("@Url.Action("SetTopOneSortNewBrand", "NewShelf")", { Id: id, WeekDays: week }, function (data) {
+            if (data.result == "success") {
+                window.location.href = window.location.href;
+            } else {
+                alert(data.message);
+            }
+        }, "json");*@
+    }
+
+    //保存排序
+    function saveSortVale() {
+        var idStr = "";
+        var sortStr = "";
+        if ($("#sortable input[name='NewBrandSort']").length > 0) {
+            $("#sortable input[name='NewBrandSort']").each(function () {
+                idStr += $(this).val() + ",";
+                sortStr += $(this).attr("sort") + ",";
+            });
+        }
+        idStr = idStr.substr(0, idStr.length - 1);
+        sortStr = sortStr.substr(0, sortStr.length - 1);
+        //alert(idStr + "----" + sortStr);
+        $.post("/shangpin/newshelf/EditeListSortValue", { "idList": idStr, "sortList": sortStr, "memcache_key": "ComBeziWfs_SWfsNewProductManage_MainNewShelfProductListCache" }, function (data) {
+            alert(data.message);
+        });
+        return false;
+    }
+</script>

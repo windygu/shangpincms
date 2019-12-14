@@ -1,0 +1,114 @@
+﻿@{
+    ViewBag.Title = "上新时间设置";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js"></script>
+<div>
+    <form method="post">
+        <span style="color:red;">上新文字设置：</span><input type="text" style="width:200px;height:30px;border:1px black solid;" name="CommingTitle" id="CommingTitle" value="@ViewBag.CommingTitle" /><span style="color:red;margin-left:10px;">文字个数不超过20个</span>
+        <div style="width:500px;height:170px; border:1px #808080 solid;margin-top:15px;">
+            <table style="margin:10px;">
+                <tr style="height:30px;">
+                    <td>上新时间设置：</td>
+                </tr>
+                <tr style="height:30px;">
+                    <td>周期：</td>
+                </tr>
+                <tr style="height:30px;">
+                    <td>
+                        <input type="hidden" id="CheckedAll" name="CheckedAll" value="@ViewBag.CheckedAll"/>
+                        <input type="hidden" id="xingqi" name="xingqi" />
+                        <input type="checkbox" value="1" name="check1" />星期一
+                        <input type="checkbox" value="2" name="check2" />星期二
+                        <input type="checkbox" value="3" name="check3" />星期三
+                        <input type="checkbox" value="4" name="check4" />星期四
+                        <input type="checkbox" value="5" name="check5" />星期五
+                        <input type="checkbox" value="6" name="check6" />星期六
+                        <input type="checkbox" value="0" name="check7" />星期日
+                    </td>
+                </tr>
+                <tr style="height:30px;">
+                    <td>时间：</td>
+                </tr>
+                <tr style="height:30px;">
+                    <td><input type="text" style="width:170px;height:25px;border:1px black solid;" name="DetailTime" id="DetailTime" onfocus="WdatePicker({dateFmt:'H:mm:ss'})" value="@ViewBag.DetailTime" /></td>
+                </tr>
+            </table>
+        </div>
+        <div style="margin-top:20px;margin-left:30px;">
+            <input type="button" style="width:55px;height:25px;margin-right:30px;" value="确认" onclick="settime()"/>&nbsp;&nbsp;
+            <input type="reset" style="width: 55px; height: 25px;" value="返回"  onclick="GoBack()"/>
+        </div>
+    </form>
+</div>
+
+<script>
+    function settime()
+    {
+        var str = "";
+        var $checkBox = $("input[type='checkbox'][name*='check']");
+        var arr = $checkBox.each(function (index) {
+            if (!$checkBox[index].checked)
+                str += $($checkBox[index]).val() + ",";
+        });
+        $("#xingqi").val(str);
+
+        var title = $("#CommingTitle").val();
+        if ($.trim(title) == "") {
+            alert("标题不能为空！");
+            return false;
+        }
+        if (title.length > 20) {
+            alert("您输入的标题太长了！");
+            return false;
+        }
+        var createtime = $("#DetailTime").val();
+
+        if ($.trim(createtime) == "") {
+            alert("上新具体时间不能为空！");
+            return false;
+        }
+
+
+        $.ajax({
+            url: '/Shangpin/newcomming/SetNewCommingDate',
+            type: "POST",
+            data: { WeekDay : str, Title: title, CreateTime: createtime },
+            success: function (result) {
+                alert(result);
+                location.href = "/shangpin/homepage/homemanager";
+            }
+        });
+
+        return false;
+    }
+
+
+    $(function () {
+        var check = $("#CheckedAll").val();
+        var arrc = check.split(',');
+        for(var i=0;i<arrc.length-1;i++)
+        {
+            var $checkBox = $(":checkbox");
+            var arr = $checkBox.each(function (index) {
+                if ($($checkBox[index]).val() == arrc[i])
+                    $checkBox[index].checked = true;
+            });
+        }
+        var $checkBox = $(":checkbox");
+        var arr = $checkBox.each(function (index) {
+            if ($checkBox[index].checked)
+                $checkBox[index].checked = false;
+            else
+                $checkBox[index].checked = true;
+        });
+    })
+
+
+    function GoBack()
+    {
+        window.location.href = "/shangpin/homepage/homemanager";
+    }
+
+</script>

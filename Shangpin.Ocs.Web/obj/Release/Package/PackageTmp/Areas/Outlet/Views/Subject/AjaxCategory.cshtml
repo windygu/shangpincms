@@ -1,0 +1,57 @@
+﻿@using Shangpin.Entity.Wfs
+@{
+    Layout = null;
+}
+@{
+    IList<SpCategory> erpCategory = ViewBag.ErpCategory;  
+}
+@if (ViewBag.CategoryType == "2")
+{
+    <span id="CategoryTwoSpan">
+        <select id="select2" style="width: 100px;" @(ViewBag.CategoryNo == "" ? "disabled=disabled" : "") onchange="TwoChange(this.value);">
+            <option value="">-- 二级品类 --</option>
+            @foreach (var category in erpCategory)
+            { 
+                <option value="@category.CategoryNo" title="@category.CategoryName">@category.CategoryName</option>
+            }
+        </select>
+        <span id="CategoryThreeSpan"> 
+            <select id="select3" disabled="true" style="width: 100px;">
+                <option value="">-- 三级品类 --</option>
+            </select>
+            <span id="CategoryFourSpan">
+                <select id="select4" disabled="true" style="width: 100px;">
+                    <option value="">-- 四级品类 --</option>
+                </select>
+            </span></span></span>
+}
+@if (ViewBag.CategoryType == "3")
+{
+    <span id="CategoryThreeSpan">
+        <select id="select3" style="width: 100px;"  @(ViewBag.CategoryNo == "" ? "disabled=disabled" : "") onchange="ThreeChange(this.value);">
+           
+            <option value="">-- 三级品类 --</option>
+            @foreach (var category in erpCategory)
+            { 
+                <option value="@category.CategoryNo" title="@category.CategoryName">@category.CategoryName</option>
+            }
+        </select>
+        <span id="CategoryFourSpan">
+            <select id="select4" disabled="true" style="width: 100px;">
+                <option value="">-- 四级品类 --</option>
+            </select>
+        </span></span>
+}
+@if (ViewBag.CategoryType == "4")
+{
+    <span id="CategoryFourSpan">
+        <select id="select4" style="width: 100px;"  @(ViewBag.CategoryNo == "" ? "disabled=disabled" : "") onchange="FourChange(this.value);">
+           
+            <option value="">-- 四级品类 --</option>
+            @foreach (var category in erpCategory)
+            { 
+                <option value="@category.CategoryNo" title="@category.CategoryName">@category.CategoryName</option>
+            }
+        </select>
+    </span>
+}

@@ -1,0 +1,683 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td, address, caption, cite, code, dfn, em, strong, th, var {
+    font: 400 12px "Tahoma", "宋体";
+}
+
+.txtcenter{
+    text-align: center;
+}
+
+div.xm_wrapper{
+    height: 660px;
+    width: 959px;
+    background: #dc1830 url(/images/page/xiemo/rightbg.jpg) no-repeat right 0;
+}
+
+p#xm_title{
+    width: 529px;
+    height: 132px;
+    background: #dc1830 url(/images/page/xiemo/title.jpg) no-repeat 0 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+ul#xm_images{
+    width: 528px;
+    position: absolute;
+    top: 132px;
+    left: 0;
+}
+
+ul#xm_images li{
+    float: left;
+    padding: 0 0 1px 1px;
+    width: 175px;
+    height: 175px;
+    overflow: hidden;
+}
+
+div#xm_desc{
+    width: 260px;
+    position: absolute;
+    top: 305px;
+    right: 79px;
+}
+
+div#xm_desc p{
+    line-height: 30px;
+    padding: 0 0 4px;
+}
+
+div#xm_desc p.xm_p1{
+    color: #16172e;
+}
+
+div#xm_desc p.xm_p2{
+    color: #999;
+}
+
+div#mx_desc p.pdt0{
+    padding-top: 0;
+}
+
+div#xm_desc p.pdt6{
+    padding-top: 6px;
+}
+
+div#xm_desc p.pdt12{
+    padding-top: 12px;
+}
+
+div#xm_desc p.pdb0{
+    padding-bottom: 0px;
+}
+
+div.mx_list{
+    width: 260px;
+    padding: 0 0 1px;
+}
+
+div.mx_list i, div.mx_list span{
+    float: left;
+    display: block;
+    width: 16px;
+    overflow: hidden;
+    line-height: 25px;
+    color: #16172e;
+}
+
+div.mx_list span{
+    width: 242px;
+}
+
+#xm_verifyinput{
+    border: 1px solid #aaa;
+    width: 234px;
+    height: 16px;
+    line-height: 16px;
+    padding: 6px 4px;
+    border-radius: 3px;
+    box-shadow: 1px 1px 3px #ddd inset;
+}
+
+a#xm_verifybtn:link, a#xm_verifybtn:visited{
+    width: 143px;
+    height: 32px;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    margin-left: -22px;
+    background: url(/images/page/xiemo/btn.gif) no-repeat 0 0;
+}
+
+a#xm_verifybtn:hover, a#xm_verifybtn:active{
+    background-position: 0 -32px;
+}
+
+p#mx_verifymessage{
+    height:24px;
+    line-height: 24px;
+    color: #e12f35;
+}
+
+span#mx_verifyloader{
+    background: url(/images/plug/loader/l4.gif) no-repeat 0 center;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    height: 32px;
+    line-height: 32px;
+    text-indent: 18px;
+    width: 143px;
+    text-align: left;
+    color: #666;
+}
+
+
+/* 优惠券 */
+.xm_block{background-color:#eee;}
+.xm_block .header{
+	width:100%;
+	height:155px;
+	overflow:hidden;
+	background:url(/images/page/xiemo/big_topbg.jpg) repeat-x left top;
+}
+.xm_block .header span{
+	display:block;
+	margin-left:30px;
+	background:url(/images/page/xiemo/big_topright.jpg) no-repeat right top;
+}
+.xm_block .coupon_block{
+	width:830px;
+	margin:20px auto 0;
+	padding-bottom:50px;
+}
+.coupon_block h1{
+	color:#333;
+	line-height:45px;
+	font-size:14px;
+	font-weight:bold;
+}
+.coupon_block .coupon_content{
+	padding:25px 20px;
+	border:2px solid #fff;
+	background-color:#fff;
+}
+.coupon_block .mTop{
+	margin-top:30px;
+}
+.coupon_block .curr{
+	border:2px solid #f00;
+}
+.coupon_block h2{
+    color: #333333;
+    display: block;
+	font-weight:bold;
+    height: 30px;
+    line-height: 30px;
+    width: 100%;
+}
+.coupon_block h2 input {
+    position: relative;
+    top: -1px;
+    vertical-align: middle;
+}
+.coupon_box{
+	margin-left:165px;
+}
+.card_blcok{
+	width:590px;
+	height:156px;
+	background:url(/images/page/xiemo/card_bg.jpg) repeat-x left top;
+	overflow:hidden;
+}
+.card_blcok p{float:left;}
+.card_blcok .card_value{
+	width:213px;
+	height:138px;
+	margin-top:5px;
+	padding:11px 20px 5px;
+	background:url(/images/page/xiemo/card_leftbg.jpg) no-repeat left top;
+	color:#fff;
+	line-height:180%;
+	overflow:hidden;
+}
+.card_blcok .card_value span{
+	font-size:14px;
+}
+.card_blcok .card_value em{
+	font-size:30px;
+	font-family:"微软雅黑","Microsoft YaHei";
+}
+.card_blcok .card_value em i{
+	font-size:55px;
+	font-family:Arial;
+}
+.card_blcok .card_info{
+	width:297px;
+	height:136px;
+	padding:10px 20px;
+	background:url(/images/page/xiemo/card_rightbg.jpg) no-repeat right top;
+	color:#333;
+	line-height:180%;
+	overflow:hidden;
+}
+.coupon_box .card_notice{
+	line-height:35px;
+}
+.coupon_box .coupon_btn{
+	display:inline-block;
+	padding:0 35px;
+	margin-top:5px;
+	height:32px;
+	line-height:32px;
+	color:#666;
+	font-size:18px;
+	font-family:"微软雅黑";
+	background:url(/images/page/xiemo/card_btnBg.jpg) repeat-x left top;
+}
+
+.coupon_box .mx_hover{
+    color: #fff;
+    background: url(/images/page/xiemo/btn_hov.gif) repeat-x 0 0;
+}
+/*
+.coupon_box .coupon_btn:hover, .coupon_box .coupon_btn:visited{
+	background:url(/images/page/xiemo/card_btnHoverBg.jpg) repeat-x left top;
+	color:#666;
+}
+*/
+.coupon_box .coupon_useBtn{
+	display:inline-block;
+	padding:0 35px;
+	margin-top:20px;
+	height:32px;
+	line-height:32px;
+	color:#fff;
+	font-size:18px;
+	font-family:"微软雅黑";
+	background:url(/images/page/xiemo/card_userBg.jpg) repeat-x left top;
+}
+.coupon_box .coupon_useBtn:hover, .coupon_box .coupon_useBtn:visited{
+	background:url(/images/page/xiemo/card_userHoverBg.jpg) repeat-x left top;
+	color:#fff;
+}
+
+
+.couponCode_box{
+	padding-top:20px;
+}
+.couponCode_box p{
+	line-height:20px;
+	font-family:"宋体";
+	margin:10px 0;
+}
+
+/* 优惠券成功 */
+.xm_block .success_block{
+	margin:50px auto 0;
+}
+.success_box{
+	width:590px;
+	margin:0 auto;
+}
+.success_box h2{
+	font-size:14px;
+	color:#e5232a;
+	height:40px;
+	line-height:40px;
+}
+.success_box p{
+	color:#333;
+	line-height:200%;
+}
+.success_box p a:link, .success_box p a:visited{
+	color:#bf9f7a;
+}
+.success_box p a:hover, .success_box p a:active{
+	color:#bf9f7a;
+	text-decoration:underline;
+}
+
+/* 优惠码成功 */
+.couponCode_block{
+	width:930px;
+	margin:0 auto 15px;
+	background:#fff;
+}
+.couponCode_content{
+	width:870px;
+	margin:0 auto;
+}
+.couponCode_content .code_info{
+	width:100%;
+	text-align:center;
+	padding:0 0 25px;
+}
+.couponCode_content .code_info h2{
+	font-size:14px;
+	color:#e5232a;
+	font-weight:bold;
+	line-height:35px;
+	padding:10px 0;
+}
+.couponCode_content .code_info p{
+	color:#333;
+	font-size:14px;
+	line-height:24px;
+}
+.couponCode_content .code_info p em{
+	color:#e5232a;
+	font-size:14px;
+	font-weight:bold;
+}
+.couponCode_content h3{
+	width:100%;
+	height:20px;
+	margin:25px 0;
+	text-align:center;
+	background:url(/images/page/xiemo/line.jpg) repeat-x left center;
+}
+.couponCode_content h3 span{
+	display:inline-block;
+	background:#fff;
+	padding:0 15px;
+	font-size:14px;
+	font-weight:bold;
+	line-height:20px;
+	color:#333;
+}
+.couponCode_content .code_use{
+	width:100%;
+	padding:10px 0;
+	overflow:hidden;
+}
+.couponCode_content .code_use ul{
+	width:890px;
+}
+.couponCode_content .code_use li{
+	float:left;
+	background:url(/images/page/xiemo/code_useBg.jpg) no-repeat left top;
+	overflow:hidden;
+}
+.couponCode_content .code_use li p{
+	display:block;
+	height:85px;
+	padding:0 36px 0 22px;
+	min-width:110px;
+	_width:110px;
+	background:url(/images/page/xiemo/code_useRightBg.jpg) no-repeat right top;
+	text-align:center;
+	line-height:20px;
+}
+.couponCode_content .code_use li p i{
+	display:inline-block;
+	height:85px;
+	width:0px;
+	vertical-align:middle;
+}
+.couponCode_content .code_use li p span{
+	display:inline-block;
+	vertical-align:middle;
+}
+
+/*商品列表*/
+.spProduct_listbox {
+	width:910px;
+	overflow:hidden;
+	margin:0 auto;
+	position:relative;
+	z-index:1;
+	zoom:1;
+}
+.spProduct_listbox h2{
+	color:#333;
+	font-size:14px;
+	font-weight:bold;
+	font-family:"宋体";
+	line-height:30px;
+	width:870px;
+	margin:0 auto;
+}
+.spProduct_listbox ul {
+	width:930px;
+	margin-bottom:15px;
+}
+.spProduct_listbox li {
+	float:left;
+	width:210px;
+	height:359px;
+	display:inline;
+	margin:0 22px 10px 0;
+	overflow:hidden;
+}
+.spProduct_listbox li a.brank_avatar {
+	position:relative;
+	display:block;
+	zoom:1;
+	/* padding-bottom:2px; */
+	border-bottom:1px solid #fff;
+	overflow:hidden;
+}
+.spProduct_listbox li a.brank_avatar img {
+	width:210px;
+	height:280px;
+	display:block;
+}
+.spProduct_listbox li.over a.brank_avatar {
+	padding-bottom:0;
+	border-bottom-color:#d9d9d9;
+}
+
+.spProduct_listbox li.over .product_infomation {
+	background-color:#f6f6f6;
+}
+
+.spProduct_listbox a .pro_size {
+	position:absolute;
+	zoom:1;
+	display:none;
+	left:0;
+	bottom:0px;
+	width:194px;
+	min-height:25px;
+	_height:25px;
+	line-height:25px;
+	padding:0 8px;
+	z-index:100;
+	text-align:center;
+}
+:root .spProduct_listbox a .pro_size {filter:none;}/*for IE9*/
+.spProduct_listbox li.over .pro_size {
+	display:block;
+	zoom:1;
+	filter:progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr='#99d4d4d4', endColorstr='#99d4d4d4'); background:rgba(212,212,212,0.6);
+}
+.spProduct_listbox a i {
+	display:none;
+	position:absolute;
+	width:50px;
+	height:50px;
+	top:10px;
+	right:10px;
+	z-index:10;
+	background:url(/images/page/list/flag_icon.png) no-repeat;
+	_background:url(/images/page/list/flag_icon_ie6.png) no-repeat;
+}
+
+.spProduct_listbox a.promotion_sign i{
+    display:block;
+	background-position:0 -70px;
+}
+.spProduct_listbox a.new_sign i{
+    display:block;	
+}
+
+.spProduct_listbox a.selout_sign i{
+	display:block;
+    background-position:0 -150px;
+}
+.product_infomation {
+	/* border-top:1px solid #d9d9d9; */
+	padding:8px 0 11px 22px;
+	font:14px Arial;
+	color:#666;	
+}
+.product_infomation p{
+	width:188px;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+.new_oldPrice strong {
+	color:#c96;
+	padding-right:8px;
+	font-family:Arial;
+}
+.new_oldPrice del {
+	color:#999;
+	padding-right:8px;
+	font-family:Arial;
+}
+.new_oldPrice span {
+	color:#fff;
+	background:#e5232a;
+	padding:1px 3px;
+	display:none;
+}
+.exp_reporticon {
+	font-weight:bold;
+	color:#e5232a;
+}
+
+/* 手机绑定层 */
+#activate {
+	padding:0 0 0 40px;
+}
+
+
+#phone_numb,#txt_msg {
+	width:200px;
+	height:20px;
+	padding:3px 5px;
+	border:1px solid #ccc;
+	background:#f9f9f9;
+	border-radius:.3em;
+	-webkit-border-radius:.3em;
+	-webkit-box-shadow:1px 1px 10px rgba(230,230,230,1);
+	box-shadow:1px 1px 10px rgba(230,230,230,1);
+	vertical-align:middle;
+}
+.active_tips {
+	padding-left:10px;
+	color:#B51111;
+	zoom:1;
+	background:#fff;
+	position:relative;
+	z-index:10;
+}
+
+#numb_btn { 
+    margin:20px 0 20px 48px;
+	*width:116px;
+	font-family:"宋体";
+}
+#numb_btn:hover {
+	background:url(/images/page/account/cash_hoverbtn1.png) repeat-x #f5f5f5;
+}
+
+.commGray_btn { display:inline-block; vertical-align:middle; min-width:48px; _width:48px; height:24px; line-height:24px; text-align:center; padding:0 12px; border:1px solid #dddbdb; color:#666; background:url(/images/page/account/cash_btn1.png) repeat-x #f5f5f5; cursor:pointer; }
+
+.spWindow .test_ok{
+	display:inline-block;
+	padding:0 0 0 20px;
+	margin:0 20px;
+	margin:5px 20px 0\9;
+	width:auto;
+	height:16px;
+	line-height:16px;
+	background-image:url(/images/page/account/account_icon.gif);
+    background-repeat: no-repeat;
+	background-position: -185px -43px;
+	_background-position: -185px -45px;
+	vertical-align:middle;
+}
+
+.window_content p{
+	color:#999;
+	clear:both;
+	width:78%;
+	margin:0 auto;
+	text-align:left;
+	line-height:30px;
+}
+.window_content p em{
+	font-weight:700;
+	color:#333;
+}
+.window_content p.big{
+	font-size:14px;
+	font-weight:bold;
+	color:#333;
+	width:100%;
+	line-height:200%;
+	margin:15px 0 30px;
+}
+.window_content input.sns{
+	width:60px;
+	height:20px;
+	padding:3px 5px;
+	border:1px solid #ccc;
+	background:#f9f9f9;
+	border-radius:.3em;
+	-webkit-border-radius:.3em;
+	-webkit-box-shadow:1px 1px 10px rgba(230,230,230,1);
+	box-shadow:1px 1px 10px rgba(230,230,230,1);
+	margin:10px 0 0 0;
+}
+.window_content input.sns:focus{
+	background:#fff;
+	border:1px solid #aaa;
+}
+.window_content p i{
+	color:#f00;
+	display:inline-block;
+	margin:0 0 0 10px;
+}
+.window_bottom{
+	padding:25px 0;
+}
+.sencondv{
+	display:inline-block;
+	height:22px;
+	line-height:22px;
+	border:1px solid #ccc;
+	border-radius:.3em;
+	-webkit-border-radius:.3em;
+	padding:0 10px 1px;
+	margin:15px 0 0;
+	background:#eee;
+	cursor:pointer;
+}
+
+.cash_bor {
+	text-align:center;
+	padding-top:8px;
+}
+
+a.spOrder_window_submit{
+	height:29px;
+	line-height:29px;
+	border:0 none;
+	border-radius:0;
+	-webkit-border-radius:0;
+	background:url(/images/page/account/submit_btn1.png) repeat-x left top;
+	color:#666;
+}
+a.spOrder_window_submit:hover{
+	background:url(/images/page/account/submit_hoverbtn1.png) repeat-x left top;
+}
+a.spOrder_window_submit:link,a.spOrder_window_submit:visited,a.spOrder_window_submit:hover,a.spOrder_window_submit:active{
+	color:#666;
+}
+a.spOrder_window_delbtn{
+	width:83px;
+	height:27px;
+	line-height:27px;
+	border:1px solid #e3dfdf;
+	border-radius:0;
+	-webkit-border-radius:0;
+	background:#fdfdfd;
+}
+a.spOrder_window_delbtn:hover{
+	background:#fff;
+}
+
+div.mx_already_area{
+    padding: 40px 24px 0 0;
+}
+
+div.mx_already_area p{
+    text-align: center;
+}
+
+div#xm_desc p.mx_bigred, div#xm_desc p.mx_smallred{
+    color: #e12f35;
+    font-size: 14px;
+    line-height: 32px;
+    font-weight: 700;
+}
+
+div#xm_desc p.mx_smallred{
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 400;
+}
+
+a.mx_smallgold:link, a.mx_smallgold:visited{
+    color: #B9966A;
+}
+
+a.mx_smallgold:hover, a.mx_smallgold:active{
+    text-decoration: underline;
+}

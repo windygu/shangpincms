@@ -1,0 +1,379 @@
+*body {
+	background-image: url(about:blank);
+	background-attachment: fixed;
+	height: 100%;
+}
+/*imgSwitch add by Macrox*/
+#spIndex_mxImageSwitch {
+	width: 956px;
+	height: 453px;
+	overflow: hidden;
+	margin: 0 auto;
+	position: relative;
+}
+#spIndex_mxImageSwitch span {
+	display: none;
+	position: absolute;
+	width: 40px;
+	height: 420px;
+	top: 0;
+	z-index: 1000;
+	cursor: pointer;
+	background: url(/images/page/index/swarr.png) no-repeat 8px center;
+	_background-image: url(/images/page/index/swarr.gif)
+}
+#spIndex_mxImageSwitch span#switchnext {
+	right: 0;
+	background-position: -200px center;
+}
+.switchsort {
+	padding: 10px 0;
+	text-align: center;
+}
+.switchsort li {
+	display: inline-block;
+*display:inline;
+*zoom:1;
+	padding: 0 8px;
+}
+.switchsort li a {
+	display: none;
+	width: 10px;
+	height: 10px;
+	overflow: hidden;
+	background: url(/images/page/brand/flagshop/imgsroll_bg.jpg) no-repeat left bottom;
+}
+.switchsort li a.cur {
+	background-position: left top;
+}
+#switchhref {
+	display: block;
+	width: 960px;
+	height: 416px;
+	overflow: hidden;
+	background: url(/images/plug/loader/aloader-greybg.gif) no-repeat center center;
+}
+#switchhref.loaderhide {
+	background-position: -1000px -1000px;
+}
+/*圆点导航*/
+.spIndex_cir {
+	display: inline-block;
+*background: none;
+	background: none\0;
+	margin: 0 2px;
+*display:inline;
+*zoom: 1;
+}
+.spIndex_cir a {
+	text-indent: -128px;
+	display: block;
+	width: 15px;
+	height: 15px;
+	_width: 12px;
+	_height: 12px;
+	background: url(/images/page/index/spWindow.png) -30px top no-repeat;
+	_background: #333;
+	overflow: hidden;
+*border:0;
+	border: 0\0;
+}
+#spIndex_window_nav .ciron {
+	background: none;
+}
+.spIndex_ciron a {
+	background: url(/images/page/index/spWindow.png) 1px top no-repeat;
+	_background: #ea0600;
+}
+/**/
+.flagshop_title {
+	background: #fff;
+}
+.flagshop_title p {
+	text-align: center;
+	position: relative;
+}
+.flagshop_title .attention_btn {
+	position: absolute;
+	right: 0;
+	bottom: 5px;
+	text-align: left;
+	width: 86px;
+	height: 31px;
+	background: url(/images/page/brand/flagshop/attention_btn.png) no-repeat center 0;
+	color: #000;
+	line-height: 28px;
+	*line-height:30px;
+	padding-left: 34px;
+}
+.flagshop_title .attention_btn:link,.flagshop_title .attention_btn:visited{
+	color:#fff;	
+}
+.flagshop_title .already:link,.flagshop_title .already:visited {
+	background-position: center -34px;
+	color: #666;
+}
+
+.flagshop_top {
+	margin: 0 0 0 -480px;
+	left: 50%;
+	position: relative;
+	z-index: 10000;
+	_position: static;
+	_margin: 0 auto;
+	width: 960px;
+	zoom: 1;
+}
+.flagshop_nav {
+	background: #545454;
+	border-bottom: 1px solid #fff;
+	zoom: 1;
+}
+.flagshop_nav ul {
+	text-align: center;
+	background: none;
+	width: 940px;
+	margin: 0 auto;
+}
+.flagshop_nav ul li {
+	float: left;
+	padding: 8px 2px;
+	position: relative;
+	z-index: 1000;
+}
+.flagshop_nav ul li a {
+	height: 12px;
+	padding: 5px 12px;
+	line-height: 12px;
+	float: left;
+}
+.flagshop_nav ul li a:link, .flagshop_nav ul li a:visited {
+	color: #fff;
+}
+.flagshop_nav ul li.cur a, .flagshop_nav ul li.over a:hover {
+	background: #fff;
+	color: #333;
+}
+.flagshop_nav ul li.cur a:link, .flagshop_nav ul li.cur a:visited {
+	color: #333;
+}
+.flagshop_nav ul li .flagshop_nav_con {
+	position: absolute;
+	top: 37px;
+	left: 0;
+	background: #fff;
+	border: 1px solid #666;
+	padding: 7px 5px;
+	display: none;
+	width: 160px;
+}
+.flagshop_nav ul li .flagshop_nav_con ul {
+	width: 160px;
+}
+.flagshop_nav ul li .flagshop_nav_con ul.flagshop_nav_left {
+	float: left;
+	margin-right: 10px;
+}
+.flagshop_nav ul li .flagshop_nav_con ul.flagshop_nav_right {
+	float: right;
+}
+.flagshop_nav ul li ul li {
+	float: none;
+	padding: 2px 0;
+	color: #333;
+}
+.flagshop_nav ul li ul li.flagshop_nav_title {
+	text-align: left;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 5px;
+}
+.flagshop_nav ul li ul li a {
+	display: block;
+	text-align: left;
+	padding: 5px 8px;
+	float: none;
+}
+.flagshop_nav ul li ul li a:link, .flagshop_nav ul li ul li a:visited {
+	color: #333;
+}
+.flagshop_nav ul li.over .flagshop_nav_con {
+	display: block;
+}
+.flagshop_nav ul li.over ul li a:hover {
+	background: #333;
+	color: #fff;
+}
+.flagshop_top_fixed {
+	position: fixed;
+	top: 0;
+	_position: absolute;
+	_bottom: auto;
+_top:expression(eval(document.documentElement.scrollTop));
+	_left: 50%;
+	_margin-left: -480px;
+}
+.flagshop_top_full {
+	padding: 0;
+	width: 100%;
+	margin: 0 auto;
+	left: 0;
+}
+.flagshop_top_full ul.flagshop_nav_cn {
+	width: 960px;
+}
+.flagshop_main {
+	padding: 0 2px;
+	background: #fff;
+	width: 956px;
+}
+.spProduct_listbox {
+	border-top: none;
+}
+.spProduct_listbox h3 {
+	border-top: 1px solid #c3c3c3;
+}
+.spProduct_listbox ul.all {
+	margin-top: 0;
+}
+/*分页*/
+#spList-fnarea {
+	float: right;
+	padding: 6px 0;
+	margin-left: 10px;
+}
+#spList-page-upper {
+	position: static;
+}
+#spList-pagecount {
+	float: right;
+	padding:6px 0;
+}
+#spList-pagecount a:link, #spList-pagecount a:visited, #spList-pagecount i, #spList-sort a:link, #spList-sort a:visited {
+	line-height: 22px;
+}
+#spList-pagecount i {
+	padding-right: 0;
+}
+#spList-sort {
+	float: right;
+	padding:6px 10px;
+}
+#spList-sort i, #spList-sort a:link {
+	float: left;
+	height: 22px;
+	overflow: hidden;
+	line-height: 22px;
+	margin-right: 5px;
+}
+#spList-sort i {
+	margin-right: 0;
+}
+#spList-sort a.brand_price {
+	width: 35px;
+}
+#spList-sort a.bottom {
+	background: #333 url(/images/page/brand/brand_list_new_icon.gif) no-repeat 32px top;
+	color: #fff;
+}
+#spList-sort a.top {
+	background: #333 url(/images/page/brand/brand_list_new_icon.gif) no-repeat 32px -61px;
+	color: #fff;
+}
+#spList-sort a:hover, #spList-sort a.curr, #spList-pagecount a:hover, #spList-pagecount a.curr {
+	background-color: #333;
+	color: #fff;
+}
+/*筛选*/
+#chose_box {
+	overflow: visible;
+	background: #FFF url(/images/page/brand/flagshop/chose_box_bg.png) repeat-x left 34px;
+	width: 940px;
+	margin: 0 auto;
+	padding:0 10px 7px;
+}
+.brand_select {
+	float: left;
+	padding: 6px 0;
+	_width: 450px;
+}
+.brand_select ul li {
+	float: left;
+	padding: 0 5px;
+	margin-right: 10px;
+	height: 22px;
+	line-height: 22px;
+	position: relative;
+}
+.brand_select ul li.brand_select_cn {
+	outline: none;
+	border: 1px solid #bbb;
+	height: 20px;
+	line-height: 20px;
+	z-index: 100;
+	_zoom: 1;
+}
+.brand_select ul li.brand_select_cn span {
+	cursor: default;
+	padding-right: 30px;
+	background: url(/images/page/brand/brand_list_new_icon.gif) no-repeat right -80px;
+	display: block;
+	_float: left;
+}
+.brand_select ul li ul {
+	position: absolute;
+	left: 0;
+	top: 20px;
+	background: #fff;
+	min-width: 100%;
+	*width:100%;
+	_width: 64px;
+	margin-left: -1px;
+	border: 1px solid #ccc;
+	display: none;
+	overflow: hidden;
+}
+.brand_select ul li li {
+	float: none;
+	white-space: nowrap;
+	vertical-align: top;
+	display: block;
+	line-height: 24px;
+	height: 24px;
+	margin: 0;
+	padding: 0;
+}
+.brand_select ul li li a {
+	display: block;
+	padding: 0 5px;
+	*width:100%;
+}
+.brand_select ul li li a i {
+	position: absolute;
+	width: 20px;
+	height: 14px;
+	background: #FFF;
+	top: 5px;
+	right: 5px;
+}
+.spList-page a:link {
+	height: 22px;
+	line-height: 22px;
+}
+.brand_select ul li li a:hover, .spList-page a:hover, .spList-page a.cur {
+	background: #333;
+	color: #fff;
+}
+.brand_select .brand_select_color ul li{
+	height:auto;
+	padding:2px 4px;
+	*padding:0 4px;
+	_padding:2px 4px;
+}
+.brand_select .brand_select_color ul li a{ padding:0;border:1px solid #ddd; height:16px; width:54px;}
+.brand_select .brand_select_color ul li a img{ vertical-align:text-bottom;}
+.brand_select .brand_select_color ul li a:hover{
+	background:none;
+	border-color:#333;
+}
+.brand_select .brand_select_color ul li.title_color a{ border:none; height:20px; line-height:20px; text-indent:3px; width:auto;}
+.brand_select .brand_select_color ul li.title_color a:hover{background:#333;}

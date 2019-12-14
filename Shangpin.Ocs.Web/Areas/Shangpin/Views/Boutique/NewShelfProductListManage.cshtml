@@ -1,0 +1,204 @@
+﻿@model List<ProductInfoNew>
+@using Shangpin.Ocs.Web.Infrastructure
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin
+@using Shangpin.Entity.Wfs
+@{
+    ViewBag.Title = "商品管理";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+@section HeadScript
+{
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/plug/jquery-ui-1.10.3.custom.min.js" charset="utf-8"></script>
+    @*<script type="text/javascript" src="/Areas/Shangpin/Scripts/lib/jquery.js" charset="utf-8"></script>*@
+    <script type="text/javascript">
+        //加载事件
+        $(function () {
+            $("#sortable").sortable();
+            $("#sortable tr").disableSelection();
+
+            $("[name='ProductNoCheckBox']").click(function () {//复选框点击事件
+                var pidStr = "";
+                $("[name='ProductNoCheckBox']").each(function () {
+                    if (this.checked)
+                        pidStr += $(this).val() + ",";
+                });
+                $("#ProductNoStr").val(pidStr);
+            });
+            $("input[name='IsOneRow']").click(function () {//单选按钮的点击事件
+                window.location.href = "NewShelfProductListManage?IsOneRow=" + $(this).val() + "&ArrivalId=@Request.QueryString["ArrivalId"]&brandNo=@Request.QueryString["brandNo"]&DateShelf=@Request.QueryString["DateShelf"]";
+            });
+        });
+
+
+
+        //全选复选框
+        function checkAll(obj) {
+            var pidStr = "";
+            if (obj.checked) {
+                $("[name='ProductNoCheckBox']").each(function () {
+                    $(this).attr("checked", "true");
+                    pidStr += $(this).val() + ",";
+                });
+            }
+            else {
+                $("[name='ProductNoCheckBox']").each(function () {
+                    $(this).removeAttr("checked");
+                    pidStr = "";
+                });
+            }
+            $("#ProductNoStr").val(pidStr);
+        }
+
+        function DeleteProduct() {//删除操作
+            var idStr = $("#ProductNoStr").val();
+            if (idStr == "") {
+                return alert("请先选择你要删除的商品");
+            }
+            //if ($("#sortable").children().length - $("#sortable input[name='ProductNoCheckBox']:checked").length < 10) {
+            //    return alert("商品不能低于10个");
+            //}
+            var Isdelete = confirm("是否确定要删除");
+            if (Isdelete) {
+                $.post("@Url.Action("DeleteProduct", "Boutique")", { idStr: idStr }, function (data) {
+                    if (data.message == "删除成功") {
+                        alert(data.message);
+                        window.location.href = window.location.href;
+                    } else {
+                        alert(data.message);
+                    }
+                }, "json");
+            }
+        }
+    </script>
+}
+<h1>OCS > 尚品 > <a href="/Shangpin/Boutique/NewShelfList?brandNo=@Request.QueryString["brandNo"]">最新上架管理</a> > 商品管理</h1>
+<table class="mx-table">
+    <tr>
+        <td style="text-align:left"><input type="radio" value="1" name="IsOneRow" @(Html.Raw(Request.QueryString["IsOneRow"] == null || Request.QueryString["IsOneRow"]=="1" ? "checked =\"checked\"" : null)) />第一排商品&nbsp;
+            <input type="radio" value="0" name="IsOneRow" @(Html.Raw(Request.QueryString["IsOneRow"] != null && Request.QueryString["IsOneRow"] == "0" ? "checked =\"checked\"" : null)) />其他&nbsp;</td>
+        <td>
+            <a class="button" id="okButton" href="javascript:;" onclick="DeleteProduct()">删除所选</a>
+            <a class="button" href="NewShelfList?brandNo=@Request.QueryString["brandNo"]">返回</a>
+            <a class="button" href="javascript:;" onclick="saveSortVale()">保存排序</a>
+        </td>
+        <td><a class="button" href="AddNewShelfProductList?brandNo=@Request.QueryString["brandNo"]&DateShelf=@Request.QueryString["DateShelf"]&IsOneRow=@(Request.QueryString["IsOneRow"]==null||Request.QueryString["IsOneRow"]==""?"1":Request.QueryString["IsOneRow"])&ArrivalId=@Request.QueryString["ArrivalId"]">添加商品</a></td>
+    </tr>
+    <tr>
+        @if (Request.QueryString["IsOneRow"] == null || Request.QueryString["IsOneRow"] == "1")
+        {
+            <td colspan="3" style="text-align:left">温馨提示：前台最多展示6张图片，请及时上传前台展示大图</td>
+        }
+    </tr>
+    <tr></tr>
+</table>
+<table class="mx-table" border="0">
+    <thead>
+        <tr>
+            <th>
+                <input type="checkbox" onclick="checkAll(this)" />
+            </th>
+            <th>
+                序号
+            </th>
+            <th>
+                商品图片
+            </th>
+            <th>
+                商品信息
+            </th>
+            <th>
+                库存情况
+            </th>
+            <th>
+                商品价格
+            </th>
+            @if (Request.QueryString["IsOneRow"] == null || Request.QueryString["IsOneRow"] == "1")
+            {
+                <th>
+                    操作
+                </th>
+            }
+        </tr>
+    </thead>
+    <tbody id="sortable">
+        @{int index = 1;
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <input type="checkbox" value="@item.Id" sort="@item.Sort" name="ProductNoCheckBox" />
+                </td>
+                <td>@index</td>
+                <td>
+                    <img alt="@item.ProductName" width="70" height="107" src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@item.ProductPicFile&type=1" />
+                </td>
+                <td style="text-align: left;">
+                    @{
+            Shangpin.Ocs.Service.Shangpin.SWfsNewProductService service = new Shangpin.Ocs.Service.Shangpin.SWfsNewProductService();
+            ProductInventoryNew inventory = service.GetInventoryByProductNo(item.ProductNo);
+            int Quantity = inventory.SumQuantity;
+            int LockQuantity = inventory.SumLockQuantity;
+                    }
+                    商品编号：@item.ProductNo<br />
+                    商品货号：@item.GoodsNo<br />
+                    商品名称：@item.ProductName<br />
+                    所属品牌：@item.BrandEnName (@item.BrandCnName)<br />
+
+                </td>
+                <td style="text-align: left;">
+                    可用库存：@Quantity<br />
+                    锁定库存：@LockQuantity<br />
+
+                </td>
+                <td style="text-align: left;">
+                    市场价:@item.MinMarketPrice-@item.MaxMarketPrice
+                    <br />
+                    黄金价:@item.MinSellPrice-@item.MaxSellPrice
+                    <br />
+                    白金价:@item.MinPlatinumPrice-@item.MaxPlatinumPrice
+                    <br />
+                    钻石价:@item.MinDiamondPrice-@item.MaxDiamondPrice
+                    <br />
+                    尚品价:@item.MinLimitedPrice-@item.MaxLimitedPrice
+                    <br />
+                    <label style="color:red">促销价:@item.MinPromotionPrice-@item.MaxPromotionPrice</label>
+                @if (Request.QueryString["IsOneRow"] == null || Request.QueryString["IsOneRow"] == "1")
+                {
+                    <td>
+                        <a class="button" href="AddProductImage?ProductListId=@item.Id&BrandNo=@Request.QueryString["BrandNo"]&DateShelf=@Request.QueryString["DateShelf"]&ArrivalId=@Request.QueryString["ArrivalId"]">编辑展示图片</a>
+                    </td>
+                }
+
+            </tr>
+                index = index + 1;
+        }}
+    </tbody>
+</table>
+<table cellpadding="0" cellspacing="0" border="0" class="mx-table">
+    <tr>
+        <td>
+            <input type="hidden" id="ProductNoStr" />
+            <a class="button" id="okButton" href="javascript:;" onclick="DeleteProduct()">删除所选</a>
+            <a class="button" href="NewShelfList?brandNo=@Request.QueryString["brandNo"]">返回</a>
+            <a class="button" href="javascript:;" onclick="saveSortVale()">保存排序</a>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    //保存排序
+    function saveSortVale() {
+        var idStr = "";
+        var sortStr = "";
+        if ($("#sortable input[name='ProductNoCheckBox']").length > 0) {
+            $("#sortable input[name='ProductNoCheckBox']").each(function (index) {
+                idStr += $(this).val() + ",";
+                sortStr += index+1 + ",";
+            });
+        }
+        var memcache_key = "FlagShip_SwfsFlagShipNewArrivalProductList_FlagShipNewArrivalProductList_Memcached" + '@Request.QueryString["BrandNo"]';
+        $.post("@Url.Action("UpdateProductSort", "Boutique")", { idStr: idStr, sortStr: sortStr, memcache_key: memcache_key }, function (data) {
+            alert(data.message);
+            window.location.href = window.location.href;
+        }, "json");
+    }
+</script>

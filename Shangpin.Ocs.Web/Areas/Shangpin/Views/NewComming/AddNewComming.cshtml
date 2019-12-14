@@ -1,0 +1,239 @@
+﻿@{
+    ViewBag.Title = "添加上新";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    string prolist = Request.Cookies["MyCook"] == null ? "" : Request.Cookies["MyCook"].Value + "";
+
+    HttpCookie cookie = HttpContext.Current.Request.Cookies["MyCook"];
+    if (cookie != null)
+    {
+        cookie.Expires = DateTime.Now.AddDays(-1);
+        HttpContext.Current.Response.AppendCookie(cookie);
+    }
+}
+
+<style>
+    .tabNew {
+        width: 700px;
+    }
+
+        .tabNew td {
+            height: 60px;
+            line-height: 40px;
+        }
+</style>
+<script src="~/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script src="~/Contents/Scripts/jquery-1.7.2.min.js"></script>
+<script src="~/Areas/Shangpin/Scripts/page/Label/JqueryCookie.js"></script>
+<body>
+    <h2>添加新的上新</h2>
+    <div>
+        <input id="HidProduct" type="hidden" value="@prolist" />
+        <form method="post">
+            <table class="tabNew">
+                <tr>
+                    <td style="text-align:right;width:100px;color:red">标题：</td>
+                    <td><input type="text" style="width:200px;height:30px;border:1px black solid;" name="Title" id="Title" /></td>
+                    <td style="color:red;">图片标题不能大于30字符</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;color:red;">上新商品：</td>
+                    <td><input type="button" value="添加新商品" style="width:80px;height:30px;" onclick="AddGoods()" /></td>
+                    <td style="color:red;"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td colspan="2">
+                        <table id="TbImg">
+                            <tr>
+                                <td><img src="" style="width: 60px; height: 60px; margin: 2px;" /></td>
+                                <td><img src="" style="width: 60px; height: 60px; margin: 2px;" /></td>
+                                <td><img src="" style="width: 60px; height: 60px; margin: 2px;" /></td>
+                                <td><img src="" style="width: 60px; height: 60px; margin: 2px;" /></td>
+                                <td><img src="" style="width: 60px; height: 60px; margin: 2px;" /></td>
+                                <td><img src="" style="width: 60px; height: 60px; margin: 2px;" /></td>
+                            </tr>
+                            <tr>
+                                <td><img src="" style="width: 60px; height: 60px; margin: 2px;" /></td>
+                                <td><img src="" style="width: 60px; height: 60px; margin: 2px;" /></td>
+                                <td><img src="" style="width: 60px; height: 60px; margin: 2px;" /></td>
+                                <td><img src="" style="width: 60px; height: 60px; margin: 2px;" /></td>
+                                <td><img src="" style="width: 60px; height: 60px; margin: 2px;" /></td>
+                                <td><img src="" style="width: 60px; height: 60px; margin: 2px;" /></td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;width:40px; color:red;">上新时间：</td>
+                    <td>
+                        @if (string.IsNullOrEmpty(ViewBag.CheckedAll))
+                        {
+                            <input type="text" style="width:200px;height:30px;border:1px black solid;" onclick="WdatePicker({dateFmt:'yyyy-M-d @ViewBag.DetailTime', opposite: true, minDate:'%y-%M-{%d}'}) " name="CreateTime" id="CreateTime" />
+                        }
+                        else
+                        {
+                            <input type="text" style="width:200px;height:30px;border:1px black solid;" onclick="WdatePicker({dateFmt:'yyyy-M-d @ViewBag.DetailTime', opposite: true, disabledDays: [@ViewBag.CheckedAll],minDate:'%y-%M-{%d}'})" name="CreateTime" id="CreateTime" />
+                        }
+
+                    </td>
+                    <td style="color:red;">注释：限制只有上新时间日期才能进行选择</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td colspan="2"><input type="button" style="width:65px;height:35px" value="确认" onclick="SubmitNewComming()" />&nbsp;&nbsp;<input type="button" style="width: 65px; height: 35px" value="取消" onclick="GoBack()" /></td>
+                    <td></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
+<script>
+    var NewComming = "";
+    $(function () {
+        var url=window.location.href;
+        if(url.indexOf('?')<0){
+            document.cookie="Titles=";
+        }
+        $("#Title").val(tempgetCookie("Titles"));             
+        
+        ReadImg();
+        DelCookie("Titles");
+    })
+    function DelCookie(name) {
+        var exp = new Date();
+        exp.setTime(exp.getTime() - 10000);
+        $.cookieHelper(name, null);
+
+    }
+    function tempsetCookie(c_name, value, expiredays) {
+        var exdate = new Date();
+        exdate.setDate(exdate.getDate() + expiredays)
+        document.cookie = c_name + "=" + escape(value) +
+                ((expiredays == null) ? "" : ";path=/;expires=" + exdate.toGMTString());
+    }
+
+
+    function ReadImg()
+    {
+
+        var Product=$("#HidProduct").val();
+
+        var $productArray=Product.split(",");
+        var $temProduct=new Array();
+        for (var i = 0; i < $productArray.length; i++) {
+            if($temProduct.indexOf($productArray[i])<0)
+            {
+                if($productArray[i]!="")
+                $temProduct.push($productArray[i]);
+            }
+        }
+         NewComming=$temProduct.join(",");
+
+        for (var i = 0; i < $temProduct.length; i++) {
+            var arr1 = $temProduct[i].split('-');
+            var $img = $("#TbImg img");
+            $($img[i]).attr("src", "/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=" + arr1[1] + "&type=1");
+        }
+    }
+
+    //保存上新
+    function SubmitNewComming()
+    {
+        var title = $("#Title").val();
+        if ($.trim(title) == "")
+        {
+            alert("标题不能为空！");
+            return false;
+        }
+        if (title.length > 30)
+        {
+            alert("您输入的标题太长了！");
+            return false;
+        }
+        var createtime = $("#CreateTime").val();
+
+        if ($.trim(createtime) == "") {
+            alert("上新时间不能为空！");
+            return false;
+        }
+
+        if(NewComming.split(',').length==0)
+        {
+            alert("必须先添加商品！");
+            return false;
+        }
+        if(NewComming.split(',').length<12)
+        {
+            alert("必须添加够12个以上的商品才可以添加上新！");
+            return false;
+        }
+
+        $.ajax({
+            url: '/Shangpin/newcomming/AddNewCommingManager',
+            type: "POST",
+            data: { CommingGoods: NewComming, Title: title,CreateTime: createtime},
+            success: function (result) {
+                
+                if(result=="-1")
+                {
+                    alert("时间重复，添加失败！")
+                }
+                else
+                {
+                    tempsetCookie("MyCook","",-1);
+                    location.href = "NewCommingIndex";
+                }
+            }
+        });
+
+        return false;
+    }
+
+    function GoBack() {
+
+        tempsetCookie("MyCook","",-1);
+        window.location.href = "NewCommingIndex";
+    }
+
+
+    function AddGoods()
+    {
+        var title = $("#Title").val();
+        document.cookie = 'Titles=' + title + ''
+        //window.location.href = "AddGoods";
+        tempsetCookie("Titles", title, 1);
+
+        var Product = $("#HidProduct").val();
+
+        $.ajax({
+            url: '/Shangpin/newcomming/AddNewGoodsList',
+            type: "POST",
+            data: { GoodsNo: Product },
+            success: function (result) {
+                window.location.href = "AddGoods";
+            }
+        });
+
+    }
+
+
+    function setCookie(c_name, value, expiredays){
+        var exdate=new Date();
+        exdate.setDate(exdate.getHours() + expiredays);
+        document.cookie=c_name+ "=" + escape(value) + ((expiredays==null) ? "" : ";expires="+exdate.toGMTString());
+    }
+
+    function tempgetCookie(c_name) {
+        if (document.cookie.length > 0) {
+            var c_start = document.cookie.indexOf(c_name + "=")
+            if (c_start != -1) {
+                c_start = c_start + c_name.length + 1
+                var c_end = document.cookie.indexOf(";", c_start)
+                if (c_end == -1) c_end = document.cookie.length
+                return unescape(document.cookie.substring(c_start, c_end))
+            }
+        }
+        return ""
+    }
+</script>

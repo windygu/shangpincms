@@ -1,0 +1,22 @@
+
+/* ie Hack */
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td, address, caption, cite, code, dfn, em, strong, th, var{
+    *font: 400 12px "Arial","Tahoma","宋体";
+}
+
+#spAccount_right h3{
+	width:100%;
+	display:block;
+	zoom:1;
+}
+#myInvite_more{
+	width:100px;
+}
+
+
+/* 弹出层 */
+.sencondv{
+	width:130px;
+	line-height:20px;
+	padding:0 10px;
+}

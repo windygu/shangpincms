@@ -1,0 +1,560 @@
+@using Shangpin.Entity.Wfs
+@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@model IEnumerable<Shangpin.Ocs.Entity.Extenstion.ShangPin.SWfsProductCommentExtends>
+@{
+    Layout = null;
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "详情页评论管理";
+    int pageIndex = ViewBag.pageIndex;
+    int pageSize = ViewBag.pageSize;
+    int totalCount = ViewBag.totalCount;
+
+
+    Shangpin.Ocs.Service.Shangpin.SWfsBrandService dal = new Shangpin.Ocs.Service.Shangpin.SWfsBrandService();
+    IList<ErpCategory> allfirstCategory = dal.SelectErpCategoryByParentNo("ROOT");
+    IList<ErpCategory> secondCategoryList = null;
+    IList<ErpCategory> thirdCategoryList = null;
+    IList<ErpCategory> fourCategoryList = null;
+    string requestCategoryNo = Request.QueryString["CategoryNo"] != null ? Request.QueryString["CategoryNo"].ToUpper() : null;
+    if (requestCategoryNo != null)
+    {
+        if (requestCategoryNo.Length == 3)
+        {
+            allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo).ParentNo = "0";
+        }
+        if (requestCategoryNo.Length == 6)
+        {
+            if (allfirstCategory.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)) > 0)
+            {
+                allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)).ParentNo = "0";
+            }
+            secondCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 3));
+            if (secondCategoryList.Count(p => p.CategoryNo == requestCategoryNo) > 0)
+            {
+                secondCategoryList.Single(p => p.CategoryNo == requestCategoryNo).ParentNo = "0";
+            }
+        }
+        if (requestCategoryNo.Length == 9)
+        {
+            if (allfirstCategory.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)) > 0)
+            {
+                allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)).ParentNo = "0";
+            }
+            secondCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 3));
+            if (secondCategoryList.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 6)) > 0)
+            {
+                secondCategoryList.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 6)).ParentNo = "0";
+            }
+            thirdCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 6));
+            if (thirdCategoryList.Count(p => p.CategoryNo == requestCategoryNo) > 0)
+            {
+                thirdCategoryList.Single(p => p.CategoryNo == requestCategoryNo).ParentNo = "0";
+            }
+        }
+        if (requestCategoryNo.Length == 12)
+        {
+            if (allfirstCategory.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)) > 0)
+            {
+                allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)).ParentNo = "0";
+            }
+            secondCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 3));
+            if (secondCategoryList.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 6)) > 0)
+            {
+                secondCategoryList.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 6)).ParentNo = "0";
+            }
+            thirdCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 6));
+            if (thirdCategoryList.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 9)) > 0)
+            {
+                thirdCategoryList.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 9)).ParentNo = "0";
+            }
+            fourCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 9));
+            if (fourCategoryList.Count(p => p.CategoryNo == requestCategoryNo) > 0)
+            {
+                fourCategoryList.Single(p => p.CategoryNo == requestCategoryNo).ParentNo = "0";
+            }
+        }
+    }
+}
+
+<h1>
+    OCS > 尚品 > 评论管理
+</h1>
+<form action="/Shangpin/detail/CommentManager" method="get">
+<div style="padding: 5px;">
+    <input type="hidden" value="@requestCategoryNo" name="CategoryNo" id="CategoryNo"/>
+    品类：
+    <select style="width: 100px;" id="select1"  onchange="oneChange(this.value);">
+                <option value="0">一级品类-- </option>
+                @foreach (ErpCategory category in allfirstCategory)
+                {
+                    <option value="@category.CategoryNo" @(category.ParentNo == "0" ? "selected=selected" : null) >@category.CategoryName
+                    </option>
+                }
+     </select>
+     <select style="width: 100px;" id="select2"  onchange="twoChange(this.value);">
+        <option value="0">二级品类-- </option>
+        @if (secondCategoryList != null)
+        {
+            foreach (ErpCategory category in secondCategoryList)
+            {
+            <option value="@category.CategoryNo" @(category.ParentNo == "0" ? "selected=selected" : null) >@category.CategoryName
+            </option>
+            }
+        }
+     </select>
+     <select style="width: 100px;" id="select3"  onchange="threeChange(this.value);">
+        <option value="0">三级品类-- </option>
+        @if (thirdCategoryList != null)
+        {
+            foreach (ErpCategory category in thirdCategoryList)
+            {
+            <option value="@category.CategoryNo" @(category.ParentNo == "0" ? "selected=selected" : null) >@category.CategoryName
+            </option>
+            }
+        }
+     </select>
+     <select style="width: 100px;" id="select4" onchange="fourChange(this.value)">
+        <option value="0">四级品类-- </option>
+        @if (fourCategoryList != null)
+        {
+            foreach (ErpCategory category in fourCategoryList)
+            {
+            <option value="@category.CategoryNo" @(category.ParentNo == "0" ? "selected=selected" : null) >@category.CategoryName
+            </option>
+            }
+        }
+     </select>
+     &nbsp;
+     @if (string.IsNullOrEmpty(Request.QueryString["brandno"]))
+     {
+        <input type="text" name="BrandName" id="BrandName" style="width: 120px; color: #666;font-size: 12px;" placeholder="请选择品牌"/>    
+     }
+     else
+     {
+        <input type="text" name="BrandName" id="BrandName" style="width: 120px; color: #666;font-size: 12px;" value="@Request.QueryString["BrandName"]" placeholder="请选择品牌" />
+     }
+     <input id="BrandNo" name="BrandNo" type="hidden" value="@Request.QueryString["brandno"]" />
+     &nbsp;
+     <select name="Status" style="width: 100px">
+         <option value="1" @(Request.QueryString["Status"] == "1" ? "selected=selected" : null)>显示 </option>
+         <option value="0" @(Request.QueryString["Status"] == "0" ? "selected=selected" : null)>不显示 </option>
+         <option value="2" @(Request.QueryString["Status"] == "2" ? "selected=selected" : null)>待审核 </option>
+     </select>
+     &nbsp;
+     <select id="StarLevel" style="width: 100px" name="StarLevel">
+        <option value="">评论星级</option>
+        <option value="1" @(Request.QueryString["StarLevel"] == "1" ? "selected=selected" : null)>差评</option>
+        <option value="2" @(Request.QueryString["StarLevel"] == "2" ? "selected=selected" : null)>中评</option>
+        <option value="3" @(Request.QueryString["StarLevel"] == "3" ? "selected=selected" : null)>好评</option>
+     </select>
+     &nbsp;
+     <select id="IsResult" style="width: 100px" name="IsResult">
+        <option value="">是否回复或处理</option>
+        <option value="reply" @(Request.QueryString["IsResult"] == "reply" ? "selected=selected" : null)>已回复</option>
+        <option value="noreply" @(Request.QueryString["IsResult"] == "noreply" ? "selected=selected" : null)>未回复</option>
+        <option value="result" @(Request.QueryString["IsResult"] == "result" ? "selected=selected" : null)>已处理</option>
+        @*<option value="noresult" @(Request.QueryString["IsResult"] == "noresult" ? "selected=selected" : null)>未处理</option>*@
+     </select>
+     当着审核状态：@ViewBag.GlobalConfigStatus &nbsp;<input type="button" name="CommentConfig" id="CommentConfig" value="审核配置" />
+     <br />
+    订单编号：<input type="text" value="@ViewBag.OrderNo" name="orderNo" placeholder="订单编号"/>
+    商品：<input type="text" value="@ViewBag.keyWord" name="keyWord" placeholder="货号/名称/编号"/>
+    <input type="text" value="@ViewBag.userName" name="userName" placeholder="用户名"/>
+    <input type="text" value="@ViewBag.commentKeyWord" name="commentKeyWord" placeholder="评论关键字"/>
+    评论时间
+    <input id="StartTime" type="text" name="StartTime" value="@ViewBag.StartTime"  class="Wdate" readonly="readonly"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',lang:'zh-cn',isShowClear:true,alwaysUseStartDate:true,readOnly:true,maxDate:'#F{$dp.$D(\'EndTime\',{d:0});}'})"/>
+    至
+    <input id="EndTime" type="text" name="EndTime" value="@ViewBag.EndTime"  class="Wdate" readonly="readonly"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',lang:'zh-cn',isShowClear:true,alwaysUseStartDate:true,readOnly:true,minDate:'#F{$dp.$D(\'StartTime\',{d:0});}'})"/>
+    &nbsp;
+    <button type="submit">提交查询</button> 
+</div>
+</form>
+<div class="spPage" style="margin:0px;padding:0; line-height:0px">
+    @if (totalCount > 0)
+    {
+        @Html.Raw(@Html.PagerX("page", pageIndex, pageSize, totalCount))
+    }
+</div>
+<form id="idlistform">
+<table class="mx-table" border="0">
+    <thead>
+        <tr>
+            <th>商品图片</th>   
+            <th style="text-align:left;">商品信息</th>   
+            <th style="text-align:left;">评论信息</th>   
+            <th style="text-align:left;width:30%;">评论内容</th>
+            <th style="text-align:center;" width="10%">状态</th>
+            <th width="10%">操作</th> 
+        </tr>
+    </thead>
+    <tbody id="CommentContent">
+    @if (Model != null)
+    {
+        var flag = 0;
+        foreach (var item in Model)
+        {
+            flag = flag + 1;
+            string url = "http://www.shangpin.com/";
+            //url += item.GenderStyle == 0 ? "women" : "men";
+            url += "product/" + item.ProductNo + "#tab1";
+                <tr class="@(flag % 2 == 0 ? "cross" : "")">
+                    <td>
+                       <img width="70" height="107" src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@item.ProductPicFile&type=1" />
+                    </td>
+                    <td style=" text-align:left;width: 20%;">
+                    商品编号：<a href="@url" target="_blank">@item.ProductNo</a><br/>
+                    商品货号：@item.GoodsNo<br/>
+                    商品名称：@item.ProductName<br/>
+                    所属品牌：@item.BrandEnName <br />
+                    </td>
+                    <td style=" text-align:left;width: 20%;">
+                       用户名：@item.NickName<br />
+                       会员级别：@item.LevelName<br />
+                       评论时间：@item.DateCreate<br />
+                       订单号：@item.OrderNo<br />
+                       评论星级：@item.StarLevel
+                    </td>
+                    <td style="width: 30%;word-wrap: break-word;word-break: break-all;text-align: left; padding-left:5px;">
+                      @if (item.StarLevel == 1)
+                      {
+                        <font color=red>@item.CommentContent</font>
+                      }
+                      else
+                      {
+                          @item.CommentContent
+                      }
+                        <br />
+                        @if (item.CommentPictures != null && item.CommentPictures.Count > 0)
+                        {
+                            for (int i = 0; i < item.CommentPictures.Count; i++)
+                            {
+                                <img src="/ReadPic/GetPic.ashx?width=70&height=70&pictureFileNo=@(item.CommentPictures[i].PictureFileNo)&type=3" onload="AutoResizeImage(70, 70, this);" onmouseout="removeBigPic();" onmouseover="changeSrc('@(item.CommentPictures[i].PictureFileNo)',this);" />
+                            }
+                        }
+                        
+                    </td>
+                    <td width="10%">
+                        @{
+                            if (string.IsNullOrEmpty(item.ResultCode))
+                            {
+                                if (string.IsNullOrEmpty(item.CommentRContent))
+                                {
+                                    <text>未回复</text>
+                                }
+                                else
+                                {
+                                    <text>已回复</text>
+                                }
+
+                            }
+                            else
+                            {
+                                if (string.IsNullOrEmpty(item.CommentRContent))
+                                {
+                                    <text>已处理</text>
+                                }
+                                else
+                                {
+                                    <text>已处理</text>
+                                }
+                            }
+
+                        }
+                    </td>
+
+                    <td width="10%">
+                        <a class="button" onclick="javascript:reComment(@item.CommentId,this,'@item.CommentRContent.Trim().Replace(" ","").Replace("\n", "").Replace("\r", "")','@item.ResultCode.Trim().Replace(" ", "").Replace("\n", "").Replace("\r", "")');" data-id="@item.CommentId" id="a@(item.CommentId)" style="margin:0px;">
+                            @if (string.IsNullOrEmpty(item.CommentRContent))
+                            {
+                                <text>回复</text>
+                            }
+                            else
+                            {
+                                <text>修改回复</text>
+                            }
+                        </a>
+                        
+                        @if (item.Status == 2)
+                        { 
+                            <a class="button" href="javascript:;" onclick="updateCommentStatus('@item.Status','@item.CommentId',1);" style="margin:0px;">审核</a>
+                        }
+                        else
+                        {
+                            <a class="button" href="javascript:;" onclick="updateCommentStatus('@item.Status','@item.CommentId',0);" style="margin:0px;">@(item.Status == 0 ? "显示" : "隐藏")</a>
+                        }
+                        <br />
+                        <a class="button" onclick="javascript:resultCode(@item.CommentId,this,'@item.ResultCode.Trim().Replace(" ", "").Replace("\n", "").Replace("\r", "")','@item.CommentRContent.Trim().Replace(" ", "").Replace("\n", "").Replace("\r", "")');" data-resultcode="@item.CommentId" id="a@(item.CommentId)" style="margin:5px 0px 0px;">
+                            @if (string.IsNullOrEmpty(item.ResultCode))
+                            {
+                                <text>填写处理结果</text>
+                            }
+                            else
+                            {
+                                <text>修改处理结果</text>
+                            }
+                        </a>
+                    </td>
+                </tr>
+                            if (string.IsNullOrEmpty(item.CommentRContent))
+                            {
+                 <tr class="@(flag % 2 == 0 ? "cross" : "")" style="display:none;"><td align="left">回复内容：</td><td colspan="5" style="text-align:left;"><div style="width: 900px;word-break: break-all;">@item.CommentRContent</div></td></tr>
+                            }
+                            else
+                            {
+                <tr class="@(flag % 2 == 0 ? "cross" : "")"><td align="left">回复内容：</td><td colspan="5" style="text-align:left;"><div style="width: 900px;word-break: break-all;">@item.CommentRContent</div></td></tr>
+                            }
+                             if (string.IsNullOrEmpty(item.ResultCode))
+                            {
+                 <tr class="@(flag % 2 == 0 ? "cross" : "")" style="display:none;"><td align="left">处理结果：</td><td colspan="5" style="text-align:left;"><div style="width: 900px;word-break: break-all;">@item.ResultCode</div></td></tr>
+                            }
+                            else
+                            {
+                <tr class="@(flag % 2 == 0 ? "cross" : "")"><td align="left">处理结果：</td><td colspan="5" style="text-align:left;"><div style="width: 900px;word-break: break-all;">@item.ResultCode</div></td></tr>
+                            }
+        }
+        }
+    </tbody>
+</table>
+</form>
+<div class="spPage">
+    @if (totalCount > 0)
+    {
+        @Html.Raw(@Html.PagerX("page", pageIndex, pageSize, totalCount))
+    }
+</div>
+@section HeadStyle{
+       <link href="/Areas/Shangpin/Content/css/tipswindown.css" rel="stylesheet" type="text/css" />
+}
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/ShangPin/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/plug/ERPBrand.js"></script>
+    <script src="/Areas/Shangpin/Scripts/js/tipswindown.js" type="text/javascript" charset="UTF-8"></script>
+    
+    <script src="/Areas/Shangpin/Scripts/page/Detail/ajax-file-upload.js"></script>
+    <script type="text/javascript">
+        function TrueInfo() {
+            $("#windown-close").trigger("click");
+            location.reload();
+         }
+
+        $(document).ready(function () {
+            //修改审核配置
+            $("#CommentConfig").click(function () {
+                tipsWindown("更改评论审核配置", "iframe:/shangpin/Detail/CommentVerifyConfig.html", "600", "200", "true", "", "true", "text");
+            });
+
+            $("#BrandName").selectBrand('BrandNo', 'BrandName', false, '', '');
+
+            ///////====下载评论模板====///////
+
+            $("#ExcelDownLoad").click(function () {
+                location.href = '/Shangpin/detail/DownLoadExcelTemplate.html';
+            });
+            $("#ImportComments").click(function () {
+                $.ajaxFileUpload({
+                    url: '/Shangpin/detail/ImportExcelTemplate.html', //用于文件上传的服务器端请求地址
+                    secureuri: false, //是否需要安全协议，一般设置为false
+                    fileElementId: 'batchComment', //文件上传域的ID
+                    dataType: 'json', //返回值类型 一般设置为json
+                    success: function (data){  //服务器成功响应处理函数
+                        alert(data.Message);
+                    },
+                    error: function (data, status, e){//服务器响应失败处理函数
+                        alert(e);
+                    }
+                });
+                return false;
+            });
+        });
+
+        function updateCommentStatus(status, commentId, isVerify) {
+            if (isVerify == 1) {
+                tipsWindown("更改评论审核配置", "iframe:/shangpin/Detail/CommentVerify.html?cCommentId=" + commentId + "&cStatus=" + status, "400", "100", "true", "", "true", "text");
+            }
+            else {
+                $.ajax({
+                    type: "POST",
+                    url: "/Shangpin/detail/UpdateASWfsProductCommentStatus.html",
+                    data: "verify=0&cCommentId=" + commentId + "&cStatus=" + status,
+                    dataType: "json",
+                    success: function (data) {
+                        location.reload();
+                    }
+                });
+            }
+        }
+
+        var oneChange = function (objvalue) {
+            if (objvalue == 0) {
+                $("#CategoryNo").val("");
+                return;
+            }
+            $("#select2").html("<option value='0'>二级品类-- </option>");
+            $("#select3").html("<option value='0'>三级品类-- </option>");
+            $("#select4").html("<option value='0'>四级品类-- </option>");
+            $("#CategoryNo").val(objvalue);
+            $.post("/Shangpin/Brand/GetErpCategoryChildList.html", { 'pNo': objvalue }, function (data) {
+                $("#select2").append(data);
+            });
+        }
+        var twoChange = function (objvalue) {
+            if (objvalue == 0) {
+                $("#CategoryNo").val($("#CategoryNo").val().substr(0, 3));
+                return;
+            }
+            $("#select3").html("<option value='0'>三级品类-- </option>");
+            $("#select4").html("<option value='0'>四级品类-- </option>");
+            $("#CategoryNo").val(objvalue);
+            $.post("/Shangpin/Brand/GetErpCategoryChildList.html", { 'pNo': objvalue }, function (data) {
+                $("#select3").append(data);
+            });
+        }
+        var threeChange = function (objvalue) {
+            if (objvalue == 0) {
+                $("#CategoryNo").val($("#CategoryNo").val().substr(0, 6));
+                return;
+            }
+            $("#select4").html("<option value='0'>四级品类-- </option>");
+            $("#CategoryNo").val(objvalue);
+            $.post("/Shangpin/Brand/GetErpCategoryChildList.html", { 'pNo': objvalue }, function (data) {
+                $("#select4").append(data);
+            });
+        }
+        var fourChange = function (objvalue) {
+            if (objvalue == 0) {
+                $("#CategoryNo").val($("#CategoryNo").val().substr(0, 9));
+                return;
+            }
+            $("#CategoryNo").val(objvalue);
+        }
+
+        function reComment(commentId, item, reContent,resultcode) {
+            //处理“处理结果”回复框
+            $(item).siblings("a[data-resultcode='0']").parent().parent().next().next().remove();
+            if (resultcode != '') {
+                $(item).siblings("a[data-resultcode='0']").parent().parent().next().after("<tr><td align=\"left\">处理结果：</td><td colspan=\"5\" style=\"text-align:left;\"><div style=\"width: 900px;word-break: break-all;\">" + resultcode + "</div></td></tr>");
+            }
+            else
+            { $(item).siblings("a[data-resultcode='0']").parent().parent().next().after("<tr style=\"display:none;\"><td align=\"left\">处理结果：</td><td colspan=\"5\"><div style=\"width: 900px;word-break: break-all;\">" + resultcode + "</div></td></tr>"); }
+            $(item).siblings("a[data-resultcode='0']").attr("data-resultcode", commentId);
+            //处理“处理结果”回复框 完
+
+            if ($(item).attr("data-id") == commentId) {
+                $(item).parent().parent().next().remove();
+                $(item).parent().parent().after("<tr style=\"background:#2293e2;\"><td align=\"left\">回复内容：</td><td colspan=\"4\"><input type=\"hidden\" id=\"ReType" + commentId + "\" value=\"recomment\" /><textarea cols=\"100\" rows=\"5\" id=\"CommentRContent" + commentId + "\">" + reContent + "</textarea></td><td><a class=\"button\" id=\"" + commentId + "\" onclick=\"javascript:SaveCommentRcontent(this);\" style=\"border: 1px solid #FFFFFF;\">保存</a></td></tr>");
+                $(item).attr("data-id", "0");
+            }
+            else {
+                $(item).parent().parent().next().remove();
+                if (reContent != '') {
+                    $(item).parent().parent().after("<tr><td align=\"left\">回复内容：</td><td colspan=\"5\" style=\"text-align:left;\"><div style=\"width: 900px;word-break: break-all;\">" + reContent + "</div></td></tr>");
+                }
+                else
+                { $(item).parent().parent().after("<tr style=\"display:none;\"><td align=\"left\">回复内容：</td><td colspan=\"5\"><div style=\"width: 900px;word-break: break-all;\">" + reContent + "</div></td></tr>"); }
+                $(item).attr("data-id", commentId);
+            }
+        }
+
+        function resultCode(commentId, item, resultcode, reContent) {
+            //处理评论回复框
+            $(item).siblings("a[data-id='0']").parent().parent().next().remove();
+            if (reContent != '') {
+                $(item).siblings("a[data-id='0']").parent().parent().after("<tr><td align=\"left\">回复内容：</td><td colspan=\"5\" style=\"text-align:left;\"><div style=\"width: 900px;word-break: break-all;\">" + reContent + "</div></td></tr>");
+            }
+            else
+            {  $(item).siblings("a[data-id='0']").parent().parent().after("<tr style=\"display:none;\"><td align=\"left\">回复内容：</td><td colspan=\"5\"><div style=\"width: 900px;word-break: break-all;\">" + reContent + "</div></td></tr>"); }
+            $(item).siblings("a[data-id='0']").attr("data-id", commentId);
+            //处理评论回复框 完
+
+            if ($(item).attr("data-resultcode") == commentId) {
+                $(item).parent().parent().next().next().remove();
+                $(item).parent().parent().next().after("<tr style=\"background:#2293e2;\"><td align=\"left\">处理结果：</td><td colspan=\"4\"><input type=\"hidden\" id=\"ReType" + commentId + "\" value=\"result\" /><textarea cols=\"100\" rows=\"5\" id=\"CommentRContent" + commentId + "\">" + resultcode + "</textarea></td><td><a class=\"button\" id=\"" + commentId + "\" onclick=\"javascript:SaveCommentRcontent(this);\" style=\"border: 1px solid #FFFFFF;\">保存</a></td></tr>");
+                $(item).attr("data-resultcode", "0");
+            }
+            else {
+                $(item).parent().parent().next().next().remove();
+                if (resultcode != '') {
+                    $(item).parent().parent().next().after("<tr><td align=\"left\">处理结果：</td><td colspan=\"5\" style=\"text-align:left;\"><div style=\"width: 900px;word-break: break-all;\">" + resultcode + "</div></td></tr>");
+                }
+                else
+                { $(item).parent().parent().next().after("<tr style=\"display:none;\"><td align=\"left\">处理结果：</td><td colspan=\"5\"><div style=\"width: 900px;word-break: break-all;\">" + resultcode + "</div></td></tr>"); }
+                $(item).attr("data-resultcode", commentId);
+            }
+        }
+
+        function SaveCommentRcontent(item) {
+            //alert($("#CommentRContent" + $(item).attr("id")).val().replace('&','').length);
+            if(getStrLength($("#CommentRContent" + $(item).attr("id")).val().replace('&',''))>499)
+            {
+                alert('长度不能超过250个汉字或500个英文字符！');
+                return;
+            }
+            var reType = $("#ReType" + $(item).attr("id")).val();
+            $.ajax({
+                type: "POST",
+                url: "/Shangpin/detail/UpdateCommentRContent.html",
+                data: "commentId=" + $(item).attr("id") + "&commentRContent=" + $("#CommentRContent" + $(item).attr("id")).val().replace('&','') + "&ReType=" + reType,
+                dataType: "html",
+                success: function (data) {
+                    alert("保存成功！");
+                    var newcontent = $("#CommentRContent" + $(item).attr("id")).val();
+                    $(item).parent().parent().remove();
+                    //处理结果回复
+                    if (reType == "result") {
+                        $("#a" + $(item).attr("id")).parent().parent().next().after("<tr><td align=\"left\">处理结果：</td><td colspan=\"4\" style=\"text-align:left;\">" + newcontent + "</td></tr>");
+                        $("#a" + $(item).attr("id")).attr("data-resultcode", $(item).attr("id"));
+                        location.reload();
+                    }
+                    else {//评论回复
+                        $("#a" + $(item).attr("id")).parent().parent().after("<tr><td align=\"left\">回复内容：</td><td colspan=\"4\" style=\"text-align:left;\">" + newcontent + "</td></tr>");
+                        $("#a" + $(item).attr("id")).attr("data-id", $(item).attr("id"));
+                        location.reload();
+                    }
+                }
+            });
+        }
+        /////=====评论结束=====///////
+
+        function AutoResizeImage(maxWidth,maxHeight,objImg){
+            var img = new Image();
+            img.src = objImg.src;
+            var hRatio;
+            var wRatio;
+            var Ratio = 1;
+            var w = img.width;
+            var h = img.height;
+            wRatio = maxWidth / w;
+            hRatio = maxHeight / h;
+            if (maxWidth ==0 && maxHeight==0){
+                Ratio = 1;
+            }else if (maxWidth==0){//
+                if (hRatio<1) Ratio = hRatio;
+            }else if (maxHeight==0){
+                if (wRatio<1) Ratio = wRatio;
+            }else if (wRatio<1 || hRatio<1){
+                Ratio = (wRatio<=hRatio?wRatio:hRatio);
+            }
+            if (Ratio<1){
+                w = w * Ratio;
+                h = h * Ratio;
+            }
+            objImg.height = h;
+            objImg.width = w;
+        }
+        function changeSrc(item,imgobj){
+            $("body").append('<img src="/ReadPic/GetPic.ashx?width=0&height=0&pictureFileNo=' + item + '&type=3" width="300px" height="300px" id="bb"/>');
+            $("#bb").css({ 'position':'absolute','top': ($(imgobj).position().top+150), 'left': ($(window).width() / 2) - ($("#regionEdite").width() / 2), 'display': 'block', 'z-index': '99999' });
+        }
+
+        function removeBigPic() {
+            $("#bb").remove();
+        }
+
+        function getStrLength(str) {
+            var cArr = str.match(/[^\x00-\xff]/ig);
+            return str.length + (cArr == null ? 0 : cArr.length);
+        }
+    </script>
+}
+

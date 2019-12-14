@@ -1,0 +1,115 @@
+﻿@{
+    Layout = null;
+}
+@using Shangpin.Ocs.Web.Infrastructure
+@using Shangpin.Entity.Wfs
+@using Shangpin.Ocs.Service.Common
+@model Shangpin.Ocs.Entity.Extenstion.Outlet.SubjectInfo
+@{
+    IList<SWfsChannelSord> channelSordList = ViewBag.ChannelSordList;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AddSeo</title>
+    <style type="text/css">
+        td{ padding:5px; margin:0;}
+        .jctr{background-color: #F0F0F0; font-weight:bold;}
+       .input{width:300px;}
+       body{ font-size:12px;}
+      .applybox  textarea{ height:100px; width:300px;}
+    .applybox h2{ border-bottom:1px solid #000; margin-bottom:10px;}
+    .applybox td{ vertical-align:top;}
+    .applybox .button
+    {
+        background-color:#4d90fe;
+    border:1px solid #3079ed;
+    color:#fff;
+	-webkit-border-radius:5px;
+	-moz-border-radius:5px;
+    border-radius:5px;
+	font-size:14px;
+    display:inline-block;
+    padding:5px 10px;
+	*padding:3px 0px 0;
+    position:relative;
+    text-decoration:none;
+	-webkit-transition:border-color 0.218s ease 0s;
+	-moz-transition:border-color 0.218s ease 0s;
+	-o-transition:border-color 0.218s ease 0s;
+    transition:border-color 0.218s ease 0s;
+	cursor:pointer;
+	margin:0 15px 0 0;
+	*zoom:1;
+        }
+    </style>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/lib/jquery.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/lib/jquery.form.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+</head>
+<body>
+    <div class="applybox">
+        <form enctype="multipart/form-data" id="submitForm" name="submitForm" action="/MarketOption/AddApply"
+        method="post">
+        <input type="hidden" value="@Model.SubjectNo" name="SubjectNo" />
+        <input type="hidden" value="@ViewBag.Flag" name="flag" />
+        <table cellpadding="0" cellspacing="0">
+            <tr width="30%">
+                <td class="jctr">
+                    活动标题(title)：
+                </td>
+                <td>
+                    <textarea name="SeoTitle" id="SeoTitle">@Model.SeoTitle</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td class="jctr">
+                    活动关键词(keywords)：
+                </td>
+                <td>
+                    <textarea name="SeoKeyWords" id="SeoKeyWords">@Model.SeoKeyWords</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td class="jctr">
+                    活动描述(description)：
+                </td>
+                <td>
+                    <textarea name="SeoDescription" id="SeoDescription">@Model.SeoDescription</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <input class="button" id="AddApply" type="button" value=" 确 认 " />
+                    <input id="CloseApply" class="button" type="button" value=" 取 消 " />
+                </td>
+            </tr>
+        </table>
+        </form>
+    </div>
+</body>
+<script type="text/javascript">
+    $(function () {
+        $(".applybox").delegate('#AddApply', 'click', function () {
+            $("#submitForm").ajaxSubmit({
+                success: function (result) {
+                    if (result.rs == "ok") {
+                        alert("添加成功");
+                        parent.window.TrueInfo();
+                    }
+                    else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        });
+        $(".applybox").delegate('#CloseApply', 'click', function () {
+            $(window.parent.document).find("#windown-close").trigger("click");
+        });
+    });
+
+</script>
+</html>

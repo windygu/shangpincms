@@ -1,0 +1,38 @@
+#mx-info-right {
+    float: left;
+    padding: 0 0 0 20px;
+    width: 359px;
+    overflow: hidden;
+}
+
+.mx-info-right-area h6 {
+    font-size: 16px;
+    padding: 0 0 6px;
+}
+
+.mx-info-right-area li {
+    padding: 0 0 3px;
+}
+
+.mx-info-right-area li a {
+    font-size: 13px;
+    padding: 0 0 0 6px;
+}
+
+.mx-info-right-area li span {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    background-color: #ddd;
+    text-align: center;
+    line-height: 24px;
+    color: #666;
+}
+
+.mx-info-right-area li span.cur {
+    color: #fff;
+    background-color: #d41313;
+}

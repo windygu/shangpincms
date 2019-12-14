@@ -1,0 +1,298 @@
+
+/* CSS Document */
+
+/* ============== Account coupons ============== */
+
+.spAccount_coupons{
+	width:100%;
+	margin:10px 0 0 0;
+	position:relative;
+	zoom:1;
+	padding-top:32px;
+}
+
+.spAccount_coupons .couponsTabs_menu{
+	height:29px;
+	position:relative;
+	z-index:10;
+}
+
+.spAccount_coupons .couponsTabs_menu li{
+	cursor: pointer;
+	background:#f8f7f7;
+	border:1px solid #ccc;
+	border-bottom:none;
+	color:#666;
+    float: left;
+    font-weight: 700;
+    height: 27px;
+    line-height: 27px;
+    margin:0 5px 0 0;
+    overflow: hidden;
+    text-align: center;
+	padding:0 18px;
+}
+.spAccount_coupons .couponsTabs_menu li.hover{
+	background:#fff;
+	border:1px solid #d0d0d0;
+	color:#000;
+	border-color:#d0d0d0 #d0d0d0 #fff;
+}
+.spAccount_coupons .couponsTabs_content{
+    padding:4px 0 0;
+	border:1px solid #d0d0d0;
+	position:relative;
+	z-index:1;
+	margin-top:-1px;
+}
+.spAccount_coupons .couponsList{
+	width:100%;
+}
+.couponsList th{
+	padding:5px;
+	background:#d0d0d0;
+	color:#fff;
+	text-align:center;
+}
+.couponsList td{
+	border:1px solid #d0d0d0;
+	border-width:1px 0 0 1px;
+	padding:15px 5px;
+	text-align:center;
+	color:#666;
+	line-height:160%;
+}
+.couponsList td.coupons_Nodata{
+	text-align:center;
+	padding:30px 0;
+}
+
+.couponsList td.coupons_info{
+	text-align:left;
+}
+.couponsList td.coupons_info span{
+	display:inline-block;
+	width:63px;
+	height:63px;
+	line-height:63px;
+	text-align:center;
+	background:url(/images/page/account/coupons.gif) no-repeat;
+	color:#fff;
+	font-weight:700;
+	font-size:14px;
+	vertical-align:middle;
+	position:relative;
+}
+.couponsList td.coupons_info em{
+	display:inline-block;
+	margin-left:10px;
+	width:55%;
+	vertical-align:middle;
+}
+	
+.couponsList td.link{
+	color:#333;
+}
+.couponsList td.link p{
+	cursor:pointer;
+}
+.couponsList td.link span{
+	color:#333;
+	display:block;
+	position:relative;
+	z-index:0;
+}
+.couponsList td a:link, .couponsList td a:visited {
+	color:#333;
+}
+.couponsList td a:hover, .couponsList td a:active {
+	color:#333;
+	text-decoration:underline;
+}
+.couponsList td.link .couponsTips{
+	background:#fff;
+    border:2px solid #b0b0b0;
+    line-height: 22px;
+    margin-left: 33px;
+    margin-top: 13px;
+    padding: 5px;
+    position: absolute;
+    text-align: left;
+    width: 200px;
+    z-index: 999;
+	left:-15px;
+	display:none;
+}
+.spAccount_couponsHelp{
+	width:100%;
+	border:1px solid #ccc;
+	margin-top:20px;
+	color:#666;
+}
+.spAccount_couponsHelp th, .spAccount_couponsHelp td{
+	padding:0 0 0 20px;
+}
+.spAccount_couponsHelp th{
+	line-height:35px;
+	border-bottom:1px solid #ccc;
+}
+.spAccount_couponsHelp td{
+	line-height:25px;
+	padding:20px 0 20px 20px;
+}
+
+.spAccount_couponsHelp td a i{
+    display: inline-block;
+    *display:inline;
+    * zoom: 1;
+	width: 0;
+    height: 0;
+    overflow: hidden;
+    border: 3px solid #666;
+    border-radius: 3px;
+	margin:0 10px 0 0;
+}
+.spAccount_couponsHelp td a:hover i{
+	border-color:#900;
+}
+
+.spAccount_couponsHelp td a:link, .spAccount_couponsHelp td a:visited {
+	color:#666;
+}
+.spAccount_couponsHelp td a:hover, .spAccount_couponsHelp td a:active {
+	color:#900;
+}
+
+/**/
+.toActivate_container {
+	height:48px;
+	position:absolute;
+	right:0;
+	top:30px;
+	z-index:99;
+}
+
+#active {
+	width:250px;
+	height:22px;
+	position:absolute;
+	right:0;
+	display:none;
+	text-align:right;
+	zoom:1;
+}
+
+#active_code { 
+    width:136px; 
+	height:20px; 
+	line-height:20px; 
+	border:1px solid #ccc; 
+	border-color:#b2b2b2 #e1e1e1 #e1e1e1 #b2b2b2;
+	vertical-align:middle;
+	color:#333;
+	padding-left:4px;
+	margin-right:12px;
+
+}
+#active_tipsbox {
+	width:172px;
+	text-align:center;
+	color:#e52332;
+	padding-bottom:8px;
+	text-align:center;
+	position:absolute;
+	left:40px;
+	bottom:30px;
+	z-index:200;
+	background:#FED016;
+	padding:2px;
+	display:none;
+	zoom:1;
+}
+#txtTipsbox {
+	padding:6px 14px;
+	background:#fff;
+} 
+
+#active_tipsbox p.succeed{
+	color:#333;
+}
+#active_tipsbox p.succeed em{
+	color:#e52332;
+	font-weight:700;
+}
+#active_closebtn {
+	position:absolute;
+	right:5px;
+	top:2px;
+	cursor:pointer;
+	z-index:10;
+	font:14px Verdana, Geneva, sans-serif;
+}
+#active_tipsbox i { 
+	position:absolute; 
+	left:46%; 
+	bottom:-11px;
+	width:0; 
+	height:0; 
+	font-size:0; 
+	border-width:6px; 
+	border-color:#FED016 transparent transparent; 
+	border-style:solid dashed dashed;
+	overflow:hidden;
+}
+
+
+
+.toActivate {
+	width:120px;
+	color:#B9966A !important;
+	position:absolute;
+	right:0;
+	top:2px;
+	font-size:14px;
+}
+#active_btn {
+	display:inline-block;
+	zoom:1;
+	vertical-align:middle;
+	width:60px;
+	text-align:center;
+	color:#fff;
+	font-size:13px;
+	height:20px;
+	line-height:20px;
+	border:1px solid #000;
+	background:url(/images/page/account/coupon_bg.png) repeat-x;
+}
+.comm-question {
+	color:#999;
+}
+.comm-question h3 {
+	padding-bottom:20px;
+	border-bottom:1px solid #f2f2f2;
+	margin-bottom:20px;
+}
+.comm-question dd {
+	padding-left:16px;
+	line-height:3;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

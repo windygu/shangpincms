@@ -1,0 +1,104 @@
+
+/* CSS Document */
+
+/* ============== Account refundList ============== */
+
+.spAccount_refundList{
+	width:100%;
+	margin:10px 0 0 0;
+}
+
+.spAccount_refundList table{
+	width:100%;
+	margin-bottom:10px;
+}
+.spAccount_refundList table .refund_info table{margin-bottom:0px;}
+
+
+.spAccount_refundList table th, .spAccount_refundList table td{padding:5px 8px;}
+.spAccount_refundList table th{background:#707070; color:#fff; line-height:17px;}
+.refund_title{background:#f2f2f2; color:#A3A3A3; line-height:17px;}
+.refund_title td{border:1px solid #f2f2f2;}
+
+.refund_info td{border:1px solid #f2f2f2; color:#999; line-height:20px; text-align:center;}
+.spAccount_refundList table .refund_info td.tab_none{padding:0; border-bottom:none;}
+.spAccount_refundList table .refund_info td.refund_msg{padding:30px 0; line-height:35px; font-size:14px;}
+.refund_info a:link, .refund_info a:visited {
+	color:#ac8c48;
+	text-decoration:underline;
+	display:block;
+}
+.refund_info a:hover, .refund_info a:active {
+	color:#333;
+	text-decoration:underline;
+	display:block;
+}
+
+.refund_info table td{border:none; color:#333; border-bottom:1px solid #f2f2f2;}
+.spAccount_refundList table .refund_info table .refund_product{border-left:1px solid #f2f2f2; color:#666; padding:15px; width:76%; text-align:left;}
+.refund_product img{display:block; float:left; margin-right:20px; width:45px; height:60px;}
+
+.refund_product a:link, .refund_product a:visited {
+	color:#666;
+	text-decoration:none;
+	display:inline;
+}
+.refund_product a:hover, .refund_product a:active {
+	color:#333;
+	text-decoration:none;
+	display:inline;
+}
+.refund_product p {
+	color:#666;
+	line-height:20px;
+	margin-left:65px;
+	zoom:1;
+}
+.refund_product p em {
+	color:#333;
+}
+
+
+/*......*/
+.ac_tabhdbox span.curr {
+    background-color: #fff;
+    color: #999999 !important;
+	height:29px;
+}
+.ac_tabhdbox span {
+    background-color: #F8F7F7;
+	border:1px solid #dddcdc;
+	border-bottom:none;
+    color: #999999;
+    cursor: pointer;
+    float: left;
+    height: 28px;
+    line-height: 28px;
+    margin-right: 4px;
+    text-align: center;
+    width: 103px;
+}
+#ac_ti em{
+	float:left;
+}
+#ac_ti span {
+    float:right;	
+	}
+#ac_ti span a {
+    color:#333333; 
+	font-size:12px; 
+	text-decoration:underline;	
+	}
+.addsty {
+    border-bottom:1px solid #f2f2f2; 
+	height:29px; 
+	margin:20px 0 20px;	
+	}
+#ac_listcon_text {
+	clear:both; 
+	color:#999999; 
+	padding-bottom:20px;
+	}
+#ac_listcon_text p {
+	line-height:24px;
+	} 

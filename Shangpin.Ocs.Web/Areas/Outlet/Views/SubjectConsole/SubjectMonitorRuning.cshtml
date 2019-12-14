@@ -1,0 +1,391 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.Outlet
+@using Shangpin.Ocs.Web.Infrastructure
+@using Shangpin.Ocs.Service.Outlet
+@using Shangpin.Ocs.Service.Common
+@model SubjectMonitorSearchParm
+@{
+    ViewBag.Title = "活动监控-进行中";
+    Layout = "~/Areas/Outlet/Views/Shared/_Layout.cshtml";
+}
+@{
+    IList<Shangpin.Entity.Wfs.SWfsChannelSord> channelSordList = ViewBag.ChannelSordList;
+    var toDayList = ViewBag.ToDaySubject as IEnumerable<SubjectInfo>;
+    int PageIndex = Convert.ToInt32(ViewBag.PageIndex);
+    int PageSize = Convert.ToInt32(ViewBag.PageSize);
+    int TotalCount = Convert.ToInt32(ViewBag.TotalCount);
+    var statisticList = ViewBag.Statistic != null ? ViewBag.Statistic as List<SubjectSaleVisitStatisticsDataM> : null;
+    int TodayCount = Convert.ToInt32(ViewBag.TodaySubjectCount);
+    int InCount = Convert.ToInt32(ViewBag.InSubjectCount);
+    int OutCount = Convert.ToInt32(ViewBag.OutSubjectCount);
+}
+@section HeadStyle{
+    <link href="/Areas/Outlet/Content/css/tablesorter.style.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .button
+        {
+            background-color: #4D90FE;
+            border: 1px solid #3079ED;
+            border-radius: 5px;
+            color: #FFFFFF;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 14px;
+            margin: 0 15px 0 0;
+            padding: 5px 10px;
+            position: relative;
+            text-decoration: none;
+            transition: border-color 0.218s ease 0s;
+        }
+        #ol-index-today-tab
+        {
+            padding-top: 15px;
+            height: 33px;
+            border-bottom-width: 1px;
+            border-bottom-color: #cccccc;
+            border-bottom-style: solid;
+        }
+        #ol-index-today-tab ul
+        {
+            height: 32px;
+            left: 10px;
+            top: 14px;
+            width: 475px;
+            border: 1px solid #cccccc;
+            border-bottom-color: #cccccc;
+        }
+        #ol-index-today-tab ul li
+        {
+            float: left;
+            font-size: 14px;
+            font-weight: bold;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            width: 95px;
+        }
+        #ol-index-today-tab ul li.curr
+        {
+            background-color: #2293E2;
+            color: #ffffff;
+        }
+        .console-bottom-page
+        {
+            height: 50px;
+            position: relative;
+        }
+        .console-bottom-page ul
+        {
+            padding-top: 10px;
+            width: 210px;
+        }
+        .console-bottom-page ul li
+        {
+            float: left;
+            width: 70px;
+            font-size: 14px;
+        }
+        .console-bottom-page ul a:link, .console-bottom-page ul a:visited
+        {
+            color: #05609F;
+        }
+        .console-bottom-page ul a:hover, .console-bottom-page ul a:active
+        {
+            color: #FF6600;
+        }
+        .timeFlagDiv
+        {
+            float: left;
+            width: 150px;
+        }
+        .timeFlagDiv ul li
+        {
+            float: left;
+            height: 22px;
+            width: 45px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .curr
+        {
+            background-color: #2293E2;
+            color: #ffffff;
+        }
+        td
+        {
+            text-align: left;
+        }
+        .mouseUp
+        {
+            float: left;
+            height: 22px;
+            width: 45px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 14px;
+            background-color: #99CCFF;
+        }
+    </style>
+}
+@section HeadScript{
+    <script src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+    <script src="/Areas/Outlet/Scripts/plug/tipswindown.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="/Areas/Outlet/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/plug/ERPBrand.js"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/plug/jquery.tablesorter.js"></script>
+    <script language="javascript" type="text/javascript">
+        (function (window, $, undefined) {
+            $(function () {
+                $("#BrandName").selectBrand('BrandNo', 'BrandName', false, '', ''); //执行品牌选择操作
+                $("#ol-index-today-tab li").mousemove(function (e) {
+                    var obj = $(this);
+                    if ($(obj).attr("class") != "curr") {
+                        $(obj).addClass("mouseUp");
+                    }
+                });
+                $("#ol-index-today-tab li").mouseout(function () {
+                    var obj = $(this);
+                    if ($(obj).attr("class") != "curr") {
+                        $(obj).removeClass();
+                    }
+                });
+                $(".mx-table").tablesorter({
+                    headers: { 0: { sorter: false }, 1: { sorter: false }, 2: { sorter: false }, 3: { sorter: false }, 4: { sorter: false },
+                        5: { sorter: false }, 12: { sorter: false }
+                    }
+                });
+            });
+        })(window, jQuery);
+        $(function () {
+            $(".sordNum").bind("click", function () {
+
+                var obj = $(this);
+                //alert(obj.attr("sno"));
+                //alert(obj.attr("sord"));
+                var sno = obj.attr("sno");
+                $.ajax({
+                    url: "/outlet/SubjectConsole/updatesord",
+                    type: "get",
+                    data: { sno: obj.attr("sno"), sord: $("#SubjectSordNum_" + sno).val(), channelNo: "3", type: 1 },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.rs == "ok") {
+                            alert("保存成功");
+                        }
+                        else {
+                            alert(data.msg);
+                            return false;
+                        }
+                    }
+                });
+            });
+        })
+        //设置活动每页显示数量
+        function SetPageSizeUrl(size) {
+            $("#hidPageSize").val(size);
+            $("#frmSubjectMonitorToday").submit();
+        }
+    </script>
+}
+<h1>
+    OCS > 奥莱CMS > 活动控制台 > 活动监控 > 进行中
+</h1>
+<div id="ol-index-today-tab">
+    <ul>
+        <li><span><a href="/outlet/SubjectConsole/SubjectMonitorToday">今日新开(@(TodayCount))</a></span></li>
+        <li class="curr"><span>进行中(@(TotalCount))</span></li>
+        <li><span><a href="/outlet/SubjectConsole/SubjectMonitorInPreheat">站内预热(@(InCount))</a></span></li>
+        <li><span><a href="/outlet/SubjectConsole/SubjectMonitorOutPromotion">站外推广(@(OutCount))</a></span></li>
+        <li><span><a href="/outlet/SubjectConsole/SubjectMonitorEnd">已结束</a></span></li>
+    </ul>
+</div>
+<div style="height: 50px; position: relative;">
+    <form action="/outlet/SubjectConsole/SubjectMonitorRuning" method="get" id="frmSubjectMonitorToday">
+    <input type="hidden" id="hidPageSize" name="pageSize" value="@ViewBag.PageSize" />
+    <table border="0" class="mx-table" style="text-align: left; width: 800px;">
+        <tr>
+            <td align="left" style="text-align: left;">
+                <input name="SubjectNameNo"  value="@(!string.IsNullOrEmpty(Model.SubjectNameNo) ? Model.SubjectNameNo : "活动编号/名称")"  style="width:140px;color:#666;font-size:12px;text-align:left;"
+               onfocus="if(this.value == '活动编号/名称') this.value = ''" onblur="if(this.value == '') this.value = '活动编号/名称'"  />
+            </td>
+            <td align="left" style="text-align: left;">
+                <input type="hidden" value="@Model.BrandNo" id="BrandNo" name="BrandNo" />
+                <input id="BrandName" type="text" name="BrandName" value="@(string.IsNullOrWhiteSpace(Model.BrandName) ? "选择品牌" : Model.BrandName)" onfocus="if(this.value == this.defaultValue) this.value = ''"
+                onblur="if(this.value == '') this.value = this.defaultValue" style="color:#666;">
+            </td>
+            <td align="left">
+                <select name="ChannelSord">
+                    <option value="">分类</option>
+                    @foreach (var channel in channelSordList)
+                    {
+                        <option value="@channel.SordNo" @(Model.ChannelSord == channel.SordNo ? "selected=selected" : "")>@channel.SordName
+                        </option>
+                    }
+                </select>
+            </td>
+            <td align="left">
+                <select name="BU" id="BU">
+                    <option value="">BU</option>
+                    <option value="1" @(Model.BU == "1" ? "selected=selected" : "")>BU1</option>
+                    <option value="2" @(Model.BU == "2" ? "selected=selected" : "")>BU2</option>
+                    <option value="3" @(Model.BU == "3" ? "selected=selected" : "")>BU3</option>
+                    <option value="4" @(Model.BU == "4" ? "selected=selected" : "")>BU4</option>
+                    <option value="5" @(Model.BU == "5" ? "selected=selected" : "")>BU5</option>
+                    <option value="6" @(Model.BU == "6" ? "selected=selected" : "")>BU6</option>
+                    <option value="0" @(Model.BU == "0" ? "selected=selected" : "")>其他</option>
+                </select>
+            </td>
+            <td>
+                <span>开始时间</span>
+                <input id="StartTime" name="QueryStartTime" value="@ViewBag.StartTime" maxlength="30"  class="Wdate" type="text" onclick="WdatePicker()" readonly="readonly" style="width:100px;" />
+                <span>至</span>
+                <input id="EndTime" name="QueryEndTime" value="@ViewBag.EndTime" maxlength="30" class="Wdate" type="text" onclick="WdatePicker()" readonly="readonly" style="width:100px;" />
+            </td>
+            <td>
+                <input type="submit" id="btnConfirmSubmit" value="查 询" />
+            </td>
+        </tr>
+    </table>
+    </form>
+    <span style="float: right; font-weight: bold; position: absolute; right: 0; bottom: 0;">
+        <a href="#" onclick="SetPageSizeUrl(10)" @(ViewBag.PageSize == 10 ? "class=curr" : "")>
+            10</a> | <a href="#" onclick="SetPageSizeUrl(50)"  @(ViewBag.PageSize == 50 ? "class=curr" : "")>
+                50</a> | <a href="#" onclick="SetPageSizeUrl(100)" @(ViewBag.PageSize == 100 ? "class=curr" : "")>
+                    100</a></span>
+</div>
+<table cellpadding="1" cellspacing="1" class="mx-table">
+    <thead>
+        <tr>
+            @* <th>
+                位置
+            </th>*@
+            <th>
+                预览图
+            </th>
+            <th>
+                活动编号
+            </th>
+            <th>
+                活动名称
+            </th>
+            <th>
+                品牌
+            </th>
+            <th>
+                分类
+            </th>
+            <th>
+                BU
+            </th>
+            <th>
+                距离活动<br />
+                结束
+            </th>
+            <th>
+                销售额
+            </th>
+            <th>
+                较前一天
+            </th>
+            <th>
+                销售完成
+            </th>
+            <th>
+                转化率
+            </th>
+            <th>
+                售罄率
+            </th>
+            <th>
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (toDayList != null)
+        {
+            var flag = 0;
+            var num = 0;
+            SubjectSaleVisitStatisticsDataM statisticModel = null;
+            foreach (var toDay in toDayList)
+            {
+                flag = flag + 1;
+                num++;
+                if (statisticList != null)
+                {
+                    statisticModel = statisticList.Where(r => r.SubjectNo.Equals(toDay.SubjectNo)).FirstOrDefault();
+                }
+                if (statisticModel == null)
+                {
+                    statisticModel = new SubjectSaleVisitStatisticsDataM();
+                    statisticModel.SaleStatistic = new SubjectSaleStatistic();
+                    statisticModel.VisitStatistic = new SubjectVisitStatistic();
+                }
+
+                //var sordNum = (dicSubjectDic.ContainsKey(toDay.SubjectNo) ? dicSubjectDic[toDay.SubjectNo] : (PageIndex - 1) * PageSize + num);
+            <tr class="@(flag % 2 == 0 ? "cross" : "")">
+                @* <td width="8%">@((PageIndex - 1) * PageSize + num)<input type="text" id="SubjectSordNum_@toDay.SubjectNo" value="@sordNum" style="width:30px;" /> <a href="###" sno="@toDay.SubjectNo" sord="@sordNum" class="sordNum">确定</a></td>*@
+                <td width="10%">
+                    <img width="100" height="100" src="/ReadPic/GetPic.ashx?width=100&height=100&pictureFileNo=@(toDay.SubjectTemplate == 4 ? toDay.TitlePic1 : toDay.BelongsSubjectPic)&type=2"  alt="" />
+                </td>
+                <td width="5%">@toDay.SubjectNo
+                </td>
+                <td width="12%">
+                    <a href="@Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["AolaiDomain"]Subject/Index/@toDay.SubjectNo" target="_blank">@toDay.SubjectName</a>
+                </td>
+                <td width="10%">@(!string.IsNullOrEmpty(toDay.BrandEnName) ? toDay.BrandEnName : toDay.BrandCnName)
+                </td>
+                <td width="10%">
+                    @if (toDay.ChannelSordList != null)
+                    {
+                        IList<string> sordlist = toDay.ChannelSordList.Select(s => s.SordNo).ToList();
+                        foreach (Shangpin.Entity.Wfs.SWfsChannelSord sord in channelSordList)
+                        {
+                            if (sordlist.Contains(sord.SordNo))
+                            {
+                        @sord.SordName<br />
+                            }
+                        }
+                    }
+                </td>
+                <td width="3%">@(!string.IsNullOrEmpty(toDay.BU) ? toDay.BU.Equals("0") ? "其它" : "BU" + toDay.BU : "")
+                </td>
+                <td width="6%">
+                    @(toDay.TotalHour.ToString("f0"))H
+                </td>
+                <td width="5%">
+                    @statisticModel.SaleStatistic.Amount @*销售额*@
+                </td>
+                <td width="6%">
+                    @*较前一天*@
+                    @(statisticModel.SaleStatistic.Amount > statisticModel.SaleStatistic.YesterDayAmount ? "↑" : statisticModel.SaleStatistic.Amount < statisticModel.SaleStatistic.YesterDayAmount ? "↓" : "")
+                    @(DivideHelper.Divide(statisticModel.SaleStatistic.Amount, statisticModel.SaleStatistic.YesterDayAmount, 2))
+                </td>
+                <td width="6%">
+                    @*销售完成*@
+                    @DivideHelper.Divide(statisticModel.SaleStatistic.Amount, (int)toDay.SalesForecast, 2)
+                </td>
+                <td width="6%">
+                    @*转化率*@
+                    @DivideHelper.Divide((int)statisticModel.SaleStatistic.OrderNums, statisticModel.VisitStatistic.UV, 2)
+                </td>
+                <td width="6%">
+                    @*售罄率*@
+                    @DivideHelper.Divide(statisticModel.SaleStatistic.SaleCount, statisticModel.SaleStatistic.StockCount + statisticModel.SaleStatistic.SaleCount, 2)
+                </td>
+                <td width="4%">
+                    <a href="/outlet/subject/DataStatistics?subjectNo=@toDay.SubjectNo&BackSubjectUrl=@Url.Encode(Request.Url.ToString())">
+                        数据</a>
+                </td>
+            </tr>
+            }
+        }
+    </tbody>
+</table>
+<div class="console-bottom-page">
+    <span style="float: left;"><a class="button" href="/outlet/subject/subjectview">
+        视图排序</a> </span>
+    <div class="spPage">
+        @Html.Raw(@Html.PagerX("page", PageIndex, PageSize, TotalCount))
+    </div>
+</div>

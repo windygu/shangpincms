@@ -1,0 +1,143 @@
+@using Shangpin.Entity.Wfs
+@using Shangpin.Ocs.Web.Infrastructure;
+@model IEnumerable<Shangpin.Entity.Wfs.SWfsQuestAnswer>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>咨询管理</title>
+</head>
+<body>
+    <div>
+@{
+    ViewBag.Title = "详情页咨询管理";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    int pageIndex = ViewBag.pageIndex;
+    int pageSize = ViewBag.pageSize;
+    int totalCount = ViewBag.totalCount;
+    
+}
+@section HeadStyle
+{
+<link href="/Areas/Outlet/Content/css/tipswindown.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+  .mx-table td
+    {
+        border-bottom: 1px solid #2293e2;
+        text-align:left;
+        }
+</style>
+}
+@section HeadScript{
+<script src="/Areas/Outlet/Scripts/plug/tipswindown.js" type="text/javascript" charset="UTF-8"></script>
+<script type="text/javascript">
+function CreateNewQA() {
+//            var obj = $(this);
+    //            tipsWindown("创建新咨询", "iframe:/shangpin/detail/CreateNewQA.html", "600", "350", "true", "", "true", "text");
+    window.location.href = '/shangpin/detail/CreateNewQA.html';
+        }
+        //取消修改并且关闭弹出层
+        function TrueInfo() {
+            $("#windown-close").trigger("click");
+        }
+</script>
+}
+<h1>
+    OCS > 尚品 > 问答管理
+</h1>
+<form action="/Shangpin/detail/QuestAnswerManager" method="get">
+<div style="padding: 5px;">
+    <input type="text" value="@ViewBag.productKeywords" style="width: 200px;" name="productKeywords" placeholder="商品货号/商品名称/商品编号"/>
+    <input type="text" value="@ViewBag.questKeywords" style="" name="questKeywords" placeholder="咨询内容"/>
+    <input type="text" value="@ViewBag.answerKeywords" style="" name="answerKeywords" placeholder="回复内容"/>
+    <button type="submit">提交查询</button>&nbsp;&nbsp;
+    <button type="button" onclick="javascript:CreateNewQA();">新建一条咨询</button>
+</div>
+</form>
+
+<form id="idlistform">
+<table class="mx-table" border="0">
+    <thead>
+        <tr>
+            <th>创建时间</th>   
+            @*<th>回复时间</th>   *@
+            <th style=" text-align:left;">咨询内容</th>   
+            <th style=" text-align:left;">回复</th>   
+            <th>排序</th>
+            <th style=" text-align:left;">关联的商品，品牌和品类</th> 
+            <th>操作</th> 
+        </tr>
+    </thead>
+    <tbody>
+    @if (Model != null)
+    {
+        var flag = 0;
+        foreach (var item in Model)
+        {
+            flag = flag + 1;
+            IEnumerable<Shangpin.Ocs.Entity.Extenstion.ShangPin.SWfsQuestAnswerExtends> QArefModel = ViewBag.QuestAnswerRef;
+            <tr class="@(flag % 2 == 0 ? "cross" : "")">
+                <td style="width:7%;">
+                    @item.DateQuest
+                </td>
+               @* <td>
+                    @item.DateAnswer
+                </td>*@
+                 <td style="width:25%;word-wrap: break-word;word-break: break-all; text-align:left; padding-left:5px;">
+                    @item.Quest
+                </td>
+                <td style="width:25%;word-wrap: break-word;word-break: break-all; text-align:left; padding-left:5px;">
+                    @item.Answer
+                </td>
+                <td style="width:5%;">
+                    @item.Sort
+                </td>
+                <td style=" text-align:left;width:26%;">
+                @if (QArefModel != null)
+                {
+                    foreach (var item1 in QArefModel.Where(n=>n.QuestAnswerId==item.QuestAnswerId.ToString()&&n.CategoryNo!=null))
+                    {
+                        if(item1.RefType==1)
+                        {
+                            <font color=red>商品:</font> @(item1.ProductName)<a href="/shangpin/detail/DeleteSWfsQuestAnswerRefById.html?refId=@item1.Id&questAnswerId=@item.QuestAnswerId" onclick="return confirm('您确定删除吗?');">删除</a><br />
+                        }
+                        if (item1.RefType == 2)
+                        {
+                            <font color=red>品类:</font> @(item1.CategoryName)<a href="/shangpin/detail/DeleteSWfsQuestAnswerRefById.html?refId=@item1.Id&questAnswerId=@item.QuestAnswerId" onclick="return confirm('您确定删除吗?');">删除</a><br />
+                        }
+                        if (item1.RefType == 3)
+                        {
+                            <font color=red>品牌:</font> @(item1.BrandCnName)<a href="/shangpin/detail/DeleteSWfsQuestAnswerRefById.html?refId=@item1.Id&questAnswerId=@item.QuestAnswerId" onclick="return confirm('您确定删除吗?');">删除</a><br />
+                        }
+                        if (item1.RefType == 4)
+                        {
+                            <font color=red>品类:</font> @(item1.CategoryName) <font color=red>品牌:</font> @(item1.BrandCnName)<a href="/shangpin/detail/DeleteSWfsQuestAnswerRefById.html?refId=@item1.Id&questAnswerId=@item.QuestAnswerId" onclick="return confirm('您确定删除吗?');">删除</a><br />
+                        }
+                    }
+                }
+                </td>
+                <td style="width: 13%; text-align:left;">
+                    <span style="display:inline-block;margin-bottom: 10px;padding: 0;text-align: left; width:148px;">
+                        <a id="@item.QuestAnswerId" class="button" href="/shangpin/detail/CreateNewQA.html?questAnswerId=@item.QuestAnswerId&isEdit=1">编辑</a>
+                        <a class="button" href="/shangpin/detail/UpdateSWfsQuestAnswerIsShow.html?questAnswerId=@item.QuestAnswerId&pageindex=@(Request.QueryString["pageindex"])&productKeywords=@(Request.QueryString["productKeywords"])&questKeywords=@(Request.QueryString["questKeywords"])&answerKeywords=@(Request.QueryString["answerKeywords"])&isShow=@(item.IsShow == 1 ? 0 : 1)">@(item.IsShow == 1 ? "隐藏" : "显示")</a>
+                    </span>
+                    <span style="display:inline-block;margin: 0;padding: 0;text-align: left; width:152px;">
+                        <a class="button" href="/shangpin/detail/QuestAnswerRefEdit.html?questAnswerId=@item.QuestAnswerId">应用于</a>
+                        <a class="button" href="/shangpin/detail/DeleteQuestAnswer.html?questAnswerId=@item.QuestAnswerId&pageindex=@(Request.QueryString["pageindex"])&productKeywords=@(Request.QueryString["productKeywords"])&questKeywords=@(Request.QueryString["questKeywords"])&answerKeywords=@(Request.QueryString["answerKeywords"])" onclick="return confirm('您确定删除吗?');">删除</a>
+                    </span>
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>
+</form>
+<div class="spPage">
+   @if (totalCount > 0)
+   {
+        @Html.Raw(@Html.PagerX("page", pageIndex, pageSize, totalCount))
+    }
+</div>
+    </div>
+</body>
+</html>

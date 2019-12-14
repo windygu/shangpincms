@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <statement id="ComBeziWfs_WfsOrderBankFQPay_SelectOrderBankFQList">
+    with temp as(select
+    ID,
+    OrderID,
+    NewOrderID,
+    CreateDate,
+    row_number() over(order by ID desc) as row
+    from WfsOrderBankFQPay with(nolock)
+    where 1=1
+    #if($OrderID !='')
+    and OrderID=@OrderID
+    #end
+    #if($CreateDate !='')
+    and CreateDate >= @CreateDate and CreateDate &lt;= DATEADD(DAY,1,@CreateDate)
+    #end)select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderBankFQPay_SelectOrderBankFQListCount">
+    SELECT
+    Count(1)
+    FROM    WfsBankFQPay AS a with (nolock)
+    WHERE   NOT EXISTS ( SELECT 1
+    FROM   WfsBankFQPay with (nolock)
+    WHERE  a.BankFQOrderNo = BankFQOrderNo
+    AND a.ShangOrderNo = ShangOrderNo
+    AND PayDate > a.PayDate
+    AND BankFQOrderNo != ''
+    AND RetureData != ''
+    AND [Signature] != ''
+    AND PostData IS NULL )
+    AND BankFQOrderNo != ''
+    AND RetureData != ''
+    AND [Signature] != ''
+    AND PostData = ''
+    AND EXISTS(SELECT 1 FROM WfsOrderBankFQPay with (nolock) WHERE OrderID=a.ShangOrderNo AND NewOrderID=a.BankFQOrderNo)
+    #if($OrderNo!='')
+    AND a.ShangOrderNo=@OrderNo
+    #end
+    #if($PayDate!='')
+    AND a.PayDate >= @PayDate and a.PayDate &lt;= DATEADD(DAY,1,@PayDate)
+    #end
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderBankFQPay_SelectOrderBankFQListNew">
+    SELECT
+    #if($TopNum==0)
+    BankFQInfoNo ,
+    ShangOrderNo ,
+    BankFQOrderNo ,
+    Period ,
+    AmountSend ,
+    PayDate ,
+    RetureData
+    #elseif($TopNum==1)
+    Count(1)
+    #end
+    FROM    WfsBankFQPay (nolock) a
+    WHERE   BankFQOrderNo != ''
+    AND RetureData != ''
+    AND [Signature] != ''
+    AND PostData = ''
+    AND EXISTS ( SELECT 1
+    FROM   WfsOrderBankFQPay (nolock)
+    WHERE  OrderID = a.ShangOrderNo
+    AND NewOrderID = a.BankFQOrderNo )
+    AND NOT EXISTS ( SELECT 1
+    FROM   WfsBankFQPay (nolock)
+    WHERE  BankFQOrderNo != ''
+    AND RetureData != ''
+    AND [Signature] != ''
+    AND PostData = ''
+    AND a.ShangOrderNo = ShangOrderNo
+    AND PayDate > a.PayDate )
+    #if($OrderNo!='')
+    AND a.ShangOrderNo=@OrderNo
+    #end
+    #if($PayDate!='')
+    AND CONVERT(VARCHAR(50),a.PayDate,23) >= CONVERT(VARCHAR(50),@PayDate,23)
+    #end
+    #if($EndPayDate!='')
+    AND CONVERT(VARCHAR(50),a.PayDate,23) &lt;= CONVERT(VARCHAR(50),@EndPayDate,23)  
+    #end
+  </statement>
+</statements>

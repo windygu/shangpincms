@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8183E14B-8192-439A-8116-BBE2DBD89C2C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Shangpin.Entity</RootNamespace>
+    <AssemblyName>Shangpin.Entity</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BDActivity\BDActivityInfo.cs" />
+    <Compile Include="ComBeziPic\ComBeziPic.cs" />
+    <Compile Include="Common\Common.cs" />
+    <Compile Include="Common\PagingEntityBase.cs" />
+    <Compile Include="Common\ServiceResult.cs" />
+    <Compile Include="Common\SSOLoginInfo.cs" />
+    <Compile Include="Customers\BuyedProductInfo.cs" />
+    <Compile Include="Customers\HttpPostedFile.cs" />
+    <Compile Include="Customers\QuickLogin\SinaEntity.cs" />
+    <Compile Include="Customers\QzoneBase.cs" />
+    <Compile Include="Customers\TicketProduct.cs" />
+    <Compile Include="Domain\MobileArea.cs" />
+    <Compile Include="Domain\MobileCity.cs" />
+    <Compile Include="Domain\MobileProvice.cs" />
+    <Compile Include="GiftCard\CheckActiveCardModel.cs" />
+    <Compile Include="GiftCard\EGiftCardInfo.cs" />
+    <Compile Include="GiftCard\GiftCardCostJsonModel.cs" />
+    <Compile Include="GiftCard\GiftCardInfo.cs" />
+    <Compile Include="GiftCard\GiftCardListInfo.cs" />
+    <Compile Include="GiftCard\OrderGiftCardInfo.cs" />
+    <Compile Include="Item\Brand\BrandAttrModel.cs" />
+    <Compile Include="Item\DetailModel.cs" />
+    <Compile Include="Item\Outlet\AjaxPriceModel.cs" />
+    <Compile Include="Item\Outlet\Calendar.cs" />
+    <Compile Include="Item\Outlet\CalenderSubject.cs" />
+    <Compile Include="Item\Outlet\CalenderSubjectInfo.cs" />
+    <Compile Include="Item\Outlet\DetailPicture.cs" />
+    <Compile Include="Item\Outlet\OutletEnum.cs" />
+    <Compile Include="Item\Brand\BrandContentModel.cs" />
+    <Compile Include="Item\Brand\BrandDetailAuthInfo.cs" />
+    <Compile Include="Item\Brand\BrandDetailAuthModel.cs" />
+    <Compile Include="Item\Brand\BrandDetailModel.cs" />
+    <Compile Include="Item\Brand\BrandFavoriteInfo.cs" />
+    <Compile Include="Item\Brand\BrandFavoritesModel.cs" />
+    <Compile Include="Item\Brand\BrandIndexInfo.cs" />
+    <Compile Include="Item\Brand\BrandListAuthModel.cs" />
+    <Compile Include="Item\Brand\BrandListInfo.cs" />
+    <Compile Include="Item\Brand\BrandListModel.cs" />
+    <Compile Include="Item\Brand\BrandModel.cs" />
+    <Compile Include="Item\Brand\BrandsDetailModel.cs" />
+    <Compile Include="Item\Brand\BrandsInfomationModel.cs" />
+    <Compile Include="Item\Brand\CategoryInfo.cs" />
+    <Compile Include="Item\Outlet\SubjectProductGender.cs" />
+    <Compile Include="Item\ProductAttrThirdInfo.cs" />
+    <Compile Include="Item\ProductBrand.cs" />
+    <Compile Include="Item\JsonAttrModel.cs" />
+    <Compile Include="Customers\CashTicketInfo.cs" />
+    <Compile Include="Customers\CDKBatchPromotionStrategy.cs" />
+    <Compile Include="Customers\QuickLoginInfo.cs" />
+    <Compile Include="Customers\SWfsCDKInfo.cs" />
+    <Compile Include="Item\ProductCode.cs" />
+    <Compile Include="Item\ProductInviteInfo.cs" />
+    <Compile Include="Item\ProductListType.cs" />
+    <Compile Include="Item\RecommendInfo.cs" />
+    <Compile Include="Item\ErpCategoryStruct.cs" />
+    <Compile Include="Item\ExperienceReportInfo.cs" />
+    <Compile Include="Item\PageTypeEnum.cs" />
+    <Compile Include="Item\PictureType.cs" />
+    <Compile Include="Item\ProductAtrrColorSize.cs" />
+    <Compile Include="Item\ProductDetailParams.cs" />
+    <Compile Include="Item\ProductGroup.cs" />
+    <Compile Include="Item\ProductInfo.cs" />
+    <Compile Include="Item\ProductInventoryInfo.cs" />
+    <Compile Include="Item\ProductLabel.cs" />
+    <Compile Include="Item\ProductLabelRef.cs" />
+    <Compile Include="Item\ProductListQueryParams.cs" />
+    <Compile Include="Item\ProductMinorAttr.cs" />
+    <Compile Include="Item\ProductPrice.cs" />
+    <Compile Include="Item\ProductPropty.cs" />
+    <Compile Include="Item\RandomList.cs" />
+    <Compile Include="Item\Sales\SaleModel.cs" />
+    <Compile Include="Item\Sales\SalseTopModel.cs" />
+    <Compile Include="Item\Search\JsonModel.cs" />
+    <Compile Include="Item\Search\ProductListParams.cs" />
+    <Compile Include="Item\Search\SearchPageParm.cs" />
+    <Compile Include="Item\Search\SearchResultInfo.cs" />
+    <Compile Include="Item\Search\SearchResultTypeEnum.cs" />
+    <Compile Include="Item\Search\SearchSortTypeEnum.cs" />
+    <Compile Include="Item\Search\SearchUrlFromEnum.cs" />
+    <Compile Include="Item\SellAD.cs" />
+    <Compile Include="Item\SpecialRecommendType.cs" />
+    <Compile Include="Item\SubjectDetailPage.cs" />
+    <Compile Include="Item\SubjectProductInfo.cs" />
+    <Compile Include="Item\TopicModel.cs" />
+    <Compile Include="Item\UserPictureFile.cs" />
+    <Compile Include="Item\Vip\VipIndexModel.cs" />
+    <Compile Include="Item\VipSubjectAllowInfo.cs" />
+    <Compile Include="Log\Loggers.cs" />
+    <Compile Include="Marketing\Marketing.cs" />
+    <Compile Include="Orders\CreateOrderInfo.cs" />
+    <Compile Include="Orders\AddressInfo.cs" />
+    <Compile Include="Orders\AlipayAddressResultInfo.cs" />
+    <Compile Include="Orders\CartItemInfo.cs" />
+    <Compile Include="Orders\JsonCashTicketModel.cs" />
+    <Compile Include="Orders\OrderInfo.cs" />
+    <Compile Include="Orders\PromotionCode.cs" />
+    <Compile Include="Orders\UserTicket.cs" />
+    <Compile Include="Outlet\ChannelNavSujbect.cs" />
+    <Compile Include="User\ApplyOrderStatusInfo.cs" />
+    <Compile Include="User\InviteInfo.cs" />
+    <Compile Include="User\RefundApplyInfo.cs" />
+    <Compile Include="Orders\RefundInfo.cs" />
+    <Compile Include="Orders\SkuNoAttributeTextTwo.cs" />
+    <Compile Include="Payment\BankActivityInfo.cs" />
+    <Compile Include="GiftCard\GiftCardErrorInfo.cs" />
+    <Compile Include="Payment\PaymentBrankType.cs" />
+    <Compile Include="Payment\PaymentInfo.cs" />
+    <Compile Include="Payment\PaymentSmsInfo.cs" />
+    <Compile Include="Payment\PaymentStatusInfo.cs" />
+    <Compile Include="Payment\PaymentTimeInfo.cs" />
+    <Compile Include="Payment\PaywayModel.cs" />
+    <Compile Include="Outlet\DetailPicture.cs" />
+    <Compile Include="Outlet\GroupSalesInfo.cs" />
+    <Compile Include="Outlet\PortfolioSaleModel.cs" />
+    <Compile Include="Outlet\SubjectInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Register\RegisterModel.cs" />
+    <Compile Include="Seo\SeoSetting.cs" />
+    <Compile Include="Trade\CartInfo.cs" />
+    <Compile Include="Trade\CartProductInfo.cs" />
+    <Compile Include="Trade\GiftCardOrderInfo.cs" />
+    <Compile Include="Trade\JsonCookieCartModel.cs" />
+    <Compile Include="Trade\JsonProChooseModel.cs" />
+    <Compile Include="Trade\LogiticsDetailInfo.cs" />
+    <Compile Include="Trade\NoticeStateInfo.cs" />
+    <Compile Include="Trade\JsonMiniCartModel.cs" />
+    <Compile Include="Trade\PaymentOrderDetailListInfo.cs" />
+    <Compile Include="Trade\ProductGroupInfo.cs" />
+    <Compile Include="Trade\PromotionGroups.cs" />
+    <Compile Include="Trade\ShoppingCart.cs" />
+    <Compile Include="Trade\SHDGModel.cs" />
+    <Compile Include="Trade\ShoppingCartDetail.cs" />
+    <Compile Include="User\CustomerInfo.cs" />
+    <Compile Include="User\CustomerLevel.cs" />
+    <Compile Include="User\EReportInfo.cs" />
+    <Compile Include="User\FavoriteInfo.cs" />
+    <Compile Include="User\JsonDataFormatModel.cs" />
+    <Compile Include="User\RefundReplaceApplyInfo.cs" />
+    <Compile Include="User\SWfsUserInvite.cs" />
+    <Compile Include="User\WfsConsigneeX.cs" />
+    <Compile Include="WfsExport\WfsExport.cs" />
+    <Compile Include="Wfs\Wfs.cs" />
+    <Compile Include="Wfs\WfsSub.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shangpin.Framework.Common\Shangpin.Framework.Common.csproj">
+      <Project>{AF38AA6C-E581-4B84-8D24-345F2453B3D5}</Project>
+      <Name>Shangpin.Framework.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

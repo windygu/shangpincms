@@ -1,0 +1,253 @@
+﻿@using Shangpin.Entity.Wfs;
+@{
+    ViewBag.Title = "模板全局设置";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+    <script src="/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+    <script src="/Areas/Shangpin/Scripts/Venue/jquery.form.js" type="text/javascript"
+            charset="utf-8"></script>
+    <script>
+        $(function () {
+            $("input[type=radio][name=moduleType]").live({
+                change: function () {
+                    $('.error').text('').hide();
+                    var floorName = $("#floorName").val();
+                    var hiddens = $("#formAddFloor").find("input[type=hidden]");
+                    hiddens.appendTo($("body"));
+                    $("#formAddFloor")[0].reset();
+                    $("input[type=radio][name=moduleType][value=" + $(this).val() + "]").attr("checked", "checked");
+                    $("#floorName").val(floorName);
+                    $("#formAddFloor").prepend(hiddens);
+                }
+            });
+            $("input[type=radio][name=moduleType]").live({
+                click: function () {
+                    if ($(this).val() == '2') {//双广告图d
+                        if ($("#formAddFloor .border_dl").length == 2) {
+                        } else {
+                            $(".border_dl:not(:hidden)").after($(".border_dl:hidden").show());
+                        }
+                        $("[errorfor=picFileTop]").text("尺寸：340*220;格式：jpg gif;大小：200K以下");
+                        $("#toptitle").text("上广告图片设置");
+                    } else {
+                        $(".border_dl:last").hide().appendTo($("body"));
+                        $("[errorfor=picFileTop]").text("尺寸：340*442;格式：jpg gif;大小：200K以下");
+                        $("#toptitle").text("单广告图片设置");
+                    }
+                }
+            })
+            $("input[type=radio][name=moduleType][value='" + $("#ADShowType").val() + "']").click();
+            if ($("#ADShowType").val() == "0")
+                $("input[type=radio]:first").click();
+        })
+        function beforeSubmit() {
+            var error = "";
+            var flag = true;
+            var inputArr = new Array();
+            $("[errorfor]:visible").each(function (i, n) {
+                if (i == 2) {  }
+                $this = $(n);
+                var input = $("#" + $this.attr("errorfor"));
+                if (input.length > 0) {
+                    if (input.is(":not([type=file])"))
+                        input.val($.trim(input.val()));//去空格
+                    var dt = $this.parent().prev();
+                    var title = dt.text();
+                    if (title.split('*').length > 0)
+                        title = title.split('*')[0]
+                    if (title.split('：').length > 0)
+                        title = title.split('：')[0];
+                    if (input.is("[required]") && input.val().length == 0) {
+                        error += "," + title + "不能为空 ";
+                        flag = false;
+                        inputArr.push(input);
+                        return true;
+                    }
+                    if (input.is("[maxlength]") && input.val().length > (parseInt(input.attr("maxleng")))) {
+                        error += "," + title + "长度不过超过" + input.attr("maxleng");
+                        flag = false;
+                        inputArr.push(input);
+                        return true;
+                    }
+                    if (input.val().length > 0 && input.is("[datatype=http]") && !(input.val().indexOf('http://') == 0 && input.val().split('.').length > 1)) {
+                        error += "," + title + "输入格式不正确";
+                        flag = false;
+                        inputArr.push(input);
+                        return true;
+                    }
+                    if (input.is("[type=file]") && !(input.val().toLowerCase().indexOf('.jpg') > 1 || input.val().toLowerCase().indexOf('.jpeg') > 1 || input.val().toLowerCase().indexOf('.gif') > 1)) {
+                        error += ",文件类型不正确";
+                        flag = false;
+                        inputArr.push(input);
+                        return true;
+                    }
+                }
+            })
+            Tip(error, inputArr);
+            return flag;
+
+        }
+        function doSubmit() {
+            if (!beforeSubmit()) return false;
+            $("#formAddFloor").ajaxSubmit(function (data) {
+                data = eval("(" + data + ")");
+                if (data && data.status == 1) {
+                    alert('保存成功');
+                    location.href = "/shangpin/homepage/homemanager.html";
+                } else if (data && data.message) {
+                    alert(data.message);
+                    if (data.status == 8) {
+                        location.href = "/shangpin/homepage/homemanager.html";
+                    }
+                } else {
+                    alert('操作失败请稍后重试!');
+                }
+            });
+            return true;
+        }
+        function Tip(error, arr) {
+            if (error.length > 0 && error.indexOf(',') == 0) {
+                error = error.substring(1);
+            }
+            if (arr.length > 0) {
+                alert(error);
+                $(arr[0]).focus();
+            }
+        }
+        function tipError(inputArr) { 
+            $(inputArr).each(function (i, n) {
+                var $n = $(n);
+                $n.attr("onfocus", "$('input[oldborder]').css('border',$(this).attr('oldborder'));");
+                $n.attr("oldborder", $n.css("border"));
+                $n.css("border", "1px solid red");
+            })
+        }
+
+    </script>
+}
+@section HeadStyle
+{
+    <style type="text/css">
+        .hotblock {
+            display: none;
+        }
+
+        .titleColor, span {
+            color: Red;
+        }
+
+        .mx-rightcontent-msgbox .border_dl dt {
+            width: 150px;
+            padding-right: 10px;
+            text-align: right;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .mx-rightcontent-msgbox .border_dl {
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+            .mx-rightcontent-msgbox .border_dl dd {
+                width: 500px;
+                margin-bottom: 15px;
+            }
+    </style>
+}
+<h1>
+    OCS > 尚品 > 首页管理>模板全局设置
+</h1>
+<hr style="border: 1px solid Black; border-left: none; border-right: none; height: inherit;" />
+<!-- 添加活动 start -->
+<div id="mx-rightcontent-addbox" class="mx-rightcontent-msgbox">
+    <form id="formAddFloor" action="/shangpin/homepage/HomeManager_FloorGlobalSet.html" method="post"
+          enctype="multipart/form-data">
+        <input type="hidden" id="ADShowType" value="@Model.ADShowType" />
+        <input type="hidden" id="floorId" name="floorId" value="@Model.ModuleId" />
+        <input type="hidden" id="Sort" name="Sort" value="@Model.Sort" />
+        <dl class="caption_dl">
+            <dt class="titleColor">楼层名称*：</dt>
+            <dd>
+                <input id="floorName" type="text" name="floorName" value="" maxlength="10" required />
+                <span errorfor="floorName">10个字符以内</span>
+            </dd>
+        </dl>
+
+        <dl>
+            <dt class="titleColor">模板类型*：</dt>
+            <dd>
+
+                <input type="radio" name="moduleType" value="2" id="moduleType2" checked="checked" /><label for="moduleType2">双广告图</label>
+                <input type="radio" name="moduleType" value="1" id="moduleType1" /><label for="moduleType1">单广告图</label>
+            </dd>
+        </dl>
+        <dl class="border_dl" style="border: 1px solid gray; width:800px;">
+            <dt id="toptitle">上广告图设置：</dt>
+            <dd>
+                <br />
+            </dd>
+            <dt class="titleColor">图片标题*：</dt>
+            <dd>
+                <input id="picTitleTop" type="text" name="picTitleTop" value="" maxlength="30" required />
+                <span errorfor="picTitleTop">图片标题不能大于30字符</span>
+            </dd>
+            <dt class="titleColor">图片上传*： </dt>
+            <dd>
+                <input id="picFileTop" type="file" name="picFileTop" accept="image/gif, image/jpeg" required />
+                <span errorfor="picFileTop">尺寸：340*442;格式：jpg gif;大小：200K以下</span>
+
+            </dd>
+            <dt>图片链接地址：</dt>
+            <dd>
+                <input id="picLinkTop" type="text" name="picLinkTop" value="" maxlength="1000" datatype="http" />
+                <span errorfor="picLinkTop">格式：http://www.shangpin.com，开头"http://"</span>
+            </dd>
+        </dl>
+        <dl class="border_dl" style="border: 1px solid gray; width:800px;">
+            <dt>下广告图设置：</dt>
+            <dd>
+                <br />
+            </dd>
+            <dt class="titleColor">图片标题*：</dt>
+            <dd>
+                <input id="picTitleBottom" type="text" name="picTitleBottom" value="" maxlength="30" required />
+                <span errorfor="picTitleBottom">图片标题不能大于30字符</span>
+            </dd>
+            <dt class="titleColor">图片上传*： </dt>
+            <dd>
+                <input id="picFileBottom" type="file" name="picFileBottom" accept="image/gif, image/jpeg" required />
+                <span errorfor="picFileBottom">尺寸：340*220;格式：jpg gif;大小：200K以下</span>
+
+            </dd>
+            <dt>图片链接地址：</dt>
+            <dd>
+                <input id="picLinkBottom" type="text" name="picLinkBottom" value="" maxlength="1000" />
+                <span errorfor="picLinkBottom">*格式：http://www.shangpin.com，开头"http://"</span>
+            </dd>
+        </dl>
+        <dl style="margin-top:-25px;">
+            <dt class="titleColor">开始时间*：</dt>
+            <dd>
+                <input readonly="readonly" id="startTimeTop" onclick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm:00'})" type="text" required name="startTimeTop" value="" maxlength="30" />
+                <span errorfor="startTimeTop">&nbsp;</span>
+            </dd>
+        </dl>
+        <span class="error"></span>
+        <dl>
+            <dt>&nbsp;</dt>
+            <dd>
+                <button type="button" id="btnSave" name="" value="" class="secondary" onclick="doSubmit();">
+                    确 定
+                </button>
+                <button type="button" id="btnCancle" name="" value="" onclick="location.href = '/shangpin/homepage/homemanager.html';">
+                    取 消
+                </button>
+            </dd>
+        </dl>
+    </form>
+
+</div>
+

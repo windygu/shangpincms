@@ -1,0 +1,74 @@
+﻿@model Dictionary<string, List<ProductInfoNew>>
+@using Shangpin.Ocs.Web.Infrastructure
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin
+@{
+    ViewBag.Title = "上新商品列表";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    int page = Convert.ToInt32(ViewBag.page);
+    int pageSize = ViewBag.pageSize;
+    int totalCount = ViewBag.totalCount;
+}
+@section HeadStyle{
+    <link href="/Areas/Shangpin/Content/css/page/rightcontent/brandcontent.css" rel="stylesheet" type="text/css" charset="utf-8" />
+}
+@section HeadScript
+{
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/lib/jquery.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/Areas/Outlet/Scripts/plug/ERPBrand.js"></script>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#BrandName").selectBrand('BrandNo', 'BrandName', false, '', '');
+    });
+</script>
+<h1>OCS > 尚品 > <a href="/Shangpin/channel/ChannelList">频道页</a> > 上新商品列表</h1>
+<form method="get" action="/Shangpin/NewShelf/NewShelfProductList">
+    <span>品牌：</span>
+    <input id="BrandNo" name="BrandNo" type="hidden" value="@Request.QueryString["brandno"]" />
+    <input type="text" id="BrandName" name="BrandName" value="@Request.QueryString["BrandName"]" style="width: 120px; color: #666;font-size: 12px;" />&nbsp;
+    <span>上新时间：</span>
+    <input type="text" id="startDate" readonly="readonly" name="startDate" value="@Request.QueryString["startDate"]" class="Wdate" style="width:150px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss',maxDate:'%y-%M-{%d}'})" />
+    至
+    <input type="text" id="endDate" readonly="readonly" name="endDate" value="@Request.QueryString["endDate"]" class="Wdate" style="width:150px;" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss', maxDate: '%y-%M-{%d}' })" />
+    &nbsp;
+    <input type="submit" value="检索" />
+</form>
+<table class="mx-table" border="0">
+    <thead>
+        <tr>
+            <th>品牌</th>
+            <th>上新数量</th>
+            <th>上新商品</th>
+            <th>开始上新时间</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Value[0].BrandEnName</td>
+                <td>@item.Value.Count</td>
+                <td>
+                    @for (int i = 0; i < 10; i++)
+                    {
+                        if (i == 5)
+                        {
+                            <br />
+                        }
+                        <img alt="@item.Value[i].ProductName" width="50" height="50" src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@item.Value[i].ProductPicFile&type=1" />
+                    }
+                </td>
+                <td>@item.Value[0].DateShelf.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                <td>
+                    <a class="button" href="NewShelfBrandProductList?brandNo=@item.Key.Substring(0,item.Key.LastIndexOf("_"))&DateShelf=@item.Value[0].DateShelf">管理商品</a>
+                </td>
+            </tr>
+        }}
+
+    </tbody>
+</table>
+<div class="spPage">
+    @Html.Raw(@Html.PagerX("page", page, pageSize, totalCount))
+</div>

@@ -1,0 +1,256 @@
+﻿@using Shangpin.Entity.Wfs
+@using Shangpin.Ocs.Web.Infrastructure
+@{
+    ViewBag.Title = "频道管理|尚品OCS管理系统";
+    IList<SWfsChannel> list = (IList<SWfsChannel>)ViewBag.List;
+    int totalCount = (int)ViewBag.Count;
+    int pageIndex = (int)ViewBag.CurrPageIndex;
+    int pageSize = (int)ViewBag.pageSize;
+}
+
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/plug/comm.js"></script>
+}
+<h1>
+    <a href="/outlet/channel/index">频道管理</a> > 频道列表</h1>
+<table class="mx-table">
+    <thead>
+        <tr>
+            <th width="15%">
+                频道名称
+            </th>
+            <th width="20%">
+                创建时间
+            </th>
+            <th width="15%">
+                状态
+            </th>
+            <th width="20%">
+                位置调整
+            </th>
+            <th width="30%">
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                首页
+            </td>
+            <td>
+                系统创建
+            </td>
+            <td>
+                开启
+            </td>
+            <td>
+                系统创建
+            </td>
+            <td>
+                <a href="/outlet/channel/SubjectList?type=1&channel=sy&channelName=首页" class="">频道内容管理</a>
+                <a href="/outlet/mobilead/index?channelNo=3" class="">移动端内容管理</a>
+            </td>
+        </tr>
+        <tr class="cross">
+            <td>
+                女士
+            </td>
+            <td>
+                系统创建
+            </td>
+            <td>
+                开启
+            </td>
+            <td>
+                系统创建
+            </td>
+            <td>
+                <a href="/outlet/channel/SubjectList?type=1&channel=0&channelName=女士" class="">频道活动推荐</a>
+                <a href="/outlet/mobilead/index?channelNo=0" class="">移动端内容管理</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                男士
+            </td>
+            <td>
+                系统创建
+            </td>
+            <td>
+                开启
+            </td>
+            <td>
+                系统创建
+            </td>
+            <td>
+                <a href="/outlet/channel/SubjectList?type=1&channel=1&channelName=男士" class="">频道活动推荐</a>
+                <a href="/outlet/mobilead/index?channelNo=1" class="">移动端内容管理</a>
+            </td>
+        </tr>
+        <tr class="cross">
+            <td>
+                儿童
+            </td>
+            <td>
+                系统创建
+            </td>
+            <td>
+                开启
+            </td>
+            <td>
+                系统创建
+            </td>
+            <td>
+                <a href="/outlet/channel/SubjectList?type=1&channel=2&channelName=儿童" class="">频道活动推荐</a>
+                <a href="/outlet/mobilead/index?channelNo=2" class="">移动端内容管理</a>
+            </td>
+        </tr>
+        @if (null != list && list.Count > 0)
+        {
+            var flag = 0;
+            foreach (var item in list)
+            {
+                flag = flag + 1;
+            <tr class="@(flag % 2 == 0 ? "cross" : "")">
+                <td>
+                    @item.ChannelName
+                </td>
+                <td>
+                    @item.DateCreate
+                </td>
+                <td>
+                    @(item.Status == 1 ? "开启" : "关闭")
+                </td>
+                <td>
+                    <input id="Channe_@item.ChannelNo" name="sort" value="@item.SortNo" style="width:50px;" />
+                    <a style="color:#1c8ede;cursor:pointer" onclick="UpdatePosition('@item.ChannelNo')">
+                        修改</a>
+                </td>
+                <td>
+                    <a id="@item.ChannelNo" class="" href="#" onclick="Edit(this.id)" >编辑</a> <a id="@item.ChannelNo" class="" href="javascript:" onclick="deleteChannel(this.id)" >
+                        删除</a> <a id="@item.ChannelNo" class="" href="/outlet/channel/SubjectList?type=1&channel=@item.ChannelNo&channelName=@item.ChannelName" >
+                            频道活动推荐</a> <a id="@item.ChannelNo" class="" href="/outlet/mobilead/index?channelNo=@item.ChannelNo" >
+                                移动端内容管理</a> <a id="@item.ChannelNo" class="" href="#" onclick="UpdateStatus(this.id,@item.Status)" >
+                                    @(item.Status == 1 ? "关闭" : "开启")</a>
+                </td>
+            </tr>
+            }
+        }
+    </tbody>
+</table>
+<div class="spPage">@Html.Raw(Html.PagerX("page", pageIndex, pageSize, totalCount))</div>
+<div id="mx-rightcontent-fixbarbg">
+    <div class="fixbarcontent">
+    </div>
+</div>
+<div class="clr" id="mx-rightcontent-fixbar">
+    <a id="mx-btn-add" href="#"></a>@*<a id="mx-btn-del" href="#"></a><a id="mx-btn-search"
+        href="#"></a>@*<a id="mx-btn-folder" href="#"></a>*@
+</div>
+<script type="text/javascript">
+
+    $(function () {
+        $("#mx-btn-add").on("click", function () {
+            $.get("/outlet/Channel/Create"
+                    , function (res) {
+                        if (res) {
+                            $("#mx-rightcontent-fixbarbg > .fixbarcontent").empty();
+                            $("#mx-rightcontent-fixbarbg > .fixbarcontent").html(res);
+                        }
+                    });
+            windowShow();
+            $("#mx-rightcontent-addbox").show();
+            return false;
+        });
+    });
+
+    function Edit(id) {
+        $.get("/outlet/Channel/Edit", { channelNo: id, ran: Math.random() }
+                    , function (res) {
+                        if (res) {
+                            $("#mx-rightcontent-fixbarbg > .fixbarcontent").empty();
+                            $("#mx-rightcontent-fixbarbg > .fixbarcontent").html(res);
+                        }
+                    });
+        windowShow();
+        $("#mx-rightcontent-addbox").show();
+        return false;
+    }
+    var $window = $("#mx-rightcontent-fixbarbg"),
+		$nav = $("#mx-rightcontent-fixbar");
+    function windowShow() {
+        var mianH = parseInt($(window).height() - 154),
+				topH = parseInt(mianH - 79);
+        $($window).css({ "height": mianH, "overflow-y": "scroll" });
+        //$($nav).css({ "bottom": topH });
+    }
+    function UpdatePosition(chennelNo) {
+        var sortNo = $("#Channe_" + chennelNo).val();
+        var result = sortNo.match(/^\+?[1-9][0-9]*$/);
+        if (result == null) {
+            alert("请输入正整数值！！");
+            return false;
+        }
+        $.ajax({
+            url: "/outlet/Channel/AjaxChannelSort",
+            type: "post",
+            data: { chennelNo: chennelNo, sortNo: sortNo },
+            dataType: "json",
+            success: function (data) {
+                if (data.result == "1") {
+                    alert(data.message);
+                    window.location.href = gettimestampurl(window.location.href);
+                    //window.location.reload(true);
+                }
+                else {
+                    alert(data.message);
+                    return false;
+                }
+            }
+        });
+    }
+
+    function deleteChannel(id) {
+        if (confirm("确认删除?")) {
+
+            $.ajax({
+                url: "/outlet/Channel/AjaxDelete",
+                type: "post",
+                data: { channelNo: id },
+                dataType: "json",
+                success: function (data) {
+                    if (data.result == "1") {
+                        alert(data.message);
+                        window.location.href = gettimestampurl(window.location.href);
+                        //window.location.reload();
+                    }
+                    else {
+                        alert(data.message);
+                        return false;
+                    }
+                }
+            });
+        }
+    }
+
+    function UpdateStatus(id, status) {
+        $.ajax({
+            url: "/outlet/Channel/AjaxUpdateStatus",
+            type: "post",
+            data: { channelNo: id, status: status },
+            dataType: "json",
+            success: function (data) {
+                if (data.result == "1") {
+                    alert(data.message);
+                    window.location.href = "/outlet/channel/index?" + gettimestamp();
+                }
+                else {
+                    alert(data.message);
+                    return false;
+                }
+            }
+        });
+    }
+
+</script>

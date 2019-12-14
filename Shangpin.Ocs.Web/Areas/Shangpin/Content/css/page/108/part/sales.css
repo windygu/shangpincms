@@ -1,0 +1,29 @@
+.sp_ifc_bags {
+	background: url(/images/page/ifc/sales/main_bg.jpg) no-repeat center top;
+}
+
+.sp_bagstitle_tab a {
+	width: 239px;
+}
+.sp_bagstitle_tab a.cur {
+	background: url(/images/page/ifc/sales/title_tab_icon.png) no-repeat center top;
+	border-color: #940005;
+	color:#fff;
+}
+.sp_bagstitle_tab a span{
+	color:#E90202;
+}
+.sp_bagstitle_tab a.cur span{
+	color:#010101;
+}
+.sp_bagstitle_tab a.cur:link,.sp_bagstitle_tab a.cur:visited{color:#fff;}
+.sp_ifc_bagscn li a span ins {
+	color: #E90202;
+}
+.ifc_right_box h3 {
+	background-image:url(/images/page/ifc/sales.png);
+}
+.ifc_right_box{ width:100px;}
+.ifc_right_box li a{
+	font-size:13px;	
+}

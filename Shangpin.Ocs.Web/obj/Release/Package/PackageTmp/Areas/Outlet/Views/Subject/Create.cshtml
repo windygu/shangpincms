@@ -1,0 +1,617 @@
+﻿@using Shangpin.Entity.Wfs
+@{
+    Layout = null;
+    IList<SWfsChannelSord> channelSordList = ViewBag.ChannelSordList;
+    IList<SpCategory> erpCategoryList = ViewBag.ErpCategoryList;
+    string loginCookieName = Shangpin.Framework.Configuration.AppSettingManager.AppSettings["LoginCookieName"].ToString();
+    string AUTHID = Request.Cookies[loginCookieName].Value;
+}
+<link href="/Areas/Outlet/Content/css/tipswindown.css" rel="stylesheet" type="text/css" />
+<link href="/Areas/Outlet/Content/css/page/rightcontent/rightcontent.css" rel="stylesheet" type="text/css" />
+<script src="/Areas/Outlet/Scripts/plug/tipswindown.js" type="text/javascript" charset="UTF-8"></script>
+<script src="/Areas/Outlet/Scripts/plug/DivWaitMsg.js" type="text/javascript"></script>
+<script src="/Areas/Outlet/Scripts/kindeditor-4.1.10/kindeditor.js"></script>
+<script src="/Areas/Outlet/Scripts/kindeditor-4.1.10/CommKindeditor.js"></script>
+<!-- 面包屑and关闭按钮 -->
+<div class="crumb">
+    <a href="#">活动管理</a> &gt; 添加活动 <a href="#" class="closeBtn">&times;</a>
+</div>
+<!-- 添加活动 start -->
+<div id="mx-rightcontent-addbox" class="mx-rightcontent-msgbox">
+    <input type="hidden" id="authid" value="@(AUTHID)" />
+    <!--h1>添加数据<a href="#" id="mx-rightcontent-addbox-close" class="close">×</a></h1-->
+    <form id="formAddSubject" action="/outlet/subject/CreateSubject" method="post" enctype="multipart/form-data">
+        <dl>
+            <dt style="color: Red">活动名称：</dt>
+            <dd>
+                <input id="SubjectName" type="text" name="SubjectName" value="" maxlength="40" />
+            </dd>
+        </dl>
+        <dl>
+            <dt style="color: Red">活动副标题名称：</dt>
+            <dd>
+                <input id="SubjectEnName" type="text" name="SubjectEnName" value="" maxlength="50" />
+                <span id="SubjectEnNameId"></span>
+            </dd>
+        </dl>
+        <dl>
+            <dt style="color: Red">所属分类：</dt>
+            <dd>
+                <input type="checkbox" name="SordNo" id="sspd1" value="1" />男士
+                <input type="checkbox" name="SordNo" id="sspd0" value="0" />女士
+                <input type="checkbox" name="SordNo" id="sspd2" value="2" />儿童
+                @{
+                    foreach (SWfsChannelSord sord in channelSordList)
+                    {
+                        <input type="checkbox" id="@sord.SordNo" value="@sord.SordNo" name="SordNo" />
+                        <label for="@sord.SordNo">@sord.SordName</label>
+                    }
+                }
+            </dd>
+        </dl>
+        <dl>
+            <dt style="color: Red">所属品类：</dt>
+            <dd>
+                @{
+                    foreach (SpCategory erpcategory in erpCategoryList)
+                    {
+                        <input type="checkbox" id="@erpcategory.CategoryNo" value="@erpcategory.CategoryNo" name="CategoryNo" />
+                        <label for="@erpcategory.CategoryNo">@erpcategory.CategoryName</label>
+                    }
+                }
+            </dd>
+        </dl>
+        <dl>
+            <dt style="color: Red">所属BU：</dt>
+            <dd>
+                <input type="radio" name="BU" value="1" id="BU1" checked="checked" /><label for="BU1">BU1</label>
+                <input type="radio" name="BU" value="2" id="BU2" /><label for="BU2">BU2</label>
+                <input type="radio" name="BU" value="3" id="BU3" /><label for="BU3">BU3</label>
+                <input type="radio" name="BU" value="4" id="BU4" /><label for="BU4">BU4</label>
+                <input type="radio" name="BU" value="5" id="BU5" /><label for="BU5">BU5</label>
+                <input type="radio" name="BU" value="6" id="BU6" /><label for="BU6">BU6</label>
+                <input type="radio" name="BU" value="0" id="BU0" /><label for="BU0">其他</label>
+            </dd>
+        </dl>
+        <dl>
+            <dt style="color: Red">所属品牌：</dt>
+            <input type="hidden" value="" id="BrandNo" name="BrandNo" />
+            <dd id="OutletSubjectSpike">
+                @*  @{Html.RenderAction("SubjectBrand", "Subject", new { area = "Shangpin" });}*@
+                <input type="text" name="BrandName" id="BrandName" value="请选择品牌" onfocus="if(this.value == this.defaultValue) this.value = ''"
+                       onblur="if(this.value == '') this.value = this.defaultValue"></input>
+            </dd>
+        </dl>
+        <dl style="display:none;">
+            <dt style="color: Red">品牌LOGO：</dt>
+            <dd>
+                <label><input type="radio" value="0" name="BrandLogoType" checked="checked" /></label>
+                @*<label><input type="radio" value="1" name="BrandLogoType" />黑色Logo</label>
+                    <label><input type="radio" value="2" name="BrandLogoType" />白色Logo</label>*@
+            </dd>
+        </dl>
+        <dl>
+            <dt style="color: Red">展示渠道：</dt>
+            <dd>
+                <input id="zsqd001" type="checkbox" value="zsqd001" name="ChannelNo" checked="checked" />
+                <label for="zsqd001">
+                    网站
+                </label>
+                <input id="zsqd002" type="checkbox" value="zsqd002" name="ChannelNo" checked="checked" />
+                <label for="zsqd002">
+                    移动端
+                </label>
+                <input id="zsqd003" type="checkbox" value="zsqd003" name="ChannelNo" checked="checked" />
+                <label for="zsqd003">
+                    其他渠道
+                </label>
+            </dd>
+        </dl>
+        <dl style="display:none;">
+            <dt style="color: Red">活动状态：</dt>
+            <dd>
+                <input type="radio" name="Status" value="0" id="Status0" /><label for="Status0">关闭</label>
+                <input type="radio" name="Status" value="1" id="Status1" /><label for="Status1">开启</label>
+            </dd>
+        </dl>
+        <dl>
+            <dt style="color: Red">开始时间：</dt>
+            <dd>
+                <input id="DateBegin" name="DateBegin" class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:00:00',minDate:'%y-%M-%d #{%H+48}%H:%m:%s'})" readonly="readonly" />&nbsp;&nbsp;<font color="red">只可创建48小时以后的活动，默认持续72小时</font>
+            </dd>
+        </dl>
+        <dl style="display:none;">
+            <dt style="color: Red">持续时间：</dt>
+            <dd>
+                <input id="SubjectDuration" type="text" name="SubjectDuration" onkeyup="this.value=this.value.replace(/\D/g,'')"
+                       onblur="this.value=this.value.replace(/\D/g,'')" />小时 @*<label style="color: Red">
+                    (活动创建成功后则不能修改)</label>*@
+                </dd>
+            </dl>
+            <dl>
+                <dt style="color: Red">折扣类型：</dt>
+                <dd>
+                    <input type="radio" value="4" name="DiscountType" checked="checked" />全场元
+                    <input type="radio" value="3" name="DiscountType" />全场折
+                </dd>
+            </dl>
+            <dl>
+                <dt style="color: Red">销售额预估：</dt>
+                <dd>
+                    <input id="SalesForecast" type="text" name="SalesForecast" /><label style="color: Red">
+                        (活动创建成功后则不能修改)
+                    </label>
+                </dd>
+            </dl>
+            <dl>
+                <dt style="color: Red">活动开启前模板：</dt>
+                <dd>
+                    <input type="radio" value="1" name="SubjectPreStartTemplateType" checked="checked"
+                           onclick="ShowTemplate(this);" />买手推荐模板
+                    <input disabled="disabled" id="radioCode" type="radio" value="2" name="SubjectPreStartTemplateType"
+                           onclick="ShowTemplate(this);" />优惠码模板
+                    <input disabled="disabled" id="Code" type="text" name="Code" value="优惠码编号" onfocus="if(this.value == '优惠码编号') this.value = ''"
+                           onblur="if(this.value == '') this.value = '优惠码编号'" />
+                    <input id="radioCoupon" type="radio" value="3" name="SubjectPreStartTemplateType"
+                           onclick="ShowTemplate(this);" />优惠券模板
+                    <input id="Coupon" type="text" name="Coupon" value="优惠券激活码" onfocus="if (this.value == '优惠券激活码') this.value = ''"
+                           onblur="if (this.value == '') this.value = '优惠券激活码'" />
+                </dd>
+            </dl>
+            <dl>
+                <dt style="color: Red">选择活动模板：</dt>
+                <dd>
+                    <input type="radio" value="2" name="SubjectTemplate" checked="checked" onclick="ShowHeadTemplate(this);" />大图模式
+                    <input type="radio" value="3" name="SubjectTemplate" onclick="ShowHeadTemplate(this);" />小图模式
+                    <input type="radio" value="1" name="SubjectTemplate" onclick="ShowHeadTemplate(this);" />纯图片
+                    <input type="radio" value="4" name="SubjectTemplate" onclick="ShowHeadTemplate(this);" />专题模式
+                    <input type="radio" value="5" name="SubjectTemplate" onclick="ShowHeadTemplate(this);" />秒杀模式
+                </dd>
+            </dl>
+            <dl>
+                <dt id="imagetitleOne">列表页图：</dt>
+                <dd>
+                    <input id="BelongsSubjectPicUp" type="file" name="BelongsSubjectPic" />
+                    <input id="TitlePic1" type="file" name="TitlePic1" style="display: none" />
+                    <label id="imageSzieOne">
+                        尺寸:640*640 格式:jpg、gif小于300K
+                    </label>
+                </dd>
+            </dl>
+            <dl>
+                <dt>活动头图模板：</dt>
+                <dd>
+                    <label><input type="radio" value="1" name="HeadShowType" checked="checked" onclick="onClickSubmitTypeCategory(1);" />纯图片</label>
+                    <label><input type="radio" value="2" name="HeadShowType" onclick="onClickSubmitTypeCategory(2);" />代码</label>
+                </dd>
+            </dl>
+            <dl class="hotblockCategory" style="display:none;">
+                <dt class="titleColor">代码：</dt>
+                <dd>
+                    请输入网页html代码：
+                    <br />
+                    <textarea id="HeadWebHtml" name="HeadWebHtml" rows="5" cols="80"></textarea>
+                    <br />
+                    请输入移动端html代码：
+                    <br />
+                    <textarea id="HeadMobileHtml" name="HeadMobileHtml" rows="5" cols="80"></textarea>
+                </dd>
+            </dl>
+            <dl id="zhuantiImg" style="display: none">
+                <dt>专题头图：</dt>
+                <dd>
+                    <input id="BelongsSubjectPicUp1" type="file" name="BelongsSubjectPicUp" /><label>要求:宽1680，高390，500K以内</label>
+                </dd>
+            </dl>
+            <dl class="hotblockShow">
+                <dt id="imagetitleTwo">顶部头图：</dt>
+                <dd>
+                    <input id="FlapPicUp" type="file" name="FlapPic" /><label id="imageSzieTwo">
+                        尺寸:宽≥980,高=300
+                        格式:jpg、gif小于500K
+                    </label>
+                </dd>
+            </dl>
+
+            <dl>
+                <dt id="imagetitleThree">移动客户端图：</dt>
+                <dd>
+                    <input id="IPhonePic" type="file" name="IPhonePic" /><label id="imageSzieThree">
+                        尺寸:608*380
+                        格式:jpg、gif小于150K
+                    </label>
+                </dd>
+            </dl>
+            <dl id="Coupons">
+                <dt>优惠信息展示图：</dt>
+                <dd>
+                    <input id="AdPicUp" type="file" name="AdPic" /><label id="lblAdPicSize">尺寸:130*96 格式:jpg、gif小于150K</label>
+                </dd>
+            </dl>
+            <dl id="tuwen">
+                <dt style="color: Red">活动介绍：</dt>
+                <dd>
+                    <textarea id="txtContentIntroduction" name="ContentIntroduction" rows="5" cols="50">100字以内</textarea>
+                </dd>
+            </dl>
+            <dl>
+                <dt id="phoneDes">移动端介绍：</dt>
+                <dd>
+                    <textarea id="txtIPhoneText" name="IPhoneText" rows="5" cols="50">30字以内</textarea>
+                </dd>
+            </dl>
+            <dl>
+                <dt id="phoneDes">促销信息：</dt>
+                <dd>
+                    <textarea id="txtSalesInfo" name="SalesInfo" rows="2" cols="50"></textarea>
+                </dd>
+            </dl>
+            <dl>
+                <dt id="IsPreheat">活动预热：</dt>
+                <dd>
+                    <label>
+                        <input type="radio" id="radIsPreheat0" name="radIsPreheat" value="0" checked="checked" />关闭
+                    </label>
+                    <label>
+                        <input type="radio" id="radIsPreheat1" name="radIsPreheat" value="1" />开启
+                    </label>
+                </dd>
+            </dl>
+            <dl>
+                <dt id="PreheatTime">预热时间：</dt>
+                <dd>
+                    <input id="txtPreheatTime" name="txtPreheatTime" class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:00:00'})"
+                           readonly="readonly" />&nbsp;&nbsp;&nbsp;<font color="red">预热日期不可大于活动开始日期</font>
+                </dd>
+            </dl>
+            <dl>
+                <dt id="PreheatBody">预热页选择：</dt>
+                <dd>
+                    <input type="text" id="txtPreheatBody" name="txtPreheatBody" />&nbsp;&nbsp;<input type="button" id="btnSelectPrdheatHtml" value="查询" style="width: 50px; height: 25px;
+                background-color: #4D90FE; border: 1px solid #3079ED; color: #FFFFFF; cursor: pointer;" /><input type="hidden" id="hidPreheatBodyID" name="hidPreheatBodyID" />
+                </dd>
+            </dl>
+            <dl>
+                <dt id="dtSeoTitle">SEO-Title：</dt>
+                <dd> 
+                    <input id="SEOTitle" type="text" name="SEOTitle" value="限制30汉字以内" maxlength="30"
+                    onfocus="if(this.value == '限制30汉字以内') this.value = ''" onblur="if(this.value == '') this.value = '限制30汉字以内'" />
+                    <label style="color:Red">请联系网推部门填写推广内容</label>
+                </dd>
+            </dl>
+            <dl>
+                <dt>&nbsp;</dt>
+                <dd>
+                    <button type="button" id="btnSave" name="" value="" class="secondary" onclick="return checkSubmit();">
+                        确 定
+                    </button>
+                    <button type="button" id="btnCancle" name="" value="" onclick="Cancle();">
+                        取 消
+                    </button>
+                </dd>
+            </dl>
+        </form>
+    </div>
+    <!-- 添加活动 end -->
+    <script type="text/javascript">
+        (function (window, $, undefined) {
+            $(function () {
+                $("#tuwen").hide();
+                $("#Coupons").hide();
+                $("#txtIPhoneText").focus(function () {
+                    if (this.value == this.defaultValue) this.value = '';
+                });
+                $("#txtIPhoneText").blur(function () {
+                    if (this.value == '') this.value = this.defaultValue;
+                });
+                $("#txtSalesInfo").focus(function () {
+                    if (this.value == this.defaultValue) this.value = '';
+                });
+                $("#txtSalesInfo").blur(function () {
+                    if (this.value == '') this.value = this.defaultValue;
+                });
+                $("#HeadWebHtml").focus(function () {
+                    if (this.value == this.defaultValue) this.value = '';
+                });
+                $("#HeadWebHtml").blur(function () {
+                    if (this.value == '') this.value = this.defaultValue;
+                });
+                $("#HeadMobileHtml").focus(function () {
+                    if (this.value == this.defaultValue) this.value = '';
+                });
+                $("#HeadMobileHtml").blur(function () {
+                    if (this.value == '') this.value = this.defaultValue;
+                });
+                $("#BrandName").selectBrand('BrandNo', 'BrandName', false, '', ''); //执行品牌选择操作
+
+
+                $("#HeadWebHtml").focus(function () {
+                    if (this.value == this.defaultValue) this.value = '';
+                });
+                $("#HeadWebHtml").blur(function () {
+                    if (this.value == '') this.value = this.defaultValue;
+                });
+                $("#HeadMobileHtml").focus(function () {
+                    if (this.value == this.defaultValue) this.value = '';
+                });
+                $("#HeadMobileHtml").blur(function () {
+                    if (this.value == '') this.value = this.defaultValue;
+                });
+
+            });
+
+        })(window, jQuery);
+
+        $(function () {
+            $("#btnSelectPrdheatHtml").click(function () {
+                var obj = $(this);
+                var id = $("#hidPreheatBodyID").val();
+                var key = $("#txtPreheatBody").val();
+                tipsWindown("选择预热页面", "iframe:/Outlet/Notice/SelectPrdheatHtml?id=" + id + "&key=" + key, "600", "350", "true", "", "true", "text");
+            });
+        });
+
+        //弹出层选择行 返回数据
+        function ClickRowNew(id, value) {
+            $("#txtPreheatBody").val(value);
+            $("#hidPreheatBodyID").val(id);
+            $("#windown-close").trigger("click");
+        }
+
+        //清除模板选择
+        function TrueInfo() {
+            $("#txtPreheatBody").val("");
+            $("#hidPreheatBodyID").val("");
+            $("#windown-close").trigger("click");
+        }
+
+        function ShowTemplate(obj) {
+            var value = $(obj).val();
+            if (value == "1") {
+                $("#Coupons").hide();
+            } else {
+                $("#Coupons").show();
+            }
+        }
+        function verity() {
+            string = $("#SubjectEnName").val();
+            var parent = /^[A-Za-z]+$/;
+            if (!parent.test(string)) {
+                alert("活动英文名称只能输入英文字母");
+                $("#SubjectEnName").val("");
+                $("#SubjectEnName").focus();
+                return false;
+            }
+        }
+
+        function ShowHeadTemplate(obj) {
+            var temp = $(obj).val();
+            //var imagetitleOne = temp != 4 ? "列表页图：" : "专题头图：";
+            var imagetitleTwo = temp != 4 ? "顶部头图：" : "移动客户端旧版图：";
+            //var imageSzieOne = temp != 4 ? "尺寸:640*640 格式:jpg、gif小于300K" : "要求:宽1680，高390，500K以内";
+            var imageSzieThree = temp != 4 ? "尺寸:608*380 格式:jpg、gif小于150K" : "要求:宽640，高400，150K以内";
+            var pcolor = temp != 4 ? "" : "color:Red";
+            //$("#imagetitleOne").html(imagetitleOne);
+            $("#imagetitleTwo").html(imagetitleTwo);
+            //$("#imageSzieOne").html(imageSzieOne);
+            $("#imageSzieThree").html(imageSzieThree);
+            $("#phoneDes").attr("style", pcolor);
+            $("#zhuantiImg").hide();
+            $("#TitlePic1").hide();
+            $("#BelongsSubjectPicUp").show();
+            if (temp == "1") {
+                $("#imageSzieTwo").html("尺寸:宽1680*390(暂定为不限，原尺寸为:960*260) 格式:jpg、gif小于500K");
+            }
+            else {
+                if (temp == 3) {
+                    $("#imageSzieTwo ").html("尺寸:360*290 格式:jpg、gif小于300K");
+                }
+                if (temp == 2 || temp == 5) {
+                    $("#imageSzieTwo").html("尺寸:宽≥980,高=300 格式:jpg、gif小于500K");
+                }
+                if (temp == 4) {
+                    var showType = $("input[name='HeadShowType']:checked").val();
+                    if (showType == 2) {
+                        $("#zhuantiImg").hide();
+                        $(".hotblockCategory").show();
+                        $(".hotblockShow").show();
+                    } else {
+                        $("#zhuantiImg").show();
+                    }
+                    $("#TitlePic1").show();
+                    $("#BelongsSubjectPicUp").hide();
+                    $("#imageSzieTwo").html("要求:宽640，高640，150K以内");
+                }
+            }
+            if (temp == 3 || temp == 2) {
+                TuWenShow();
+            }
+            else {
+                $("#tuwen").hide();
+            }
+        }
+        function TuWenShow() {
+            $("#tuwen").show();
+            $("#txtContentIntroduction").focus(function () {
+                if (this.value == this.defaultValue) this.value = '';
+            });
+            $("#txtContentIntroduction").blur(function () {
+                if (this.value == '') this.value = this.defaultValue;
+            });
+        }
+        function checkSubmit() {
+
+            $("#HeadWebHtml").val(escape(editor1.html()));
+            $("#HeadMobileHtml").val(escape(editor2.html()));
+            if ($("#SubjectName").val() == "") {
+                alert("请输入活动名称！");
+                return false;
+            }
+            if ($("#SubjectEnName").val() == "") {
+                alert("请输入活动副标题名称！");
+                return false;
+            }
+            var SordNos = "";
+            $("input[name='SordNo']:checked").each(function () {
+                SordNos += $(this).val() + ",";
+            });
+            if (SordNos == "") {
+                alert("请选择所属分类！");
+                return false;
+            }
+            var CategoryNos = "";
+            $("input[name='CategoryNo']:checked").each(function () {
+                CategoryNos += $(this).val() + ",";
+            });
+            if (CategoryNos == "") {
+                alert("请选择所属品类！");
+                return false;
+            }
+            if ($("#SalesForecast").val() == "") { alert("请输入销售额预估！"); return false; }
+            var brandNo = $("#BrandNo").val(); //提示关联品牌
+            if (brandNo == "" || brandNo.length <= 0) {
+                alert("活动必须关联一个品牌");
+                return false;
+            }
+            //var brandLogoType = "";
+            //$("input[name='BrandLogoType']:checked").each(function () {
+            //    brandLogoType += $(this).val() + ",";
+            //});
+            //if (brandLogoType == "") {
+            //    alert("请选择品牌LOGO！");
+            //    return false;
+            //}
+
+            var ChannelNos = "";
+            $("input[name='ChannelNo']:checked").each(function () {
+                ChannelNos += $(this).val() + ",";
+            });
+            if (ChannelNos == "") {
+                alert("请选择展示渠道！");
+                return false;
+            }
+            if ($("#DateBegin").val() == "") {
+                alert("请选择开始时间！");
+                return false;
+            }
+            //        if ($("#SubjectDuration").val() == "") {
+            //            alert("请填写持续时间！");
+            //            return false;
+            //        }
+            if ($('input:radio[name="SubjectPreStartTemplateType"]:checked').val() == 2) {
+                if ($("#Code").val() == '优惠码编号' || $("#Code").val()=='') {
+                    alert("请填写优惠码编号！");
+                    return false;
+                }
+            }
+            if ($('input:radio[name="SubjectPreStartTemplateType"]:checked').val() == 3) {
+                if ($("#Coupon").val() == '优惠券激活码'||$("#Coupon").val() == '') {
+                    alert("请填写优惠券激活码！");
+                    return false;
+                }
+            }
+            var temp = $("input[name='SubjectTemplate']:checked").val();
+            if (temp == "3") {
+                if ($("#txtContentIntroduction").val().length > 100) {
+                    alert("活动介绍:输入内容不能超过100个字！");
+                    return false;
+                }
+            }
+            if (temp == "4") {
+                if ($("#txtIPhoneText").val() < 1 || $("#txtIPhoneText").val() == "30字以内") {
+                    alert("专题模式移动端介绍不能为空！");
+                    return false;
+                }
+            }
+            if ($("#txtIPhoneText").val().length > 30) {
+                alert("移动端介绍输入内容不能超过30个字！");
+                return false;
+            }
+            if ($("#txtSalesInfo").val().length > 15) {
+                alert("促销信息输入内容不能超过15个字！");
+                return false;
+            }
+            var radIsPreheat = $("input:radio[name='radIsPreheat']:checked").val();
+            if (radIsPreheat == "1") {
+                if ($("#txtPreheatTime").val() == "") {
+                    alert("预热时间不能为空！");
+                    return false;
+                }
+                if ($("#hidPreheatBodyID").val() == "") {
+                    alert("请选择预热页面！");
+                    return false;
+                }
+            }
+            $('#formAddSubject').ajaxSubmit({
+                beforeSubmit: function () {
+                    $("#btnSave").html("正在处理中...");
+                    LoadMsgBegin("保存中...");
+                },
+                error: function () {
+                    LoadMsgEnd();
+                    $("#btnSave").html("确定");
+                },
+                success: function (html, status) {
+                    if (typeof (html) == "string") {
+                        var rs = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+                        data = eval("(" + rs + ")");
+                    }
+                    else {
+                        data = html;
+                    }
+                    LoadMsgEnd();
+                    if (data.result != "1" && data.result != "0") {
+                        $("#span" + data.result).html(data.message);
+                        $("#btnSave").html("确定");
+                        alert(data.message);
+                        //window.location.href = gettimestampurl(window.location.href);
+                        return false;
+                    }
+                    else if (data.result == "1") {
+                        $("#btnSave").html("确定");
+                        alert(data.message);
+                        window.location.href = gettimestampurl(window.location.href);
+                        //window.location.reload(true);
+                        return true;
+                    } else {
+                        $("#btnSave").html("确定");
+                        alert(data.message);
+                        return false;
+                    }
+                }
+            });
+        }
+
+        function Cancle() {
+            $("#mx-rightcontent-fixbarbg").css({ "height": 79, "overflow-y": "hidden" });
+            $("#mx-btn-add").removeClass("curr");
+        };
+
+
+        $("#mx-rightcontent-fixbarbg .crumb").on("click", function () {
+            $("#mx-rightcontent-fixbar a").removeClass("curr");
+            Cancle();
+            return false;
+        });
+
+        function onClickSubmitTypeCategory(type) {
+            var templateType = $("input[name='SubjectTemplate']:checked").val();
+            if (type == 1) {
+                if (templateType == "4") {
+                    $("#zhuantiImg").show();
+                }
+                $(".hotblockCategory").hide();
+                $(".hotblockShow").show();
+            }
+            else if (type == 2) {
+                if (templateType == "4") {
+                    $("#zhuantiImg").hide();
+                    $(".hotblockCategory").show();
+                    $(".hotblockShow").show();
+                } else {
+                    $(".hotblockCategory").show();
+                    $(".hotblockShow").hide();
+                }
+            }
+        }
+    </script>

@@ -1,0 +1,50 @@
+body { _background-image: url(about:blank); _background-attachment: fixed; }
+.sp_body { background: #e3e3e3; }
+.top_nav { background: url(/images/page/christmas/nav_bg_shadow.png) repeat-x center 67px; _background: none; padding-bottom: 26px; display: none; width: 100%; }
+.top_nav_bg { background: #fff; }
+.top_nav_box { width: 960px; margin: 0 auto; }
+.top_nav ul { width: 960px; height: 53px; padding: 8px 0 6px; }
+.top_nav ul li { float: left; width: 111px; margin-right: 10px; position: relative; }
+.top_nav ul li a { display: block; background: url(/images/page/christmas/nav_bg.jpg) no-repeat 0 0; height: 53px; }
+.top_nav ul li a:hover{ opacity:0.7;filter: alpha(opacity=70);}
+.top_nav ul li.aolai a { background-position: 0 0; }
+.top_nav ul li.bags a { background-position: -121px 0; }
+.top_nav ul li.women a { background-position: -242px 0; }
+.top_nav ul li.men a { background-position: -363px 0; }
+.top_nav ul li.footwear a { background-position: -484px 0; }
+.top_nav ul li.accessories a{ background-position: -605px 0; }
+.top_nav ul li.watch a {background-position: -726px 0;}
+.top_nav ul li.beauty a { background-position: -847px 0;}
+.top_nav ul li.beauty { margin-right: 0; }
+.top_nav_fixed { display: block; position: fixed; top: 0; left: 0; z-index: 1000; _position: absolute; _bottom: auto; _top:expression(eval(document.documentElement.scrollTop));
+}
+.banner_box { position: relative; width: 100%; height: 1002px; overflow: hidden; z-index: 1; }
+#banner_top {
+position: absolute;
+left: 50%;
+margin-left: -950px;
+top: 0;
+width: 1900px;
+}
+/**/
+.main_box {position: relative; z-index: 3; margin-top:30px;}
+.main_box .box { padding:13px 13px 0; width: 934px; overflow: hidden; margin-bottom: 15px; *padding-bottom:15px;
+_padding-bottom: 0; background: #fff; }
+.main_box .box h3 { margin: 0 0 18px; }
+.main_box .box ul { width: 952px; }
+.main_box .box ul li { float: left; margin: 0 18px 18px 0; width: 220px; height: 320px; background-color: #c5c5c5; }
+.main_box .box ul li img { display: block; }
+.main_box .box ul li a { display: block; position: relative; z-index: 1; }
+.main_box .box .btn_box { padding-bottom: 18px; *padding:18px 0 0;
+_padding: 0 0 18px; text-align: center; }
+.main_box .box .btn_box a { display: inline-block; width: 222px; height: 39px; margin: 0 8px; overflow: hidden; }
+.main_box .last_box { padding: 0; width: 960px; height: 186px; overflow: hidden; background: none; }
+.main_box .last_box img { vertical-align: top; }
+.main_box .last_box ul { width: 973px; }
+.main_box .last_box ul li { width: 291px; height: 170px; padding: 8px 10px; background: #C5C5C5; margin: 0 13px 0 0; }
+.main_box .last_box ul li span.hover_bg { width: 291px; height: 170px; }
+span.hover_bg { display: none; position: absolute; top: 0; left: 0; z-index: 2; background: url(/images/page/christmas/hover_bg.png) no-repeat center; height: 320px; width: 220px; border: none; padding: 0; _background: url(/images/page/christmas/hover_bg_ie6.png) no-repeat center; _filter: alpha(opacity = 40); }
+/**/
+
+
+

@@ -1,0 +1,90 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@using Shangpin.Entity.Wfs;
+@using Shangpin.Ocs.Web.Infrastructure;
+@model Shangpin.Entity.Wfs.SWfsCurtain
+@{
+    Layout = null;
+    IList<SWfsCurtain> list = ViewBag.List;
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    int totalCount = ViewBag.totalcount;
+    int currentPage = ViewBag.PageIndex;
+    int pageSize = 10;
+
+    ViewBag.Title = "拉幕示列表";
+}
+@section HeadScript{
+        <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+            <script src="/Areas/Shangpin/Scripts/lib/jquery.js" type="text/javascript"></script>
+            <script src="/Areas/Shangpin/Scripts/plug/comm.js" type="text/javascript"></script>
+        }
+    <div>
+        <h1>
+            OCS > 尚品 > <a href="#">公告管理</a> > 拉幕列表</h1>
+        <form action="/Shangpin/Curtain/CurtainList.html" method="get">
+        <div>
+        <input type="text" name="CurtainTitle" placeholder="请输入标题名称" value="@ViewBag.KeyWord"  style="width: 140px; color: #666; font-size: 12px;" />
+        <select name="CurtainStatus">
+                <option value="-1">状态</option>
+                <option value = "0" @(Request.Params["CurtainStatus"] == "0" ? "selected='selected'" : "")>
+                    关闭</option>
+                <option value = "1" @(Request.Params["CurtainStatus"] == "1" ? "selected='selected'" : "")>
+                    开启</option>
+            </select>
+            展示时间:<input id="StartShowTime" name="StartShowTime" value="@ViewBag.StartShowTime" maxlength="30"  class="Wdate" type="text" onclick="WdatePicker()" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" readonly="readonly" style=" width:160px;" />至
+                     <input id="EndShowTime" name="EndShowTime" value="@ViewBag.EndShowTime" maxlength="30" class="Wdate" type="text" onclick="WdatePicker()" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" readonly="readonly" style=" width:160px;" />
+            <button type="submit">
+                提交查询</button>
+                <button type="button" onclick="window.location.href='/shangpin/Curtain/CurtainCreate.html'">
+                新建</button>
+        </div>
+        </form>
+        <input type="hidden" id="CurSordName" name="CurSordName" />
+        <table class="mx-table">
+            <thead>
+                <tr>
+                    <th width="16%">
+                        标题
+                    </th>
+                    <th width="9%">
+                        展示时间
+                    </th>
+                    <th width="5%">
+                        状态
+                    </th>
+                    <th width="13%">
+                        操作
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (null != list && list.Count > 0)
+                {
+                    var flag = 0;
+                    foreach (var item in list)
+                    {
+                        flag = flag + 1;
+                    <tr class="@(flag % 2 == 0 ? "cross" : "")">
+                        <td>
+                            @item.CurtainTitle
+                        </td>
+                        <td>
+                            @item.StartShowTime<br />
+                            @item.EndShowTime
+                        </td>
+                        <td>
+                            @(item.CurtainStatus == 0 ? "关闭" : "开启")
+                        </td>
+                        <td>
+                            <a id="@item.CurtainId" class="button" href="/Shangpin/Curtain/CurtainCreate.html?curtainId=@item.CurtainId" >
+                                编辑</a> 
+                                <a id="@item.CurtainId" class="button" href="/Shangpin/Curtain/CurtainStatus.html?curtainId=@item.CurtainId&curtainStatus=@(item.CurtainStatus == 0 ? 1 : 0)">@(item.CurtainStatus == 0 ? "开启" : "关闭")</a>
+                            <a id="@item.CurtainId" class="button" href="/Shangpin/Curtain/CurtainDele.html?curtainId=@item.CurtainId" onclick="return confirm('您确定删除吗?')" >
+                                删除</a>
+                        </td>
+                    </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <div class="spPage">@Html.Raw(Html.PagerX("page", currentPage, pageSize, totalCount))</div>
+        </div>

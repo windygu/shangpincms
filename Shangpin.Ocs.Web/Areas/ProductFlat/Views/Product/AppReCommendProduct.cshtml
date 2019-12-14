@@ -1,0 +1,487 @@
+﻿@model Shangpin.Ocs.Entity.Extenstion.ProductFlat.XMLReturnClassLists
+@using Shangpin.Ocs.Entity.Extenstion.ProductFlat
+@using Shangpin.Ocs.Service.Shangpin.ProductSort
+@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@{
+    ViewBag.Title = "尚品排序";
+    Layout = "~/Areas/ProductFlat/Views/Shared/_Layout.cshtml";
+    int pageIndex = ViewBag.pageIndex;
+    int pageSize = ViewBag.pageSize;
+    Shangpin.Ocs.Service.Shangpin.SWfsBrandService dal = new Shangpin.Ocs.Service.Shangpin.SWfsBrandService();
+    IList<ErpCategory> allfirstCategory = dal.SelectErpCategoryByParentNo("ROOT");
+    IList<ErpCategory> secondCategoryList = null;
+    IList<ErpCategory> thirdCategoryList = null;
+    IList<ErpCategory> fourCategoryList = null;
+    string requestCategoryNo = Request.QueryString["CategoryNo"] != null ? Request.QueryString["CategoryNo"].ToUpper() : null;
+    if (requestCategoryNo != null)
+    {
+        if (requestCategoryNo.Length == 3)
+        {
+            allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo).ParentNo = "0";
+        }
+        if (requestCategoryNo.Length == 6)
+        {
+            if (allfirstCategory.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)) > 0)
+            {
+                allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)).ParentNo = "0";
+            }
+            secondCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 3));
+            if (secondCategoryList.Count(p => p.CategoryNo == requestCategoryNo) > 0)
+            {
+                secondCategoryList.Single(p => p.CategoryNo == requestCategoryNo).ParentNo = "0";
+            }
+        }
+        if (requestCategoryNo.Length == 9)
+        {
+            if (allfirstCategory.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)) > 0)
+            {
+                allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)).ParentNo = "0";
+            }
+            secondCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 3));
+            if (secondCategoryList.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 6)) > 0)
+            {
+                secondCategoryList.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 6)).ParentNo = "0";
+            }
+            thirdCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 6));
+            if (thirdCategoryList.Count(p => p.CategoryNo == requestCategoryNo) > 0)
+            {
+                thirdCategoryList.Single(p => p.CategoryNo == requestCategoryNo).ParentNo = "0";
+            }
+        }
+        if (requestCategoryNo.Length == 12)
+        {
+            if (allfirstCategory.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)) > 0)
+            {
+                allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)).ParentNo = "0";
+            }
+            secondCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 3));
+            if (secondCategoryList.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 6)) > 0)
+            {
+                secondCategoryList.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 6)).ParentNo = "0";
+            }
+            thirdCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 6));
+            if (thirdCategoryList.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 9)) > 0)
+            {
+                thirdCategoryList.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 9)).ParentNo = "0";
+            }
+            fourCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 9));
+            if (fourCategoryList.Count(p => p.CategoryNo == requestCategoryNo) > 0)
+            {
+                fourCategoryList.Single(p => p.CategoryNo == requestCategoryNo).ParentNo = "0";
+            }
+        }
+    }
+    }
+@section HeadStyle{
+    <link type="text/css" rel="stylesheet" href="~/Areas/ProductFlat/Content/CSS/ProductIndex.css" />
+    <link href="~/Areas/ProductFlat/Content/CSS/ProductSortLayout.css" rel="stylesheet" />
+    <style type="text/css">
+        
+        #ProductList a {
+            background-color: #4d90fe;
+            border: 1px solid #3079ed;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 14px;
+            margin: 0 15px 0 0;
+            padding: 5px 10px;
+            position: relative;
+            text-decoration: none;
+            transition: border-color 0.218s ease 0s;
+        }
+    </style>
+}
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/plug/ERPBrand.js"></script>
+    <script type="text/javascript">
+        var cheAll = function (ischeck) {
+            $("input:checkbox[name='productNo']").attr("checked", ischeck);
+        }
+        var addSortproduct = function (productNo) {
+            $.post("/productflat/product/AddProductAjax", { "productNo": productNo, "categoryNo": $("#ocscategoryNo").val(), "categoryType": $("#categoryType").val() }, function (data) {
+                if (data.error > 0) {
+                    alert(data.msg);
+                } else {
+                    //alert(data.msg);
+                    window.location.reload();
+                }
+
+            });
+        }
+        var resetformContent = function () {//重置
+            
+        }
+        $(function () {
+            $("#TxtMinPrice").blur(function () {
+                if ($("#TxtMinPrice").val().length > 0) {
+                    if (!($("#TxtMinPrice").val() >= 0)) {
+                        $("#TxtMinPrice").val("0");
+                    }
+                }
+            });
+            $("#TxtMaxPrice").blur(function () {
+                if ($("#TxtMaxPrice").val().length > 0) {
+                    if (!($("#TxtMaxPrice").val() >= 0)) {
+                        $("#TxtMaxPrice").val("0");
+                    }
+                }
+            });
+            $("#TxtMinStock").blur(function () {
+                if ($("#TxtMinStock").val().length > 0) {
+                    if (!($("#TxtMinStock").val() >= 0)) {
+                        $("#TxtMinStock").val("0");
+                    }
+                }
+            });
+            $("#TxtMinStock").blur(function () {
+                if ($("#TxtMinStock").val().length > 0) {
+                    if (!($("#TxtMinStock").val() >= 0)) {
+                        $("#TxtMinStock").val("0");
+                    }
+                }
+            });
+            $("#TxtMinDiscountRate").blur(function () {
+                if ($("#TxtMinDiscountRate").val().length > 0) {
+                    if (!($("#TxtMinDiscountRate").val() >= 0)) {
+                        $("#TxtMinDiscountRate").val("0");
+                    }
+                }
+            });
+            $("#TxtMaxDiscountRate").blur(function () {
+                if ($("#TxtMaxDiscountRate").val().length > 0) {
+                    if (!($("#TxtMaxDiscountRate").val() >= 0)) {
+                        $("#TxtMaxDiscountRate").val("0");
+                    }
+                }
+            });
+            //单击加入排序按钮
+            $("#addSortProduct").click(function () {
+                if ($("input[name='productNo']").filter(":checked").length > 0) {
+                    $("#productForm").submit();
+                } else {
+                    alert("请选择加入排序的商品");
+                    return false;
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $("#BrandName").selectBrand('BrandNo', 'BrandName', false, '', '');
+            var requestProductNo = '@Request.QueryString["ProductNo"]';
+            if (requestProductNo != "")
+            {
+                var reg = new RegExp(",", "g"); //创建正则RegExp对象
+                requestProductNo = requestProductNo.replace(reg, "\n");
+                $("#textareaProductNo").val(requestProductNo)
+            }
+            $("#ProductNo").focus(function () {//商品编号文本框绑定焦点事件
+                var x = $(this)[0].offsetLeft;
+                var y = $(this)[0].offsetTop;
+                var h = $(this)[0].offsetHeight;
+                $(".mod_tag").hide();
+                $("#ProductNomod_tag").show("slow"); //显示div
+                $("#ProductNomod_tag").css({ "top": y + h, "left": x });//设置DIV坐标
+                CheckedChildCategory();
+                CheckedBrandName();
+                CheckedColorName();
+            });
+            //给商品品牌文本框绑定焦点事件
+            $("#brandName").focus(function () {
+                var x = $(this)[0].offsetLeft;
+                var y = $(this)[0].offsetTop;
+                var h = $(this)[0].offsetHeight;
+                $(".mod_tag").hide();
+                $("#BrandNamemod_tag").show("slow"); //显示div
+                $("#BrandNamemod_tag").css({ "top": y + h, "left": x });//设置DIV坐标
+                CheckedChildCategory();
+                CheckedColorName();
+                ProductNoAll();
+            });
+            //给子类别文本框绑定焦点事件
+            $("#childCategoryname").focus(function () {
+                var x = $(this)[0].offsetLeft;
+                var y = $(this)[0].offsetTop;
+                var h = $(this)[0].offsetHeight;
+                CheckedBrandName();
+                CheckedColorName();
+                ProductNoAll();
+                $(".mod_tag").hide();
+                $("#childCategorymod_tag").show("slow"); //显示div
+                $("#childCategorymod_tag").css({ "top": y + h, "left": x });//设置DIV坐标
+            });
+            //给色系文本框绑定焦点事件
+            $("#colorName").focus(function () {
+                var x = $(this)[0].offsetLeft;
+                var y = $(this)[0].offsetTop;
+                var h = $(this)[0].offsetHeight;
+                $(".mod_tag").hide();
+                $("#Colormoed_tag").show("slow"); //显示div
+                $("#Colormoed_tag").css({ "top": y + h, "left": x });//设置DIV坐标
+                CheckedBrandName();
+                CheckedChildCategory();
+                ProductNoAll();
+            });
+        });
+        
+        function CheckedBrandName() {//商品品牌DIV的确定事件
+            $("#brandName").val("");
+            var BrandAll = $("#BrandNamemod_tag input:checkbox[checked='checked']");
+            var brandNames = "";
+            $.each(BrandAll, function () {
+                brandNames = brandNames + $(this).parent().text() + ",";
+            });
+            brandNames = brandNames.substr(0, brandNames.length - 1);
+            $("#brandName").val(brandNames);
+            $('#BrandNamemod_tag').hide("slow");
+        }
+        function CheckedChildCategory()//子类别DIV确定事件
+        {
+            $("#childCategoryname").val("");
+            var childCategoryAll = $("#childCategorymod_tag input:checkbox[checked='checked']");
+            var childCategoryNames = "";
+            $.each(childCategoryAll, function () {
+                childCategoryNames = childCategoryNames + $(this).parent().text() + ",";
+            });
+            childCategoryNames = childCategoryNames.substr(0, childCategoryNames.length - 1);
+            $("#childCategoryname").val(childCategoryNames);
+            $('#childCategorymod_tag').hide("slow");
+        }
+        function CheckedColorName() {//色系DIV的确定事件
+            $("#colorName").val();
+            var ColorAll = $("#Colormoed_tag input:checkbox[checked='checked']");
+            var ColorNames = "";
+            $.each(ColorAll, function () {
+                ColorNames = ColorNames + $(this).parent().text() + ",";
+            });
+            ColorNames = ColorNames.substr(0, ColorNames.length - 1);
+            $("#colorName").val(ColorNames);
+            $('#Colormoed_tag').hide("slow");
+        }
+        function ProductNoAll() {//商品编号DIV确定事件
+            var ProductNo = $("#textareaProductNo").val();
+            var reg = new RegExp("\n", "g"); //创建正则RegExp对象
+            ProductNo = ProductNo.replace(reg, ",");
+            $("#ProductNo").val(ProductNo);
+            $("#ProductNomod_tag").hide("slow"); //关闭div
+        }
+
+        function BrandNameCancel() {//商品品牌DIV取消事件
+            $("#brandName").val("");
+            $("#BrandNamemod_tag input:checkbox").removeAttr("checked");
+            $("#BrandNamemod_tag").hide("slow");
+        }
+        function ProductNocCancel() {//商品编号DIV取消事件
+            $("#ProductNo").val("");
+            $("#textareaProductNo").val("");
+            $("#ProductNomod_tag").hide("slow"); //关闭div
+        }
+        function childCategoryCancel()//商品子类别DIV取消事件
+        {
+            $("#childCategoryname").val("");
+            $("#childCategorymod_tag input:checkbox").removeAttr("checked");
+            $("#childCategorymod_tag").hide("slow");
+        }
+        function ColorCencel()//商品色系DIV取消事件
+        {
+            $("#colorName").val("");
+            $("#Colormoed_tag input:checkbox").removeAttr("checked");
+            $("#Colormoed_tag").hide("slow");
+        }
+        function Premise()//点击查询按钮之前把多选框里面的值赋值到文本框
+        {
+            ProductNoAll();
+            CheckedBrandName();
+            CheckedChildCategory();
+            CheckedColorName();
+        }
+    </script>
+}
+<div class="MoudleTitle">商品查询</div>
+<div id="SearchPara" style="height: 135px;">
+    <form action="/productflat/product/productlist" method="get">
+        <div id="divline" class="divSortLine">
+        </div><br />
+        <div id="divMain" class="divSortMain">
+            <input type="text" id="ProductNo" name="ProductNo" style="width: 140px; color: #666;font-size: 12px;" placeholder="商品编号/批量" value="@Request.QueryString["ProductNo"]" readonly="readonly" />
+            <input type="text" id="GoodsNo" name="GoodsNo" style="width: 140px; color: #666;font-size: 12px;" placeholder="商品货号/批量" value="@Request.QueryString["GoodsNo"]" readonly="readonly" />
+            <input type="text" id="ProductName" name="ProductName" style="width: 140px; color: #666;font-size: 12px;" placeholder="商品名称" value="@Request.QueryString["ProductName"]" readonly="readonly" />
+            @if (string.IsNullOrEmpty(Request.QueryString["brandno"]))
+            {
+                <input type="text" name="BrandName" id="BrandName" style="width: 150px; color: #666;font-size: 12px;" placeholder="请选择品牌" readonly="readonly"/>
+            }
+            else
+            {
+                <input type="text" name="BrandName" id="BrandName" style="width: 150px; color: #666;font-size: 12px;" value="@(HttpUtility.UrlDecode(Request.QueryString["BrandName"]))" placeholder="请选择品牌" readonly="readonly"/>
+            }
+            <input id="BrandNo" name="BrandNo" type="hidden" value="@Request.QueryString["brandno"]" />
+
+            <input type="hidden" value="@requestCategoryNo" name="CategoryNo" id="CategoryNo" />
+        品类:
+        <select style="width: 100px;" id="select1" onchange="oneChange(this.value);">
+            <option value="0">一级品类-- </option>
+            @foreach (ErpCategory category in allfirstCategory)
+            {
+                <option value="@category.CategoryNo" @(category.ParentNo == "0" ? "selected=selected" : null)>
+                    @category.CategoryName
+                </option>
+            }
+        </select>
+        <select style="width: 100px;" id="select2" onchange="twoChange(this.value);">
+            <option value="0">二级品类-- </option>
+            @if (secondCategoryList != null)
+            {
+                foreach (ErpCategory category in secondCategoryList)
+                {
+                    <option value="@category.CategoryNo" @(category.ParentNo == "0" ? "selected=selected" : null)>
+                        @category.CategoryName
+                    </option>
+                }
+            }
+        </select>
+        <select style="width: 100px;" id="select3" onchange="threeChange(this.value);">
+            <option value="0">三级品类-- </option>
+            @if (thirdCategoryList != null)
+            {
+                foreach (ErpCategory category in thirdCategoryList)
+                {
+                    <option value="@category.CategoryNo" @(category.ParentNo == "0" ? "selected=selected" : null)>
+                        @category.CategoryName
+                    </option>
+                }
+            }
+        </select>
+        <select style="width: 100px;" id="select4" onchange="fourChange(this.value)">
+            <option value="0">四级品类-- </option>
+            @if (fourCategoryList != null)
+            {
+                foreach (ErpCategory category in fourCategoryList)
+                {
+                    <option value="@category.CategoryNo" @(category.ParentNo == "0" ? "selected=selected" : null)>
+                        @category.CategoryName
+                    </option>
+                }
+            }
+        </select>
+        <br /><br />
+        <select name="postArea">
+            <option value="">商品来源</option>
+            <option @(Request.QueryString["postArea"] == "1" ? "selected='selected'" : "") value="1">国内商品</option>
+            <option @(Request.QueryString["postArea"] == "2" ? "selected='selected'" : "") value="2">海外商品</option>
+        </select>
+            商品价格：<input type="text" id="TxtMinPrice" style="width:60px;" placeholder="最小价格" name="MinPrice" value="@Request.QueryString["MinPrice"]" />~
+            <input type="text" id="TxtMaxPrice" placeholder="最大价格" style="width:60px;" name="MaxPrice" value="@Request.QueryString["MaxPrice"]" />
+            库存深度：<input type="text" style="width:60px;" placeholder="最小库存" id="TxtMinStock" name="MinStock" value="@Request.QueryString["MinStock"]" />~
+            <input type="text" placeholder="最大库存" style="width:60px;" id="TxtMaxStock" name="MaxStock" value="@Request.QueryString["MaxStock"]" />
+            上架时间：<input id="startTime" name="shelfDateStart" value="@(Request.QueryString["shelfDateStart"])" maxlength="30" class="Wdate" type="text" readonly="readonly" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',skin:'whyGreen',lang:'zh-cn',isShowClear:true,alwaysUseStartDate:true,readOnly:true,maxDate:'#F{$dp.$D(\'endTime\',{d:0});}'})" />
+            <input id="endTime" name="shelfDateEnd" value="@(Request.QueryString["shelfDateEnd"])" maxlength="30" class="Wdate" type="text" readonly="readonly" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',skin:'whyGreen',lang:'zh-cn',isShowClear:true,alwaysUseStartDate:true,readOnly:true,minDate:'#F{$dp.$D(\'startTime\',{d:0});}'})" />
+            <br />
+            <br />
+            <select id="hottype" name="hottype">
+                <option value="0" >累计热度</option>
+                <option value="1" @(Request.QueryString["hottype"]=="1"?Html.Raw("selected='selected'"):null)>七日热度</option>
+            </select>
+            <input type="text" style="width:60px;"  id="TxtMinHotValue" name="MinHotValue" value="@Request.QueryString["MinHotValue"]" />~
+            <input type="text" style="width:60px;" id="TxtMaxHotValue" name="MaxHotValue" value="@Request.QueryString["MaxHotValue"]" />
+            <input type="submit" class="ProductSortBtn" value="查询" onclick="Premise()"/>
+            <input type="button" class="ProductSortBtn" value="重置" onclick="resetformContent()" />
+        </div>
+    </form>
+</div>
+
+
+<!--产品列表-->
+<div class="MoudleTitle">商品列表</div>
+<form id="productForm" action="/productflat/product/ProductList?categoryNO=@Request.QueryString["categoryNO"]&ProductNo=@Request.QueryString["ProductNo"]&ProductName=@Request.QueryString["ProductName"]&brandNO=@Request.QueryString["brandNO"]&colorId=@Request.QueryString["colorId"]&shelfType=@Request.QueryString["shelfType"]&ShelfDate=@Request.QueryString["ShelfDate"]&MinPrice=@Request.QueryString["MinPrice"]&MaxPrice=@Request.QueryString["MaxPrice"]&MinStock=@Request.QueryString["MinStock"]&MaxStock=@Request.QueryString["MaxStock"]&MinDiscountRate=@Request.QueryString["MinDiscountRate"]&MaxDiscountRate=@Request.QueryString["MaxDiscountRate"]&pageindex=@Request.QueryString["pageindex"]&categoryType=@Request.QueryString["categoryType"]&isLast=@Request.QueryString["isLast"]" method="post">
+    <div id="ProductList">
+        @for (int i = 0; i < Model.ListProducts.Count; i++)
+        {
+            <div class="ProductListItem" productlistindex="0">
+                <div class="ProductListItemChk">
+                @if (Model.ListProducts.ElementAt(i).IsSelected == 1)
+                {
+                    <input class="ChkProductItem" type="checkbox" disabled="disabled" name="add" value="@Model.ListProducts.ElementAt(i).ProductNo"/>
+                }
+                else
+                {
+                    <input class="ChkProductItem" type="checkbox" name="productNo" value="@Model.ListProducts.ElementAt(i).ProductNo" />
+                }
+                </div>
+                <div class="ProductListItemImg">
+                    <img src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@Model.ListProducts.ElementAt(i).ProductPicFile&type=1" />
+                </div>
+                <div class="ProductListItemDetail">
+                    <ul style="width:300px;">
+                        <li><font class="ItemBold">商品编号: </font>@Model.ListProducts.ElementAt(i).ProductNo</li>
+                        <li><font class="ItemBold">商品货号: </font>@Model.ListProducts.ElementAt(i).GoodsNo</li>
+                        <li><font class="ItemBold">商品名称: </font>@Model.ListProducts.ElementAt(i).ProductName</li>
+                        <li><font class="ItemBold">所属品牌: </font>@Model.ListProducts.ElementAt(i).BrandEnName (@Model.ListProducts.ElementAt(i).BrandCnName)</li>
+                    </ul>
+                    <ul style="width:200px;">
+                        <li><font class="ItemBold">可用库存: </font>@Model.ListProducts.ElementAt(i).stock</li>
+                        <li><font class="ItemBold">色系: </font>@Model.ListProducts.ElementAt(i).ProductPrimaryColorName</li>
+                        <li><font class="ItemBold">折扣: </font>@Model.ListProducts.ElementAt(i).DiscountRate</li>
+                        <li><font class="ItemBold">上架时间: </font>@Model.ListProducts.ElementAt(i).DateShelf</li>
+                    </ul>
+                    <ul style="width:300px;">
+                        <li><font class="ItemBold">市场价: </font>@Model.ListProducts.ElementAt(i).MarketPrice</li>
+                        <li><font class="ItemBold">尚品价: </font>@Model.ListProducts.ElementAt(i).LimitedPrice</li>
+                        <li><font class="ItemBold">促销价: </font>@Model.ListProducts.ElementAt(i).PromotionPrice</li>
+                    </ul>
+                </div>
+                <div>
+                    @if (Model.ListProducts.ElementAt(i).IsSelected == 1)
+                    {
+                        <a href="javascript:;" style="background-color:Gray;margin-top:30px;">已加入排序</a>
+                    }
+                    else
+                    {
+                        <a style="margin-top:30px;" href="javascript:addSortproduct('@Model.ListProducts.ElementAt(i).ProductNo')">加入排序</a>
+                    }
+
+                </div>
+           </div>
+        }
+    </div>
+
+    <div id="NoProduct">没有查找到任何商品, 请更换搜索条件再次尝试, 谢谢！</div>
+    <div id="ProductListBar">
+        <div id="ChkCtrl">
+            <input type="checkbox" onclick="cheAll(this.checked)" />全选
+            <input type="button" value="加入" id="addSortProduct" />
+        </div>
+        <div class="spPage">
+            共计@(Model.docCount)件 @Html.Raw(@Html.PagerX("page", pageIndex, pageSize, Model.docCount, false))
+        </div>
+    </div>
+    @if (!string.IsNullOrEmpty(Request.QueryString["categoryno"]))
+    {
+        <input type="hidden" value="@Request.QueryString["categoryno"]" name="categoryNo" id="ocscategoryNo" />
+    }
+    else
+    {
+        <input type="hidden" value="@Request.QueryString["BrandNO"]" name="categoryNo" id="ocscategoryNo" />
+    }
+    <input type="hidden" value="@Request.QueryString["categoryType"]" name="categoryType" id="categoryType" />
+</form>
+
+@Html.Raw(TempData["tip"])
+<div class="mod_tag" style="width:180px;" id="ProductNomod_tag">
+    @*<span style="cursor:pointer;float:right;" onclick="$('#textareaProductNo').val(''); $('#ProductNomod_tag').hide('slow')" class="close">x</span>*@
+    <p>请输入商品编号(回车隔开)</p>
+    <textarea style="overflow-y: scroll; height: 230px;" id="textareaProductNo"></textarea>
+    <div class="button_div">
+        <a class="green" onclick="ProductNoAll()" name="save" href="javascript:void(0);">确定</a>
+        <a onclick="ProductNocCancel() " name="cancel" href="javascript:void(0);">取消</a>
+    </div>
+</div>
+
+
+
+
+
+

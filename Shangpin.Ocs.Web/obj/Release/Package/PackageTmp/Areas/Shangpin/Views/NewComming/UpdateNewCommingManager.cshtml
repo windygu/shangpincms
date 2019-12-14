@@ -1,0 +1,139 @@
+﻿@model Shangpin.Entity.Wfs.SWfsIndexNewArrivalExt
+
+@{
+    ViewBag.Title = "编辑上新";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .tabNew {
+        width: 700px;
+    }
+
+        .tabNew td {
+            height: 60px;
+            line-height: 40px;
+        }
+</style>
+<script src="~/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js"></script>
+<h2>编辑上新</h2>
+<input type="hidden" value="@Model.NewArrivalId" id="NewArrivalId" />
+<div>
+    <form method="post">
+        <table class="tabNew">
+            <tr>
+                <td style="text-align:right;width:100px;color:red">标题：</td>
+                <td><input type="text" style="width:200px;height:30px;border:1px black solid;" name="Title" id="Title" value="@Model.NewArrivalTitle"/></td>
+                <td style="color:red;">图片标题不能大于30字符</td>
+            </tr>
+            <tr>
+                <td style="text-align:right;color:red;">上新商品：</td>
+                <td><input type="button" value="商品管理" style="width:80px;height:30px;" onclick="GoodsNew()"/></td>
+                <td style="color:red;"></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td colspan="2">
+                    <table>
+                        @{
+                            if (Model != null)
+                            {
+
+                                <tr>
+                                    @for (var i = 0; i < (Model.ProductNo.Count() >= 6 ? 6 : Model.ProductNo.Count()); i++)
+                                    {
+                                        <td style="text-align:center;"><img src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@Model.ProductPicFile[i]&type=1" style="width: 60px; height: 60px; margin: 2px;" /></td>
+                                    }
+
+                                </tr>
+                                <tr>
+                                    @for (var i = 6; i < (Model.ProductNo.Count() >= 12 ? 12 : Model.ProductNo.Count()); i++)
+                                    {
+                                        <td style="text-align:center;"><img src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@Model.ProductPicFile[i]&type=1" style="width: 60px; height: 60px; margin: 2px;" /></td>
+                                    }
+                                </tr>
+                            }
+                        }
+                    </table>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td style="text-align:right;width:40px; color:red;">上新时间：</td>
+                <td>
+                    @if (string.IsNullOrEmpty(ViewBag.CheckedAll))
+{
+    <input type="text" style="width:200px;height:30px;border:1px black solid;" onclick="WdatePicker({dateFmt:'yyyy-M-d @ViewBag.DetailTime', opposite: true, minDate:'%y-%M-{%d}'}) " name="CreateTime" id="CreateTime" value="@Model.StartDate" />
+}
+                    else
+                    {
+                        <input type="text" style="width:200px;height:30px;border:1px black solid;" onclick="WdatePicker({dateFmt:'yyyy-M-d @ViewBag.DetailTime', opposite: true, disabledDays: [@ViewBag.CheckedAll],minDate:'%y-%M-{%d}'})" name="CreateTime" id="CreateTime" value="@Model.StartDate" />
+                    }
+                <td style="color:red;">注释：限制只有上新时间日期才能进行选择</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td colspan="2"><input type="button" style="width:65px;height:35px" value="确认" onclick="SubmitNewComming()" />&nbsp;&nbsp;<input type="button" style="width: 65px; height: 35px" value="取消" onclick="GoBack()"/></td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+
+
+<script>
+
+    //保存上新
+    function SubmitNewComming() {
+        var id = $("#NewArrivalId").val();
+        var title = $("#Title").val();
+        if ($.trim(title) == "") {
+            alert("标题不能为空！");
+            return false;
+        }
+        if (title.length > 30) {
+            alert("您输入的标题太长了！");
+            return false;
+        }
+        var createtime = $("#CreateTime").val();
+
+        if ($.trim(createtime) == "") {
+            alert("上新时间不能为空！");
+            return false;
+        }
+
+
+        $.ajax({
+            url: '/Shangpin/newcomming/UpdateNewCommingManagerById',
+            type: "POST",
+            data: { CommingId: id, Title: title, CreateTime: createtime },
+            success: function (result) {
+                //alert(result);
+                if(result=="-1")
+                {
+                    alert('时间重复，添加失败！');
+                }
+                else
+                {
+                    location.href = "NewCommingIndex";
+                }
+                
+            }
+        });
+
+        return false;
+    }
+
+    //管理商品
+    function GoodsNew()
+    {
+        var id = $("#NewArrivalId").val();
+        window.location.href = "UpdateGoods?GoodsId=" + id + "#";
+    }
+
+    function GoBack() {
+        window.location.href = "NewCommingIndex";
+    }
+</script>

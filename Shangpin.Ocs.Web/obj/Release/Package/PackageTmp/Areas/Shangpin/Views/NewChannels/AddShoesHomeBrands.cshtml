@@ -1,0 +1,150 @@
+﻿@model IEnumerable<Shangpin.Ocs.Entity.Extenstion.ShangPin.SpHomeRecommendBrandExtends>
+@using Shangpin.Ocs.Service.Common
+@{
+    ViewBag.Title = "编辑模板";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+
+    string editPicNo = "";
+    string BrandNoStr = "";
+    string BrandName = "";
+    string BrandTime = "";
+    string RedId = "";
+    //编辑时候用
+    if (Request.QueryString["isEdite"] == "1")
+    {
+        editPicNo = Request.QueryString["BrandPicNo"];
+        BrandNoStr = Request.QueryString["BrandNo"];
+        BrandName = Request.QueryString["brandName"];
+        BrandTime = Request.QueryString["BrandTime"];
+        RedId = Request.QueryString["Recid"];
+    }
+}
+@section HeadStyle{
+    <link href="/Areas/Shangpin/Content/css/page/rightcontent/brandcontent.css" rel="stylesheet" type="text/css" charset="utf-8" />
+}
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/plug/ERPBrand.js"></script>
+    <script src="/Areas/Shangpin/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+    <script src="/Areas/Shangpin/Scripts/plug/uploadPreview.min.js"></script>
+    <script src="/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function addHomeBrand() {
+            $("#form1").ajaxSubmit({
+                success: function (data) {
+                    if (data != "1" && data != "0") {
+                        alert(data);
+                        return false;
+                    }
+                    else {
+                        alert("操作成功！");
+                        window.location = "/Shangpin/NewChannels/ShoesBrandSelectList.html?PageNo=" + $("#PageNo").val() + "&PagePositionNo=" + $("#PagePositionNo").val() + "&isRecommendBrand=" + $("#isRecommendBrand").val();
+                        return true;
+                    }
+                }
+            });
+        }
+        $(document).ready(function () {
+            $("#BrandName").selectBrand('BrandNo', 'BrandName', false, '', '');
+            $("input[type=file]").uploadPreview({
+                Width: 69,
+                Height: 69,
+                ImgType: ["gif", "jpeg", "jpg"],
+                errorCallback: function (error) {
+                    alert(error);
+                },
+                Callback: function (patharr, pathstr, fileObj) {
+
+                    var arr = new Array();
+                    var isIE = false;
+                    if (patharr && patharr.length > 0) {
+                        arr = patharr;
+                    } else if (pathstr && pathstr.length > 0) {
+                        isIE = true;
+                        arr = new Array(pathstr);
+                    }
+                    if (arr.length > 0) {
+                        $("#FileTopTopImgSrc").attr("src", arr[0]);
+                        $("#PictureFileNo").val("");
+                    }
+                }
+            });
+        });
+    </script>
+}
+<h1>
+    OCS > 尚品 > 频道页推荐品牌 > @Request.QueryString["PagePositionName"]
+</h1>
+
+<div class="mx-brandcontent-msgbox">
+    <form action="/Shangpin/NewChannels/SaveShoesHomeBrand?PageNo=@Request.QueryString["PageNo"]" method="post" id="form1" enctype="multipart/form-data">
+        <dl>
+            <dt>
+                当前位置：
+            </dt>
+            <dd>
+                @Request.QueryString["PagePositionName"]
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                &nbsp;
+            </dt>
+            <dd>
+                @{
+                    if (editPicNo != "")
+                    {
+                        <img alt="" id="FileTopTopImgSrc" src="/ReadPic/GetPic.ashx?width=128&height=200&pictureFileNo=@editPicNo&type=2" style="background-color: #CCCCCC;width:128px;height:200px;" />
+                    }
+                }
+            </dd>
+        </dl>
+        <dl>
+            <dt style="color:Red;">上传图片：</dt>
+            <dd>
+
+                <input id="FlapHotTwo" type="file" name="FlapHotTwo" />
+                <span>*尺寸：128*200;格式：jpg gif;大小：500K以下</span>
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                <span style="color:Red;">选择品牌:</span>
+            </dt>
+            <dd>
+                @if (Request.QueryString["brandno"] != null)
+                {
+                    <input type="text" name="BrandName" id="BrandName" style="width: 120px; color: #666;font-size: 12px;" placeholder="请选择品牌" value="@(string.IsNullOrEmpty(Request.QueryString["BrandName"]) ? (Model != null ? Model.FirstOrDefault().BrandCnName : "") : Request.QueryString["BrandName"])" />
+                }
+                else
+                {
+                    <input type="text" name="BrandName" id="BrandName" style="width: 120px; color: #666;font-size: 12px;" value="@BrandName" placeholder="请选择品牌" />
+                }
+                <input id="BrandNo" name="BrandNo" type="hidden" value="@BrandNoStr" />
+                <input id="isRecommendBrand" name="isRecommendBrand" type="hidden" value="@Request.QueryString["isRecommendBrand"]" />
+                <input id="PageNo" name="PageNo" type="hidden" value="@Request.QueryString["PageNo"]" />
+                <input id="RedId" name="RedId" type="hidden" value="@Request.QueryString["RedId"]" />
+                <input id="PagePositionNo" name="PagePositionNo" type="hidden" value="@Request.QueryString["PagePositionNo"]" />
+                <input id="PagePositionName" name="PagePositionName" type="hidden" value="@Request.QueryString["PagePositionName"]" />
+                <input id="PictureFileNo" name="PictureFileNo" type="hidden" value="@Request.QueryString["BrandPicNo"]" />
+               
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                <span style="color:#f30505">选择时间:</span>
+            </dt>
+            <dd>
+                <input id="txt_date" name="txt_date" type='text' class='Wdate' readonly="readonly" value="@BrandTime" onclick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm:00'})" />
+            </dd>
+        </dl>
+        <dl>
+            <dt>&nbsp;&nbsp;</dt>
+            <dd>
+                <input type="button" onclick="addHomeBrand()" value="保存" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED; color: #FFFFFF; cursor: pointer;" />
+                <input type="button" value="取消" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;" onclick="window.location.href = '/Shangpin/NewChannels/Shoes?PageNo=@Request.QueryString["PageNo"]'" />
+            </dd>
+        </dl>
+    </form>
+
+</div>

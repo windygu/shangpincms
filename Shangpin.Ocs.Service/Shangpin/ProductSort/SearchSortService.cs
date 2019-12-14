@@ -1,0 +1,662 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Shangpin.Entity.Wfs;
+using Shangpin.Framework.Common;
+using Shangpin.Ocs.Entity.Extenstion.ProductFlat;
+using Shangpin.Ocs.Service.Common;
+using System.Xml;
+using System.Reflection;
+using Shangpin.Ocs.Entity.Extenstion.ShangPin.ProductFlat;
+
+namespace Shangpin.Ocs.Service.Shangpin.ProductSort
+{
+    public class SearchSortService
+    {
+
+        public XMLReturnClassLists GetLists(Parameters p)
+        {
+            string url = GetListUrl(p);
+            string xmlstr = GetResponse(url);
+            return XmlParsing(xmlstr);
+        }
+        //获取TopShop搜索列表 特殊临时用
+        public XMLReturnClassLists GetTopShopLists(Parameters p)
+        {
+            string url = GetTopShopListUrl(p);
+            string xmlstr = GetResponse(url);
+            return XmlParsing(xmlstr);
+        }
+
+        private string GetTopShopListUrl(Parameters p)
+        {
+            System.Text.StringBuilder str = new StringBuilder();
+            str.Append(AppSettingManager.AppSettings["SearchInterFaceUrl"]);
+            str.Append("/spcms/TopshopHotList?userID=a23j3121112&userIP=127.0.0.1&encode=UTF-8");
+            if (p.productNO != null && p.productNO != "")
+            {
+                str.Append("&productNO=" + p.productNO);
+            }
+            if (p.productName != null && p.productName != "")
+            {
+                str.Append("&productName=" + p.productName);
+            }
+            if (p.categoryNO != null && p.categoryNO != "")
+            {
+                str.Append("&categoryNO=" + p.categoryNO);
+            }
+            if (p.brandNO != null && p.brandNO != "")
+            {
+                str.Append("&brandNO=" + p.brandNO);
+            }
+            if (p.colorId != null && p.colorId != "")
+            {
+                str.Append("&colorId=" + p.colorId);
+            }
+            if (p.shelfDate != null && p.shelfDate != "")
+            {
+                str.Append("&shelfDate=" + p.shelfDate);
+            }
+            if (p.postArea != null && p.postArea != "")
+            {
+                str.Append("&postArea=" + p.postArea);
+            }
+            if (p.price != null && p.price != "")
+            {
+                str.Append("&price=" + p.price);
+            }
+            if (p.stock != null && p.stock != "")
+            {
+                str.Append("&stock=" + p.stock);
+            }
+
+            if (p.discountRate != null && p.discountRate != "")
+            {
+                str.Append("&discountRate=" + p.discountRate);
+            }
+            if (p.start != null && p.start != "")
+            {
+                str.Append("&start=" + p.start);
+            }
+            else
+            {//为空的话默认1
+                str.Append("&start=1");
+            }
+            if (p.end != null && p.end != "")
+            {
+                str.Append("&end=" + p.end);
+            }
+            else
+            {//为空的话默认10
+                str.Append("&end=10");
+            }
+            if (!string.IsNullOrEmpty(p.hot))
+            {
+                str.Append("&hot="+p.hot);
+            }
+            if (!string.IsNullOrEmpty(p.sevenHot))
+            {
+                str.Append("&sevenHot=" + p.sevenHot);
+            }
+            return str.ToString();
+        }
+
+        /// <summary>
+        /// 请求
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
+        private string GetResponse(string url, string encoding = "")
+        {
+            string result;
+            try
+            {
+                //创建
+                var httpWebRequest = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(url);
+                httpWebRequest.KeepAlive = false;
+                //访问
+                var httpWebResponse = (System.Net.HttpWebResponse)httpWebRequest.GetResponse();
+                Encoding coding = string.IsNullOrEmpty(encoding) ? Encoding.UTF8 : Encoding.GetEncoding(encoding);
+                System.IO.StreamReader sr;
+                using (sr = new System.IO.StreamReader(httpWebResponse.GetResponseStream(), coding))
+                {
+                    result = sr.ReadToEnd();
+                }
+                //关闭
+                httpWebResponse.Close();
+                httpWebRequest.Abort();
+            }
+            catch (Exception)
+            {
+                result = string.Empty;
+            }
+            if (string.IsNullOrEmpty(result))
+            {
+                throw new Exception("搜索接口地址" + url + "返回数据错误");
+            }
+            //返回
+            return result;
+        }
+        /// <summary>
+        /// //根据条件拼接url地址
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        private string GetListUrl(Parameters p)
+        {
+            System.Text.StringBuilder str = new StringBuilder();
+            str.Append(AppSettingManager.AppSettings["ProductSortList"]);
+            str.Append("userID=a23j3121112&userIP=127.0.0.1&encode=UTF-8");
+            if (p.productNO != null && p.productNO != "")
+            {
+                str.Append("&productNO=" + p.productNO);
+            }
+            if (p.productName != null && p.productName != "")
+            {
+                str.Append("&productName=" + p.productName);
+            }
+            if (p.categoryNO != null && p.categoryNO != "")
+            {
+                str.Append("&categoryNO=" + p.categoryNO);
+            }
+            if (p.brandNO != null && p.brandNO != "")
+            {
+                str.Append("&brandNO=" + p.brandNO);
+            }
+            if (p.colorId != null && p.colorId != "")
+            {
+                str.Append("&colorId=" + p.colorId);
+            }
+            if (p.shelfDate != null && p.shelfDate != "")
+            {
+                str.Append("&shelfDate=" + p.shelfDate);
+            }
+            if (p.postArea!=null&&p.postArea!="")
+            {
+                str.Append("&postArea="+p.postArea);
+            }
+            if (p.price != null && p.price != "")
+            {
+                str.Append("&price=" + p.price);
+            }
+            if (p.stock != null && p.stock != "")
+            {
+                str.Append("&stock=" + p.stock);
+            }
+            if (p.discountRate != null && p.discountRate != "")
+            {
+                str.Append("&discountRate=" + p.discountRate);
+            }
+            if (p.start != null && p.start != "")
+            {
+                str.Append("&start=" + p.start);
+            }
+            else
+            {//为空的话默认1
+                str.Append("&start=1");
+            }
+            if (p.end != null && p.end != "")
+            {
+                str.Append("&end=" + p.end);
+            }
+            else
+            {//为空的话默认10
+                str.Append("&end=10");
+            }
+            if (!string.IsNullOrEmpty(p.hot))
+            {
+                str.Append("&hot=" + p.hot);
+            }
+            if (!string.IsNullOrEmpty(p.sevenHot))
+            {
+                str.Append("&sevenHot=" + p.sevenHot);
+            }
+            return str.ToString();
+        }
+
+        /// <summary>
+        /// 查询条件的描述
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        public string SelectDirection(Parameters p) 
+        {
+            System.Text.StringBuilder str = new StringBuilder();
+            if(p.productNO!=null&&p.productNO!="")
+            {
+                str.Append(p.productNO + ">");
+            }
+            if(p.productName!=null&&p.productName!="")
+            {
+                str.Append(System.Web.HttpUtility.UrlDecode(p.productName) + ">");
+            }
+            if (p.BrandName!=null&&p.BrandName!="")
+            {
+                str.Append(p.BrandName+">");
+            }
+            if(p.OCSCategoryName!=null&&p.OCSCategoryName!="")
+            {
+                str.Append(p.OCSCategoryName+">");
+            }
+            if (p.ColorName!=null&&p.ColorName!="")
+            {
+                str.Append(p.ColorName+">");
+            }
+            if(p.shelfType!=null&&p.shelfType!="")
+            {
+                if (p.shelfType == "0")
+                {
+                    str.Append("新上架>");
+                }
+                else 
+                {
+                    str.Append(p.StartShelfDate+"-"+p.EndShelfDate);
+                }
+            }
+            if (p.postArea!=null&&p.postArea!="")
+            {
+                if(p.postArea=="1")
+                {
+                    str.Append("大陆商品>");
+                }
+                else if (p.postArea=="2")
+                {
+                    str.Append("海外商品>");
+                }
+            }
+            if(p.StartPrice!=null&&p.StartPrice!="")
+            {
+                str.Append("价格"+p.StartPrice+"-"+p.EndPrice+">");
+            }
+            if(p.StartStock!=null&&p.StartStock!="")
+            {
+                str.Append("库存"+p.StartStock+"-"+p.EndStock+">");
+            }
+            if(p.StartDiscountRate!=null&&p.StartDiscountRate!="")
+            {
+                str.Append("折扣"+p.StartDiscountRate+"-"+p.EndDiscountRate+">");
+            }
+
+            return str.ToString().TrimEnd('>');
+        }
+        
+        /// <summary>
+        /// 解析分类、色系节点
+        /// </summary>
+        /// <param name="xn">分类、色系节点</param>
+        /// <returns></returns>
+        private string PraseCategoryOrColor(XmlNode xn)
+        {
+            string ID = "";
+            XmlNodeList xnl = xn.ChildNodes;
+            StringBuilder sb = new StringBuilder();
+            foreach (var key in xnl)
+            {
+                string val = ((XmlElement)key).InnerText;//获取节点值
+                string[] arr = val.Split('|');//分隔参数
+                if (arr.Length > 0)
+                {
+                    sb.Append("," + arr[0]);//加入编号
+                }
+            }
+            ID = sb.ToString();
+            if (!string.IsNullOrEmpty(ID))
+            {
+                ID = ID.Substring(1);//去掉第一个逗号
+            }
+            return ID;
+        }
+
+        /// <summary>
+        /// 解析xml
+        /// </summary>
+        /// <param name="xmlStr"></param>
+        /// <param name="docCount">返回总条数</param>
+        /// <returns>返回所有集合对象</returns>
+        private XMLReturnClassLists XmlParsing(string xmlStr)
+        {
+            XMLReturnClassLists xmlclass = new XMLReturnClassLists();
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.InnerXml = xmlStr;
+            int Status = int.Parse(xmlDoc.SelectSingleNode("/result/Total").InnerText);//获取总查询条数
+            xmlclass.docCount = Status;
+            if (Status == 0)//没有查询到数据
+            {
+                return xmlclass;
+            }
+            List<SearchResultBrands> listBrand = new List<SearchResultBrands>();
+            List<SearchResultCategorys> listCategory = new List<SearchResultCategorys>();
+            List<ProductPrimaryColors> listColor = new List<ProductPrimaryColors>();
+            List<InterfaceProductInfo> listprod = new List<InterfaceProductInfo>();
+            XmlNodeList docs_nodeList = xmlDoc.SelectNodes("/result/docs/doc");
+            foreach (XmlNode item_doc in docs_nodeList)
+            {
+                InterfaceProductInfo prod = new InterfaceProductInfo();
+                foreach (XmlNode item_field in item_doc.ChildNodes)
+                {
+                    switch (item_field.Attributes["name"].Value)
+                    {
+                        case "ProductNo":
+                            prod.ProductNo = item_field.InnerText;
+                            break;
+                        case "ProductName":
+                            prod.ProductName = item_field.InnerText;
+                            break;
+                        case "MarketPrice":
+                            prod.MarketPrice = decimal.Parse(string.IsNullOrEmpty(item_field.InnerText)?"0":item_field.InnerText);
+                            break;
+                        case "LimitedPrice":
+                            prod.LimitedPrice = decimal.Parse(string.IsNullOrEmpty(item_field.InnerText) ? "0" : item_field.InnerText);
+                            break;
+                        case "PromotionPrice":
+                            prod.PromotionPrice = decimal.Parse(string.IsNullOrEmpty(item_field.InnerText)?"0":item_field.InnerText);
+                            break;
+                        case "ProductPicFile":
+                            prod.ProductPicFile = item_field.InnerText;
+                            break;
+                        case "GoodsNo":
+                            prod.GoodsNo = item_field.InnerText;
+                            break;
+                        case "DiscountRate":
+                            prod.DiscountRate = item_field.InnerText;
+                            break;
+                        case "BrandNo":
+                            prod.BrandNo = item_field.InnerText;
+                            break;
+                        case "BrandCnName":
+                            if (item_field.InnerText!=null&&item_field.InnerText!="")
+                            {
+                                prod.BrandCnName = item_field.InnerText;
+                            }
+                            break;
+                        case "BrandEnName":
+                            prod.BrandEnName = item_field.InnerText;
+                            break;
+                        case "DateShelf":
+                            prod.DateShelf = item_field.InnerText;
+                            break;
+                        case "Stock":
+                            prod.stock = int.Parse(item_field.InnerText);
+                            break;
+                        case "Hot":
+                            prod.Hot = int.Parse(!string.IsNullOrEmpty(item_field.InnerText)?item_field.InnerText:"0");
+                            break;
+                        case "SevenHot":
+                            prod.SevenHot = int.Parse(!string.IsNullOrEmpty(item_field.InnerText)?item_field.InnerText:"0");
+                            break;
+                        case "Category":
+                            for (int i = 0; i < item_field.ChildNodes.Count; i++)
+                            {
+                                if (i==item_field.ChildNodes.Count-1)
+                                {
+                                    prod.Category = item_field.ChildNodes[i].InnerText.Split('|')[1];
+                                }
+                                else
+                                {
+                                    prod.Category = item_field.ChildNodes[i].InnerText.Split('|')[1]+"|";
+                                }
+                            }
+                            break;
+                        case "ProductPrimaryColor":
+                            for (int i = 0; i < item_field.ChildNodes.Count; i++)
+                            {
+                                if (i == item_field.ChildNodes.Count - 1)
+                                {
+                                    prod.ProductPrimaryColor =prod.ProductPrimaryColor+item_field.ChildNodes[i].InnerText.Split('|')[0];
+                                    prod.ProductPrimaryColorName =prod.ProductPrimaryColorName+item_field.ChildNodes[i].InnerText.Split('|')[1];
+                                }
+                                else
+                                {
+                                    prod.ProductPrimaryColor =prod.ProductPrimaryColor+item_field.ChildNodes[i].InnerText.Split('|')[0] + "|";
+                                    prod.ProductPrimaryColorName =prod.ProductPrimaryColorName+item_field.ChildNodes[i].InnerText.Split('|')[1] + "|";
+                                }
+                            }
+                            break;
+                    }
+                    
+                }
+                listprod.Add(prod);
+            }
+
+            XmlNodeList facets_nodeList = xmlDoc.SelectNodes("/result/facets");
+            if (facets_nodeList != null && facets_nodeList.Count > 0)
+            {
+                foreach (XmlNode item_facets in facets_nodeList)
+                {
+                    foreach (XmlNode fList in item_facets.ChildNodes)//节点facet
+                    {
+                        if (fList.Attributes["name"].Value == "Brand") //取name=brand的子节点
+                        {
+                            XmlNodeList brandsXMl = fList.ChildNodes;//获取item节点
+                            string brandString = "";
+                            string[] attribute = null;
+                            foreach (XmlNode item_brand in brandsXMl)
+                            {
+                                SearchResultBrands brand = new SearchResultBrands();
+                                brandString = item_brand.Attributes["name"].Value;
+                                brand.ProductCount = int.Parse(item_brand.InnerText);
+                                attribute = brandString.Split('|');
+                                brand.BrandNO = attribute[0];
+                                brand.BrandEnName = attribute[1];
+                                brand.BrandChName = attribute[2];
+                                listBrand.Add(brand);
+                            }
+                        }
+                        if (fList.Attributes["name"].Value == "ProductPrimaryColors")
+                        {
+                            XmlNodeList ColorsXMl = fList.ChildNodes;//获取item节点
+                            string colorString = "";
+                            string[] attribute = null;
+                            foreach (XmlNode item_color in ColorsXMl)
+                            {
+                                ProductPrimaryColors color = new ProductPrimaryColors();
+                                colorString = item_color.Attributes["name"].Value;
+                                color.ColorProductCount = int.Parse(item_color.InnerText);
+                                attribute = colorString.Split('|');
+                                color.ColorNO = attribute[0];
+                                color.ColorName = attribute[1];
+                                color.ColorPicFile = attribute[2];
+                                listColor.Add(color);
+                            }
+                        }
+                        if (fList.Attributes["name"].Value == "CLv2")//二级分类
+                        {
+                            XmlNodeList CategoryXMl = fList.ChildNodes;//获取item节点
+                            string categoryString = "";
+                            string[] attribute = null;
+                            foreach (XmlNode item_category in CategoryXMl)
+                            {
+                                SearchResultCategorys cagegory = new SearchResultCategorys();
+                                categoryString = item_category.Attributes["name"].Value;
+                                cagegory.CategoryProductCount = int.Parse(item_category.InnerText);
+                                attribute = categoryString.Split('|');
+                                cagegory.CategoryNo = attribute[0];
+                                cagegory.CateGoryName = attribute[1];
+                                cagegory.PrentNo = attribute[2];
+                                cagegory.State = int.Parse(attribute[3]);
+                                cagegory.CategorySort = int.Parse(attribute[4]);
+                                cagegory.CateGoryLevel = 2;
+                                listCategory.Add(cagegory);
+
+                            }
+                        }
+                        if (fList.Attributes["name"].Value == "CLv3")//二级分类
+                        {
+                            XmlNodeList CategoryXMl = fList.ChildNodes;//获取item节点
+                            string categoryString = "";
+                            string[] attribute = null;
+                            foreach (XmlNode item_category in CategoryXMl)
+                            {
+                                SearchResultCategorys cagegory = new SearchResultCategorys();
+                                categoryString = item_category.Attributes["name"].Value;
+                                cagegory.CategoryProductCount = int.Parse(item_category.InnerText);
+                                attribute = categoryString.Split('|');
+                                cagegory.CategoryNo = attribute[0];
+                                cagegory.CateGoryName = attribute[1];
+                                cagegory.PrentNo = attribute[2];
+                                cagegory.State = int.Parse(attribute[3]);
+                                cagegory.CategorySort = int.Parse(attribute[4]);
+                                cagegory.CateGoryLevel = 3;
+                                listCategory.Add(cagegory);
+
+                            }
+                        }
+                        if (fList.Attributes["name"].Value == "CLv4")//二级分类
+                        {
+                            XmlNodeList CategoryXMl = fList.ChildNodes;//获取item节点
+                            string categoryString = "";
+                            string[] attribute = null;
+                            foreach (XmlNode item_category in CategoryXMl)
+                            {
+                                SearchResultCategorys cagegory = new SearchResultCategorys();
+                                categoryString = item_category.Attributes["name"].Value;
+                                cagegory.CategoryProductCount = int.Parse(item_category.InnerText);
+                                attribute = categoryString.Split('|');
+                                cagegory.CategoryNo = attribute[0];
+                                cagegory.CateGoryName = attribute[1];
+                                cagegory.PrentNo = attribute[2];
+                                cagegory.State = int.Parse(attribute[3]);
+                                cagegory.CategorySort = int.Parse(attribute[4]);
+                                cagegory.CateGoryLevel = 4;
+                                listCategory.Add(cagegory);
+
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            xmlclass.ListBrands = listBrand.OrderBy(p=>p.BrandEnName).ToList();
+            xmlclass.ListCategorys = listCategory;
+            xmlclass.ListProducts = listprod;
+            xmlclass.ListColors = listColor;
+            return xmlclass;
+        }
+
+        /// <summary>
+        /// 将LIST对象转换成JSON各式字符窜
+        /// </summary>
+        /// <param name="List">LIST对象</param>
+        /// <returns></returns>
+        public string ListToJsonString<T>(List<T> List)
+        {
+            if (List.Count < 1)
+            {
+                return "[]";
+            }
+            StringBuilder sb = new StringBuilder();
+            PropertyInfo[] piList = List[0].GetType().GetProperties();
+            foreach (var item in List)
+            {
+                sb.Append(",{");
+                StringBuilder sbTmp = new StringBuilder();
+                //遍历元素并拼接元素属性及属性值
+                foreach (var Propery in piList)
+                {
+                    sbTmp.Append(",\"" + Propery.Name + "\":\"" + Propery.GetValue(item, null) + "\"");
+                }
+                sb.Append(sbTmp.ToString().Substring(1) + "}");
+            }
+            return "[" + sb.ToString().Substring(1) + "]";
+        }
+
+        /// <summary>
+        /// 获取指定OCS分类编号、产品编号的记录数目
+        /// </summary>
+        /// <param name="ocsCategoryNo"></param>
+        /// <param name="productNo"></param>
+        /// <returns></returns>
+        public int GetSortProductCount(string ocsCategoryNo, string productNo)
+        {
+            IEnumerable<SWfsSortProduct> list = DapperUtil.Query<SWfsSortProduct>("ComBeziWfs_SWfsSortProduct_IsRepeatCategoryNo", new
+            {
+                OcsCategoryNo = ocsCategoryNo,
+                ProductNo = productNo
+            });
+            return list.Count();
+        }
+
+        /// <summary>
+        /// 获取指定OCS分类号下已排序的商品编号
+        /// </summary>
+        /// <param name="ocsCategoryNo"></param>
+        /// <returns></returns>
+        public List<SWfsSortProduct> GetSortedProduct(string ocsCategoryNo)
+        {
+            List<SWfsSortProduct> list = DapperUtil.Query<SWfsSortProduct>("ComBeziWfs_SWfsSortProduct_GetSotedProduct", new
+            {
+                OcsCategoryNo = ocsCategoryNo
+            }).ToList();
+            return list;
+        }
+
+        /// <summary>
+        /// 修改热度排序
+        /// </summary>
+        /// <param name="productNo">商品编号</param>
+        /// <param name="hotValue">商品热度</param>
+        /// <param name="hotSevenValue">商品7日热度</param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public int EditeHotValue(string productNo, int hotValue, int hotSevenValue, int type)
+        {
+            if (hotValue == 0 && hotSevenValue == 0)
+            {
+                return -1;
+            }
+            ProductHot obj = DapperUtil.Query<ProductHot>("ComBeziWfs_SWfsProductHot_GetProductHotValue", new
+            {
+                ProductNo = productNo
+            }).FirstOrDefault();
+            if (obj == null)
+            {
+                //添加一条热度
+                return DapperUtil.Execute("ComBeziWfs_SWfsProductHot_AddProductHotValue", new
+                {
+                    ProductNo = productNo,
+                    ProductHotValue = hotValue,
+                    ProductSevenHotValue = hotSevenValue
+                });
+            }
+            else
+            {
+                if (type == 0)//修改热度
+                {
+                    if (obj.ProductHotValue == hotValue)//如果热度值没变
+                    {
+                        return 0;
+                    }
+                    return DapperUtil.Execute("ComBeziWfs_SWfsProductHot_EditeProductHotValue", new
+                    {
+                        ProductNo = productNo,
+                        ProductHotValue = hotValue
+                    });
+                }
+                else//修改7日热度
+                {
+                    if (obj.ProductSevenHotValue == hotSevenValue)//如果热度值没变 
+                    {
+                        return 0;
+                    }
+                    return DapperUtil.Execute("ComBeziWfs_SWfsProductHot_EditeSevenProductHotValue", new
+                    {
+                        ProductNo = productNo,
+                        ProductSevenHotValue = hotSevenValue
+                    });
+                }
+            }
+            return 0;
+        }
+
+        public IEnumerable<ProductHot> GetProductListByProductNoList(IEnumerable<string> productNoList)
+        {
+            return DapperUtil.Query<ProductHot>("ComBeziWfs_SWfsProductHot_GetProductListByProductNoList", new
+            {
+                ProductNoList=productNoList
+            });
+        }
+    }
+}

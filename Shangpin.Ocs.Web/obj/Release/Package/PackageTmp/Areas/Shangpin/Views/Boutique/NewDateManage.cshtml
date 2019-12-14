@@ -1,0 +1,121 @@
+﻿@model SwfsFlagShipGloalConfig
+@using Shangpin.Entity.Wfs
+@{
+    ViewBag.Title = "上架时间设置";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/Areas/Shangpin/Scripts/lib/jquery.js" charset="utf-8"></script>
+<h1>
+    OCS > 尚品 > <a href="/Shangpin/Flagship/Index?brandNo=@Request.QueryString["brandNo"]">精品旗舰店</a> > 上新时间设置
+</h1>
+<div>
+    <form method="post">
+        <span style="color:red;">上新文字设置：</span>
+        <input type="text" style="width:350px;height:30px;border:1px black solid;" name="CommingTitle" id="CommingTitle" value="@(Model != null?Model.ConfigName:null)" />
+        <span style="color:red;margin-left:10px;">汉字个数不超过15个</span>
+        <div style="width:500px;height:170px; border:1px #808080 solid;margin-top:15px;">
+            <table style="margin:10px;">
+                <tr style="height:30px;">
+                    <td>上新时间设置：</td>
+                </tr>
+                <tr style="height:30px;">
+                    <td>周期：</td>
+                </tr>
+                <tr style="height:30px;">
+                    <td>
+                        <input type="hidden" id="BrandNo" name="BrandNo" value="@Request.QueryString["BrandNo"]" />
+                        <input type="hidden" id="xingqi" name="xingqi" />
+                        <input type="checkbox" value="1" name="check1" @(Model != null && Model.ConfigValue != "" && Model.ConfigValue.Contains("1") ? "checked=\"checked\"" : null) />星期一
+                        <input type="checkbox" value="2" name="check2" @(Model != null && Model.ConfigValue != "" && Model.ConfigValue.Contains("2") ? "checked=\"checked\"" : null) />星期二
+                        <input type="checkbox" value="3" name="check3" @(Model != null && Model.ConfigValue != "" && Model.ConfigValue.Contains("3") ? "checked=\"checked\"" : null) />星期三
+                        <input type="checkbox" value="4" name="check4" @(Model != null && Model.ConfigValue != "" && Model.ConfigValue.Contains("4") ? "checked=\"checked\"" : null) />星期四
+                        <input type="checkbox" value="5" name="check5" @(Model != null && Model.ConfigValue != "" && Model.ConfigValue.Contains("5") ? "checked=\"checked\"" : null) />星期五
+                        <input type="checkbox" value="6" name="check6" @(Model != null && Model.ConfigValue != "" && Model.ConfigValue.Contains("6") ? "checked=\"checked\"" : null) />星期六
+                        <input type="checkbox" value="0" name="check7" @(Model != null && Model.ConfigValue != "" && Model.ConfigValue.Contains("0") ? "checked=\"checked\"" : null) />星期日
+                    </td>
+                </tr>
+                <tr style="height:30px;">
+                    <td>时间：</td>
+                </tr>
+                <tr style="height:30px;">
+                    <td>
+                        <input type="text" style="width:170px;height:25px;border:1px black solid;" name="DetailTime" id="DetailTime" onfocus="WdatePicker({dateFmt:'H:mm'})" value="@(Model != null?Model.ConfigTime:null)" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="margin-top:20px;margin-left:30px;">
+            <input type="button" style="width:55px;height:25px;margin-right:30px;" value="确认" onclick="return settime()" />&nbsp;&nbsp;
+            <input type="reset" style="width: 55px; height: 25px;" value="返回" onclick="GoBack()" />
+        </div>
+    </form>
+</div>
+
+<script>
+    function settime() {
+        var str = "";
+        var $checkBox = $("input[type='checkbox']:checked");
+        var arr = $checkBox.each(function () {
+                str += $(this).val() + ",";
+        });
+        $("#xingqi").val(str);
+        var title = $("#CommingTitle").val();
+        if ($.trim(title) == "") {
+            alert("标题不能为空！");
+            return false;
+        }
+        //document.getElementById("txtTitle").value.replace(/[^\x00-\xff]/g, "**").length字节数
+        if (title.replace(/[^\x00-\xff]/g, "**").length > 30) {
+            alert("您输入的标题太长了！");
+            return false;
+        }
+        var createtime = $("#DetailTime").val();
+
+        if ($.trim(createtime) == "") {
+            alert("上新具体时间不能为空！");
+            return false;
+        }
+
+        var brandNo = $("#BrandNo").val();
+        $.ajax({
+            url: 'UpdateNewDateManage',
+            type: "POST",
+            data: { configValue: str, configName: title, configTime: createtime, brandNo: brandNo, memcache_key: "FlagShip_SWfsFlagShipNewArrivalDate_FlagShipNewArrivalDate_Memcached" },
+            success: function (result) {
+                alert(result.message);
+                location.href = location.href;
+            }
+        });
+
+        return true;
+    }
+
+
+    $(function () {
+        var check = $("#CheckedAll").val();
+        var arrc = check.split(',');
+        for (var i = 0; i < arrc.length - 1; i++) {
+            var $checkBox = $(":checkbox");
+            var arr = $checkBox.each(function (index) {
+                if ($($checkBox[index]).val() == arrc[i])
+                    $checkBox[index].checked = true;
+            });
+        }
+        var $checkBox = $(":checkbox");
+        var arr = $checkBox.each(function (index) {
+            if ($checkBox[index].checked)
+                $checkBox[index].checked = false;
+            else
+                $checkBox[index].checked = true;
+        });
+    })
+
+
+    function GoBack() {
+        window.location.href = "@Url.Action("Index", "Flagship")?brandNo=@Request.QueryString["brandNo"]";
+    }
+
+</script>
+

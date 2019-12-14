@@ -1,0 +1,3509 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="GetUsableStockQuantity">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="skuNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="stockFlag" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUsableStockQuantityResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetUsableStockQuantityResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventorySum">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="skuNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="stockFlag" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventorySumResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInventorySumResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventoryWithThreeParameter">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="skuNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="warehouseNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="stockFlag" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventoryWithThreeParameterResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInventoryWithThreeParameterResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventorySumList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventorySumListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInventorySumListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventorySumNoCache">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="skuNo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventorySumNoCacheResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInventorySumNoCacheResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventorySumByProductNo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="productNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="stockFlag" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventorySumByProductNoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInventorySumByProductNoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetErpInventoryPIDRef">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="stockFlag" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetErpInventoryPIDRefResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetErpInventoryPIDRefResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IsInventoryPIDRefExist">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="skuNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="warehouseNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="stockFlag" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IsInventoryPIDRefExistResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="IsInventoryPIDRefExistResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPidInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPidInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPidInfoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPidList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="skuNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="warehouseNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="queryQuantity" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="stockFlag" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPidListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPidListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LockStockCache">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="skuNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="lockQuantity" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="stockFlag" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LockStockCacheResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LockStockCacheResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UnlockStockCache">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="skuNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="unlockQuantity" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="stockFlag" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UnlockStockCacheResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UnlockStockCacheResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CreateOrderResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateOrderRollBack">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateOrderRollBackResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CreateOrderRollBackResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CancelOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CancelOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CancelOrderResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConfirmCancelOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConfirmCancelOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ConfirmCancelOrderResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SplitOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SplitOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SplitOrderResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DistributeOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="stockFlag" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DistributeOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DistributeOrderResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PackOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PackOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PackOrderResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PackOrderRollBack">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PackOrderRollBackResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PackOrderRollBackResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AllocateRequest">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AllocateRequestResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AllocateRequestResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AllocateAuditSucceed">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AllocateAuditSucceedResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AllocateAuditSucceedResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AllocateAuditFailed">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AllocateAuditFailedResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AllocateAuditFailedResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SpecialAllocateRequest">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SpecialAllocateRequestResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SpecialAllocateRequestResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SpecialAllocateAuditSucceed">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SpecialAllocateAuditSucceedResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SpecialAllocateAuditSucceedResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SpecialAllocateAuditFailed">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SpecialAllocateAuditFailedResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SpecialAllocateAuditFailedResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TransferOrderStock">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TransferOrderStockResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TransferOrderStockResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PurchaseInStock">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PurchaseInStockResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PurchaseInStockResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReceiveProduct">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReceiveProductResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ReceiveProductResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReturnBeforeDelivery">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReturnBeforeDeliveryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnBeforeDeliveryResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReturnAfterDelivery">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReturnAfterDeliveryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnAfterDeliveryResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BackRequest">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BackRequestResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BackRequestResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BackAuditSucceed">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BackAuditSucceedResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BackAuditSucceedResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BackAuditFailed">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BackAuditFailedResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BackAuditFailedResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BackRequestPidCancel">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="skuNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="skuType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="warehouseNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="backOrderNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="operatorName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="stockFlag" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BackRequestPidCancelResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BackRequestPidCancelResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ModifyLogisticsNo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ModifyLogisticsNoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ModifyLogisticsNoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ModifyStorePositionNo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="storePositionNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="stockFlag" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ModifyStorePositionNoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ModifyStorePositionNoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConvertOrderType">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConvertOrderTypeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ConvertOrderTypeResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConvertSkuType">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConvertSkuTypeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ConvertSkuTypeResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ModifyConsignVirtualStock">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ModifyConsignVirtualStockResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ModifyConsignVirtualStockResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProductTransfer">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProductTransferResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ProductTransferResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LendRequest">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LendRequestResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LendRequestResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LendAuditFailed">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LendAuditFailedResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LendAuditFailedResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LendGiveBack">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LendGiveBackResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LendGiveBackResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TransferConsignVirtualStock">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TransferConsignVirtualStockResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TransferConsignVirtualStockResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StockTaking">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StockTakingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="StockTakingResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TransferOut">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TransferOutResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TransferOutResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TransferOutCancel">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TransferOutCancelResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TransferOutCancelResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TransferIn">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TransferInResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TransferInResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TransferOutCreateOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TransferOutCreateOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TransferOutCreateOrderResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TransferOutReturnOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TransferOutReturnOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TransferOutReturnOrderResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TransferOutExchangePid">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TransferOutExchangePidResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TransferOutExchangePidResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TransferOutValidate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TransferOutValidateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TransferOutValidateResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RepairBack">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RepairBackResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RepairBackResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VirtualProductCreateOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VirtualProductCreateOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VirtualProductCreateOrderResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LockPid">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="stockFlag" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LockPidResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LockPidResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UnLockPid">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="stockFlag" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UnLockPidResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UnLockPidResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetStockFlagByPid">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetStockFlagByPidResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetStockFlagByPidResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetConsignEntityIventoryQuantity">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="skuNo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetConsignEntityIventoryQuantityResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetConsignEntityIventoryQuantityResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventorySumByProductNos">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="productNos" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventorySumByProductNosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInventorySumByProductNosResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SwapLockInventorySum">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SwapLockInventorySumResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SwapLockInventorySumResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteReceiveProduct">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteReceiveProductResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DeleteReceiveProductResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCache">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="skuNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="stockFlag" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCacheResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCacheResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveCache">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="skuNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="stockFlag" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveCacheResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RemoveCacheResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventoryChangeLog">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="skuNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="inventoryFlag" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="stockFlag" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="changeType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dateBegin" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dateEnd" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pageSize" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="pageIndex" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventoryChangeLogResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInventoryChangeLogResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventorySumNoCacheWithThreeParameter">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="skuNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="skuType" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="stockFlag" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventorySumNoCacheWithThreeParameterResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInventorySumNoCacheWithThreeParameterResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventory">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="skuNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="stockFlag" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventoryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInventoryResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventoryPIDRefBySkuNo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="skuNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="stockFlag" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="pageSize" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="pageIndex" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventoryPIDRefBySkuNoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInventoryPIDRefBySkuNoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateNormalInventorySum">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SkuNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ProductNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="SkuType" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Quantity" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="operatorName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateNormalInventorySumResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateNormalInventorySumResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateNormalWareHouseInventory">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SkuNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ProductNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="WareHouseNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Quantity" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="operatorName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateNormalWareHouseInventoryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateNormalWareHouseInventoryResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ModifyChannelInventory">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ModifyChannelInventoryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ModifyChannelInventoryResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUnLockPidByProductNos">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="productNos" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUnLockPidByProductNosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUnLockPidByProductNosResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConfirmCancelOrderRollBack">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConfirmCancelOrderRollBackResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ConfirmCancelOrderRollBackResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventorySumByValidProductNos">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="productNos" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventorySumByValidProductNosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInventorySumByValidProductNosResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SplitOrderRollBack">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SplitOrderRollBackResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SplitOrderRollBackResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SwapUnLockInventorySum">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SwapUnLockInventorySumResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SwapUnLockInventorySumResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConfirmChannelOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConfirmChannelOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ConfirmChannelOrderResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VirtualProductPackOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VirtualProductPackOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VirtualProductPackOrderResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TransferOutReturnOrderUnLock">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TransferOutReturnOrderUnLockResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TransferOutReturnOrderUnLockResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSkuInventoryBySkuNos">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="skuNos" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSkuInventoryBySkuNosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSkuInventoryBySkuNosResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSkuNoCacheKeyFormatString">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetSkuNoCacheKeyFormatStringResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSkuNoCacheKeyFormatStringResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMemcachedServer">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetMemcachedServerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMemcachedServerResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetUsableStockQuantitySoapIn">
+    <wsdl:part name="parameters" element="tns:GetUsableStockQuantity" />
+  </wsdl:message>
+  <wsdl:message name="GetUsableStockQuantitySoapOut">
+    <wsdl:part name="parameters" element="tns:GetUsableStockQuantityResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInventorySumSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInventorySum" />
+  </wsdl:message>
+  <wsdl:message name="GetInventorySumSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInventorySumResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInventoryWithThreeParameterSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInventoryWithThreeParameter" />
+  </wsdl:message>
+  <wsdl:message name="GetInventoryWithThreeParameterSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInventoryWithThreeParameterResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInventorySumListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInventorySumList" />
+  </wsdl:message>
+  <wsdl:message name="GetInventorySumListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInventorySumListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInventorySumNoCacheSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInventorySumNoCache" />
+  </wsdl:message>
+  <wsdl:message name="GetInventorySumNoCacheSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInventorySumNoCacheResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInventorySumByProductNoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInventorySumByProductNo" />
+  </wsdl:message>
+  <wsdl:message name="GetInventorySumByProductNoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInventorySumByProductNoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetErpInventoryPIDRefSoapIn">
+    <wsdl:part name="parameters" element="tns:GetErpInventoryPIDRef" />
+  </wsdl:message>
+  <wsdl:message name="GetErpInventoryPIDRefSoapOut">
+    <wsdl:part name="parameters" element="tns:GetErpInventoryPIDRefResponse" />
+  </wsdl:message>
+  <wsdl:message name="IsInventoryPIDRefExistSoapIn">
+    <wsdl:part name="parameters" element="tns:IsInventoryPIDRefExist" />
+  </wsdl:message>
+  <wsdl:message name="IsInventoryPIDRefExistSoapOut">
+    <wsdl:part name="parameters" element="tns:IsInventoryPIDRefExistResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPidInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPidInfo" />
+  </wsdl:message>
+  <wsdl:message name="GetPidInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPidInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPidListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPidList" />
+  </wsdl:message>
+  <wsdl:message name="GetPidListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPidListResponse" />
+  </wsdl:message>
+  <wsdl:message name="LockStockCacheSoapIn">
+    <wsdl:part name="parameters" element="tns:LockStockCache" />
+  </wsdl:message>
+  <wsdl:message name="LockStockCacheSoapOut">
+    <wsdl:part name="parameters" element="tns:LockStockCacheResponse" />
+  </wsdl:message>
+  <wsdl:message name="UnlockStockCacheSoapIn">
+    <wsdl:part name="parameters" element="tns:UnlockStockCache" />
+  </wsdl:message>
+  <wsdl:message name="UnlockStockCacheSoapOut">
+    <wsdl:part name="parameters" element="tns:UnlockStockCacheResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateOrder" />
+  </wsdl:message>
+  <wsdl:message name="CreateOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateOrderRollBackSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateOrderRollBack" />
+  </wsdl:message>
+  <wsdl:message name="CreateOrderRollBackSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateOrderRollBackResponse" />
+  </wsdl:message>
+  <wsdl:message name="CancelOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:CancelOrder" />
+  </wsdl:message>
+  <wsdl:message name="CancelOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:CancelOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConfirmCancelOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:ConfirmCancelOrder" />
+  </wsdl:message>
+  <wsdl:message name="ConfirmCancelOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:ConfirmCancelOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="SplitOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:SplitOrder" />
+  </wsdl:message>
+  <wsdl:message name="SplitOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:SplitOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="DistributeOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:DistributeOrder" />
+  </wsdl:message>
+  <wsdl:message name="DistributeOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:DistributeOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="PackOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:PackOrder" />
+  </wsdl:message>
+  <wsdl:message name="PackOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:PackOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="PackOrderRollBackSoapIn">
+    <wsdl:part name="parameters" element="tns:PackOrderRollBack" />
+  </wsdl:message>
+  <wsdl:message name="PackOrderRollBackSoapOut">
+    <wsdl:part name="parameters" element="tns:PackOrderRollBackResponse" />
+  </wsdl:message>
+  <wsdl:message name="AllocateRequestSoapIn">
+    <wsdl:part name="parameters" element="tns:AllocateRequest" />
+  </wsdl:message>
+  <wsdl:message name="AllocateRequestSoapOut">
+    <wsdl:part name="parameters" element="tns:AllocateRequestResponse" />
+  </wsdl:message>
+  <wsdl:message name="AllocateAuditSucceedSoapIn">
+    <wsdl:part name="parameters" element="tns:AllocateAuditSucceed" />
+  </wsdl:message>
+  <wsdl:message name="AllocateAuditSucceedSoapOut">
+    <wsdl:part name="parameters" element="tns:AllocateAuditSucceedResponse" />
+  </wsdl:message>
+  <wsdl:message name="AllocateAuditFailedSoapIn">
+    <wsdl:part name="parameters" element="tns:AllocateAuditFailed" />
+  </wsdl:message>
+  <wsdl:message name="AllocateAuditFailedSoapOut">
+    <wsdl:part name="parameters" element="tns:AllocateAuditFailedResponse" />
+  </wsdl:message>
+  <wsdl:message name="SpecialAllocateRequestSoapIn">
+    <wsdl:part name="parameters" element="tns:SpecialAllocateRequest" />
+  </wsdl:message>
+  <wsdl:message name="SpecialAllocateRequestSoapOut">
+    <wsdl:part name="parameters" element="tns:SpecialAllocateRequestResponse" />
+  </wsdl:message>
+  <wsdl:message name="SpecialAllocateAuditSucceedSoapIn">
+    <wsdl:part name="parameters" element="tns:SpecialAllocateAuditSucceed" />
+  </wsdl:message>
+  <wsdl:message name="SpecialAllocateAuditSucceedSoapOut">
+    <wsdl:part name="parameters" element="tns:SpecialAllocateAuditSucceedResponse" />
+  </wsdl:message>
+  <wsdl:message name="SpecialAllocateAuditFailedSoapIn">
+    <wsdl:part name="parameters" element="tns:SpecialAllocateAuditFailed" />
+  </wsdl:message>
+  <wsdl:message name="SpecialAllocateAuditFailedSoapOut">
+    <wsdl:part name="parameters" element="tns:SpecialAllocateAuditFailedResponse" />
+  </wsdl:message>
+  <wsdl:message name="TransferOrderStockSoapIn">
+    <wsdl:part name="parameters" element="tns:TransferOrderStock" />
+  </wsdl:message>
+  <wsdl:message name="TransferOrderStockSoapOut">
+    <wsdl:part name="parameters" element="tns:TransferOrderStockResponse" />
+  </wsdl:message>
+  <wsdl:message name="PurchaseInStockSoapIn">
+    <wsdl:part name="parameters" element="tns:PurchaseInStock" />
+  </wsdl:message>
+  <wsdl:message name="PurchaseInStockSoapOut">
+    <wsdl:part name="parameters" element="tns:PurchaseInStockResponse" />
+  </wsdl:message>
+  <wsdl:message name="ReceiveProductSoapIn">
+    <wsdl:part name="parameters" element="tns:ReceiveProduct" />
+  </wsdl:message>
+  <wsdl:message name="ReceiveProductSoapOut">
+    <wsdl:part name="parameters" element="tns:ReceiveProductResponse" />
+  </wsdl:message>
+  <wsdl:message name="ReturnBeforeDeliverySoapIn">
+    <wsdl:part name="parameters" element="tns:ReturnBeforeDelivery" />
+  </wsdl:message>
+  <wsdl:message name="ReturnBeforeDeliverySoapOut">
+    <wsdl:part name="parameters" element="tns:ReturnBeforeDeliveryResponse" />
+  </wsdl:message>
+  <wsdl:message name="ReturnAfterDeliverySoapIn">
+    <wsdl:part name="parameters" element="tns:ReturnAfterDelivery" />
+  </wsdl:message>
+  <wsdl:message name="ReturnAfterDeliverySoapOut">
+    <wsdl:part name="parameters" element="tns:ReturnAfterDeliveryResponse" />
+  </wsdl:message>
+  <wsdl:message name="BackRequestSoapIn">
+    <wsdl:part name="parameters" element="tns:BackRequest" />
+  </wsdl:message>
+  <wsdl:message name="BackRequestSoapOut">
+    <wsdl:part name="parameters" element="tns:BackRequestResponse" />
+  </wsdl:message>
+  <wsdl:message name="BackAuditSucceedSoapIn">
+    <wsdl:part name="parameters" element="tns:BackAuditSucceed" />
+  </wsdl:message>
+  <wsdl:message name="BackAuditSucceedSoapOut">
+    <wsdl:part name="parameters" element="tns:BackAuditSucceedResponse" />
+  </wsdl:message>
+  <wsdl:message name="BackAuditFailedSoapIn">
+    <wsdl:part name="parameters" element="tns:BackAuditFailed" />
+  </wsdl:message>
+  <wsdl:message name="BackAuditFailedSoapOut">
+    <wsdl:part name="parameters" element="tns:BackAuditFailedResponse" />
+  </wsdl:message>
+  <wsdl:message name="BackRequestPidCancelSoapIn">
+    <wsdl:part name="parameters" element="tns:BackRequestPidCancel" />
+  </wsdl:message>
+  <wsdl:message name="BackRequestPidCancelSoapOut">
+    <wsdl:part name="parameters" element="tns:BackRequestPidCancelResponse" />
+  </wsdl:message>
+  <wsdl:message name="ModifyLogisticsNoSoapIn">
+    <wsdl:part name="parameters" element="tns:ModifyLogisticsNo" />
+  </wsdl:message>
+  <wsdl:message name="ModifyLogisticsNoSoapOut">
+    <wsdl:part name="parameters" element="tns:ModifyLogisticsNoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ModifyStorePositionNoSoapIn">
+    <wsdl:part name="parameters" element="tns:ModifyStorePositionNo" />
+  </wsdl:message>
+  <wsdl:message name="ModifyStorePositionNoSoapOut">
+    <wsdl:part name="parameters" element="tns:ModifyStorePositionNoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConvertOrderTypeSoapIn">
+    <wsdl:part name="parameters" element="tns:ConvertOrderType" />
+  </wsdl:message>
+  <wsdl:message name="ConvertOrderTypeSoapOut">
+    <wsdl:part name="parameters" element="tns:ConvertOrderTypeResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConvertSkuTypeSoapIn">
+    <wsdl:part name="parameters" element="tns:ConvertSkuType" />
+  </wsdl:message>
+  <wsdl:message name="ConvertSkuTypeSoapOut">
+    <wsdl:part name="parameters" element="tns:ConvertSkuTypeResponse" />
+  </wsdl:message>
+  <wsdl:message name="ModifyConsignVirtualStockSoapIn">
+    <wsdl:part name="parameters" element="tns:ModifyConsignVirtualStock" />
+  </wsdl:message>
+  <wsdl:message name="ModifyConsignVirtualStockSoapOut">
+    <wsdl:part name="parameters" element="tns:ModifyConsignVirtualStockResponse" />
+  </wsdl:message>
+  <wsdl:message name="ProductTransferSoapIn">
+    <wsdl:part name="parameters" element="tns:ProductTransfer" />
+  </wsdl:message>
+  <wsdl:message name="ProductTransferSoapOut">
+    <wsdl:part name="parameters" element="tns:ProductTransferResponse" />
+  </wsdl:message>
+  <wsdl:message name="LendRequestSoapIn">
+    <wsdl:part name="parameters" element="tns:LendRequest" />
+  </wsdl:message>
+  <wsdl:message name="LendRequestSoapOut">
+    <wsdl:part name="parameters" element="tns:LendRequestResponse" />
+  </wsdl:message>
+  <wsdl:message name="LendAuditFailedSoapIn">
+    <wsdl:part name="parameters" element="tns:LendAuditFailed" />
+  </wsdl:message>
+  <wsdl:message name="LendAuditFailedSoapOut">
+    <wsdl:part name="parameters" element="tns:LendAuditFailedResponse" />
+  </wsdl:message>
+  <wsdl:message name="LendGiveBackSoapIn">
+    <wsdl:part name="parameters" element="tns:LendGiveBack" />
+  </wsdl:message>
+  <wsdl:message name="LendGiveBackSoapOut">
+    <wsdl:part name="parameters" element="tns:LendGiveBackResponse" />
+  </wsdl:message>
+  <wsdl:message name="TransferConsignVirtualStockSoapIn">
+    <wsdl:part name="parameters" element="tns:TransferConsignVirtualStock" />
+  </wsdl:message>
+  <wsdl:message name="TransferConsignVirtualStockSoapOut">
+    <wsdl:part name="parameters" element="tns:TransferConsignVirtualStockResponse" />
+  </wsdl:message>
+  <wsdl:message name="StockTakingSoapIn">
+    <wsdl:part name="parameters" element="tns:StockTaking" />
+  </wsdl:message>
+  <wsdl:message name="StockTakingSoapOut">
+    <wsdl:part name="parameters" element="tns:StockTakingResponse" />
+  </wsdl:message>
+  <wsdl:message name="TransferOutSoapIn">
+    <wsdl:part name="parameters" element="tns:TransferOut" />
+  </wsdl:message>
+  <wsdl:message name="TransferOutSoapOut">
+    <wsdl:part name="parameters" element="tns:TransferOutResponse" />
+  </wsdl:message>
+  <wsdl:message name="TransferOutCancelSoapIn">
+    <wsdl:part name="parameters" element="tns:TransferOutCancel" />
+  </wsdl:message>
+  <wsdl:message name="TransferOutCancelSoapOut">
+    <wsdl:part name="parameters" element="tns:TransferOutCancelResponse" />
+  </wsdl:message>
+  <wsdl:message name="TransferInSoapIn">
+    <wsdl:part name="parameters" element="tns:TransferIn" />
+  </wsdl:message>
+  <wsdl:message name="TransferInSoapOut">
+    <wsdl:part name="parameters" element="tns:TransferInResponse" />
+  </wsdl:message>
+  <wsdl:message name="TransferOutCreateOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:TransferOutCreateOrder" />
+  </wsdl:message>
+  <wsdl:message name="TransferOutCreateOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:TransferOutCreateOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="TransferOutReturnOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:TransferOutReturnOrder" />
+  </wsdl:message>
+  <wsdl:message name="TransferOutReturnOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:TransferOutReturnOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="TransferOutExchangePidSoapIn">
+    <wsdl:part name="parameters" element="tns:TransferOutExchangePid" />
+  </wsdl:message>
+  <wsdl:message name="TransferOutExchangePidSoapOut">
+    <wsdl:part name="parameters" element="tns:TransferOutExchangePidResponse" />
+  </wsdl:message>
+  <wsdl:message name="TransferOutValidateSoapIn">
+    <wsdl:part name="parameters" element="tns:TransferOutValidate" />
+  </wsdl:message>
+  <wsdl:message name="TransferOutValidateSoapOut">
+    <wsdl:part name="parameters" element="tns:TransferOutValidateResponse" />
+  </wsdl:message>
+  <wsdl:message name="RepairBackSoapIn">
+    <wsdl:part name="parameters" element="tns:RepairBack" />
+  </wsdl:message>
+  <wsdl:message name="RepairBackSoapOut">
+    <wsdl:part name="parameters" element="tns:RepairBackResponse" />
+  </wsdl:message>
+  <wsdl:message name="VirtualProductCreateOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:VirtualProductCreateOrder" />
+  </wsdl:message>
+  <wsdl:message name="VirtualProductCreateOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:VirtualProductCreateOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="LockPidSoapIn">
+    <wsdl:part name="parameters" element="tns:LockPid" />
+  </wsdl:message>
+  <wsdl:message name="LockPidSoapOut">
+    <wsdl:part name="parameters" element="tns:LockPidResponse" />
+  </wsdl:message>
+  <wsdl:message name="UnLockPidSoapIn">
+    <wsdl:part name="parameters" element="tns:UnLockPid" />
+  </wsdl:message>
+  <wsdl:message name="UnLockPidSoapOut">
+    <wsdl:part name="parameters" element="tns:UnLockPidResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetStockFlagByPidSoapIn">
+    <wsdl:part name="parameters" element="tns:GetStockFlagByPid" />
+  </wsdl:message>
+  <wsdl:message name="GetStockFlagByPidSoapOut">
+    <wsdl:part name="parameters" element="tns:GetStockFlagByPidResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetConsignEntityIventoryQuantitySoapIn">
+    <wsdl:part name="parameters" element="tns:GetConsignEntityIventoryQuantity" />
+  </wsdl:message>
+  <wsdl:message name="GetConsignEntityIventoryQuantitySoapOut">
+    <wsdl:part name="parameters" element="tns:GetConsignEntityIventoryQuantityResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInventorySumByProductNosSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInventorySumByProductNos" />
+  </wsdl:message>
+  <wsdl:message name="GetInventorySumByProductNosSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInventorySumByProductNosResponse" />
+  </wsdl:message>
+  <wsdl:message name="SwapLockInventorySumSoapIn">
+    <wsdl:part name="parameters" element="tns:SwapLockInventorySum" />
+  </wsdl:message>
+  <wsdl:message name="SwapLockInventorySumSoapOut">
+    <wsdl:part name="parameters" element="tns:SwapLockInventorySumResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteReceiveProductSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteReceiveProduct" />
+  </wsdl:message>
+  <wsdl:message name="DeleteReceiveProductSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteReceiveProductResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCacheSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCache" />
+  </wsdl:message>
+  <wsdl:message name="GetCacheSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCacheResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveCacheSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveCache" />
+  </wsdl:message>
+  <wsdl:message name="RemoveCacheSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveCacheResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInventoryChangeLogSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInventoryChangeLog" />
+  </wsdl:message>
+  <wsdl:message name="GetInventoryChangeLogSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInventoryChangeLogResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInventorySumNoCacheWithThreeParameterSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInventorySumNoCacheWithThreeParameter" />
+  </wsdl:message>
+  <wsdl:message name="GetInventorySumNoCacheWithThreeParameterSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInventorySumNoCacheWithThreeParameterResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInventorySoapIn">
+    <wsdl:part name="parameters" element="tns:GetInventory" />
+  </wsdl:message>
+  <wsdl:message name="GetInventorySoapOut">
+    <wsdl:part name="parameters" element="tns:GetInventoryResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInventoryPIDRefBySkuNoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInventoryPIDRefBySkuNo" />
+  </wsdl:message>
+  <wsdl:message name="GetInventoryPIDRefBySkuNoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInventoryPIDRefBySkuNoResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateNormalInventorySumSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateNormalInventorySum" />
+  </wsdl:message>
+  <wsdl:message name="UpdateNormalInventorySumSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateNormalInventorySumResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateNormalWareHouseInventorySoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateNormalWareHouseInventory" />
+  </wsdl:message>
+  <wsdl:message name="UpdateNormalWareHouseInventorySoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateNormalWareHouseInventoryResponse" />
+  </wsdl:message>
+  <wsdl:message name="ModifyChannelInventorySoapIn">
+    <wsdl:part name="parameters" element="tns:ModifyChannelInventory" />
+  </wsdl:message>
+  <wsdl:message name="ModifyChannelInventorySoapOut">
+    <wsdl:part name="parameters" element="tns:ModifyChannelInventoryResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUnLockPidByProductNosSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUnLockPidByProductNos" />
+  </wsdl:message>
+  <wsdl:message name="GetUnLockPidByProductNosSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUnLockPidByProductNosResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConfirmCancelOrderRollBackSoapIn">
+    <wsdl:part name="parameters" element="tns:ConfirmCancelOrderRollBack" />
+  </wsdl:message>
+  <wsdl:message name="ConfirmCancelOrderRollBackSoapOut">
+    <wsdl:part name="parameters" element="tns:ConfirmCancelOrderRollBackResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInventorySumByValidProductNosSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInventorySumByValidProductNos" />
+  </wsdl:message>
+  <wsdl:message name="GetInventorySumByValidProductNosSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInventorySumByValidProductNosResponse" />
+  </wsdl:message>
+  <wsdl:message name="SplitOrderRollBackSoapIn">
+    <wsdl:part name="parameters" element="tns:SplitOrderRollBack" />
+  </wsdl:message>
+  <wsdl:message name="SplitOrderRollBackSoapOut">
+    <wsdl:part name="parameters" element="tns:SplitOrderRollBackResponse" />
+  </wsdl:message>
+  <wsdl:message name="SwapUnLockInventorySumSoapIn">
+    <wsdl:part name="parameters" element="tns:SwapUnLockInventorySum" />
+  </wsdl:message>
+  <wsdl:message name="SwapUnLockInventorySumSoapOut">
+    <wsdl:part name="parameters" element="tns:SwapUnLockInventorySumResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConfirmChannelOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:ConfirmChannelOrder" />
+  </wsdl:message>
+  <wsdl:message name="ConfirmChannelOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:ConfirmChannelOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="VirtualProductPackOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:VirtualProductPackOrder" />
+  </wsdl:message>
+  <wsdl:message name="VirtualProductPackOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:VirtualProductPackOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="TransferOutReturnOrderUnLockSoapIn">
+    <wsdl:part name="parameters" element="tns:TransferOutReturnOrderUnLock" />
+  </wsdl:message>
+  <wsdl:message name="TransferOutReturnOrderUnLockSoapOut">
+    <wsdl:part name="parameters" element="tns:TransferOutReturnOrderUnLockResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSkuInventoryBySkuNosSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSkuInventoryBySkuNos" />
+  </wsdl:message>
+  <wsdl:message name="GetSkuInventoryBySkuNosSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSkuInventoryBySkuNosResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSkuNoCacheKeyFormatStringSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSkuNoCacheKeyFormatString" />
+  </wsdl:message>
+  <wsdl:message name="GetSkuNoCacheKeyFormatStringSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSkuNoCacheKeyFormatStringResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMemcachedServerSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMemcachedServer" />
+  </wsdl:message>
+  <wsdl:message name="GetMemcachedServerSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMemcachedServerResponse" />
+  </wsdl:message>
+  <wsdl:portType name="StockWebServiceSoap">
+    <wsdl:operation name="GetUsableStockQuantity">
+      <wsdl:input message="tns:GetUsableStockQuantitySoapIn" />
+      <wsdl:output message="tns:GetUsableStockQuantitySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInventorySum">
+      <wsdl:input message="tns:GetInventorySumSoapIn" />
+      <wsdl:output message="tns:GetInventorySumSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInventory">
+      <wsdl:input name="GetInventoryWithThreeParameter" message="tns:GetInventoryWithThreeParameterSoapIn" />
+      <wsdl:output name="GetInventoryWithThreeParameter" message="tns:GetInventoryWithThreeParameterSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInventorySumList">
+      <wsdl:input message="tns:GetInventorySumListSoapIn" />
+      <wsdl:output message="tns:GetInventorySumListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInventorySumNoCache">
+      <wsdl:input message="tns:GetInventorySumNoCacheSoapIn" />
+      <wsdl:output message="tns:GetInventorySumNoCacheSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInventorySumByProductNo">
+      <wsdl:input message="tns:GetInventorySumByProductNoSoapIn" />
+      <wsdl:output message="tns:GetInventorySumByProductNoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetErpInventoryPIDRef">
+      <wsdl:input message="tns:GetErpInventoryPIDRefSoapIn" />
+      <wsdl:output message="tns:GetErpInventoryPIDRefSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="IsInventoryPIDRefExist">
+      <wsdl:input message="tns:IsInventoryPIDRefExistSoapIn" />
+      <wsdl:output message="tns:IsInventoryPIDRefExistSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPidInfo">
+      <wsdl:input message="tns:GetPidInfoSoapIn" />
+      <wsdl:output message="tns:GetPidInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPidList">
+      <wsdl:input message="tns:GetPidListSoapIn" />
+      <wsdl:output message="tns:GetPidListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LockStockCache">
+      <wsdl:input message="tns:LockStockCacheSoapIn" />
+      <wsdl:output message="tns:LockStockCacheSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UnlockStockCache">
+      <wsdl:input message="tns:UnlockStockCacheSoapIn" />
+      <wsdl:output message="tns:UnlockStockCacheSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateOrder">
+      <wsdl:input message="tns:CreateOrderSoapIn" />
+      <wsdl:output message="tns:CreateOrderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateOrderRollBack">
+      <wsdl:input message="tns:CreateOrderRollBackSoapIn" />
+      <wsdl:output message="tns:CreateOrderRollBackSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CancelOrder">
+      <wsdl:input message="tns:CancelOrderSoapIn" />
+      <wsdl:output message="tns:CancelOrderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmCancelOrder">
+      <wsdl:input message="tns:ConfirmCancelOrderSoapIn" />
+      <wsdl:output message="tns:ConfirmCancelOrderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SplitOrder">
+      <wsdl:input message="tns:SplitOrderSoapIn" />
+      <wsdl:output message="tns:SplitOrderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DistributeOrder">
+      <wsdl:input message="tns:DistributeOrderSoapIn" />
+      <wsdl:output message="tns:DistributeOrderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PackOrder">
+      <wsdl:input message="tns:PackOrderSoapIn" />
+      <wsdl:output message="tns:PackOrderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PackOrderRollBack">
+      <wsdl:input message="tns:PackOrderRollBackSoapIn" />
+      <wsdl:output message="tns:PackOrderRollBackSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AllocateRequest">
+      <wsdl:input message="tns:AllocateRequestSoapIn" />
+      <wsdl:output message="tns:AllocateRequestSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AllocateAuditSucceed">
+      <wsdl:input message="tns:AllocateAuditSucceedSoapIn" />
+      <wsdl:output message="tns:AllocateAuditSucceedSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AllocateAuditFailed">
+      <wsdl:input message="tns:AllocateAuditFailedSoapIn" />
+      <wsdl:output message="tns:AllocateAuditFailedSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SpecialAllocateRequest">
+      <wsdl:input message="tns:SpecialAllocateRequestSoapIn" />
+      <wsdl:output message="tns:SpecialAllocateRequestSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SpecialAllocateAuditSucceed">
+      <wsdl:input message="tns:SpecialAllocateAuditSucceedSoapIn" />
+      <wsdl:output message="tns:SpecialAllocateAuditSucceedSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SpecialAllocateAuditFailed">
+      <wsdl:input message="tns:SpecialAllocateAuditFailedSoapIn" />
+      <wsdl:output message="tns:SpecialAllocateAuditFailedSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TransferOrderStock">
+      <wsdl:input message="tns:TransferOrderStockSoapIn" />
+      <wsdl:output message="tns:TransferOrderStockSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PurchaseInStock">
+      <wsdl:input message="tns:PurchaseInStockSoapIn" />
+      <wsdl:output message="tns:PurchaseInStockSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ReceiveProduct">
+      <wsdl:input message="tns:ReceiveProductSoapIn" />
+      <wsdl:output message="tns:ReceiveProductSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ReturnBeforeDelivery">
+      <wsdl:input message="tns:ReturnBeforeDeliverySoapIn" />
+      <wsdl:output message="tns:ReturnBeforeDeliverySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ReturnAfterDelivery">
+      <wsdl:input message="tns:ReturnAfterDeliverySoapIn" />
+      <wsdl:output message="tns:ReturnAfterDeliverySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="BackRequest">
+      <wsdl:input message="tns:BackRequestSoapIn" />
+      <wsdl:output message="tns:BackRequestSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="BackAuditSucceed">
+      <wsdl:input message="tns:BackAuditSucceedSoapIn" />
+      <wsdl:output message="tns:BackAuditSucceedSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="BackAuditFailed">
+      <wsdl:input message="tns:BackAuditFailedSoapIn" />
+      <wsdl:output message="tns:BackAuditFailedSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="BackRequestPidCancel">
+      <wsdl:input message="tns:BackRequestPidCancelSoapIn" />
+      <wsdl:output message="tns:BackRequestPidCancelSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ModifyLogisticsNo">
+      <wsdl:input message="tns:ModifyLogisticsNoSoapIn" />
+      <wsdl:output message="tns:ModifyLogisticsNoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ModifyStorePositionNo">
+      <wsdl:input message="tns:ModifyStorePositionNoSoapIn" />
+      <wsdl:output message="tns:ModifyStorePositionNoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConvertOrderType">
+      <wsdl:input message="tns:ConvertOrderTypeSoapIn" />
+      <wsdl:output message="tns:ConvertOrderTypeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConvertSkuType">
+      <wsdl:input message="tns:ConvertSkuTypeSoapIn" />
+      <wsdl:output message="tns:ConvertSkuTypeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ModifyConsignVirtualStock">
+      <wsdl:input message="tns:ModifyConsignVirtualStockSoapIn" />
+      <wsdl:output message="tns:ModifyConsignVirtualStockSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ProductTransfer">
+      <wsdl:input message="tns:ProductTransferSoapIn" />
+      <wsdl:output message="tns:ProductTransferSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LendRequest">
+      <wsdl:input message="tns:LendRequestSoapIn" />
+      <wsdl:output message="tns:LendRequestSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LendAuditFailed">
+      <wsdl:input message="tns:LendAuditFailedSoapIn" />
+      <wsdl:output message="tns:LendAuditFailedSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LendGiveBack">
+      <wsdl:input message="tns:LendGiveBackSoapIn" />
+      <wsdl:output message="tns:LendGiveBackSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TransferConsignVirtualStock">
+      <wsdl:input message="tns:TransferConsignVirtualStockSoapIn" />
+      <wsdl:output message="tns:TransferConsignVirtualStockSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="StockTaking">
+      <wsdl:input message="tns:StockTakingSoapIn" />
+      <wsdl:output message="tns:StockTakingSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TransferOut">
+      <wsdl:input message="tns:TransferOutSoapIn" />
+      <wsdl:output message="tns:TransferOutSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TransferOutCancel">
+      <wsdl:input message="tns:TransferOutCancelSoapIn" />
+      <wsdl:output message="tns:TransferOutCancelSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TransferIn">
+      <wsdl:input message="tns:TransferInSoapIn" />
+      <wsdl:output message="tns:TransferInSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TransferOutCreateOrder">
+      <wsdl:input message="tns:TransferOutCreateOrderSoapIn" />
+      <wsdl:output message="tns:TransferOutCreateOrderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TransferOutReturnOrder">
+      <wsdl:input message="tns:TransferOutReturnOrderSoapIn" />
+      <wsdl:output message="tns:TransferOutReturnOrderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TransferOutExchangePid">
+      <wsdl:input message="tns:TransferOutExchangePidSoapIn" />
+      <wsdl:output message="tns:TransferOutExchangePidSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TransferOutValidate">
+      <wsdl:input message="tns:TransferOutValidateSoapIn" />
+      <wsdl:output message="tns:TransferOutValidateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RepairBack">
+      <wsdl:input message="tns:RepairBackSoapIn" />
+      <wsdl:output message="tns:RepairBackSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="VirtualProductCreateOrder">
+      <wsdl:input message="tns:VirtualProductCreateOrderSoapIn" />
+      <wsdl:output message="tns:VirtualProductCreateOrderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LockPid">
+      <wsdl:input message="tns:LockPidSoapIn" />
+      <wsdl:output message="tns:LockPidSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UnLockPid">
+      <wsdl:input message="tns:UnLockPidSoapIn" />
+      <wsdl:output message="tns:UnLockPidSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStockFlagByPid">
+      <wsdl:input message="tns:GetStockFlagByPidSoapIn" />
+      <wsdl:output message="tns:GetStockFlagByPidSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetConsignEntityIventoryQuantity">
+      <wsdl:input message="tns:GetConsignEntityIventoryQuantitySoapIn" />
+      <wsdl:output message="tns:GetConsignEntityIventoryQuantitySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInventorySumByProductNos">
+      <wsdl:input message="tns:GetInventorySumByProductNosSoapIn" />
+      <wsdl:output message="tns:GetInventorySumByProductNosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SwapLockInventorySum">
+      <wsdl:input message="tns:SwapLockInventorySumSoapIn" />
+      <wsdl:output message="tns:SwapLockInventorySumSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteReceiveProduct">
+      <wsdl:input message="tns:DeleteReceiveProductSoapIn" />
+      <wsdl:output message="tns:DeleteReceiveProductSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCache">
+      <wsdl:input message="tns:GetCacheSoapIn" />
+      <wsdl:output message="tns:GetCacheSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCache">
+      <wsdl:input message="tns:RemoveCacheSoapIn" />
+      <wsdl:output message="tns:RemoveCacheSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInventoryChangeLog">
+      <wsdl:input message="tns:GetInventoryChangeLogSoapIn" />
+      <wsdl:output message="tns:GetInventoryChangeLogSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInventorySumNoCache">
+      <wsdl:input name="GetInventorySumNoCacheWithThreeParameter" message="tns:GetInventorySumNoCacheWithThreeParameterSoapIn" />
+      <wsdl:output name="GetInventorySumNoCacheWithThreeParameter" message="tns:GetInventorySumNoCacheWithThreeParameterSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInventory">
+      <wsdl:input message="tns:GetInventorySoapIn" />
+      <wsdl:output message="tns:GetInventorySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInventoryPIDRefBySkuNo">
+      <wsdl:input message="tns:GetInventoryPIDRefBySkuNoSoapIn" />
+      <wsdl:output message="tns:GetInventoryPIDRefBySkuNoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateNormalInventorySum">
+      <wsdl:input message="tns:UpdateNormalInventorySumSoapIn" />
+      <wsdl:output message="tns:UpdateNormalInventorySumSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateNormalWareHouseInventory">
+      <wsdl:input message="tns:UpdateNormalWareHouseInventorySoapIn" />
+      <wsdl:output message="tns:UpdateNormalWareHouseInventorySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ModifyChannelInventory">
+      <wsdl:input message="tns:ModifyChannelInventorySoapIn" />
+      <wsdl:output message="tns:ModifyChannelInventorySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUnLockPidByProductNos">
+      <wsdl:input message="tns:GetUnLockPidByProductNosSoapIn" />
+      <wsdl:output message="tns:GetUnLockPidByProductNosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmCancelOrderRollBack">
+      <wsdl:input message="tns:ConfirmCancelOrderRollBackSoapIn" />
+      <wsdl:output message="tns:ConfirmCancelOrderRollBackSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInventorySumByValidProductNos">
+      <wsdl:input message="tns:GetInventorySumByValidProductNosSoapIn" />
+      <wsdl:output message="tns:GetInventorySumByValidProductNosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SplitOrderRollBack">
+      <wsdl:input message="tns:SplitOrderRollBackSoapIn" />
+      <wsdl:output message="tns:SplitOrderRollBackSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SwapUnLockInventorySum">
+      <wsdl:input message="tns:SwapUnLockInventorySumSoapIn" />
+      <wsdl:output message="tns:SwapUnLockInventorySumSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmChannelOrder">
+      <wsdl:input message="tns:ConfirmChannelOrderSoapIn" />
+      <wsdl:output message="tns:ConfirmChannelOrderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="VirtualProductPackOrder">
+      <wsdl:input message="tns:VirtualProductPackOrderSoapIn" />
+      <wsdl:output message="tns:VirtualProductPackOrderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TransferOutReturnOrderUnLock">
+      <wsdl:input message="tns:TransferOutReturnOrderUnLockSoapIn" />
+      <wsdl:output message="tns:TransferOutReturnOrderUnLockSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSkuInventoryBySkuNos">
+      <wsdl:input message="tns:GetSkuInventoryBySkuNosSoapIn" />
+      <wsdl:output message="tns:GetSkuInventoryBySkuNosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSkuNoCacheKeyFormatString">
+      <wsdl:input message="tns:GetSkuNoCacheKeyFormatStringSoapIn" />
+      <wsdl:output message="tns:GetSkuNoCacheKeyFormatStringSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMemcachedServer">
+      <wsdl:input message="tns:GetMemcachedServerSoapIn" />
+      <wsdl:output message="tns:GetMemcachedServerSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="StockWebServiceSoap" type="tns:StockWebServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetUsableStockQuantity">
+      <soap:operation soapAction="http://tempuri.org/GetUsableStockQuantity" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventorySum">
+      <soap:operation soapAction="http://tempuri.org/GetInventorySum" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventory">
+      <soap:operation soapAction="http://tempuri.org/GetInventoryWithThreeParameter" style="document" />
+      <wsdl:input name="GetInventoryWithThreeParameter">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GetInventoryWithThreeParameter">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventorySumList">
+      <soap:operation soapAction="http://tempuri.org/GetInventorySumList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventorySumNoCache">
+      <soap:operation soapAction="http://tempuri.org/GetInventorySumNoCache" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventorySumByProductNo">
+      <soap:operation soapAction="http://tempuri.org/GetInventorySumByProductNo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetErpInventoryPIDRef">
+      <soap:operation soapAction="http://tempuri.org/GetErpInventoryPIDRef" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsInventoryPIDRefExist">
+      <soap:operation soapAction="http://tempuri.org/IsInventoryPIDRefExist" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPidInfo">
+      <soap:operation soapAction="http://tempuri.org/GetPidInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPidList">
+      <soap:operation soapAction="http://tempuri.org/GetPidList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LockStockCache">
+      <soap:operation soapAction="http://tempuri.org/LockStockCache" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnlockStockCache">
+      <soap:operation soapAction="http://tempuri.org/UnlockStockCache" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateOrder">
+      <soap:operation soapAction="http://tempuri.org/CreateOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateOrderRollBack">
+      <soap:operation soapAction="http://tempuri.org/CreateOrderRollBack" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelOrder">
+      <soap:operation soapAction="http://tempuri.org/CancelOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmCancelOrder">
+      <soap:operation soapAction="http://tempuri.org/ConfirmCancelOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SplitOrder">
+      <soap:operation soapAction="http://tempuri.org/SplitOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DistributeOrder">
+      <soap:operation soapAction="http://tempuri.org/DistributeOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PackOrder">
+      <soap:operation soapAction="http://tempuri.org/PackOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PackOrderRollBack">
+      <soap:operation soapAction="http://tempuri.org/PackOrderRollBack" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AllocateRequest">
+      <soap:operation soapAction="http://tempuri.org/AllocateRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AllocateAuditSucceed">
+      <soap:operation soapAction="http://tempuri.org/AllocateAuditSucceed" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AllocateAuditFailed">
+      <soap:operation soapAction="http://tempuri.org/AllocateAuditFailed" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SpecialAllocateRequest">
+      <soap:operation soapAction="http://tempuri.org/SpecialAllocateRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SpecialAllocateAuditSucceed">
+      <soap:operation soapAction="http://tempuri.org/SpecialAllocateAuditSucceed" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SpecialAllocateAuditFailed">
+      <soap:operation soapAction="http://tempuri.org/SpecialAllocateAuditFailed" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransferOrderStock">
+      <soap:operation soapAction="http://tempuri.org/TransferOrderStock" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PurchaseInStock">
+      <soap:operation soapAction="http://tempuri.org/PurchaseInStock" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReceiveProduct">
+      <soap:operation soapAction="http://tempuri.org/ReceiveProduct" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReturnBeforeDelivery">
+      <soap:operation soapAction="http://tempuri.org/ReturnBeforeDelivery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReturnAfterDelivery">
+      <soap:operation soapAction="http://tempuri.org/ReturnAfterDelivery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BackRequest">
+      <soap:operation soapAction="http://tempuri.org/BackRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BackAuditSucceed">
+      <soap:operation soapAction="http://tempuri.org/BackAuditSucceed" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BackAuditFailed">
+      <soap:operation soapAction="http://tempuri.org/BackAuditFailed" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BackRequestPidCancel">
+      <soap:operation soapAction="http://tempuri.org/BackRequestPidCancel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ModifyLogisticsNo">
+      <soap:operation soapAction="http://tempuri.org/ModifyLogisticsNo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ModifyStorePositionNo">
+      <soap:operation soapAction="http://tempuri.org/ModifyStorePositionNo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConvertOrderType">
+      <soap:operation soapAction="http://tempuri.org/ConvertOrderType" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConvertSkuType">
+      <soap:operation soapAction="http://tempuri.org/ConvertSkuType" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ModifyConsignVirtualStock">
+      <soap:operation soapAction="http://tempuri.org/ModifyConsignVirtualStock" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProductTransfer">
+      <soap:operation soapAction="http://tempuri.org/ProductTransfer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LendRequest">
+      <soap:operation soapAction="http://tempuri.org/LendRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LendAuditFailed">
+      <soap:operation soapAction="http://tempuri.org/LendAuditFailed" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LendGiveBack">
+      <soap:operation soapAction="http://tempuri.org/LendGiveBack" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransferConsignVirtualStock">
+      <soap:operation soapAction="http://tempuri.org/TransferConsignVirtualStock" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StockTaking">
+      <soap:operation soapAction="http://tempuri.org/StockTaking" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransferOut">
+      <soap:operation soapAction="http://tempuri.org/TransferOut" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransferOutCancel">
+      <soap:operation soapAction="http://tempuri.org/TransferOutCancel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransferIn">
+      <soap:operation soapAction="http://tempuri.org/TransferIn" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransferOutCreateOrder">
+      <soap:operation soapAction="http://tempuri.org/TransferOutCreateOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransferOutReturnOrder">
+      <soap:operation soapAction="http://tempuri.org/TransferOutReturnOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransferOutExchangePid">
+      <soap:operation soapAction="http://tempuri.org/TransferOutExchangePid" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransferOutValidate">
+      <soap:operation soapAction="http://tempuri.org/TransferOutValidate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RepairBack">
+      <soap:operation soapAction="http://tempuri.org/RepairBack" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VirtualProductCreateOrder">
+      <soap:operation soapAction="http://tempuri.org/VirtualProductCreateOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LockPid">
+      <soap:operation soapAction="http://tempuri.org/LockPid" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnLockPid">
+      <soap:operation soapAction="http://tempuri.org/UnLockPid" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStockFlagByPid">
+      <soap:operation soapAction="http://tempuri.org/GetStockFlagByPid" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetConsignEntityIventoryQuantity">
+      <soap:operation soapAction="http://tempuri.org/GetConsignEntityIventoryQuantity" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventorySumByProductNos">
+      <soap:operation soapAction="http://tempuri.org/GetInventorySumByProductNos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SwapLockInventorySum">
+      <soap:operation soapAction="http://tempuri.org/SwapLockInventorySum" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteReceiveProduct">
+      <soap:operation soapAction="http://tempuri.org/DeleteReceiveProduct" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCache">
+      <soap:operation soapAction="http://tempuri.org/GetCache" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCache">
+      <soap:operation soapAction="http://tempuri.org/RemoveCache" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventoryChangeLog">
+      <soap:operation soapAction="http://tempuri.org/GetInventoryChangeLog" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventorySumNoCache">
+      <soap:operation soapAction="http://tempuri.org/GetInventorySumNoCacheWithThreeParameter" style="document" />
+      <wsdl:input name="GetInventorySumNoCacheWithThreeParameter">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GetInventorySumNoCacheWithThreeParameter">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventory">
+      <soap:operation soapAction="http://tempuri.org/GetInventory" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventoryPIDRefBySkuNo">
+      <soap:operation soapAction="http://tempuri.org/GetInventoryPIDRefBySkuNo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateNormalInventorySum">
+      <soap:operation soapAction="http://tempuri.org/UpdateNormalInventorySum" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateNormalWareHouseInventory">
+      <soap:operation soapAction="http://tempuri.org/UpdateNormalWareHouseInventory" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ModifyChannelInventory">
+      <soap:operation soapAction="http://tempuri.org/ModifyChannelInventory" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUnLockPidByProductNos">
+      <soap:operation soapAction="http://tempuri.org/GetUnLockPidByProductNos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmCancelOrderRollBack">
+      <soap:operation soapAction="http://tempuri.org/ConfirmCancelOrderRollBack" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventorySumByValidProductNos">
+      <soap:operation soapAction="http://tempuri.org/GetInventorySumByValidProductNos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SplitOrderRollBack">
+      <soap:operation soapAction="http://tempuri.org/SplitOrderRollBack" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SwapUnLockInventorySum">
+      <soap:operation soapAction="http://tempuri.org/SwapUnLockInventorySum" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmChannelOrder">
+      <soap:operation soapAction="http://tempuri.org/ConfirmChannelOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VirtualProductPackOrder">
+      <soap:operation soapAction="http://tempuri.org/VirtualProductPackOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransferOutReturnOrderUnLock">
+      <soap:operation soapAction="http://tempuri.org/TransferOutReturnOrderUnLock" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSkuInventoryBySkuNos">
+      <soap:operation soapAction="http://tempuri.org/GetSkuInventoryBySkuNos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSkuNoCacheKeyFormatString">
+      <soap:operation soapAction="http://tempuri.org/GetSkuNoCacheKeyFormatString" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMemcachedServer">
+      <soap:operation soapAction="http://tempuri.org/GetMemcachedServer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="StockWebServiceSoap12" type="tns:StockWebServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetUsableStockQuantity">
+      <soap12:operation soapAction="http://tempuri.org/GetUsableStockQuantity" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventorySum">
+      <soap12:operation soapAction="http://tempuri.org/GetInventorySum" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventory">
+      <soap12:operation soapAction="http://tempuri.org/GetInventoryWithThreeParameter" style="document" />
+      <wsdl:input name="GetInventoryWithThreeParameter">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GetInventoryWithThreeParameter">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventorySumList">
+      <soap12:operation soapAction="http://tempuri.org/GetInventorySumList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventorySumNoCache">
+      <soap12:operation soapAction="http://tempuri.org/GetInventorySumNoCache" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventorySumByProductNo">
+      <soap12:operation soapAction="http://tempuri.org/GetInventorySumByProductNo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetErpInventoryPIDRef">
+      <soap12:operation soapAction="http://tempuri.org/GetErpInventoryPIDRef" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsInventoryPIDRefExist">
+      <soap12:operation soapAction="http://tempuri.org/IsInventoryPIDRefExist" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPidInfo">
+      <soap12:operation soapAction="http://tempuri.org/GetPidInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPidList">
+      <soap12:operation soapAction="http://tempuri.org/GetPidList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LockStockCache">
+      <soap12:operation soapAction="http://tempuri.org/LockStockCache" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnlockStockCache">
+      <soap12:operation soapAction="http://tempuri.org/UnlockStockCache" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateOrder">
+      <soap12:operation soapAction="http://tempuri.org/CreateOrder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateOrderRollBack">
+      <soap12:operation soapAction="http://tempuri.org/CreateOrderRollBack" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelOrder">
+      <soap12:operation soapAction="http://tempuri.org/CancelOrder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmCancelOrder">
+      <soap12:operation soapAction="http://tempuri.org/ConfirmCancelOrder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SplitOrder">
+      <soap12:operation soapAction="http://tempuri.org/SplitOrder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DistributeOrder">
+      <soap12:operation soapAction="http://tempuri.org/DistributeOrder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PackOrder">
+      <soap12:operation soapAction="http://tempuri.org/PackOrder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PackOrderRollBack">
+      <soap12:operation soapAction="http://tempuri.org/PackOrderRollBack" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AllocateRequest">
+      <soap12:operation soapAction="http://tempuri.org/AllocateRequest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AllocateAuditSucceed">
+      <soap12:operation soapAction="http://tempuri.org/AllocateAuditSucceed" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AllocateAuditFailed">
+      <soap12:operation soapAction="http://tempuri.org/AllocateAuditFailed" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SpecialAllocateRequest">
+      <soap12:operation soapAction="http://tempuri.org/SpecialAllocateRequest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SpecialAllocateAuditSucceed">
+      <soap12:operation soapAction="http://tempuri.org/SpecialAllocateAuditSucceed" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SpecialAllocateAuditFailed">
+      <soap12:operation soapAction="http://tempuri.org/SpecialAllocateAuditFailed" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransferOrderStock">
+      <soap12:operation soapAction="http://tempuri.org/TransferOrderStock" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PurchaseInStock">
+      <soap12:operation soapAction="http://tempuri.org/PurchaseInStock" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReceiveProduct">
+      <soap12:operation soapAction="http://tempuri.org/ReceiveProduct" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReturnBeforeDelivery">
+      <soap12:operation soapAction="http://tempuri.org/ReturnBeforeDelivery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReturnAfterDelivery">
+      <soap12:operation soapAction="http://tempuri.org/ReturnAfterDelivery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BackRequest">
+      <soap12:operation soapAction="http://tempuri.org/BackRequest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BackAuditSucceed">
+      <soap12:operation soapAction="http://tempuri.org/BackAuditSucceed" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BackAuditFailed">
+      <soap12:operation soapAction="http://tempuri.org/BackAuditFailed" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BackRequestPidCancel">
+      <soap12:operation soapAction="http://tempuri.org/BackRequestPidCancel" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ModifyLogisticsNo">
+      <soap12:operation soapAction="http://tempuri.org/ModifyLogisticsNo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ModifyStorePositionNo">
+      <soap12:operation soapAction="http://tempuri.org/ModifyStorePositionNo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConvertOrderType">
+      <soap12:operation soapAction="http://tempuri.org/ConvertOrderType" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConvertSkuType">
+      <soap12:operation soapAction="http://tempuri.org/ConvertSkuType" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ModifyConsignVirtualStock">
+      <soap12:operation soapAction="http://tempuri.org/ModifyConsignVirtualStock" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProductTransfer">
+      <soap12:operation soapAction="http://tempuri.org/ProductTransfer" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LendRequest">
+      <soap12:operation soapAction="http://tempuri.org/LendRequest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LendAuditFailed">
+      <soap12:operation soapAction="http://tempuri.org/LendAuditFailed" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LendGiveBack">
+      <soap12:operation soapAction="http://tempuri.org/LendGiveBack" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransferConsignVirtualStock">
+      <soap12:operation soapAction="http://tempuri.org/TransferConsignVirtualStock" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StockTaking">
+      <soap12:operation soapAction="http://tempuri.org/StockTaking" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransferOut">
+      <soap12:operation soapAction="http://tempuri.org/TransferOut" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransferOutCancel">
+      <soap12:operation soapAction="http://tempuri.org/TransferOutCancel" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransferIn">
+      <soap12:operation soapAction="http://tempuri.org/TransferIn" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransferOutCreateOrder">
+      <soap12:operation soapAction="http://tempuri.org/TransferOutCreateOrder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransferOutReturnOrder">
+      <soap12:operation soapAction="http://tempuri.org/TransferOutReturnOrder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransferOutExchangePid">
+      <soap12:operation soapAction="http://tempuri.org/TransferOutExchangePid" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransferOutValidate">
+      <soap12:operation soapAction="http://tempuri.org/TransferOutValidate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RepairBack">
+      <soap12:operation soapAction="http://tempuri.org/RepairBack" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VirtualProductCreateOrder">
+      <soap12:operation soapAction="http://tempuri.org/VirtualProductCreateOrder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LockPid">
+      <soap12:operation soapAction="http://tempuri.org/LockPid" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnLockPid">
+      <soap12:operation soapAction="http://tempuri.org/UnLockPid" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStockFlagByPid">
+      <soap12:operation soapAction="http://tempuri.org/GetStockFlagByPid" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetConsignEntityIventoryQuantity">
+      <soap12:operation soapAction="http://tempuri.org/GetConsignEntityIventoryQuantity" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventorySumByProductNos">
+      <soap12:operation soapAction="http://tempuri.org/GetInventorySumByProductNos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SwapLockInventorySum">
+      <soap12:operation soapAction="http://tempuri.org/SwapLockInventorySum" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteReceiveProduct">
+      <soap12:operation soapAction="http://tempuri.org/DeleteReceiveProduct" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCache">
+      <soap12:operation soapAction="http://tempuri.org/GetCache" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveCache">
+      <soap12:operation soapAction="http://tempuri.org/RemoveCache" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventoryChangeLog">
+      <soap12:operation soapAction="http://tempuri.org/GetInventoryChangeLog" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventorySumNoCache">
+      <soap12:operation soapAction="http://tempuri.org/GetInventorySumNoCacheWithThreeParameter" style="document" />
+      <wsdl:input name="GetInventorySumNoCacheWithThreeParameter">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GetInventorySumNoCacheWithThreeParameter">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventory">
+      <soap12:operation soapAction="http://tempuri.org/GetInventory" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventoryPIDRefBySkuNo">
+      <soap12:operation soapAction="http://tempuri.org/GetInventoryPIDRefBySkuNo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateNormalInventorySum">
+      <soap12:operation soapAction="http://tempuri.org/UpdateNormalInventorySum" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateNormalWareHouseInventory">
+      <soap12:operation soapAction="http://tempuri.org/UpdateNormalWareHouseInventory" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ModifyChannelInventory">
+      <soap12:operation soapAction="http://tempuri.org/ModifyChannelInventory" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUnLockPidByProductNos">
+      <soap12:operation soapAction="http://tempuri.org/GetUnLockPidByProductNos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmCancelOrderRollBack">
+      <soap12:operation soapAction="http://tempuri.org/ConfirmCancelOrderRollBack" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventorySumByValidProductNos">
+      <soap12:operation soapAction="http://tempuri.org/GetInventorySumByValidProductNos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SplitOrderRollBack">
+      <soap12:operation soapAction="http://tempuri.org/SplitOrderRollBack" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SwapUnLockInventorySum">
+      <soap12:operation soapAction="http://tempuri.org/SwapUnLockInventorySum" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmChannelOrder">
+      <soap12:operation soapAction="http://tempuri.org/ConfirmChannelOrder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VirtualProductPackOrder">
+      <soap12:operation soapAction="http://tempuri.org/VirtualProductPackOrder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransferOutReturnOrderUnLock">
+      <soap12:operation soapAction="http://tempuri.org/TransferOutReturnOrderUnLock" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSkuInventoryBySkuNos">
+      <soap12:operation soapAction="http://tempuri.org/GetSkuInventoryBySkuNos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSkuNoCacheKeyFormatString">
+      <soap12:operation soapAction="http://tempuri.org/GetSkuNoCacheKeyFormatString" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMemcachedServer">
+      <soap12:operation soapAction="http://tempuri.org/GetMemcachedServer" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="StockWebService">
+    <wsdl:port name="StockWebServiceSoap" binding="tns:StockWebServiceSoap">
+      <soap:address location="http://erpws02.shangpin.com/webservice/stockwebservice.asmx" />
+    </wsdl:port>
+    <wsdl:port name="StockWebServiceSoap12" binding="tns:StockWebServiceSoap12">
+      <soap12:address location="http://erpws02.shangpin.com/webservice/stockwebservice.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

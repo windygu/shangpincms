@@ -1,0 +1,15 @@
+
+/*模板区*/
+.sp-temp-box {
+	position: relative;
+	height: 654px;
+	margin-bottom: 10px;
+	 width: 716px;
+}
+.sp-temp-box a {
+	position: absolute;
+	border:1px solid #b3b1b2;
+}
+.sp-temp-box a img {
+	display: block;
+}

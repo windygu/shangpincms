@@ -1,0 +1,122 @@
+﻿@model Shangpin.Entity.Wfs.SWfsBrandSpecialityStore
+@{
+    ViewBag.Title = "专卖店编辑";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+<html>
+<script src="/Areas/Shangpin/Scripts/plug/comm.js" type="text/javascript"></script>
+<script type="text/javascript" src="/Areas/outlet/Scripts/page/index/popDiv.js"></script>
+<head>
+    
+    <script type="text/javascript">
+        var getTypeName = function (data) {
+            if (data == 1) {
+                $("#SpecialityStoreType").val($("#beforeName").val() + $("#storeName").val());
+                
+            } else {
+                $("#SpecialityStoreType").val("");
+                //alert($("#SpecialityStoreType").val());
+            }
+
+        }
+    </script>
+    
+</head>
+    CMS > 尚品 > <a href="/shangpin/Brand/BrandSpecialityStoreEdit.html">专卖店</a> > 店铺编辑</h1>
+@using (Html.BeginForm("BrandSpecialityStoreEdit", "Brand", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+    <table class="mx-table">
+        <thead>
+            <tr style=" height:50px">
+                <td width="13%">
+                    选择模版:
+                </td>
+                <td>
+                    @Html.HiddenFor(model => model.SpecialityStoreId)
+                    <input type="radio" name="TemplateId" id="ww"  value="0" @(Model.TemplateId==0?"checked":null) />模版一(左字右图)
+                    <input type="radio" name="TemplateId" id="qq"  value="1" @(Model.TemplateId==1?"checked":null) style=" margin:5px;"/>模版二(左图右字)
+                </td>
+            </tr>
+            <tr style=" height:50px;">
+                <td width="13%">
+                    店铺类型:
+                </td>
+                <td>
+                    
+                    @if (string.IsNullOrEmpty(Model.SpecialityStoreType))
+                    {
+                        <input type="radio" onclick="getTypeName('0')" name="dianpu" id="wu" checked="checked"/><text>无</text>
+                        <input type="radio" onclick="getTypeName('1')" name="dianpu" id="you" />
+                    }
+                    else 
+                    {
+                        if (Model.SpecialityStoreType=="")
+                        {
+                            <input type="radio" onclick="getTypeName('0')" name="dianpu" id="wu" checked="checked"/><text>无</text>
+                            <input type="radio" onclick="getTypeName('1')" name="dianpu" id="you" />
+                        }
+                        else
+                        {
+                            <input type="radio" onclick="getTypeName('0')" name="dianpu" id="wu" /><text>无</text>
+                            <input type="radio" onclick="getTypeName('1')" name="dianpu" id="you" checked="checked"/>
+                        }
+
+                    }
+                    @Html.HiddenFor(model => model.SpecialityStoreType)
+                    <input type="text" id="beforeName" name="beforeName" onkeyup="getTypeName(1)" value="@(Model.SpecialityStoreType)" />
+                    <select id="storeName">
+                        <option value="专卖店">专卖店</option>
+                        <option value="旗舰店">旗舰店</option>
+                    </select>
+                </td>
+            </tr>
+            @Html.HiddenFor(model => model.SpecialityStorePic)
+            @Html.HiddenFor(model => model.BrandIntroduce)
+            @*<tr style=" height:50px;">
+                <td width="13%">
+                    图片:
+                </td>
+                <td>
+                    
+                    <input type="file" name="imgfile" id="imgfile" /><p style=" float:right; margin-right:580px;">要求: 600*250,小于100K的jpg图片</p>
+                    
+                </td>
+            </tr>
+            <tr style=" height:50px;">
+                <td width="13%">
+                    图片预览:
+                </td>
+                <td>
+                    <img src="/ReadPic/GetPic.ashx?width=600&height=250&pictureFileNo=@(Model.SpecialityStorePic)&type=2" />
+                </td>
+            </tr>*@
+            @*<tr style=" height:50px;">
+                <td width="14%">
+                    店铺介绍:
+                </td>
+                <td>
+                <input type="text" id="@(Model.BrandIntroduce)" value="@(Model.BrandIntroduce)" name="brandintroduce" style=" width:400px; height:100px;"/>
+                    @Html.TextAreaFor(model => model.BrandIntroduce, new { @cols = "70", rows = "10" })
+                    @Html.ValidationMessageFor(model => model.BrandIntroduce)
+                    <p style=" color:Blue;">请输入小于500的字符</p>
+                </td>
+            </tr>*@
+            <tr style=" height:50px;">
+                <td width="8%">
+                    操作:
+                </td>
+                <td>
+                    @Html.HiddenFor(model => model.BrandNo)
+                    <input type="submit" value="保存" onclick="bao()" style=" width:60px; height:30px;"/>
+                    @Html.ActionLink("返回列表", "StoresList")
+                    
+                </td>
+            </tr>
+        </thead>
+    </table>
+    
+    
+}
+@ViewData["tip"]
+</html>

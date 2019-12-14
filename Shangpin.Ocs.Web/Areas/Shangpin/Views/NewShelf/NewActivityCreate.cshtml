@@ -1,0 +1,281 @@
+﻿@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Ocs.Service;
+@using Shangpin.Entity.Wfs;
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@model SWfsNewAlterPicture
+
+@{
+    ViewBag.Title = "添加上新活动图";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+    <script src="/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/plug/ERPBrand.js"></script>
+}
+
+@section HeadStyle
+{
+    <style type="text/css">
+        .titleColor, span {
+            color: Red;
+        }
+    </style>
+}
+<h1>
+    OCS > 尚品 > <a href="/Shangpin/channel/ChannelList">频道页列表</a> > <a href="/Shangpin/newshelf/NewActivityList">上新活动图管理</a> > 添加上新活动图
+</h1>
+<hr style="border: 1px solid Black; border-left: none; border-right: none; height: inherit;" />
+<!-- 添加活动图 start -->
+<div id="mx-rightcontent-addbox" class="mx-rightcontent-msgbox">
+    <form id="formAddPic" action="/shangpin/newshelf/NewActivityCreateManage" method="post"
+          enctype="multipart/form-data">
+        <dl>
+            <dt class="titleColor">选择品牌：</dt>
+            <input type="hidden" value="" id="BrandNo" name="BrandNo" />
+            <dd id="OutletSubjectSpike">
+                <input type="text" name="BrandName" id="BrandName" value="" onfocus="if(this.value == this.defaultValue) this.value = ''"
+                       onblur="if(this.value == '') this.value = this.defaultValue"></input>
+            </dd>
+        </dl>
+        <dl>
+            <dt class="titleColor">图片标题*：</dt>
+            <dd>
+                <input id="PicName" type="text" name="PicName" value="" maxlength="30" />
+                <span>图片标题不能大于30字符</span>
+            </dd>
+        </dl>
+        <div style="border: 1px solid silver; margin-top: 10px; ">
+            <span style="color: blue; font-size: 14px;">网站图片</span>
+            <dl>
+                <dt class="titleColor">图片上传*： </dt>
+                <dd>
+                    <input id="NewPicFilePC" type="file" name="NewPicFilePC" />
+                    <br />
+                    <span>*尺寸：770*320;格式：jpg gif;大小：500K以下</span>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="titleColor">图片链接地址*： </dt>
+                <dd>
+                    <input id="NewPicFileUrlPC" type="text" name="NewPicFileUrlPC" value="" />
+                    <br />
+                    <span>*格式：http://www.shangpin.com，开头"http://"</span>
+                </dd>
+            </dl>
+        </div>
+        <div style="border: 1px solid silver; margin-top: 10px;">
+            <span style="color: blue; font-size: 14px;">移动端图片</span>
+            <dl>
+                <dt class="titleColor">图片上传*： </dt>
+                <dd>
+                    <input id="NewPicFileMobile" type="file" name="NewPicFileMobile" />
+                    <br />
+                    <span class="longPic">*尺寸：393*759;</span>
+                    <span class="widePic">*尺寸：640*426;</span>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="titleColor">图片链接地址*： </dt>
+                <dd>
+                    <input id="NewPicFileUrlMobile" type="text" name="NewPicFileUrlMobile" value="" />
+                </dd>
+            </dl>
+            <dl>
+                <dt class="titleColor">图片类型*：</dt>
+                <dd>
+                    <input type="radio" name="PicType" value="1" id="PicType1" onclick="onClickPicType(1)" /><label for="PicType1">长图</label>
+                    <input type="radio" name="PicType" value="2" id="PicType2" onclick="onClickPicType(2)" /><label for="PicType2">宽图</label>
+                </dd>
+            </dl>
+        </div>
+        <dl>
+            <dt class="titleColor">状态*：</dt>
+            <dd>
+                <input type="radio" name="Status" value="1" id="Status1" /><label for="Status1">开启</label>
+                <input type="radio" name="Status" value="0" id="Status0" /><label for="Status0">关闭</label>
+            </dd>
+        </dl>
+        <dl>
+            <dt class="titleColor">开始时间：</dt>
+            <dd>
+                <input id="DateBegin" name="DateBegin" class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:00'})" />
+            </dd>
+        </dl>
+
+        <dl>
+            <dt>&nbsp;</dt>
+            <dd>
+                <button type="button" id="btnSave" class="secondary" onclick="return CheckSubmit();">
+                    确 定
+                </button>
+                <button type="button" id="btnCancle" onclick="window.location.href = '/Shangpin/newShelf/NewActivityList'">
+                    取 消
+                </button>
+            </dd>
+        </dl>
+    </form>
+    <script type="text/javascript">
+        $(function () {
+            $("#BrandName").selectBrand('BrandNo', 'BrandName', false, '', ''); //执行品牌选择操作
+            $(".longPic").hide();//初始化加载时隐藏
+            $(".widePic").hide();
+        });
+
+        function onClickPicType(type) {
+            if (type == 1) {
+                $(".longPic").show();
+                $(".widePic").hide();
+            }
+            else if (type == 2) {
+                $(".longPic").hide();
+                $(".widePic").show();
+            }
+            else {
+                $(".longPic").hide();
+                $(".widePic").hide();
+            }
+        }
+
+        function CheckSubmit() {
+            if (!FlagEmpty("BrandName")) {
+                alert("品牌不能为空");
+                return false;
+            }
+            if (!FlagEmpty("PicName")) {
+                alert("图片标题不能为空");
+                return false;
+            }
+            if (!CountChar("PicName", 30)) {
+                alert("图片标题为15汉字或者30字符");
+                return false;
+            }
+            if (!FlagEmpty("NewPicFilePC")) {
+                alert("请选择上传网站图片");
+                return false;
+            }
+            if (!FlagEmpty("NewPicFileUrlPC")) {
+                alert("请输入网站图片链接地址");
+                return false;
+            }
+            if (!CheckStart("NewPicFileUrlPC")) {
+                alert("格式：http://www.shangpin.com，开头\"http://\"");
+                return false;
+            }
+            if (!FlagEmpty("NewPicFileMobile")) {
+                alert("请选择上传移动端图片");
+                return false;
+            }
+            if (!FlagEmpty("NewPicFileUrlMobile")) {
+                alert("请输入移动端图片链接地址");
+                return false;
+            }
+            //if (!CheckStart("NewPicFileUrlMobile")) {
+            //    alert("请以http://开头");
+            //    return false;
+            //}
+            if (!FlagCheckBoxCheck("PicType")) {
+                alert("请选择图片类型！");
+                return false;
+            }
+            if (!FlagCheckBoxCheck("Status")) {
+                alert("请选择状态！");
+                return false;
+            }
+            if (!FlagEmpty("DateBegin")) {
+                alert("请选择开始时间");
+                return false;
+            }
+            FormSubmit();
+        }
+        function FormSubmit() {
+            $("#formAddPic").ajaxSubmit({
+                success: function (html) {
+                    if (typeof (html) == "string") {
+                        var rs = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+                        data = eval("(" + rs + ")");
+                    }
+                    else {
+                        data = html;
+                    }
+                    if (data.result == "success") {
+                        alert(data.message);
+                        window.location = "/Shangpin/newshelf/NewActivityList";
+                        return true;
+                    }
+                    else {
+                        alert(data.message);
+                        return false;
+                    }
+                }
+            })
+        }
+
+        //判断输入字符个数
+        function SendCountChar(id) {
+            var msg = $("#" + id).val()
+            var nums = msg.replace(/[^\x00-\xff]/g, "00").length;
+            return nums;
+        }
+
+        //判断文本框是否为空
+        function FlagEmpty(Id) {
+            var msg = $("#" + Id).val();
+            msg = msg.replace(/\s+/g, "");//去除空格
+            if (msg == "" || msg == null || msg == undefined) {
+                return false;
+            }
+            return true;
+        }
+        //判断字符个数是否超出限制
+        function CountChar(id, len) {
+            var msg = $("#" + id).val()
+            var nums = msg.replace(/[^\x00-\xff]/g, "00").length;
+            if (nums > len) {
+                return false;
+            }
+            return true;
+        }
+        //判断是否以http://开头
+        function CheckStart(id) {
+            var msg = $("#" + id).val();
+            if (msg != "") {
+                var expression = /^http:\/\/([\w-]+\.)+[\w-]+(\/[\w-\.\/?%&=]*)?$/;
+                var regEx = new RegExp(expression);
+                if (!regEx.test(msg)) {
+                    return false;
+                }
+                return true;
+            }
+        }
+        //判断复选框有没有都不选
+        function FlagCheckBoxCheck(Name) {
+            var SordNos = "";
+            $("input[name='" + Name + "']:checked").each(function () {
+                SordNos += $(this).val() + ",";
+            });
+            if (SordNos == "") {
+                return false;
+            }
+            return true;
+        }
+        //判断有多少个回车
+        function CheckEnter(id, len) {
+            var msg = $("#" + id).val()
+            var nums = msg.split("\r").length - 1;
+            if (nums > len) {
+                return false;
+            }
+            return true;
+        }
+        //验证小数
+        function CheckFlagNum(id) {
+            var msg = $("#" + id).val()
+            if (!/^[0-9]+(.[0-9]{1})?$/.test(msg)) {
+                return false;
+            }
+            return true;
+        }
+
+    </script>
+</div>

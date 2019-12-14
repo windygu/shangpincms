@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "关联链接";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+@model Shangpin.Entity.Wfs.SWfsBrandNavigation
+@section HeadStyle{
+    <link charset="utf-8" type="text/css" rel="stylesheet" href="/Areas/Shangpin/Content/css/page/rightcontent/brandcontent.css" />
+}
+@section HeadScript{
+    <script charset="utf-8" src="/Areas/Shangpin/Scripts/plug/comm.js"></script>
+}
+
+<h1>
+    <a href="/Shangpin/Brand/NavigateList.html?brandNO=@(Request.QueryString["brandNO"])&brandName=@(Request.QueryString["brandName"])">导航编辑</a> > 关联链接
+</h1>
+@Html.Action("refTypeStyle", new { refType = @Model.RefType, navNO = @Model.NavigationId, select = Request.QueryString["select"] != null ? Request.QueryString["select"] : "1", brandName = Request.QueryString["brandName"], brandNO = Request.QueryString["brandNO"] })
+<div id="" class="mx-brandcontent-msgbox greyBg">
+    @using (Html.BeginForm())
+    {
+        <dl>
+            <dt>关联链接：</dt>
+            <dd>
+                @Html.TextBoxFor(model => model.RefContent, new { @placeholder = "输入文本...",maxlength="300" })
+                @Html.HiddenFor(model => model.NavigationId)
+                @Html.HiddenFor(model=>model.BrandNo)
+                <input type="hidden" name="brandName" value="@(Request.QueryString["brandName"])" />
+                <input type="hidden" value="3" id="RefType" name="RefType"/>
+            </dd>
+        </dl>
+        <dl>
+            <dt></dt>
+            <dd>
+                <button id="" class="secondary" value="" name="" type="submit" >
+                    保 存</button>
+                <button id="" value="" name="" type="button" onclick="history.back();">
+                    返 回</button>
+            </dd>
+        </dl>
+    }
+</div>
+@ViewData["tip"]

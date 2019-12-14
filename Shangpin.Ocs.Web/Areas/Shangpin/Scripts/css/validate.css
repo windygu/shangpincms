@@ -1,0 +1,147 @@
+﻿ form label {
+        padding: 0 10px;
+        font-weight: bold;
+    }
+
+    form fieldset legend {
+        font-weight: bold;
+        margin-bottom: 10px;
+        padding-top: 10px;
+    }
+
+    form p small {
+        font-size: 0.75em;
+        color: #777;
+    }
+
+
+    form input.text-input, form select, form textarea, form .wysiwyg {
+        padding: 6px;
+        font-size: 13px;
+        background: #fff url('/Areas/Shangpin/Images/validata/bg-form-field.gif') top left repeat-x;
+        border: 1px solid #d5d5d5;
+        color: #333;
+    }
+
+    form .small-input {
+        width: 25% !important;
+    }
+
+    form .medium-input {
+        width: 50% !important;
+    }
+
+    form .large-input {
+        width: 97.5% !important;
+        font-size: 16px !important;
+        padding: 8px !important;
+    }
+
+    form textarea {
+        width: 97.5% !important;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    form select {
+        padding: 4px;
+        background: #fff;
+    }
+
+    form input[type="checkbox"], form input[type="radio"] {
+        padding: 0;
+        background: none;
+        border: 0;
+    }
+
+    /*************** Notifications ***************/
+
+    .notification {
+        position: relative;
+        margin: 0 0 15px 0;
+        padding: 0;
+        border: 1px solid;
+        background-position: 10px 11px !important;
+        background-repeat: no-repeat !important;
+        font-size: 13px;
+        width: 99.8%;
+    }
+
+
+    .attention {
+        background: #fffbcc url('/Areas/Shangpin/Images/validata/exclamation.png') 10px 11px no-repeat;
+        border-color: #e6db55;
+        color: #666452;
+    }
+
+    .information {
+        background: #dbe3ff url('/Areas/Shangpin/Images/validata/information.png');
+        border-color: #a2b4ee;
+        color: #585b66;
+    }
+
+    .success {
+        background: #d5ffce url('/Areas/Shangpin/Images/validata/tick_circle.png');
+        border-color: #9adf8f;
+        color: #556652;
+    }
+
+    .error {
+        background: #ffcece url('/Areas/Shangpin/Images/validata/cross_circle.png');
+        border-color: #df8f8f;
+        color: #665252;
+    }
+
+    .notification div {
+        display: block;
+        font-style: normal;
+        padding: 10px 10px 10px 36px;
+        line-height: 1.5em;
+    }
+
+    .notification .close {
+        color: #990000;
+        font-size: 9px;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+    }
+
+    /* Notification for form inputs */
+
+    .input-notification {
+        background-position: left 2px;
+        background-repeat: no-repeat;
+        padding: 2px 0 2px 22px;
+        background-color: transparent;
+        margin: 0 0 0 5px;
+        cursor: pointer;
+    }
+
+    .button {
+        background-color: #4d90fe;
+        border: 1px solid #3079ed;
+        color: #fff;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        font-size: 14px;
+        display: inline-block;
+        padding: 5px 10px;
+        *padding: 3px 0px 0;
+        position: relative;
+        text-decoration: none;
+        -webkit-transition: border-color 0.218s ease 0s;
+        -moz-transition: border-color 0.218s ease 0s;
+        -o-transition: border-color 0.218s ease 0s;
+        transition: border-color 0.218s ease 0s;
+        cursor: pointer;
+        margin: 0 15px 0 0;
+        *zoom: 1;
+    }
+
+        .button:hover {
+            border-color: #1c8ede;
+            -webkit-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+            -moz-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+            box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+        }

@@ -1,0 +1,223 @@
+﻿@using Shangpin.Entity.Item
+@using Shangpin.Entity.User
+@using Shangpin.Entity.Wfs
+@using Shangpin.Framework.Common
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@using Shangpin.Ocs.Service.Shangpin;
+@{
+     Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    PaginationInfoModel pageinfoSingle = new PaginationInfoModel();
+    try{
+      pageinfoSingle = (PaginationInfoModel)ViewBag.PaginationInfoSingel;
+    }catch{}
+    IList<SWfsPictureManager> picManagerList = (IList<SWfsPictureManager>)ViewBag.PictureManagerList;
+    string url = Request.Url.ToString();
+
+    ViewBag.Title = "小运营位管理";
+    
+}
+@using Shangpin.Ocs.Web.Infrastructure;
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/page/index/popDiv.js"></script>
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js"></script>  
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/page/index/comm.js" charset="utf-8"></script>
+     <script type="text/javascript" src="/Areas/Shangpin/Scripts/plug/comm.js" charset="utf-8"></script>
+
+    <script type="text/javascript">
+        function onmousemoveImageShow(id, src) {
+            $("#" + id).empty();
+            $("#" + id).addClass("divShowClass");
+            $("#" + id).html("<img  src='" + src + "'></img>");
+        }
+
+        function onmouseoutImageShow(id, src) {
+            $("#" + id).removeClass("divShowClass");
+            $("#" + id).empty();
+        }
+    </script> 
+    <style type="text/css">
+    .divShowClass{position: absolute; top: 0px; height: 250px; left: 135px; z-index: 100; width: 960px;}
+    </style>
+}
+<h1>
+    <a href="/shangpin/homepage/Index.html">@(ViewBag.GenderValue=="0"?"女士":"男士")首页管理</a> > 小运营位管理 
+ </h1>
+@*<div class="handle" style="padding: 0; text-align: left;">
+    <a href="/shangpin/subject/subjectview.html" name="view" id="view" class="button" style="padding: 5px 10px;
+        5px 10px;">视图模式</a></div>*@
+<form method="get" action="/shangpin/homepage/indexsmalllist.html" id="SelectNewSubjectList">
+<table width="auto" border="0" class="mx-table">
+    <tr>
+       <td align="left">
+         <span>男/女首页:</span>    <br />
+            <select style="width: 80px;" name="gender">
+                <option value="0" @(ViewBag.GenderValue == "0" ? "selected=selected" : "")>女士首页 </option>
+                <option value="1" @(ViewBag.GenderValue == "1" ? "selected=selected" : "")> 男士首页</option>
+            </select>
+        </td>
+        <td>
+            <span>名称:</span>
+            <br />
+            <input name="KeyWord"  value="@(!string.IsNullOrEmpty(ViewBag.KeyWord) ? ViewBag.KeyWord : "名称")"  style="width: 120px; color: #666; font-size: 12px;"
+               onfocus="if(this.value == '名称') this.value = ''" onblur="if(this.value == '') this.value = '名称'"  />
+        </td>
+          <td align="left">
+         <span>运营位:</span>    <br />
+            <select style="width: 80px;" name="PagePosition">
+            <option value="0">全部运营位 </option>
+             <option value="89" @(ViewBag.PagePosition == "89" ? "selected=selected" : "")>运营位1 </option>
+            <option value="90" @(ViewBag.PagePosition == "90" ? "selected=selected" : "")>运营位2 </option>
+                <option value="91" @(ViewBag.PagePosition == "91" ? "selected=selected" : "")>运营位3 </option> 
+             <option value="92" @(ViewBag.PagePosition == "92" ? "selected=selected" : "")>运营位4 </option> 
+            <option value="93" @(ViewBag.PagePosition == "93" ? "selected=selected" : "")>运营位5 </option> 
+                <option value="95" @(ViewBag.PagePosition == "95" ? "selected=selected" : "")>运营位6 </option> 
+            </select>
+        </td>
+        <td align="left">
+         <span>状态:</span>    <br />
+            <select style="width: 80px;" name="Status">
+                <option value="">活动状态 </option>
+                <option value="0" @(ViewBag.Status == "0" ? "selected=selected" : "")>关闭 </option>
+                <option value="1" @(ViewBag.Status == "1" ? "selected=selected" : "")>开启 </option>
+            </select>
+        </td>
+        
+        <td align="left">
+         <span>类型:</span>    <br />
+            <select style="width: 80px;" name="Ptype">
+                <option value="">类型 </option>
+                <option value="1" @(ViewBag.InvitationCode== "1" ? "selected=selected" : "")>图片 </option>
+                <option value="2" @(ViewBag.InvitationCode == "2" ? "selected=selected" : "")>混排 </option>
+            </select>
+        </td>
+        <td width="350px" align="left" style="padding-left: 15px;">
+            <span>时间范围</span>    <br />
+            <input id="StartTime" name="StartTime" value="@ViewBag.StartTime" maxlength="30"  class="Wdate" type="text" onclick="WdatePicker()" readonly="readonly"  />
+            <span>至</span>
+            <input id="EndTime" name="EndTime" value="@ViewBag.EndTime" maxlength="30" class="Wdate" type="text" onclick="WdatePicker()" readonly="readonly" />
+        </td> 
+        <td>
+            <input class="button" href="#" type="submit"></input>
+        </td>
+    </tr>
+    
+</table>
+</form>
+<table class="mx-table">
+    <thead>
+        <tr>
+            
+            <th width="10%">
+                预览图
+            </th>
+            <th width="20%" >
+                图片名称
+            </th>
+             <th width="5%" >
+                类型
+            </th>
+           <th width="10%">
+                开始时间
+            </th>
+            <th width="10%">运营位</th>
+            <th width="5%">
+                状态
+            </th> 
+           <th width="10%">
+                女/男页
+            </th> 
+            <th width="50%">
+                操作
+            </th>
+        </tr>
+    </thead>
+    @if (picManagerList != null && picManagerList.Count() > 0)
+    {
+        int flag = 0;
+        foreach (SWfsPictureManager picItem in picManagerList)
+        {
+            string categoryNo = string.Empty;
+            flag = flag + 1;    
+            
+        <tbody>
+            <tr class="@(flag % 2 == 0 ? "cross" : "")">
+            
+                <td>
+                <div style="position:relative"> 
+                <a class="preview" onmousemove="onmousemoveImageShow('preview@(picItem.PictureManageId)','@Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", picItem.PictureFileNo, 0, 0)')" onmouseout="onmouseoutImageShow('preview@(picItem.PictureManageId)','@Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", picItem.PictureFileNo, 0, 0)')"  title="@picItem.PictureManageId" href="@Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", picItem.PictureFileNo, 0, 0)" target="_blank">
+                 <img width="130" alt="@picItem.PictureName" height="100" src="/ReadPic/GetPic.ashx?width=130&height=100&pictureFileNo=@picItem.PictureFileNo&type=2">
+                 </a> 
+                 <div id="preview@(picItem.PictureManageId)">
+                   
+                 </div>
+                </div>  
+                </td>
+                <td class="lt">
+                   @picItem.PictureName  
+                </td>
+                <td >
+                   @(picItem.InvitationCode== "1" ? "图片" : "混排")
+                </td>
+                 <td>
+                    @(picItem.DateBegin)
+                </td>
+              <td>@(Shangpin.Ocs.Service.Outlet.SWfsPictureManagerService.GetSWfsPictureManagerContentPosition(picItem.PagePosition))</td>
+                 <td>
+                  @(picItem.Status == 1 ? "开启" : "关闭")
+                </td>
+                    <td>
+                 @(picItem.Gender==1?"男士":"女士")
+                </td>
+                <td> 
+                     <a  href="/shangpin/homepage/CopySmallPagePosition?id=@(picItem.PictureManageId)&gender=@(Request.QueryString["gender"])"   class="button"   >复制</a>   
+                     <a  class="button"  onclick="updateStatus('@picItem.PictureManageId',0,@(picItem.Status == 1?'0':'1'),'0')">@(@picItem.Status == 1 ? "关闭" : "开启")</a> 
+
+                     <a  href="/shangpin/homepage/updatesmallpageposition.html?pid=@(picItem.PictureManageId)"   class="button"   >编 辑</a>   
+                     <a  onclick="updateStatus('@picItem.PictureManageId',0,@(picItem.Status == 1?'0':'1'),'1')"   class="button"  >删 除</a> 
+                </td>
+            </tr>
+        </tbody>
+        }
+    }
+</table>
+<div class="spPage">
+    @Html.Raw(@Html.PagerX("page", pageinfoSingle.CurrentPage, pageinfoSingle.PageSize, pageinfoSingle.TotalCount))
+</div> 
+
+@using (Html.BeginForm("PictureManagerStatusModify", "HomePage", FormMethod.Post, new { id = "SubjectUpdate" }))
+{
+    <input type="hidden" name="SubjectNo" id="SubjectNo" value="" />
+    <input type="hidden" name="Status" id="Status" value="" /> 
+    <input type="hidden" name="DelectStatus" id="DelectStatus" value="" />  
+    
+} 
+
+<script type="text/javascript"> 
+ 
+
+    function updateStatus(subjectNo, scategoryNo, status,del) {
+        $("#SubjectNo").val(subjectNo);
+        $("#Status").val(status);
+        $("#DelectStatus").val(del);  
+        $("#SubjectUpdate").ajaxSubmit({
+            success: function (html, status) {
+                if (typeof (html) == "string") {
+                    var rs = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+                    data = eval("(" + rs + ")");
+                }
+                else {
+                    data = html;
+                }
+                if (data.result == "1") {
+                    alert(data.message);
+                    window.location ='@(url)'; 
+                    return true;
+                } else {
+                    alert(data.message);
+                    return false;
+                }
+            }
+        });
+    }  
+</script>

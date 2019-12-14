@@ -1,0 +1,295 @@
+﻿@model IEnumerable<Shangpin.Entity.Wfs.SWfsListAlterPic>
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@using Shangpin.Entity.Wfs;
+@{
+    ViewBag.Title = "轮播图编辑";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    
+}
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/js/jquery.form.js"></script>
+    <script type="text/javascript">
+        function CheckStr(objvalue, len) {
+            //var msg = $("#" + id).val();
+            var nums = objvalue.replace(/[^\x00-\xff]/g, "00").length;
+            if (nums > len) {
+                alert("名称只能在" + len / 2 + "个汉字" + len + "个字符");
+                return false;
+            }
+            return true;
+        }
+
+        function saveAlterPic(formid) {
+            var bao = $("#" + formid + " input[name='LinkName']").val();
+            if (bao == "") {
+                alert("品牌名称不能为空!");
+                return false;
+            }
+            if (!CheckStr(bao, 26)) {
+                return false;
+            }
+            var img = $("#" + formid + " input[name='alter1file']").val();
+            if (img.outerHtml == "") {
+                alert("图片不能为空");
+                return false;
+            }
+            $("#" + formid).ajaxSubmit(function (data) {
+                if (data == "2") {
+                    alert("名称已存在请重新输入!");
+                    return;
+                }
+                if (data == "1") {
+                    alert("保存成功");
+                    window.location.href = window.location.href;
+                    return;
+                } else {
+                    if (data == "0") {
+                        alert("保存失败");
+                        return;
+                    }
+                    alert(data);
+                }
+
+            });
+        }
+    </script>
+}
+<h1>
+    CMS > 尚品 > <a href="#">列表页轮播图管理</a> > 列表页头图管理 > 新建</h1>
+<a href="/Shangpin/List/AlterList.html" style="float: right; color: Blue;">返回列表</a>
+<div style="width: 100%">
+    <form action="/Shangpin/List/ImgAlterUpload.html" method="post" id="alterform1"
+    enctype="multipart/form-data">
+    <table class="mx-table">
+        <tr>
+            <td style="width: 340px;">
+                <input type="hidden" name="AlterPicId" value="@(Model.Count() >= 1 ? Model.ElementAt(0).AlterPicId : 0)"/>
+                <input type="hidden" name="GroupId" value="@(Request.QueryString["groupId"])"/>
+                <input type="hidden"  name="LargePicture" value="@(Model.Count() >= 1 ? Model.ElementAt(0).LargePicture : "")"/>
+                <img src="/ReadPic/GetPic.ashx?width=316&height=190&pictureFileNo=@(Model.Count() >= 1 ? Model.ElementAt(0).LargePicture : "")&type=2" /><br />
+            </td>
+            <td style="width: 380px;">
+                <table>
+                    <tr>
+                        <td>
+                            品牌名称：<input type="text" id="LinkName1" maxlength="26" name="LinkName" value="@(Model.Count() >= 1 ? Model.ElementAt(0).LinkName : "")" style=" width:300px;"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="file" id="alter1file1" name="alter1file" style="width: 170px;" />
+                            @*@Html.HiddenFor(model => model.ElementAt(0).LargePicture);*@
+                            要求: 690x290 小于300K的JPG图片
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            图片连接：<input type="text" id="AlterAddress" placeholder="http://" name="AlterAddress" value="@(Model.Count() >= 1 ? Model.ElementAt(0).AlterAddress : "")" style=" width:300px;"/>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <input type="button" value="保存" onclick="saveAlterPic('alterform1')" style="width: 57px;
+                    height: 30px;" />
+                @*<input type="reset" value="重置" onclick="chongzhi()"/>*@
+            </td>
+        </tr>
+    </table>
+    </form>
+    <form action="/Shangpin/List/ImgAlterUpload.html" method="post" id="alterform2"
+    enctype="multipart/form-data">
+    <table class="mx-table">
+        <tr>
+            <td style="width: 340px;">
+                <input type="hidden" name="AlterPicId" value="@(Model.Count() >= 2 ? Model.ElementAt(1).AlterPicId : 0)"/>
+                <input type="hidden" name="GroupId" value="@(Request.QueryString["groupId"])"/>
+                <input type="hidden"  name="LargePicture" value="@(Model.Count() >= 2 ? Model.ElementAt(1).LargePicture : "")"/>
+                <img src="/ReadPic/GetPic.ashx?width=316&height=190&pictureFileNo=@(Model.Count() >= 2 ? Model.ElementAt(1).LargePicture : "")&type=2" /><br />
+            </td>
+            <td style="width: 380px;">
+                <table>
+                    <tr>
+                        <td>
+                            品牌名称：<input type="text" id="LinkName2" maxlength="26" name="LinkName" value="@(Model.Count() >= 2 ? Model.ElementAt(1).LinkName : "")" style=" width:300px;"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="file" id="alter1file2" name="alter1file" style="width: 170px;" />
+                            @*@Html.HiddenFor(model => model.ElementAt(0).LargePicture);*@
+                            要求: 690x290 小于300K的JPG图片
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            图片连接：<input type="text" name="AlterAddress" placeholder="http://" value="@(Model.Count() >= 2 ? Model.ElementAt(1).AlterAddress : "")" style=" width:300px;"/>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <input type="button" value="保存" onclick="saveAlterPic('alterform2')" style="width: 57px;
+                    height: 30px;" />
+                @*<input type="reset" value="重置" onclick="chongzhi()"/>*@
+            </td>
+        </tr>
+    </table>
+    </form>
+    <form action="/Shangpin/List/ImgAlterUpload.html" method="post" id="alterform3"
+    enctype="multipart/form-data">
+    <table class="mx-table">
+        <tr>
+            <td style="width: 340px;">
+                <input type="hidden" name="AlterPicId" value="@(Model.Count() >= 3 ? Model.ElementAt(2).AlterPicId : 0)"/>
+                <input type="hidden" name="GroupId" value="@(Request.QueryString["groupId"])"/>
+                <input type="hidden"  name="LargePicture" value="@(Model.Count() >= 3 ? Model.ElementAt(2).LargePicture : "")"/>
+                <img src="/ReadPic/GetPic.ashx?width=316&height=190&pictureFileNo=@(Model.Count() >= 3 ? Model.ElementAt(2).LargePicture : "")&type=2" /><br />
+            </td>
+            <td style="width: 380px;">
+                <table>
+                    <tr>
+                        <td>
+                            品牌名称：<input type="text" id="LinkName3" maxlength="26" name="LinkName" value="@(Model.Count() >= 3 ? Model.ElementAt(2).LinkName : "")" style=" width:300px;"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="file" id="alter1file3" name="alter1file" style="width: 170px;" />
+                            @*@Html.HiddenFor(model => model.ElementAt(0).LargePicture);*@
+                            要求: 690x290 小于300K的JPG图片
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            图片连接：<input type="text" placeholder="http://" name="AlterAddress" value="@(Model.Count() >= 3 ? Model.ElementAt(2).AlterAddress : "")" style=" width:300px;"/>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <input type="button" value="保存" onclick="saveAlterPic('alterform3')" style="width: 57px;
+                    height: 30px;" />
+                @*<input type="reset" value="重置" onclick="chongzhi()"/>*@
+            </td>
+        </tr>
+    </table>
+    </form>
+    <form action="/Shangpin/List/ImgAlterUpload.html" method="post" id="alterform4"
+    enctype="multipart/form-data">
+    <table class="mx-table">
+        <tr>
+            <td style="width: 340px;">
+                <input type="hidden" name="AlterPicId" value="@(Model.Count() >= 4 ? Model.ElementAt(3).AlterPicId : 0)"/>
+                <input type="hidden" name="GroupId" value="@(Request.QueryString["groupId"])"/>
+                <input type="hidden"  name="LargePicture" value="@(Model.Count() >= 4 ? Model.ElementAt(3).LargePicture : "")"/>
+                <img src="/ReadPic/GetPic.ashx?width=316&height=190&pictureFileNo=@(Model.Count() >= 4 ? Model.ElementAt(3).LargePicture : "")&type=2" /><br />
+            </td>
+            <td style="width: 380px;">
+                <table>
+                    <tr>
+                        <td>
+                            品牌名称：<input type="text" id="LinkName4" name="LinkName" value="@(Model.Count() >= 4 ? Model.ElementAt(3).LinkName : "")" style=" width:300px;"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="file" id="alter1file4" name="alter1file" style="width: 170px;" />
+                            @*@Html.HiddenFor(model => model.ElementAt(0).LargePicture);*@
+                            要求: 690x290 小于300K的JPG图片
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            图片连接：<input type="text" placeholder="http://" name="AlterAddress" value="@(Model.Count() >= 4 ? Model.ElementAt(3).AlterAddress : "")" style=" width:300px;"/>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <input type="button" value="保存" onclick="saveAlterPic('alterform4')" style="width: 57px;
+                    height: 30px;" />
+                @*<input type="reset" value="重置" onclick="chongzhi()"/>*@
+            </td>
+        </tr>
+    </table>
+    </form>
+    <form action="/Shangpin/List/ImgAlterUpload.html" method="post" id="alterform5"
+    enctype="multipart/form-data">
+    <table class="mx-table">
+        <tr>
+            <td style="width: 340px;">
+                <input type="hidden" name="AlterPicId" value="@(Model.Count() >= 5 ? Model.ElementAt(4).AlterPicId : 0)"/>
+                <input type="hidden" name="GroupId" value="@(Request.QueryString["groupId"])"/>
+                <input type="hidden"  name="LargePicture" value="@(Model.Count() >= 5 ? Model.ElementAt(4).LargePicture : "")"/>
+                <img src="/ReadPic/GetPic.ashx?width=316&height=190&pictureFileNo=@(Model.Count() >= 5 ? Model.ElementAt(4).LargePicture : "")&type=2" /><br />
+            </td>
+            <td style="width: 380px;">
+                <table>
+                    <tr>
+                        <td>
+                            品牌名称：<input type="text" id="LinkName5" name="LinkName" value="@(Model.Count() >= 5 ? Model.ElementAt(4).LinkName : "")" style=" width:300px;"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="file" id="alter1file5" name="alter1file" style="width: 170px;" />
+                            @*@Html.HiddenFor(modle => modle.ElementAt(0).LargePicture);*@
+                            要求: 690x290 小于300K的JPG图片
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            图片连接：<input type="text" placeholder="http://" name="AlterAddress" value="@(Model.Count() >= 5 ? Model.ElementAt(4).AlterAddress : "")" style=" width:300px;"/>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <input type="button" value="保存" onclick="saveAlterPic('alterform5')" style="width: 57px;
+                    height: 30px;" />
+                @*<input type="reset" value="重置" onclick="chongzhi()"/>*@
+            </td>
+        </tr>
+    </table>
+    </form>
+    <form action="/Shangpin/List/ImgAlterUpload.html" method="post" id="alterform6"
+    enctype="multipart/form-data">
+    <table class="mx-table">
+        <tr>
+            <td style="width: 340px;">
+                <input type="hidden" name="AlterPicId" value="@(Model.Count() >= 6 ? Model.ElementAt(5).AlterPicId : 0)"/>
+                <input type="hidden" name="GroupId" value="@(Request.QueryString["groupId"])"/>
+                <input type="hidden"  name="LargePicture" value="@(Model.Count() >= 6 ? Model.ElementAt(5).LargePicture : "")"/>
+                <img src="/ReadPic/GetPic.ashx?width=316&height=190&pictureFileNo=@(Model.Count() >= 6 ? Model.ElementAt(5).LargePicture : "")&type=2" /><br />
+            </td>
+            <td style="width: 380px;">
+                <table>
+                    <tr>
+                        <td>
+                            品牌名称：<input type="text" id="LinkName6" name="LinkName" value="@(Model.Count() >= 6 ? Model.ElementAt(5).LinkName : "")" style=" width:300px;"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="file" id="alter1file6" name="alter1file" style="width: 170px;" />
+                            @*@Html.HiddenFor(model => model.ElementAt(0).LargePicture);*@
+                            要求: 690x290 小于300K的JPG图片
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            图片连接：<input type="text" placeholder="http://" name="AlterAddress" value="@(Model.Count() >= 6 ? Model.ElementAt(5).AlterAddress : "")" style=" width:300px;"/>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <input type="button" value="保存" onclick="saveAlterPic('alterform6')" style="width: 57px;
+                    height: 30px;" />
+                @*<input type="reset" value="重置" onclick="chongzhi()"/>*@
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <statement id="ComBeziWfs_WfsPromotionTicket_ReadTicketList" parameterClass="System.String" description="查询所有优惠券"  cached="false" expired="3600">
+    WITH t AS
+    (
+    SELECT * FROM (
+    SELECT
+    PromotionTicketNo,PromotionTicketName,TicketTotalCount,TicketAmount,DateStart,DateEnd,
+    DateCreate,CreateUser,ActivationEndDays,CreateDepartmentNo,CreateDepartmentName,TicketDesc,
+    AuditStatus,AuditUserId,DateAudit,PromotionPicNo,PromotionUrl,
+    ROW_NUMBER() OVER (ORDER BY DateCreate DESC) AS RowNum,
+    COUNT(*) OVER() AS TotalCount
+    FROM
+    WfsPromotionTicket(NOLOCK)
+    WHERE
+    AuditStatus =2
+    ) a LEFT JOIN WfsOperator(nolock) b ON  a.AuditUserId=b.UserName
+    )
+    SELECT * FROM  t  ORDER By t.DateCreate DESC
+
+   
+  </statement>
+</statements>

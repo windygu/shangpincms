@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Shangpin.Ocs.Entity.Extenstion.ShangPin.CategoryExtendForAlias>
+@using Shangpin.Ocs.Web.Infrastructure
+@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+@section HeadScript{
+<script src="/Areas/Shangpin/Scripts/plug/comm.js" charset="utf-8" type="text/javascript"></script>
+    <script src="/Areas/Shangpin/Scripts/Alias/Alias.js" charset="utf-8" type="text/javascript"></script>
+}
+<h1>
+    OCS > 尚品 > 别名管理><a href="/Shangpin/seo/NoCategoryAlias.html">无品牌别名列表</a></h1>
+   
+   
+<table class="mx-table">
+    <thead>
+     <tr>
+        <th width="10%">
+            分类编号
+        </th>
+        <th width="6%">
+            品牌别名
+        </th>
+        <th width="6%">
+            删除
+        </th>
+        </tr>
+    </thead>
+    @if(Model!=null&&Model.Count()>0)
+    {
+     foreach (var m in Model)
+    {
+        <tr>
+            <td>@m.ObjectNo
+            </td>
+            <td>@m.ObjectAlias
+            </td>
+            <td>
+            <a href="javascript:void(0)" onclick="AliasDelete(@m.KeyID)"> 删除</a>
+            </td>
+        </tr>
+    }
+    }
+    else
+    {
+     <tr> <td colspan="3">无记录
+            </td>
+            
+        </tr>
+    }
+    <tbody>
+    </tbody>
+</table>
+<div class="spPage" style="text-align: center; margin-top: 10px;">@Html.Raw(Html.PagerX("page", (int)ViewBag.PageIndex, (int)ViewBag.PageSize, (int)ViewBag.TotalCount))</div>

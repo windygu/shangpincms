@@ -1,0 +1,115 @@
+﻿@{
+    ViewBag.Title = "设置上新时间";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js"></script>
+<div>
+    <form method="post">
+        <input type="hidden" name="CommingTitle" id="CommingTitle" value="@(string.IsNullOrEmpty(ViewBag.CommingTitle)? "" : ViewBag.CommingTitle)" />
+        <div style="width:500px;height:170px; border:1px #808080 solid;margin-top:15px;">
+            <table style="margin:10px;">
+                <tr style="height:30px;">
+                    <td style="font-size:14px;font-weight:bolder;">上新时间设置：</td>
+                    <td></td>
+                </tr>
+                <tr style="height:30px;">
+                    <td style="text-align:right;">每周：</td>
+                    <td>
+                        <input type="hidden" id="CheckedAll" name="CheckedAll" value="@ViewBag.CheckedAll" />
+                        <input type="hidden" id="xingqi" name="xingqi" />
+                        <input type="hidden" id="checkedxq" name="checkedxq" />
+                        <input type="checkbox" value="1" name="check1" />一
+                        <input type="checkbox" value="2" name="check2" />二
+                        <input type="checkbox" value="3" name="check3" />三
+                        <input type="checkbox" value="4" name="check4" />四
+                        <input type="checkbox" value="5" name="check5" />五
+                        <input type="checkbox" value="6" name="check6" />六
+                        <input type="checkbox" value="0" name="check7" />日
+                    </td>
+                </tr>
+                <tr style="height:30px;">
+                    <td style="text-align:right;">时间：</td>
+                    <td>
+                        <input type="text" style="width:170px;height:25px;border:1px black solid;" name="DetailTime" id="DetailTime" onfocus="WdatePicker({dateFmt:'H:00'})" value="@ViewBag.DetailTime" />
+                        &nbsp;&nbsp;&nbsp;上新&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注释：时间精确到时
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="margin-top:20px;margin-left:30px;">
+            <input type="button" style="width:55px;height:25px;margin-right:30px;" value="确认" onclick="settime()" />&nbsp;&nbsp;
+            <input type="reset" style="width: 55px; height: 25px;" value="返回" onclick="GoBack()" />
+        </div>
+    </form>
+</div>
+
+<script>
+    //初始化加载
+    $(function () {
+        var check = $("#CheckedAll").val();
+        var arrc = check.split(',');
+        for (var i = 0; i < arrc.length - 1; i++) {
+            var $checkBox = $(":checkbox");
+            var arr = $checkBox.each(function (index) {
+                if ($($checkBox[index]).val() == arrc[i])
+                    $checkBox[index].checked = true;
+            });
+        }
+        var $checkBox = $(":checkbox");
+        var arr = $checkBox.each(function (index) {
+            if ($checkBox[index].checked)
+                $checkBox[index].checked = false;
+            else
+                $checkBox[index].checked = true;
+        });
+    })
+
+    function settime() {
+        var str = "";
+        var checkedstr = "";
+        var $checkBox = $(":checkbox");
+        var arr = $checkBox.each(function (index) {
+            if (!$checkBox[index].checked) {
+                str += $($checkBox[index]).val() + ",";
+            }
+            else {
+                checkedstr += $($checkBox[index]).val() + ",";
+            }
+        });
+        $("#xingqi").val(str);//未选中的星期
+        $("#checkedxq").val(checkedstr);//已选中的星期
+        var checkedxq = $("#checkedxq").val();
+        if (checkedxq == "")
+        {
+            alert("请选择星期。");
+            return false;
+        }
+
+        var createtime = $("#DetailTime").val();
+
+        if ($.trim(createtime) == "") {
+            alert("上新具体时间不能为空！");
+            return false;
+        }
+
+
+        $.ajax({
+            url: '/Shangpin/newchannels/SetShoesNewDate',
+            type: "POST",
+            data: { WeekDay: str, CheckedXq: checkedstr, CreateTime: createtime },
+            success: function (result) {
+                alert(result);
+                location.href = "/shangpin/newchannels/Shoes";
+            }
+        });
+
+        return false;
+    }
+
+    //返回列表
+    function GoBack() {
+        window.location.href = "/shangpin/newchannels/Shoes";
+    }
+
+</script>

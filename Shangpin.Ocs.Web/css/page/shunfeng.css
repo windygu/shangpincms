@@ -1,0 +1,30 @@
+﻿@charset "utf-8";
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td {margin:0; padding:0;}
+fieldset, img {border:0;}
+ul, li {list-style: none;}
+.cl_warp {width:100%; background-color:#eef3f9;}
+.cl_warp:after {content:"."; clear: both; visibility: hidden; display:block; }
+.cl_box {WIDTH:960px; margin:0 auto; position:relative;}
+.cl_box li,.cl_box li img {float:left;}
+.pro {position:absolute;}
+.p1 {top:240px; left:374px;}
+.p2 {top:235px; left:645px;}
+.p3 {top:458px; left:649px;}
+.p4 {top:701px; left:212px;}
+.p5 {top:651px; left:482px;}
+.p6 {top:890px; left:245px;}
+.p7 {top:948px; left:484px;}
+.p8 {top:1074px; left:268px;}
+.p9 {top:1356px; left:42px;}
+.p10 {top:1701px; left:44px;}
+.p11 {top:1387px; left:697px;}
+.p12 {top:1694px; left:680px;}
+.p13 {top:2027px; left:245px;}
+.p14 {top:2030px; left:544px;}
+.p15 {top:2030px; left:44px;}
+.p16 {top:2303px; left:378px;}
+.p17 {top:2434px; left:152px;}
+.p18 {top:2551px; left:469px;}
+.more {top:2692px; left:361px;}
+#search { background:none repeat scroll 0 0 #000; border:0 none; display:block; height:22xp; width:90px; padding:2px; position:absolute; top:200px; left:585px; font-size: 12px; color:#fff; outline:none;}
+#confirm { border:0 none; display:block; height:25px; width:57px; position:absolute; top:197px; left:691px; cursor:pointer; outline:none; background-color:#fff; filter:alpha(opacity=0); -moz-opacity:0; opacity:0;}

@@ -1,0 +1,12 @@
+﻿@charset "utf-8";
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td {margin:0; padding:0;}
+fieldset, img {border:0;}
+ul, li {list-style: none;}
+.gift_box {width:100%; background-color:#d3d4d4; padding-bottom:100px;}
+.gift_box:after {content:"."; clear: both; visibility: hidden; display:block; }
+.gift_warp {width:960px; margin:0 auto; position:relative;}
+.gift_warp li,.gift_warp li img {float:left;}
+.giftLink {position:absolute;}
+#giftBtn {left:177px; top:356px;}
+.women {left:18px; top:433px;}
+.men {right:19px; top:432px;}

@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Shangpin.Ocs.Service.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Shangpin_Ocs_Service_StockWebService_StockWebService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://erpws.shangpin.com/webservice/stockwebservice.asmx</Value>
+    </Setting>
+    <Setting Name="Shangpin_Ocs_Service_com_shangpin_erpws02_ToWfsWebService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://erpws02.shangpin.com/WebService/ToWfsWebService.asmx</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

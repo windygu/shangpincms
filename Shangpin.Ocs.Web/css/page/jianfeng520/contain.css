@@ -1,0 +1,34 @@
+﻿@charset "utf-8";
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td {margin:0; padding:0;}
+fieldset, img {border:0;}
+ul, li {list-style: none;}
+.rushCom:after,.rushFocus:after {overflow:hidden; clear:both; content:""; height:0; display:block;}
+.rushFont {font-family:"微软雅黑";}
+.rushWarp {width:100%; background-color:#f6f6f6;}
+.rushCom {width:960px; margin:0 auto; background-color:#fff;}
+.rushFocus {padding:0 30px 34px; width:900px; margin:0 auto; background-color:#fff;}
+.botShadow {background:url(/images/page/jianfeng520/nav_shadow.png) no-repeat left top; padding-bottom:10px; height:4px; width:960px; margin:0 auto;}
+.rushFoc1 {padding:0 14px 6px 30px;}
+.rushFoc1 h2 {font-size:18px; line-height:26px; font-weight:normal; font-weight:normal;}
+.rushFoc1 h2 a {color:#000; text-decoration:none;}
+.rushNo {color: #999; font-family: Tahoma,Arial,"宋体"; font-size:12px; line-height:18px; padding:5px 0 10px 0;}
+.rushRule p {padding-left:17px; text-indent:-1.2em; line-height:20px;}
+.rush_delPrice {color:#666; font-size:12px; display:block; text-decoration:line-through;}
+.rush_salePrice {height:34px; line-height:34px; margin: 8px 0 0; padding-bottom: 5px; font-size:20px;}
+.rush_salePrice span {font-size:34px; color:#f77047;}
+.rush_salebtn {height:32px; widht:428px; padding:15px 0 18px;}
+.rush_salebtn a {background:url("http://pic13.shangpin.com/shangpin/images/page/detail/spDetail_main.gif") no-repeat -551px -290px; height:34px; margin:0 15px 10px 0; width:108px; display:block;}
+.rush_perBox h3 {width:304px; height:26px; line-height:26px; color:#fff; font-size:16px; text-align:center; background-color:#f77047; font-weight:normal;}
+.rush_perImg {border:1px solid #ccc;}
+.rush_perBox {width:304px; margin-right:6px;}
+.rush_perText {padding:5px 0 0 43px;}
+.rush_perText p {font-size:12px; line-height:20px;}
+.rush_perDel {color:#666; text-decoration:line-through;}
+.rush_perText span {color:#f77047;}
+.rush_more {background:url(/images/page/jianfeng520/botBg.jpg) repeat-x left top; height:65px; line-height:65px; font-size:18px; text-align:center; clear:both;}
+.rush_more a {color:#000; text-decoration:none;}
+.rushFloat  {float:left;}
+#rush_perWid {padding:20px 15px; width:930px;}
+.rush_wid {width:428px; padding-top:30px;}
+.rush_perTex {padding:6px 0 0 0; text-align:center;}
+#rush_salebtn_pre {color:#999; font-size:16px; padding:10px 0;}

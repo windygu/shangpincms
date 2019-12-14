@@ -1,0 +1,148 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@using Shangpin.Entity.Wfs;
+@using Shangpin.Ocs.Web.Infrastructure;
+@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "秒杀列表";
+    List<HomeSecKill> homeSecKillList = ViewBag.HomeSecKill;
+    int totalCount = ViewBag.totalcount;
+    int currentPage = ViewBag.PageIndex;
+    int pageSize = 10;
+}
+<script src="/Areas/Shangpin/Scripts/lib/jquery.js" type="text/javascript"></script>
+<script src="/Areas/Shangpin/Scripts/plug/comm.js" type="text/javascript"></script>
+<script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+<form action="/shangpin/homepage/HomeSecKillList.html?gender=@(string.IsNullOrEmpty(Request.QueryString["gender"]) ? ViewBag.gender : Request.QueryString["gender"])" method="post">
+<div>
+    标题:<input type="text" id="SecKillTitle" name="SecKillTitle" value="@(ViewBag.SecKillTitle != null ? ViewBag.SecKillTitle : "")" />
+    编号:<input type="text" id="productNo" name="productNo" value="@(ViewBag.ProductNo != null ? ViewBag.ProductNo : "")" />
+    状态:<select id="status" name="status"><option value="-1">请选择</option>
+        <option value="0" @(ViewBag.status == "0" ? "selected=selected" : "")>关闭</option>
+        <option value="1" @(ViewBag.status == "1" ? "selected=selected" : "")>开启</option>
+    </select>
+    类型:<select id="type" name="type"><option value="-1">请选择</option>
+        <option value="1" @(ViewBag.type == "1" ? "selected=selected" : "")>爆款</option>
+        <option value="2" @(ViewBag.type == "2" ? "selected=selected" : "")>秒杀</option>
+    </select>
+    开始时间:
+    <input id="dateBegin" name="dateBegin" class="Wdate" type="text" value="@(ViewBag.dateBegin != null ? ViewBag.dateBegin : "")" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
+        readonly="readonly" style="width: 150px;" />--
+         <input id="dateEnd" name="dateEnd" class="Wdate" type="text" value="@(ViewBag.dateEnd != null ? ViewBag.dateEnd : "")" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
+        readonly="readonly" style="width: 150px;" />
+    <input class="button" type="submit" value="查询" />
+    <input class="button" type="button" value="新建" onclick="location.href='CreateSecKill.html?gender=@(string.IsNullOrEmpty(Request.QueryString["gender"]) ? ViewBag.gender : Request.QueryString["gender"])'" />
+</div>
+</form>
+<table class="mx-table" border="0">
+    <thead>
+        <tr>
+            <th width="5%">
+                商品图
+            </th>
+            <th>
+                标题
+            </th>
+            <th>
+                商品编号
+            </th>
+            <th>
+                展示时间
+            </th>
+            <th>
+                开始时间
+            </th>
+            <th>性别</th>
+            <th>
+                类型
+            </th>
+            <th>
+                状态
+            </th>
+            <th>
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in homeSecKillList)
+            {<tr>
+                <td widtd="5%">
+                    <img width="70" height="107" src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@item.ProductPicFile&type=1">
+                </td>
+                <td>
+                    @item.SecKillTitle
+                </td>
+                <td>
+                    @item.ProductNo
+                </td>
+                <td>@item.ShowTime
+                </td>
+                <td>
+                    @item.StartTime
+                </td>
+                <td>@(item.ChannelNo=="A01"?"女":"男")</td>
+                <td>
+                    @(item.SecKillType == 1 ? "爆款" : "秒杀")
+                </td>
+                <td id="td_status_@item.SecKillId">
+                    @(item.Status == 0 ? "关闭" : "开启")
+                </td>
+                <td>
+                    <a style="text-decoration:underline;color:#0000FF;cursor:pointer;" href="/shangpin/homepage/CreateSecKill.html?id=@item.SecKillId&gender=@(item.ChannelNo == "A01" ? 0 : 1)" >
+                        编辑</a> | <span id="span_@item.SecKillId">
+                            @if (item.Status == 0)
+                            {
+                                <a style="text-decoration:underline;color:#0000FF;cursor:pointer;" onclick="UpdateStatusById('@item.SecKillId',1)" >
+                                    开启 </a>
+                            }
+                            else
+                            {
+                                <a style="text-decoration:underline;color:#0000FF;cursor:pointer;" onclick="UpdateStatusById('@item.SecKillId',0)" >
+                                    关闭 </a>
+                            }
+                        </span>|<a style="text-decoration:underline;color:#0000FF;cursor:pointer;" onclick="DeletById('@item.SecKillId')" >
+                            删除</a>
+                </td>
+            </tr>
+            }
+        }
+    </tbody>
+</table>
+<div class="spPage">@Html.Raw(Html.PagerX("page", currentPage, pageSize, totalCount))</div>
+<script type="text/javascript">
+    function DeletById(id) {
+        if (window.confirm("确实要删除吗?")) {
+            $.ajax({
+                type: "get",
+                url: "/shangpin/homepage/DeleteHomeSecKillById?id=" + id,
+                datatype: "json",
+                success: function (data) {
+                    if (data.result = "success")
+                    { window.location.href = gettimestampurl(window.location.href); }
+                }
+            });
+        }
+    }
+    function UpdateStatusById(id, type) {
+        $.ajax({
+            url: "/shangpin/homepage/UpdateHomeSecKillStatus.html?id=" + id,
+            type: "get",
+            datatype: "json",
+            success: function (data) {
+                if (data.success) {
+                    if (type == "1") {
+                        $("#span_" + id).html(" <a style=\"text-decoration:underline;color:#0000FF;cursor:pointer;\" onclick=\"UpdateStatusById('" + id + "',0)\" > 关闭 </a>");
+                        $("#td_status_" + id).html("开启");
+                    } else {
+                        $("#span_" + id).html("<a style=\"text-decoration:underline;color:#0000FF;cursor:pointer;\" onclick=\"UpdateStatusById('" + id + "',1)\" > 开启 </a>");
+                        $("#td_status_" + id).html("关闭");
+                    }
+                } else {
+                    alert(data.ErrorMsg); return false;
+                }
+            }
+        });
+    }
+    
+</script>

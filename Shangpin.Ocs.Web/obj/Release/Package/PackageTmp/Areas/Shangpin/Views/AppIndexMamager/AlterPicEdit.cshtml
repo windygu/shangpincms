@@ -1,0 +1,279 @@
+﻿@using Shangpin.Ocs.Web.Infrastructure;
+@model Shangpin.Entity.Wfs.SWfsAppAlterPic
+@{
+    ViewBag.Title = "轮播图编辑";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+<link href="/Areas/Shangpin/Content/css/page/rightcontent/brandcontent.css" rel="stylesheet" type="text/css">
+<link href="/Areas/Outlet/Scripts/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script src="/Areas/Shangpin/Scripts/Venue/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="/Areas/Outlet/Scripts/plug/ERPBrand.js"></script>
+@section HeadStyle{
+    <style type="text/css">
+        .mx-table {
+            font-size: 12px;
+        }
+
+        .dispalayRegion {
+            display: none;
+            position: absolute;
+            width: 500px;
+            background-color: White;
+            height: auto;
+            top: 0px;
+            left: 0px;
+            font-size: 12px;
+        }
+
+            .dispalayRegion td {
+                padding: 10px;
+            }
+
+        .opratorbutton {
+            width: 90px;
+            height: 27px;
+            background-color: #4D90FE;
+            border: 1px solid #3079ED;
+            color: #FFFFFF;
+            cursor: pointer;
+        }
+    </style>
+}
+@section HeadScript{
+    <script type="text/javascript">
+        $(function () {
+            $("label[for]").live("click", function () {
+                $("#" + $(this).attr("for")).change();
+            })
+            //绑定类型按钮
+            $("input[name=RefType]").live("click", function () {
+                $("#refType_Div0,#refType_Div1,#refType_Div2").hide();
+                $("#refType_Div" + $(this).val()).show();
+                $("#RefContent").val("");
+            })
+            //绑定活动搜索按钮
+            $("#seachact").live("click", function () {
+                if ($.trim($("#activale").val()).length > 0) {
+                    $.ajax({
+                        url: "/Shangpin/AppIndexMamager/GetSWfsNewSubjectById",
+                        type: "GET",
+                        data: { id: $.trim($("#activale").val()) },
+                        async: false,
+                        success: function (data) {
+                            $("#ticcontext").html('<tr class="cross"><td><img src="/ReadPic/GetPic.ashx?width=120&amp;height=0&amp;pictureFileNo=' + data.imgID + '&amp;type=2"></td><td>' + data.name + '</td><td>' + data.startTime + '<br/>' + data.endTime + '</td><td>' + data.status + '</td><td><a id="' + data.id + '" class="button" href="javascript:BindSubID(' + data.id + ')" style="padding: 3px;">关联</a></td></tr>');
+                        }
+                    })
+                }
+                else {
+                    alert("请输入活动编号");
+                }
+            });
+            $("#BrandName").selectBrand('BrandNo', 'BrandName', false, '', '');
+        })
+        function form_Submit() {
+            if ($("#Name").val().trim().length==0) {
+                alert("请输入轮播名称 ");
+                return;
+            }
+            if ($("#StartTime").val().trim().length==0) {
+                alert("显示日期不能为空");
+                return;
+            }
+            if ($("#PicNo").val().trim().length==0) {
+                if ($("#picFile").val().trim().length==0) {
+                    alert("图片不能为空");
+                    return;
+                }
+            }
+            
+            switch ($("input[name=RefType]:checked").val()) {
+                case "1":
+                    if ($("#RefContentURL").val().trim().length == 0) {
+                        alert("请输入连接地址");
+                        return;
+                    } 
+                    $("#RefContent").val($("#RefContentURL").val().trim());
+                    break;
+                case "2":
+                    if ($("#BrandNo").val().trim().length == 0) {
+                        alert("请选择品牌后再保存");
+                        return;
+                    }
+                    $("#RefContent").val($("#BrandNo").val());
+                    break;
+                case "0":
+                    if ($("#RefContent").val().trim().length == 0) {
+                        alert("请关联活动后后再保存");
+                        return;
+                    }
+                default:
+                    break;
+
+            }
+            $("#formAddBrandIndex").submit();
+        }
+        function CheckUrl(str) {
+            var RegUrl = new RegExp();
+            RegUrl.compile("^[A-Za-z]+://[A-Za-z0-9-_]+\\.[A-Za-z0-9-_%&\?\/.=]+$");//jihua.cnblogs.com
+            if (!RegUrl.test(str)) {
+                return false;
+            }
+            return true;
+        }
+        function BindSubID(id) {
+            $("#RefContent").val(id);
+            $("#" + id).parent().html('<a id="' + id + '" class="" href="javascript:void(0)" style="padding: 3px;">已关联</a>')
+        }
+    </script>
+}
+<div id="mx-rightcontent-inner">
+    <h1>
+        OCS &gt; 尚品 &gt; <a href="/shangpin/AppIndexMamager/Index">APP内容管理</a> &gt;<a href="/shangpin/AppIndexMamager/AlterPicList?AlterType=@Request.QueryString["AlterType"]"> 轮播图管理</a> &gt; 编辑
+    </h1>
+    <div class="mx-brandcontent-msgbox">
+        <form id="formAddBrandIndex" action="/Shangpin/AppIndexMamager/AlterPicEdit?AlterType=@Request.QueryString["AlterType"]" method="post" enctype="multipart/form-data">
+            @if (Model.AppSlterPicId == 0)
+            {
+                <input type="hidden" name="AlterType" id="AlterType" value="@Request.QueryString["AlterType"]" />
+            }
+            else 
+            {
+                <input type="hidden" name="AlterType" id="AlterType" value="@Model.AlterType" />
+            }
+            <input type="hidden" name="AppSlterPicId" id="AppSlterPicId" value="@Model.AppSlterPicId" />
+            <input type="hidden" name="RefContent" id="RefContent" value="@Model.RefContent" />
+            <input type="hidden" name="PicNo" id="PicNo" value="@Model.PicNo" />
+            <dl>
+                <dt style=" color:Red;">轮播名称：</dt>
+                <dd>
+                    <input id="Name" type="text" name="Name" value="@Model.Name" maxlength="20">
+                </dd>
+            </dl>
+            <dl>
+                <dt style=" color:Red;">轮播位置：</dt>
+                <dd>
+                    <input type="radio" name="Sort" id="Sort0" value="0" @(Model.Sort == 0 ? Html.Raw("checked=\"checked\"") : null)/><label for="Sort0">第一帧</label>
+                    <input type="radio" name="Sort" id="Sort1" value="1" @(Model.Sort == 1 ? Html.Raw("checked=\"checked\"") : null)/><label for="Sort1">第二帧</label>
+                    <input type="radio" name="Sort" id="Sort2" value="2" @(Model.Sort == 2 ? Html.Raw("checked=\"checked\"") : null)/><label for="Sort2">第三帧</label>
+                </dd>
+            </dl>
+            <dl>
+                <dt style=" color:Red;">显示日期：</dt>
+                <dd>
+                    <input id="StartTime" name="StartTime" value="@(Model.AppSlterPicId != 0 ? Model.StartTime.ToString() : "")" maxlength="30"  class="Wdate" type="text" readonly="readonly" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:'2008-03-08 11:30:00',maxDate:'2100-03-10 20:59:30'})"  />
+                </dd>
+            </dl>
+            <dl>
+                <dt style=" color:Red;">轮播类型：</dt>
+                <dd>
+                    <input type="radio" name="RefType" id="RefType0" value="0" @(Model.RefType == 0 ? Html.Raw("checked=\"checked\"") : null) /><label for="RefType0">活动</label>
+                    <input type="radio" name="RefType" id="RefType1" value="1" @(Model.RefType == 1 ? Html.Raw("checked=\"checked\"") : null) /><label for="RefType1">连接地址</label>
+                    <input type="radio" name="RefType" id="RefType2" value="2" @(Model.RefType == 2 ? Html.Raw("checked=\"checked\"") : null) /><label for="RefType2">品牌店</label>
+                </dd>
+            </dl>
+            <dl>
+                <dt>&nbsp;</dt>
+                <dd>
+                    <div id="refType_Div0" @(Model.RefType == 0 ? null : Html.Raw("style=\"display:none;\""))>
+                        <input id="activale" type="text" name="activale" value="" maxlength="30" placeholder="活动编号" />
+                        <a class="button" id="seachact" style="margin: 5px; padding: 3px 10px; border-color: #1c8ede; cursor:pointer; background-color: #4d90fe; box-shadow: 0 0 8px rgba(82, 168, 236, 0.6); color: #fff; ">
+                            搜&nbsp;索
+                        </a>
+                        <table class="mx-table">
+                            <thead>
+                                <tr>
+                                    <th width="60">
+                                        活动图片
+                                    </th>
+                                    <th width="100">
+                                        活动名称
+                                    </th>
+                                    <th width="60">
+                                        时间
+                                    </th>
+                                    <th width="20">
+                                        状态
+                                    </th>
+                                    <th width="20">
+                                        操作
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="ticcontext">
+                            @{
+                                
+                                if (Model.RefType == 0 && Model.AppSlterPicId != 0)
+                                {
+                                    Shangpin.Entity.Wfs.SWfsNewSubject obj = ViewBag.SubjectObj;
+                                    if (obj != null)
+                                    {
+                                        <tr class="cross">
+                                            <td><img src="/ReadPic/GetPic.ashx?width=120&height=0&pictureFileNo=@obj.SubjectTemplateTopPicNo&type=2" /></td>
+                                            <td>@obj.SubjectName</td>
+                                            <td>@obj.DateBegin.ToString("yyyy-MM-dd HH:mm:ss")<br />@obj.DateEnd.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                            <td>@(obj.Status == 0 ? "关闭" : "开启")</td>
+                                            <td>已关联</td>
+                                        </tr>
+                                    }
+
+                                }
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="refType_Div1"  @(Model.RefType == 1 ? null : Html.Raw("style=\"display:none;\""))>
+                        <dl>
+                            <dt style=" color:Red;">连接地址：</dt>
+                            <dd>
+                                <input id="RefContentURL" value="@(Model.RefType == 1 ? Model.RefContent : null)" type="text"   maxlength="100" style="width:300px;" />
+                            </dd>
+                        </dl>
+                    </div>
+                    <div id="refType_Div2" @(Model.RefType == 2 ? null : Html.Raw("style=\"display:none;\""))>
+                        <dl>
+                            <dt style=" color:Red;">选择品牌：</dt>
+                            <dd>
+                                @if (Model.RefType == 2)
+                                {
+                                    <input type="text" value="@ViewBag.BrandName" name="BrandName" id="BrandName" style="width: 120px; color: #666;font-size: 12px;" placeholder="请选择品牌" />
+                                    <input id="BrandNo"  type="hidden" value="@Model.RefContent" />  
+                                }
+                                else
+                                {
+                                    <input type="text" name="BrandName" id="BrandName" style="width: 120px; color: #666;font-size: 12px;" placeholder="请选择品牌" />
+                                    <input id="BrandNo"  type="hidden" value="" />
+                                }
+                                
+                            </dd>
+                        </dl>
+                    </div>
+                </dd>
+            </dl>
+            <div id="form1">
+                <dl>
+                    <dt style=" color:Red;">轮播图片：</dt>
+                    <dd>
+                        <input type="file" id="picFile" name="picFile" />@*要求：316*190，小于50K的JPG图片*@
+                        <br />
+                        <img src="/ReadPic/GetPic.ashx?width=0&height=0&pictureFileNo=@Model.PicNo&type=2" width="316" height="190" />
+                    </dd>
+                </dl>
+            </div>
+            <dl>
+                <dt>&nbsp;</dt>
+                <dd>
+                    <button type="button" id="" name="" value="" class="secondary" onclick="form_Submit()">
+                        确 定
+                    </button>
+                    <button type="button" id="" name="" value="" onclick="window.location.href = '/shangpin/AppIndexMamager/AlterPicList?AlterType=@Model.AlterType'">
+                        取 消
+                    </button>
+                </dd>
+            </dl>
+        </form>
+    </div>
+
+</div>
+@Html.Raw(ViewData["tip"])

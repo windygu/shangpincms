@@ -1,0 +1,304 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@using Shangpin.Entity.Wfs;
+@using Shangpin.Ocs.Web.Infrastructure;
+@model Shangpin.Entity.Wfs.SWfsVActivityCodesRef
+@{
+    IList<VCodeInfo> list = ViewBag.List;
+    Layout = "~/Areas/Shangpin/Views/Shared/_VenueLayout.cshtml";
+    int totalCount = ViewBag.totalcount;
+    int currentPage = ViewBag.PageIndex;
+    int pageSize = 10;
+}
+
+@section HeadStyle{
+    <style type="text/css">
+        button, a.button {
+            background-color: #4d90fe;
+            border: 1px solid #3079ed;
+            color: #fff;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            font-size: 14px;
+            display: inline-block;
+            padding: 5px 10px;
+            *padding: 3px 0px 0;
+            position: relative;
+            text-decoration: none;
+            -webkit-transition: border-color 0.218s ease 0s;
+            -moz-transition: border-color 0.218s ease 0s;
+            -o-transition: border-color 0.218s ease 0s;
+            transition: border-color 0.218s ease 0s;
+            cursor: pointer;
+            margin: 0 15px 0 0;
+            *zoom: 1;
+        }
+    </style>
+}
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script src="/Areas/Shangpin/Scripts/lib/jquery.js" type="text/javascript"></script>
+    <script src="/Areas/Shangpin/Scripts/plug/comm.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function selectall() {
+            $("#code").val();
+            return false;
+        }
+        function CreateVCode(vcodeType) {
+            var count = $("#CreateCount").val();
+            if (count == 0) {
+                alert("请选择生成数量！");
+                return false;
+            }
+            $("#VCodeType").val(vcodeType);
+
+            $("#formCreateVCode").submit();
+        }
+        function checkAll(obj) {
+            var vCodesStr = "";
+            if (obj.checked) {
+                $("[name='VCode']").each(function () {
+                    $(this).attr("checked", "true");
+                    vCodesStr += $(this).val() + ",";
+                });
+            }
+            else {
+                $("[name='VCode']").each(function () {
+                    $(this).removeAttr("checked");
+                    vCodesStr = "";
+                });
+            }
+            $("#VCodes").val(vCodesStr);
+        }
+        //复制到剪切板js代码
+        function CopyVCode(s) {
+            //alert(s);
+            if (window.clipboardData) {
+                window.clipboardData.setData("Text", s);
+                alert("已经复制到剪切板！" + "\n" + s);
+            } else if (navigator.userAgent.indexOf("Opera") != -1) {
+                window.location = s;
+            } else if (window.netscape) {
+                try {
+                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                } catch (e) {
+                    alert("被浏览器拒绝！\n请在浏览器地址栏输入'about:config'并回车\n然后将'signed.applets.codebase_principal_support'设置为'true'");
+                }
+                var clip = Components.classes['&#64;mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
+                if (!clip)
+                    return;
+                var trans = Components.classes['&#64;mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);
+                if (!trans)
+                    return;
+                trans.addDataFlavor('text/unicode');
+                var str = new Object();
+                var len = new Object();
+                var str = Components.classes["&#64;mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+                var copytext = s;
+                str.data = copytext;
+                trans.setTransferData("text/unicode", str, copytext.length * 2);
+                var clipid = Components.interfaces.nsIClipboard;
+                if (!clip)
+                    return false;
+                clip.setData(trans, null, clipid.kGlobalClipboard);
+                alert("已经复制到剪切板！" + "\n" + s);
+            }
+        }
+
+        function exportVCodeList() {
+            var vcode = encodeURI($("#VCode").val());
+            var userName = encodeURI($("#UserName").val());
+            var relatStatus = $("#UseCodeStatus").val();
+            var activityId = $("#ActivityIds").val();
+            var dateCreateStart = $("#CreateDate").val();
+            var dateCreateEnd = $("#EndCreateDate").val();
+            var vcodeType = $("#CodeType").val();
+            var parameters = "VCode=" + vcode + "&UserName=" + userName + "&UseCodeStatus=" + relatStatus + "&vCodeType=" + vcodeType + "&ActivityIds=" + activityId + "&CreateDate=" + dateCreateStart + "&EndCreateDate=" + dateCreateEnd;
+
+            location_search();
+            $.ajax({
+                url: "/Shangpin/VCode/ExportVCodeList",
+                type: "post",
+                data: { activityId: activityId, vCode: vcode, userName: userName, useCodeStatus: relatStatus, vCodeType: vcodeType, dateCreate: dateCreateStart, endDate: dateCreateEnd },
+                dataType: "json",
+                success: function (data) {
+                    if (data.result == "1") {
+                        alert("导出成功！");
+                        window.location.href = data.Url;
+                    }
+                }
+            });
+            //location.href = '/Shangpin/VCode/ExportVCodeList?' + parameters;
+
+        }
+
+        function location_search() {
+            if (location.search) {
+                return '&amp;' + location.search.substr(location.search.indexOf("\?") + 1);
+            }
+            return '';
+        }
+    </script>
+}
+<div>
+    <h1>
+        OCS > 市场运营 > <a href="#">V码活动</a> > V码管理</h1>
+    <form action="/Shangpin/VCode/VCodeManagement.html" method="get">
+    <input type="hidden" id="ActivityIds" name="ActivityIds" value="@ViewBag.ActivityIds"/>
+    <div>
+        <input type="text" name="VCode" id="VCode" placeholder="输入微码" value="@ViewBag.KeyWord"  style="width: 140px; color: #666; font-size: 12px;" />
+        <input type="text" name="UserName" id="UserName" placeholder="用户名或邮箱" value="@ViewBag.Prompt"  style="width: 140px; color: #666; font-size: 12px;" />
+        <select name="UseCodeStatus" id="UseCodeStatus">
+            <option value="-1">状态</option>
+            <option value = "0" @(Request.Params["UseCodeStatus"] == "0" ? "selected='selected'" : "")>
+                未绑定</option>
+            <option value = "1" @(Request.Params["UseCodeStatus"] == "1" ? "selected='selected'" : "")>
+                已绑定</option>
+        </select>
+        <select name="CodeType" id="CodeType">
+            <option value="0">微码类型</option>
+            <option value="1" @(Request.Params["CodeType"] == "1" ? "selected='selected'" : "")>
+                独享
+            </option>
+            <option value="2" @(Request.Params["CodeType"] == "2" ? "selected='selected'" : "")>
+                共享
+            </option>
+        </select>
+        生成时间：<input id="CreateDate" name="DateCreate" value="@ViewBag.CreateDate" maxlength="30"  class="Wdate" type="text" onclick="WdatePicker()" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" readonly="readonly" style=" width:160px;" />至
+        <input id="EndCreateDate" name="EndDate" value="@ViewBag.EndCreateDate" maxlength="30" class="Wdate" type="text" onclick="WdatePicker()" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" readonly="readonly" style=" width:160px;" />
+        <button type="submit">
+            提交查询</button>
+        <a class="button" style="cursor: pointer" title="导出订单汇总列表" onclick="exportVCodeList()">
+            <em>导出</em> </a>
+    </div>
+    </form>
+    <form action="/Shangpin/VCode/CreateVCode.html" method="post" id="formCreateVCode">
+    <input type="hidden" id="ActivityId" name="ActivityId" value="@ViewBag.ActivityIds"/>
+    <input type="hidden" name="_ServiceMethodName_" value="CreateVCode" />
+    <input type="hidden" name="VCodeType" id="VCodeType" value="1" />
+    <div>
+        <select name="CreateCount" id="CreateCount">
+            <option value="0">选择生成数量</option>
+            <option value="100">100个</option>
+            <option value="500">500个</option>
+        </select>
+        <a class="button" href="#" onclick="CreateVCode(1);"><em>生成独享微码</em> </a>
+        <a class="button" href="#" onclick="CreateVCode(2);"><em>生成共享微码</em> </a>        
+    </div>
+    </form>
+    @*<input type="hidden" id="ActivityId1" name="ActivityId1" value="@ViewBag.activityId"/>*@
+    <input type="hidden" id="ActivityId1" name="ActivityId1" value="@Request.QueryString["activityId"]"/>
+    <table class="mx-table">
+        <thead>
+            <tr>
+                <th width="2%">
+                    @*<input id="selectAll" name="selectAll" type="checkbox" onclick="checkAll(this)" />选择*@
+                </th>
+                <th width="4%">
+                    微码
+                </th>
+                <th width="5%">
+                    用户名
+                </th>
+                <th width="9%">
+                    邮箱
+                </th>
+                <th width="7%">
+                    绑定状态
+                </th>
+                <th width="2%">
+                    类型
+                </th>
+                <th width="7%">
+                    生成时间
+                </th>
+                <th width="7%">
+                    绑定时间
+                </th>
+                <th width="8%">
+                    操作
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (null != list && list.Count > 0)
+            {
+                var flag = 0;
+                foreach (var item in list)
+                {
+                    flag = flag + 1;
+                <tr class="@(flag % 2 == 0 ? "cross" : "")">
+                    <td>
+                        <input type="checkbox" id="checks" name="checks" onclick="selectall()" value="checkbox" />
+                    </td>
+                    <td>
+                        @item.VCode
+                        <input type="hidden" id="VCodeID" name="VCode" value="@item.VCode" />
+                    </td>
+                    <td>
+                        @item.OperatorId
+                    </td>
+                    <td>
+                        @item.MailAddress
+                    </td>
+                    <td>
+                        @*@{
+                    if (item.UserName != "")
+                    {
+                            @("已绑定");
+                    }
+                    else
+                    {
+                            @("未绑定");
+                    }
+                        }*@
+                        @{
+                    if (item.BindTime.Year < 1900)
+                    {
+                                @("未绑定");
+                    }
+                    else
+                    {
+                                @("已绑定");
+                    }
+                            }
+                    </td>
+                    <td>
+                        @(item.VCodeType == 1 ? "独享" : "共享")
+                    </td>
+                    <td>
+                        @item.DateCreate
+                    </td>
+                    <td>
+                        @*@item.BindTime*@
+                        @{
+                    if (item.BindTime.Year < 1900)
+                    {
+
+                    }
+                    else
+                    {
+                                @item.BindTime
+                    }
+                            }
+                    </td>
+                    <td>
+                        @{
+                    if (item.UserName != null)
+                    {
+                            @*<a id="@item.VCode" href="/Shangpin/VCode/UserCodeStatus.html?vcode=@item.VCode&status=@(item.UseCodeStatus == 1 ? 2 : 1)&activityid=@Request.QueryString["activityid"]" style="color:blue;">@(item.UseCodeStatus == 1 ? "取消绑定" : "复制微码")</a>*@
+                            <a id="@item.VCode" href="/Shangpin/VCode/UserCodeStatus.html?vcode=@item.VCode&status=@(item.UseCodeStatus == 1 ? 2 : 1)&activityid=@Request.QueryString["ActivityIds"]&userId=@item.UserId" style="color:blue;">@(item.UseCodeStatus == 1 ? "取消绑定" : "")</a>
+                    }
+                    else
+                    {
+                            <a href="#" onclick="CopyVCode('{@item.VCode}');" style="color: blue;">复制微码</a>
+                    }
+                        }
+                    </td>
+                </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <div class="spPage">@Html.Raw(Html.PagerX("page", currentPage, pageSize, totalCount))</div>
+</div>

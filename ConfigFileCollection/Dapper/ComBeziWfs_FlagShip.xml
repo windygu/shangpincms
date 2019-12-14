@@ -1,0 +1,449 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <!--根据品牌名获取楼层-->
+  <statement id="ComBeziWfs_SwfsFlagShipModule_GetAllModulesByBrandNo">
+    SELECT   [ModuleId]
+    ,[BrandNo]
+    ,[ModuleName]
+    ,[ModuleType]
+    ,[SortId]
+    ,[State]
+    ,[DataState]
+    ,[DataCreate]
+    ,[OperatorUserId]
+    FROM  SwfsFlagShipModule (nolock)  where datastate=1 and BrandNo=@BrandNo
+  </statement>
+  <!--根据楼层ID获取楼层内容-->
+  <statement id="ComBeziWfs_SwfsFlagShipModuleLink_GetAllSwfsFlagShipModuleLinkByModuleId">
+    SELECT  [LinkId]
+    ,[ModuleType]
+    ,[ModuleId]
+    ,[SortId]
+    ,[CategoryNo]
+    ,[ShowType]
+    ,[PicIndex]
+    ,[PictureNo]
+    ,[LinkUrl]
+    ,[LinkTarget]
+    ,[State]
+    ,[DataState]
+    ,[DataCreate]
+    ,[OperatorUserId]
+    FROM SwfsFlagShipModuleLink (nolock) where ModuleId=@ModuleId and datastate=1
+  </statement>
+  <statement id="ComBeziWfs_SwfsFlagShipLogo_FetchEntityByIdentity_NoLock_del" primarykey="AppSlterPicId">
+    DELETE SwfsFlagShipLogo  WHERE AppSlterPicId=@AppSlterPicId
+  </statement>
+  <statement id="ComBeziWfs_SwfsFlagShipLogo_FetchEntityByBrandNo_NoLock" primarykey="LogoId">
+    SELECT LogoId,BrandNo,LogoName,LogoNo,LinkUrl,LinkTarget,CreateDate,OperateUserId  FROM SwfsFlagShipLogo  WITH(NOLOCK)  WHERE BrandNo=@BrandNo
+  </statement>
+  <statement id="ComBeziWfs_SwfsFlagShipFlash_FetchEntityByBrandNo_NoLock" primarykey="FlashId">
+    SELECT FlashId,BrandNo,PictureName,PictureIndex,PictureNo,LinkUrl,LinkTarget,BeginDateTime,State,DataState,DataCreate,OperateUserId  FROM SwfsFlagShipFlash  WITH(NOLOCK)  WHERE BrandNo=@BrandNo
+  </statement>
+  <statement id="ComBeziWfs_SwfsFlagShipFlash_FetchEntityByIDAndBrandNo_NoLock" primarykey="FlashId">
+    SELECT FlashId,BrandNo,PictureName,PictureIndex,PictureNo,LinkUrl,LinkTarget,BeginDateTime,State,DataState,DataCreate,OperateUserId  FROM SwfsFlagShipFlash  WITH(NOLOCK)  WHERE BrandNo=@BrandNo AND FlashId=@FlashId
+  </statement>
+  <!--根据品牌名获取配置-->
+  <statement id="ComBeziWfs_SwfsFlagShipGloalConfig_GetGlobalConfigByBrandNo">
+    SELECT top 1 [ConfigId]
+    ,[BrandNo]
+    ,[ConfigName]
+    ,[ConfigValue]
+    ,[ConfigTime]
+    ,[DataCreate]
+    ,[OperateUserId]
+    FROM  SwfsFlagShipGloalConfig (nolock) where BrandNo=@BrandNo order by DataCreate asc
+  </statement>
+  <!--根据品牌号获取品牌名称-->
+  <statement id="ComBeziWfs_WfsBrand_GetWfsBrandByBrandNo">
+    select BrandNo,BrandCnName,BrandEnName FROM  SpBrand where BrandNo=@BrandNo
+  </statement>
+  <statement id="ComBeziWfs_SwfsFlagShipFlash_FetchEntityByTimeAndBrandNo_NoLock" primarykey="FlashId">
+    SELECT FlashId,BrandNo,PictureName,PictureIndex,PictureNo,LinkUrl,LinkTarget,BeginDateTime,State,DataState,DataCreate,OperateUserId  FROM SwfsFlagShipFlash  WITH(NOLOCK)  WHERE BrandNo=@BrandNo AND BeginDateTime=@BeginDateTime
+  </statement>
+  <statement id="ComBeziWfs_SwfsFlagShipFlash_FetchEntityByBrandNo_NoLock_del" primarykey="FlashId">
+    DELETE SwfsFlagShipFlash  WHERE FlashId=@FlashId
+  </statement>
+  <statement id="ComBeziWfs_SwfsFlagShipFlash_GetList" primarykey="FlashId">
+    WITH   temp
+    AS ( SELECT   FlashId ,
+    BrandNo ,
+    PictureName ,
+    PictureIndex ,
+    PictureNo ,
+    LinkUrl ,
+    LinkTarget ,
+    BeginDateTime ,
+    State ,
+    DataState ,
+    DataCreate ,
+    OperateUserId ,
+    ROW_NUMBER() OVER ( ORDER BY BeginDateTime DESC ) AS row
+    FROM     [SwfsFlagShipFlash](NOLOCK)
+    WHERE    1 = 1
+    AND [BrandNo] = @BrandNo
+    #if($PictureName != '')
+    and PictureName like '%'+ cast(@PictureName as varchar) +'%'
+    #end
+    #if($State != -1)
+    and State = @State
+    #end
+    #if($PictureIndex != -1)
+    and PictureIndex = @PictureIndex
+    #end
+    #if($beginTime != '')
+    AND  BeginDateTime >= @beginTime
+    #end
+    #if($endTime != '')
+    AND @endTime  >= BeginDateTime
+    #end
+    )
+    SELECT  *
+    FROM    temp
+    WHERE   row BETWEEN ( @pageIndex - 1 ) * @pageSize + 1
+    AND     @pageIndex * @pageSize
+  </statement>
+  <statement id="ComBeziWfs_SwfsFlagShipFlash_GetList_count" primarykey="FlashId">
+    SELECT COUNT(0)
+    FROM   [SwfsFlagShipFlash](NOLOCK)
+    WHERE  1 = 1
+    AND [BrandNo] = @BrandNo
+    #if($PictureName != '')
+    and PictureName like '%'+ cast(@PictureName as varchar) +'%'
+    #end
+    #if($State != -1)
+    and State = @State
+    #end
+    #if($PictureIndex != -1)
+    and PictureIndex = @PictureIndex
+    #end
+    #if($beginTime != '')
+    AND  BeginDateTime >= @beginTime
+    #end
+    #if($endTime != '')
+    AND @endTime  >= BeginDateTime
+    #end
+  </statement>
+  <statement id="ComBeziWfs_SWfsFlagShipOperationPicture_Del" primarykey="PictureManageId">
+    DELETE SWfsFlagShipOperationPicture  WHERE PictureManageId=@PictureManageId
+  </statement>
+  <statement id="ComBeziWfs_SWfsFlagShipOperationPicture_FetchEntityByBrandNo_NoLock" primarykey="PictureManageId">
+    SELECT PictureManageId,BrandNo,PictureFileNo,PictureName,LinkAddress,PageNo,PictureIndex,PagePositionNo,PagePositionName,DateBegin,DateEnd,SortId,Status,DataState,OperatorUserId,DateCreate  FROM SWfsFlagShipOperationPicture  WITH(NOLOCK)  WHERE BrandNo=@BrandNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsFlagShipOperationPicture_FetchEntityByBrandNoAndIndex_NoLock" primarykey="PictureManageId">
+    SELECT PictureManageId,BrandNo,PictureFileNo,PictureName,LinkAddress,PageNo,PictureIndex,PagePositionNo,PagePositionName,DateBegin,DateEnd,SortId,Status,DataState,OperatorUserId,DateCreate  FROM SWfsFlagShipOperationPicture  WITH(NOLOCK)  WHERE BrandNo=@BrandNo AND PictureIndex=@PictureIndex
+  </statement>
+
+  <!--添加商品关联页面的商品集合-->
+  <!--<statement id="ComBeziWfs_WfsProduct_FirstNewShelfProduct">
+    with temp as (Select
+    ProductNo,
+    GoodsNo,
+    Status,
+    IsShelf,
+    Dateshelf,
+    ProductName,
+    ProductPicFile,
+    SellPrice,
+    PlatinumPrice,
+    DiamondPrice,
+    LimitedPrice,
+    LimitedVipPrice,
+    MarketPrice,
+    ProductShowFlag,
+    PromotionPrice,
+    WfsProduct.BrandNo,
+    WfsBrand.BrandCnName,
+    WfsBrand.BrandEnName,
+    row_number() over(order by DateShelf desc) as row
+    from WfsProduct with(nolock)
+    left join wfsBrand with(nolock) on WfsProduct.BrandNo=WfsBrand.BrandNo
+    where wfsBrand.BrandNo=@BrandNo and isShelf=1 and visiblestate=1 and WfsProduct.IsLimitedOutlet =1 and LimitedPrice > 0 and ProductPicFile!=''
+    and firstdateshelf between @startDate  and @endDate
+    and WfsProduct.ProductNo not in
+    (Select ProductNo from SwfsFlagShipNewArrivalProductList a,SwfsFlagShipNewArrival b where a.NewArrivalId=b.NewArrivalId
+    and b.BrandNo=@BrandNo and b.NewShelfDate=@DateShelf)
+    #if($Keyword!='')
+    and (WfsProduct.ProductName like '%'+@KeyWord+ '%' or WfsProduct.ProductNo like '%'+@KeyWord+ '%' or WfsProduct.GoodsNo like '%'+@KeyWord+ '%')
+    #end
+    #if($CategoryNo !='')
+    and WfsProduct.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and WfsProduct.GenderStyle=@Gender
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>-->
+  <!--添加商品关联页面的商品集合(新EP表结构)-->
+  <statement id="ComBeziWfs_WfsProduct_FirstNewShelfProduct">
+    with temp as (Select
+    p.ProductNo,--商品编号
+    p.ProductModel as GoodsNo,--商品货号
+    p.ProductName,--商品名称
+    e.productShowPic as ProductPicFile, --图片
+    spb.BrandCnName,--中文名称名称
+    spb.BrandEnName, --英文品牌名称
+    e.FirstShelfDate, --第一次上架时间
+    row_number() over(order by e.FirstShelfDate desc) as row
+    FROM SpProduct p with(nolock)
+    LEFT JOIN SpBrand spb with(nolock)
+    ON p.BrandNo=spb.BrandNo
+    LEFT JOIN SpfProductExtend e with(nolock)
+    ON p.ProductNo=e.ProductNo
+    WHERE e.ProductNo IN(
+    --找到符合条件的条件的ProductNo
+    SELECT DISTINCT(b.ProductNo) FROM SpfSkuExtend b with(nolock)
+    WHERE
+    b.PcSaleState=2
+    AND b.PcShowState=1
+    and b.DataState=1
+    AND b.ProductNo in
+    (SELECT c.ProductNo FROM SpfProductExtend c with(nolock)
+    LEFT JOIN SpProduct d with(nolock)
+    ON c.ProductNo=d.ProductNo
+    where c.ProductNo not in
+    (Select pl.ProductNo from SwfsFlagShipNewArrivalProductList pl with(nolock),SwfsFlagShipNewArrival al with(nolock) where pl.NewArrivalId=al.NewArrivalId
+    and al.BrandNo=@BrandNo and al.NewShelfDate=@DateShelf)
+    and c.TypeFlag=1
+    and c.[Status]=1
+    and c.DataState=1
+    and d.BrandNo=@BrandNo
+    AND FirstShelfDate between @startDate  and @endDate
+    #if($Keyword!='')
+    and (WfsProduct.ProductName like '%'+@KeyWord+ '%' or d.ProductNo like '%'+@KeyWord+ '%' or d.ProductModel  like '%'+@KeyWord+ '%')
+    #end
+    #if($CategoryNo !='')
+    and d.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and d.ProductSex=@Gender
+    #end
+    )
+    )
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+
+  <!--添加商品关联页面的商品集合的总数-->
+  <!--<statement id="ComBeziWfs_WfsProduct_FirstNewShelfProductCount">
+    Select Count(ProductNo) from WfsProduct with(nolock) where BrandNo=@BrandNo and isShelf=1 and visiblestate=1 and WfsProduct.IsLimitedOutlet =1 and LimitedPrice > 0 and ProductPicFile!=''
+    and firstdateshelf between @startDate  and @endDate
+    and ProductNo not in
+    (Select ProductNo from SwfsFlagShipNewArrivalProductList a,SwfsFlagShipNewArrival b where a.NewArrivalId=b.NewArrivalId
+    and b.BrandNo=@BrandNo and b.NewShelfDate=@DateShelf)
+    #if($Keyword!='')
+    and (WfsProduct.ProductName like '%'+@KeyWord+ '%' or WfsProduct.ProductNo like '%'+@KeyWord+ '%' or WfsProduct.GoodsNo like '%'+@KeyWord+ '%')
+    #end
+    #if($CategoryNo !='')
+    and WfsProduct.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and WfsProduct.GenderStyle=@Gender
+    #end
+  </statement>-->
+  <!--添加商品关联页面的商品集合的总数(新EP表结构)-->
+  <statement id="ComBeziWfs_WfsProduct_FirstNewShelfProductCount">
+    SELECT COUNT(DISTINCT(b.ProductNo)) FROM SpfSkuExtend b with(nolock)
+    WHERE
+    b.PcSaleState=2
+    AND b.PcShowState=1
+    and b.DataState=1
+    AND b.ProductNo in
+    (SELECT c.ProductNo FROM SpfProductExtend c with(nolock)
+    LEFT JOIN SpProduct d with(nolock)
+    ON c.ProductNo=d.ProductNo
+    where c.ProductNo not in
+    (Select pl.ProductNo from SwfsFlagShipNewArrivalProductList pl with(nolock),SwfsFlagShipNewArrival al with(nolock) where pl.NewArrivalId=al.NewArrivalId
+    and al.BrandNo=@BrandNo and al.NewShelfDate=@DateShelf)
+    and c.TypeFlag=1
+    and c.[Status]=1
+    and c.DataState=1
+    and d.BrandNo=@BrandNo
+    AND c.FirstShelfDate between @startDate  and @endDate
+    #if($Keyword!='')
+    and (WfsProduct.ProductName like '%'+@KeyWord+ '%' or d.ProductNo like '%'+@KeyWord+ '%' or d.ProductModel  like '%'+@KeyWord+ '%')
+    #end
+    #if($CategoryNo !='')
+    and d.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and d.ProductSex=@Gender
+    #end
+    )
+  </statement>
+
+  <!--查询某个品牌下所关联的最大排序值得商品-->
+  <statement id="ComBeziWfs_SwfsFlagShipNewArrivalProductList_MaxSort">
+    SELECT MAX(SortValue) FROM SwfsFlagShipNewArrivalProductList with(nolock) WHERE NewArrivalId=@NewArrivalId and IsOneRow=@IsOneRow
+  </statement>
+  <!--根据品牌编号和上新时间查询数据-->
+  <statement id="ComBeziWfs_SwfsFlagShipNewArrival_BrandNoNewShelfDate">
+    SELECT NewArrivalId FROM SwfsFlagShipNewArrival with(nolock) WHERE BrandNo=@BrandNo AND NewShelfDate=@NewShelfDate
+  </statement>
+
+  <!--添加关联商品，可能是多条添加-->
+  <statement id="ComBeziWfs_SwfsFlagShipNewArrivalProductList_InsertsProduct">
+    $sqlstring
+  </statement>
+  <!--根据上新ID查询前六条数据，区分是否为第一行-->
+  <!--
+  <statement id="ComBeziWfs_SwfsFlagShipNewArrivalProductList_SelectNewArrivalId">
+    with temp as(Select
+    a.ProductListId as Id,
+    WfsProduct.ProductNo,
+    WfsProduct.GoodsNo,
+    WfsProduct.IsShelf,
+    WfsProduct.ProductName,
+    WfsProduct.ProductPicFile,
+    WfsProduct.SellPrice,
+    WfsProduct.PlatinumPrice,
+    WfsProduct.DiamondPrice,
+    WfsProduct.LimitedPrice,
+    WfsProduct.LimitedVipPrice,
+    WfsProduct.MarketPrice,
+    WfsProduct.PromotionPrice,
+    WfsBrand.BrandCnName,
+    WfsBrand.BrandEnName,
+    a.SortValue as Sort,
+    row_number() over(order by a.SortValue asc) as row
+    from SwfsFlagShipNewArrivalProductList a with(nolock)
+    left join
+    WfsProduct with(nolock) on  a.ProductNo=WfsProduct.ProductNo
+    left join SwfsFlagShipNewArrival b  with(nolock) on
+    b.NewArrivalId=a.NewArrivalId
+    left join wfsBrand with(nolock) on b.BrandNo=WfsBrand.BrandNo
+    where a.NewArrivalId=@NewArrivalId and a.IsOneRow=@IsOneRow
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>-->
+
+  <!--根据上新ID查询前六条数据，区分是否为第一行(新数据库的查询)-->
+  <statement id="ComBeziWfs_SwfsFlagShipNewArrivalProductList_SelectNewArrivalId">
+    with temp as(select
+    e.ProductListId as Id,
+    a.ProductNo,--商品编号
+    a.ProductModel as GoodsNo,--商品货号
+    a.ProductName,--商品名称
+    b.BrandCnName,--中文名称名称
+    b.BrandEnName,--英文品牌名称
+    c.productShowPic as ProductPicFile, --图片
+    e.SortValue as Sort,
+    row_number() over(order by e.SortValue asc) as row
+    FROM SwfsFlagShipNewArrivalProductList e with(nolock)
+    LEFT JOIN SpProduct a with(nolock)
+    ON e.ProductNo = a.ProductNo
+    LEFT JOIN SpBrand b with(nolock)
+    ON a.BrandNo = b.BrandNo
+    LEFT JOIN SpfProductExtend c with(nolock)
+    ON a.ProductNo=c.ProductNo
+    where e.NewArrivalId=@NewArrivalId and e.IsOneRow=@IsOneRow
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!--根据商品去查找商品的所有价格信息-->
+  <statement id="ComBeziWfs_SwfsFlagShipNewArrivalProductList_SpfSkuPriceAll">
+    SELECT a.GoldPrice as SellPrice,--黄金价
+    a.PlatinumPrice,--白金价
+    a.DiamondPrice,--钻石价
+    a.StandardPrice as LimitedPrice,--尚品价格
+    a.MarketPrice,--市场价
+    a.PromotionPrice, --促销价格
+    (SELECT COUNT(ProductNo) FROM  dbo.SpfSkuExtend with(nolock) WHERE IsPromotion=0 AND ProductNo=@ProductNo AND PcSaleState=2 AND PcShowState=1) AS PromotionCount
+    FROM SpfSkuPrice a with(nolock)
+    LEFT JOIN dbo.SpSku b with(nolock)
+    ON a.SkuNo=b.SkuNo
+    LEFT JOIN dbo.SpfSkuExtend c with(nolock)
+    ON a.SkuNo=c.SkuNo
+    WHERE b.ProductNo=@ProductNo  AND c.PcSaleState=2 AND c.PcShowState=1
+  </statement>
+
+  <!--根据品牌ID查询所有上新数据-->
+  <statement id="ComBeziWfs_SwfsFlagShipNewArrival_SelectBrandNo">
+    with temp as(Select NewArrivalId,BrandNo,NewArrivalTitle,PageNo,PagePositionNo,PagePositionName,CreateDate,NewShelfDate,
+    SortValue,Status,DataState,OperateUserId,UpdateOperateUserId,UpdateDate, row_number() over(order by NewShelfDate desc) as row
+    from SwfsFlagShipNewArrival with(nolock)
+    where BrandNo=@BrandNo
+    #if($startDate !='')
+    and NewShelfDate>=@startDate
+    #end
+    #if($endDate !='')
+    and @endDate>=NewShelfDate
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <statement id="ComBeziWfs_SwfsFlagShipNewArrival_SelectBrandNoCount">
+    Select count(NewArrivalId) from SwfsFlagShipNewArrival with(nolock)
+    where BrandNo=@BrandNo
+    #if($startDate !='')
+    and NewShelfDate>=@startDate
+    #end
+    #if($endDate !='')
+    and @endDate>=NewShelfDate
+    #end
+  </statement>
+
+  <!--查询当前品牌下的所有上新时间配置-->
+  <statement id="ComBeziWfs_SwfsFlagShipGloalConfig_BrandNo">
+    Select ConfigId,BrandNo,ConfigName,ConfigValue,ConfigTime,DataCreate,OperateUserId
+    from SwfsFlagShipGloalConfig with(nolock) where BrandNo=@BrandNo
+  </statement>
+
+  <!--通过ProductListId查询商品-->
+  <statement id="ComBeziWfs_SwfsFlagShipNewArrivalProductList_ProductListId">
+    Select ProductListId,NewArrivalId,ProductNo,ProductFirstPicNo,ProductSecondPicNo,IsOneRow,SortValue,CreateDate,Status,
+    DataState,OperateUserId,UpdateOperateUserId,UpdateDate from SwfsFlagShipNewArrivalProductList with(nolock) where ProductListId=@ProductListId
+  </statement>
+
+
+  <statement id="ComBeziWfs_SwfsFlagShipNewArrivalProductList_ProductListIdProductInfo">
+    <!--select
+    a.ProductListId as Id,
+    WfsProduct.ProductNo,
+    WfsProduct.GoodsNo,
+    WfsProduct.IsShelf,
+    WfsProduct.ProductName,
+    WfsProduct.ProductPicFile,
+    WfsProduct.SellPrice,
+    WfsProduct.PlatinumPrice,
+    WfsProduct.DiamondPrice,
+    WfsProduct.LimitedPrice,
+    WfsProduct.LimitedVipPrice,
+    WfsProduct.MarketPrice,
+    WfsProduct.PromotionPrice,
+    WfsBrand.BrandCnName,
+    WfsBrand.BrandEnName,
+    a.SortValue as Sort,
+    row_number() over(order by a.SortValue asc) as row
+    from SwfsFlagShipNewArrivalProductList a with(nolock)
+    left join
+    WfsProduct with(nolock) on  a.ProductNo=WfsProduct.ProductNo
+    left join SwfsFlagShipNewArrival b  with(nolock) on
+    b.NewArrivalId=a.NewArrivalId
+    left join wfsBrand with(nolock) on b.BrandNo=WfsBrand.BrandNo
+    where a.ProductListId=@ProductListId-->
+    SELECT a.ProductListId AS Id ,
+    SpProduct.ProductNo ,
+    SpProduct.ProductModel AS GoodsNo ,
+    --SpProduct.IsShelf ,
+    SpProduct.ProductName ,
+    SpfProductExtend.ProductShowPic as ProductPicFile,
+    --SpProduct.ProductPicFile ,
+    --SpProduct.SellPrice ,
+    --SpProduct.PlatinumPrice ,
+    --SpProduct.DiamondPrice ,
+    --SpProduct.LimitedPrice ,
+    --SpProduct.LimitedVipPrice ,
+    --SpProduct.MarketPrice ,
+    --SpProduct.PromotionPrice ,
+    SpBrand.BrandCnName ,
+    SpBrand.BrandEnName ,
+    a.SortValue AS Sort ,
+    ROW_NUMBER() OVER ( ORDER BY a.SortValue ASC ) AS row
+    FROM   SwfsFlagShipNewArrivalProductList a WITH ( NOLOCK )
+    LEFT JOIN SpProduct WITH ( NOLOCK ) ON a.ProductNo = SpProduct.ProductNo
+    left join SpfProductExtend WITH ( NOLOCK ) on a.ProductNo=SpfProductExtend.ProductNo
+    LEFT JOIN SwfsFlagShipNewArrival b WITH ( NOLOCK ) ON b.NewArrivalId = a.NewArrivalId
+    LEFT JOIN SpBrand WITH ( NOLOCK ) ON b.BrandNo = SpBrand.BrandNo
+    WHERE  a.ProductListId = @ProductListId
+  </statement>
+
+
+
+</statements>

@@ -1,0 +1,96 @@
+
+/* CSS Document */
+
+/* ============== Account member ============== */
+
+#spAccount_member{
+	width:100%;
+	border-top:1px dashed #bdbdbd;
+	margin:25px 0 0 0;
+}
+
+#spAccount_member h4{
+	color:#666;
+	font-size:14px;
+	font-weight:bold;
+	line-height:54px;
+}
+#spAccount_member table{
+	border:1px solid #c2cdd0;
+}
+#spAccount_member table th, #spAccount_member table td{
+	text-align:center;
+	border-bottom:1px solid #c2cdd0;
+	width:25%;
+}
+#spAccount_member table th{
+	height:44px;
+	line-height:44px;
+	color:#0a434e;
+	font-size:14px;
+	font-weight:700;
+	background:url(/images/page/account/mbBgA1.gif) repeat-x;
+}
+
+#spAccount_member table th.member_hover{
+	background-image:url(/images/page/account/account_icon.gif);
+    background-repeat: no-repeat;
+	background-position: 0 -150px;
+	border-left:1px solid #c2cdd0;
+	border-right:1px solid #c2cdd0;
+}
+#spAccount_member table th.member_hover span{
+	display:block;
+	position:relative;
+}
+#spAccount_member table th.member_hover i{
+	display:block;
+	position:absolute;
+	top:0px;
+	*top:-13px;
+	_top:-14px;
+	right:-8px;
+	width:15px;
+	height:44px;
+	background-image:url(/images/page/account/account_icon.gif);
+    background-repeat: no-repeat;
+	background-position: -179px -150px;
+}
+#spAccount_member table th.member_hover i.mHover_last{
+	background-image:url(/images/page/account/account_icon.gif);
+    background-repeat: no-repeat;
+	background-position: -20px -150px;
+	right:0;
+}
+
+#spAccount_member table td{
+	border-right:1px solid #c2cdd0;
+	height:56px;
+	line-height:56px;
+	font-size:12px;
+}
+#spAccount_member table td.member_hover{
+	background:#f7f7f7;
+	color:#666;
+}
+#spAccount_member table td span{
+	color:#c33;
+	font-weight:700;
+}
+#spAccount_member table td.spAccount-tabMore{
+	font-weight:700;
+	color:#333;
+	line-height:150%;
+	height:70px;
+}
+#spAccount_member table td.spAccount-tabMore em{
+	display:block;
+	color:#666;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:9px;
+}
+#spAccount_member p{
+	color:#666;
+	padding:25px 0 0 0;
+	line-height:160%;
+}

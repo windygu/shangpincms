@@ -1,0 +1,141 @@
+
+/*  ============== Member info ==============  */
+
+#member_info {
+	width:100%;
+	position:relative;
+}
+
+#member_info .logo{
+	position:absolute;
+	top:10px;
+	left:30px;
+	width:102px;
+	height:102px;
+	cursor:pointer;
+	
+	-ms-box-shadow:0 2px 3px rgba(0, 0, 0, 0.3);
+	-o-box-shadow:0 2px 3px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow:0 2px 3px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow:0 2px 3px rgba(0, 0, 0, 0.3);
+	box-shadow:0 2px 3px rgba(0, 0, 0, 0.3);
+}
+#member_info .logo img{
+	width:100px;
+	height:100px;
+	display:block;
+	border:1px solid #fff;
+}
+
+#member_info .logo a{
+	position:absolute;
+	left:0;
+	bottom:0;
+	width:100%;
+	height:18px;
+	line-height:18px;
+	text-align:center;
+	background-color:#d2be7f;
+	color:#fff;
+	display:none;
+}
+
+#member_info dl, #member_info ul{
+	padding-left:160px;
+}
+#member_info dl{
+	height:30px;
+	padding:8px 0 8px 160px;
+}
+#member_info dl dt, #member_info dl dd{
+	float:left;
+	line-height:30px;
+	color:#737373;
+}
+#member_info dl dt{
+	width:240px;
+}
+#member_info dl dd{
+	width:370px;
+}
+#member_info dl a, #member_info dl span, #member_info dl em{
+	display:inline-block;
+	vertical-align:middle;
+}
+#member_info dl em{
+	 line-height:30px;
+	 color:#000;
+	 font-weight:bold;
+	*vertical-align:auto;
+}
+#member_info dl em.grey{
+	color:#737373;
+	font-family:"宋体";
+}
+#member_info dl a.member_smallBtn{
+	margin-left:5px;
+}
+#member_info dl a.link{
+	margin-left:10px;
+}
+#member_info dl a.golden{
+    color:#c99811;
+	font-weight:bold;
+	font-family:"宋体";
+}
+
+#member_info dl .name{
+	height:30px;
+	width:135px;
+	overflow:hidden;
+}
+#member_info dl .mail, #member_info dl .mobile{
+	padding-left:40px;
+	background-position:19px 9px;
+	background-repeat:no-repeat;
+	color:#9e9e9e;
+}
+#member_info dl .mail{
+	background-image:url(/images/page/member/index/mail.gif);
+}
+#member_info dl .mobile{
+	background-image:url(/images/page/member/index/mobile.gif);
+}
+#member_info dl .curr{
+	background-position:19px -21px;
+}
+
+#member_info ul{
+	height:40px;
+	overflow:hidden;
+	background:url(/images/page/member/index/infoBg.gif) repeat-x 0 0;
+}
+#member_info ul li{
+	float:left;
+	width:25%;
+	line-height:40px;
+	text-align:center;
+	color:#737373;
+	background:url(/images/page/member/index/infoLine.gif) no-repeat right center;
+}
+#member_info ul li.last{
+	background:none;
+}
+#member_info ul li i{
+	color:#f70101;
+}
+
+.member_menu{
+	margin-top:28px;
+}
+.member_content{
+	border-width:0 1px 0 1px;
+}
+
+.index_banner{
+	width:770px;
+	height:105px;
+	margin-top:10px;
+	overflow:hidden;
+}
+

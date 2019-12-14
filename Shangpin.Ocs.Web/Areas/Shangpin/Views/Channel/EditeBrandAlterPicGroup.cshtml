@@ -1,0 +1,107 @@
+﻿@model Shangpin.Entity.Wfs.SWfsListAlterGroup
+@using Shangpin.Ocs.Service.Common
+@{
+    ViewBag.Title = "编辑商品组";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    IEnumerable<SelectListItem> manchanneloption = new List<SelectListItem>()
+    {
+        new SelectListItem{Text="服饰CLOTHING",Value=AppSettingManager.AppSettings["MenClothing"]},
+        new SelectListItem{Text="箱包BAGS",Value=AppSettingManager.AppSettings["MenBags"]},
+        new SelectListItem{Text="鞋靴SHOES",Value=AppSettingManager.AppSettings["MenShoes"]},
+        new SelectListItem{Text="配饰ACCESSORIES",Value=AppSettingManager.AppSettings["MenAccessories"]},
+        new SelectListItem{Text="腕表眼镜WATCHES",Value=AppSettingManager.AppSettings["MenWatches"]},
+        new SelectListItem{Text="美妆BEAUT",Value=AppSettingManager.AppSettings["MenBeauty"]},
+        new SelectListItem{Text="家居HOME",Value=AppSettingManager.AppSettings["MenHomes"]},
+    };
+    IEnumerable<SelectListItem> womanchanneloption = new List<SelectListItem>()
+    {
+        new SelectListItem{Text="服饰CLOTHING",Value=AppSettingManager.AppSettings["WomenClothing"]},
+        new SelectListItem{Text="箱包BAGS",Value=AppSettingManager.AppSettings["WomenBags"]},
+        new SelectListItem{Text="鞋靴SHOES",Value=AppSettingManager.AppSettings["WomenShoes"]},
+        new SelectListItem{Text="配饰ACCESSORIES",Value=AppSettingManager.AppSettings["WomenAccessories"]},
+        new SelectListItem{Text="腕表眼镜WATCHES",Value=AppSettingManager.AppSettings["WomenWatches"]},
+        new SelectListItem{Text="美妆BEAUT",Value=AppSettingManager.AppSettings["WomenBeauty"]},
+        new SelectListItem{Text="家居HOME",Value=AppSettingManager.AppSettings["WomenHomes"]},
+    };
+}
+@section HeadStyle{
+    <link href="/Areas/Shangpin/Content/css/page/rightcontent/brandcontent.css" rel="stylesheet" type="text/css" charset="utf-8" />
+}
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function save(len) {
+            if ($("#GroupName").val().length<=0) {
+                alert("品牌组名称不能为空");
+                return;
+            }
+            var nums = $("#GroupName").val().replace(/[^\x00-\xff]/g, "00").length;
+            if (nums > len) {
+                alert("名称只能在" + len / 2 + "个汉字" + len + "个字符");
+                return false;
+            }
+            $("#formobj").submit();
+        }
+    </script>
+}
+<h1>
+    OCS > 尚品 > <a href="/Shangpin/channel/ChannelList">频道页列表</a> > <a href="/shangpin/channel/BrandAlterPicGroup?channelNO=@(Request.QueryString["channelno"])">品牌轮播组管理 </a> > <a>添加品牌组</a>
+</h1>
+
+<div class="mx-brandcontent-msgbox">
+    <form action="/Shangpin/Channel/EditeBrandAlterPicGroup?channelno=@(Request.QueryString["channelno"])" method="post" id="formobj">
+        <dl>
+            <dt>
+                <span style="color:Red;">品牌组名称</span>:
+            </dt>
+            <dd>
+                @Html.HiddenFor(model=>model.GroupId)
+                @Html.HiddenFor(model=>model.Category)
+                @Html.TextBoxFor(model => model.GroupName, new { maxlength = "30" })
+            </dd>
+        </dl>
+        
+                @if (Model!=null)
+                {
+                    if (Model.GroupId!=0)
+                    {
+         <dl>
+                        <dt>
+                            <span style="color:Red;">品牌组状态</span>:
+                        </dt>
+                        <dd>
+                            @Html.RadioButtonFor(model => model.Status, 1) 开启
+                             @Html.RadioButtonFor(model => model.Status, 0) 关闭
+                        </dd>
+         </dl>
+                    }
+                }
+                
+            
+        <dl>
+            <dt>
+                <span style="color:Red;">分组所属</span>:
+            </dt>
+            <dd>
+                 @if (Request.QueryString["channelno"].IndexOf("A01") == 0)
+	            {
+		                    @Html.Raw("女士 > " + womanchanneloption.Single(p => p.Value == Request.QueryString["channelno"]).Text)
+	            }
+                else if (Request.QueryString["channelno"].IndexOf("A02") == 0)
+	            {
+                            @Html.Raw("男士 > " + manchanneloption.Single(p => p.Value == Request.QueryString["channelno"]).Text)
+                }
+            </dd>
+        </dl>
+        <dl>
+            <dt>&nbsp;&nbsp;</dt>
+            <dd>
+                <input type="button" onclick="save(30)" value="保存" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;"/>
+                <input type="button" value="取消" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;" onclick="window.location.href='/Shangpin/channel/BrandAlterPicGroup?channelno=@Model.Category'"/>
+            </dd>
+        </dl>
+    </form>
+</div>
+@ViewData["tip"]

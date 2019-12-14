@@ -1,0 +1,145 @@
+﻿@using Shangpin.Ocs.Web.Infrastructure;
+@{
+    ViewBag.Title = "精品旗舰店|轮播图列表";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    int pageIndex = ViewBag.pageIndex;
+    int pageSize = ViewBag.pageSize;
+    int totalCount = ViewBag.TotalCount;
+}
+<link href="/Areas/Outlet/Scripts/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".mx-table").find("tbody").find("tr:odd").addClass("cross");
+        if (!getUrlParam("seach") == null) {
+            $("#Name").val(getUrlParam("Name"));
+            $("#RefType").val(getUrlParam("RefType"));
+            $("#Sort").val(getUrlParam("Sort"));
+            $("#beginTime").val(getUrlParam("beginTime").replace('+', ' '));
+            $("#endTime").val(getUrlParam("endTime").replace('+', ' '));
+        }
+        $("img[bigstyle]").hover(function () {
+            var thisSrc = $(this).attr("src");
+            var bigStyle = $(this).attr("bigstyle");
+            if ($("#BigPreview").length == 0) {
+                $("body").append("<img src='' id='BigPreview' style='position:absolute;display:none;top:100px;left:100px;z-index:1000;'>");
+                $("#BigPreview").attr({
+                    "style": $("#BigPreview").attr("style") + bigStyle,
+                    "src": thisSrc
+                });
+                var top = $(this).offset().top;// ($("body").height() - $("#mx-header").height() - $("#BigPreview").height()) / 2 + "px";
+                var left = $(this).offset().left+80;// ($("body").width() - $("#mx-leftmenu").width() - $("#BigPreview").width()) / 2 + "px";
+                $("#BigPreview").css({ "top": top, "left": left }).show();
+            }
+        }, function () {
+            $("#BigPreview").remove();
+        })
+    })
+    function Del_(id, obj) {
+        if (confirm("确定删除此信息吗")) {
+            $.getJSON("/shangpin/Flagship/DelAlterPicById/", { id: id }, function (result) {
+                if (result.status == 1) {
+                    alert("删除成功！");
+                    $(obj).parent().html('<a class="" href="javascript:void(0)" style="padding: 3px;">已删除</a>');
+                }
+            });
+        }
+    }
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+</script>
+
+<div id="mx-rightcontent-inner">
+    <h1>
+        OCS &gt; 尚品 &gt; <a href="/Shangpin/Flagship?brandNo=@Request.QueryString["brandNo"]">精品旗舰店管理</a> &gt; 轮播图管理
+    </h1>
+    <div>
+        <form action="" method="get">
+            <input type="hidden" name="BrandNo" value="@Request.QueryString["BrandNo"]" maxlength="30" />
+            <input id="PictureName" type="text" name="PictureName" value="@Request.QueryString["PictureName"]" maxlength="30" placeholder="轮播名称" />
+            <select name="State" id="State">
+                <option value='-1'>状态</option>
+                <option value='0' @(Request.QueryString["State"] == "0" ? Html.Raw("selected=\"selected\"") : null)>
+                    关闭
+                </option>
+                <option value='1' @(Request.QueryString["State"] == "1" ? Html.Raw("selected=\"selected\"") : null)>
+                    开启
+                </option>
+            </select>
+            <select name="PictureIndex" id="PictureIndex">
+                <option value='-1'>选择展示帧</option>
+                <option value='0' @(Request.QueryString["PictureIndex"] == "0" ? Html.Raw("selected=\"selected\"") : null)>
+                    第一帧
+                </option>
+                <option value='1' @(Request.QueryString["PictureIndex"] == "1" ? Html.Raw("selected=\"selected\"") : null)>
+                    第二帧
+                </option>
+                <option value='2' @(Request.QueryString["PictureIndex"] == "2" ? Html.Raw("selected=\"selected\"") : null)>
+                    第三帧
+                </option>
+            </select>
+            展示日期：
+            <input id="beginTime" value="@Request.QueryString["beginTime"]" readonly="readonly" name="beginTime" class="Wdate" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" />至
+            <input id="endTime" value="@Request.QueryString["endTime"]" readonly="readonly" name="endTime" class="Wdate" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" />
+            <button class="button" type="submit" id="seachact" style="margin: 5px; padding: 3px 10px; border-color: #1c8ede; cursor:pointer; background-color: #4d90fe; box-shadow: 0 0 8px rgba(82, 168, 236, 0.6); color: #fff; ">
+                搜&nbsp;索
+            </button>
+            <a class="button" href="/shangpin/Flagship/AlterPicEdit/?brandNo=@Request.QueryString["BrandNo"]">
+                添加
+            </a>
+            <a class="button" href="/Shangpin/Flagship?brandNo=@Request.QueryString["BrandNo"]">
+                返回
+            </a>
+        </form>
+
+    </div>
+    <table class="mx-table">
+        <thead>
+            <tr>
+                <th width="10%">
+                    预览图
+                </th>
+                <th width="10%">
+                    图片名称
+                </th>
+                <th width="20%">
+                    开始时间
+                </th>
+                <th width="20%">
+                    轮播位
+                </th>
+                <th width="20%">
+                    状态
+                </th>
+                <th width="40%">
+                    操作
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Shangpin.Entity.Wfs.SwfsFlagShipFlash item in ViewBag.list as List<Shangpin.Entity.Wfs.SwfsFlagShipFlash>)
+            {
+                string strChnNames = "一二三四五六七八九";
+                <tr class="">
+                    <td><img bigstyle="width:960px;height:470px;" src="/ReadPic/GetPic.ashx?width=960&height=420&pictureFileNo=@(item.PictureNo)&type=2" style="max-height:35px; max-width:150px;" /></td>
+                    <td>@item.PictureName</td>
+                    <td>@item.BeginDateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    <td>第 @strChnNames[item.PictureIndex] 帧</td>
+                    <td>@((item.State == 1) ? "开启" : "关闭")</td>
+
+                    <td>
+                        <a class="button" href="/Shangpin/Flagship/AlterPicEdit/?id=@item.FlashId&BrandNo=@item.BrandNo">编辑</a>
+                        <a class="button" href="javascript:void(0)" onclick="Del_(@item.FlashId,this)" style=" margin-top:5px;">删除</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="spPage">
+        @Html.Raw(Html.PagerX("page", pageIndex, pageSize, totalCount))
+    </div>
+</div>

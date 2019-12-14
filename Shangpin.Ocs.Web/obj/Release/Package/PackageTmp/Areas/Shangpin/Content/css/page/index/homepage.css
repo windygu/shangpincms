@@ -1,0 +1,101 @@
+body {background-color:#fff;}
+    html {overflow-y:scroll;overflow-x:hidden;}
+    body, div, ul, ol, lip{ padding: 0; margin: 0;}
+    ol, ul {list-style: none;}
+    .spWarp{background: none repeat scroll 0 0 #F6F6F6; margin: 0 0 -10px; padding-bottom: 25px; padding-top: 4px; width: 100%;}
+    .spContain{width:1000px; margin:0 auto;}
+    .spContain:after,.spBox:after,.tipsWindow:after,.tipsText:after{clear: both; content: ""; display: block; height: 0; visibility: hidden;}
+    .spBox{background: none repeat scroll 0 0 #FFFFFF; border-color: #F2F2F2 #E8E8E8 #D2D2D2 #E2E2E2; border-style: solid; border-width: 1px; margin-top: 5px;  padding: 5px 0 5px 5px; width: 1050px;}
+    .spBox li,.ad2 ul,.topShow div,.bottomShow div,.tipsText li{float:left;}
+    .frt{float:right;}
+    .spBox li,.ad2 li,.leftShow,.rightShow,.leftBrand li,.detialShow li,.adLast li{background-color:#999999;}
+    .spBox a{
+	color: #545454;
+	text-decoration: none;
+	font-size: 20px;
+}
+    .ad1 li{width:300px; height:160px; margin-right:15px;}
+    .left{width:630px;}
+    .right{width:400px;}
+    .spContain .ad2{padding-bottom:0; *padding-bottom:15px;}
+    .ad2 li{width:340px; height:210px; margin:0 3px 3px 0;}
+    .ad2 li.big {height: 316px; width:580px;margin:0 15px 15px 0;}
+    .ad2 li.bigright {height: 470px; width:300px;margin:0 15px 15px 0;}
+	.titleShow {border-bottom: 1px solid #7E7E7E; height:35px; width:930px; margin:0 0 15px 0;}
+	.titleShow h2 {float:left; margin:0;}
+	.titleShow a {float:right; font-size:12px; padding-top:15px;}
+	.titleShow a:hover { border-bottom:1px solid #000;}
+    .topShow{width: 930px; clear:both;}
+   
+    .leftShow{height:470px; width:960px; margin-right:15px;}
+    .rightShow{height:320px; width:695px;}
+    .leftBrand{margin:10px 15px 0 0; width:220px;}
+    .leftBrand h2{border-bottom:1px solid #CCCCCC; color:#A9A9A9; font-size:16px;  height:21px; line-height:21px; margin-bottom:10px; padding-bottom:5px; font-weight:normal;}
+    .leftBrand ul {height:300px; overflow:hidden; width:225px;}
+    .leftBrand li{border:1px solid #CCCCCC; float:left; height:50px; margin:0 4px 10px 0; overflow:hidden;width:106px;}
+    .detialShow ul{margin:20px 0 0 20px;}
+    .detialShow li {margin:0 5px; width:210px; height:340px;}
+    .adLast li{width:220px; height:155px; margin:0 15px 0 0;}
+    .adLast li.bigLast{width:460px;}
+	.tipsWindow{display:block; padding:20px; width:480px; border:1px solid #ccc; margin:10px;}
+	.detialWindow { width:700px;}
+	.tipsWindow h2{ font-size:12px; height:20px; line-height:20px; border-bottom:1px solid #000;}
+	.tipsText{ padding-top:8px; width:100%; }
+	.tipsText td{height:30px; }
+	.tipsText td em{ text-align:left; width:50px; font-size:12px; font-style:normal; height:24px; line-height:24px; float:left;}
+	.tipsText td input {width:150px; height:20px; line-height:20px; font-size:12px; float:left;}
+	.tipsWindow span { display:block; width:100%; text-align:center; height:20px; padding:30px 0 0;}
+	.tipsWindow a {height:24px; line-height:24px; width:48px; background-color:#3E71AA; color:#fff; display:inline-block; margin:3px 0 0 5px; text-decoration:none; font-size:12px; text-align:center;}
+	.inquire{ margin-bottom:10px; width:100%; overflow:hidden;}
+	.inquire em,.inquire input,.inquire a{ line-height:20px; height:20px; float:left;}
+	.inquire em {width:60px; font-style:normal; font-size:12px;}
+	.tipsText1 table{ border-collapse:collapse; }
+	.tipsText1 table td,.tipsText table th{ border:1px solid #ccc; padding:3px; font-size:12px;}
+	.tipsText1 table th{ background-color:#3E71AA; height:20px; color:#fff; border-color:#3E71AA;}		/* 20140409 update*/
+.hot_brand{
+    width:100%;
+    overflow: hidden;
+    margin-bottom: 29px;
+}
+
+.hot_brand h2{
+    font-size: 26px;
+    font-weight: bold;
+    padding:15px 0px 5px;
+    text-align:center;
+    height:31px;
+    overflow:hidden;
+}
+
+.hot_brand_list{
+    width:307px;
+    height:576px;
+    overflow:hidden;
+    padding:30px 27px;
+    border:1px solid #ccc;
+    border-top:2px solid #000;
+    text-align:center;
+}
+
+.hot_brand_list ul{
+    width: auto;
+    height:530px;
+    
+}
+
+.hot_brand_list ul li{
+    width:93px;
+    height:44px;
+    float:left;
+    padding:0px 2px 5px;
+}
+
+.hot_brand_list ul li a{
+    display:block;
+}
+.hot_brand_list ul li img{
+    width:93px;
+    height:44px;
+    vertical-align: top;
+    overflow:hidden;
+}

@@ -1,0 +1,101 @@
+.splogin_block dd{
+	height:50px;
+}
+.splogin_block dd input.txt_input{
+    height: 18px;
+    line-height: 18px;
+    width:185px;
+    padding:8px 10px;
+    border:1px solid #b1adaa;
+    color:#999;
+    font-family:Arial, Verdana, "宋体";
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -o-border-radius: 3px;
+    border-radius: 3px;
+    font-size:16px;
+}
+
+.splogin_block dd input.txt_input:focus{
+    color:#333;
+    border:1px solid #000;
+}
+
+.regLogin_rightinner p.spReg_newbox{
+    border: 0;
+}
+
+a.spBinding_btn{
+    display: block;
+    width: 137px;
+    height: 34px;
+    background: #f00 url(/images/page/login/bindingbtn.gif) no-repeat 0 0;
+}
+
+.sp_regLoginBox dd .btncont{
+    width: 400px;
+    padding: 0 0 0 6px;
+    position: relative;
+}
+
+a.spBinding_next{
+    position: absolute;
+    top: 10px;
+    left: 170px;
+    text-decoration: underline;
+}
+
+#spSign_box{
+    height: 520px;
+}
+
+.splogin_weibobinding{
+    padding: 16px 0 0 80px;
+}
+
+.splogin_weibobinding img{
+    float: left;
+    border: 5px solid #f6f6f6;
+}
+
+.splogin_weibobinding span{
+    float: left;
+    padding: 8px 0 0 12px;
+    color: #333333;
+}
+
+.splogin_red{
+    color: #e5232b;
+    padding: 0 5px;
+    line-height: 22px;
+    font-weight: bold;
+}
+
+.splogin_bindinfo{
+    padding: 20px 0 0 80px;
+    color: #333;
+}
+
+.regLogin_rightbox{
+    height: 540px;
+}
+
+.sp_regLoginBox{
+    height: 540px;
+}
+
+.sp_regLoginBox dd .inputparent_rlat{
+    height: 38px;
+}
+
+.sp_regLoginBox dd.agree_login{
+    height: 38px;
+}
+
+.fnloader{
+    background: url(/images/plug/loader/l4.gif) no-repeat 0 center;
+    display: none;
+    padding-left: 4px;
+    line-height: 38px;
+    text-indent: 18px;
+}

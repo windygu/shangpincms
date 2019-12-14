@@ -1,0 +1,149 @@
+﻿@{
+    ViewBag.Title = "关联OCS";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+@model Shangpin.Entity.Wfs.SWfsBrandNavigation
+@section HeadStyle{
+    <link charset="utf-8" type="text/css" rel="stylesheet" href="/Areas/Shangpin/Content/css/page/rightcontent/brandcontent.css" />
+    
+}
+@section HeadScript{
+    <script charset="utf-8" src="/Areas/Shangpin/Scripts/plug/comm.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //            $(".tree_menu  lable").click(function () {
+            //                $(this).parent().addClass("curr");
+            //                if ($(this).nextAll().filter("ul").is(':hidden')) {
+            //                    $(this).nextAll().filter("ul").show();
+            //                } else {
+            //                    $(this).nextAll().filter("ul").hide();
+            //                }
+            //            });
+            //            $(".tree_menu  lable input").click(function (event) {
+            //                event.stopPropagation();//阻止冒泡
+            //            });
+            $(".tree_menu li").click(function (event) {
+                event.stopPropagation(); 
+                if ($(this).children().filter("ul:first").is(':hidden')) {
+                    $(this).addClass("curr");
+                    $(this).children().filter("ul:first").show();
+                } else {
+                    $(this).removeClass("curr");
+                    $(this).children().filter("ul:first").hide();
+                }
+            });
+            $(".tree_menu  lable input").click(function (event) {
+                event.stopPropagation(); //阻止冒泡
+            });
+        });
+    </script>
+}
+<h1>
+    <a href="/Shangpin/Brand/NavigateList.html?brandNo=@(Model.BrandNo)&brandName=@(Request.QueryString["brandName"])">导航编辑</a> > 关联OCS
+</h1>
+@Html.Action("refTypeStyle", new { refType = @Model.RefType, navNO = @Model.NavigationId, select = Request.QueryString["select"] != null ? Request.QueryString["select"] : "1", brandName = Request.QueryString["brandName"], brandNO = Request.QueryString["brandNO"] })
+<table class="mx-table glTab greyBg">
+    <thead>
+        <tr>
+            <th width="50%">
+                可选择的OCS分类
+            </th>
+            <th>
+                已选择的OCS分类
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="vertical-align: top;">
+                <div class="tree_menu">
+                    @ViewBag.TreeHTML
+                </div>
+            </td>
+            <td class="innerTab">
+                <table>
+                    <tbody id="relationItem">
+                    @ViewBag.RightAdd
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: center">
+                <a href="javascript:addRelationShip();" class="sumit_btn">添加关联</a>
+            </td>
+            <td style="text-align: center">
+                <a href="javascript:formsub();" class="sumit_btn">保 存</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var parentnamevalue = "";
+        var parentvaluelength = 0;
+        $(".tree_menu input:checkbox").click(function () {
+            //只能选中顶级父类
+            $(this).parent().parent().find("ul input:checkbox").each(function () {
+                $(this).attr("checked", false);
+            });
+            //如果子类选中判断顶级是否选中
+            if ($(this).attr("checked") && $(this).val().length > 3) {
+                parentvaluelength = $(this).val().length;
+                if (parentvaluelength == 12) {
+                    parentnamevalue = $(this).val().substr(0, 9);
+                    $("input[name='" + parentnamevalue + "']").attr("checked", false);
+                    parentnamevalue = $(this).val().substr(0, 6);
+                    $("input[name='" + parentnamevalue + "']").attr("checked", false);
+                    parentnamevalue = $(this).val().substr(0, 3);
+                    $("input[name='" + parentnamevalue + "']").attr("checked", false);
+                    return;
+                }
+                if (parentvaluelength == 9) {
+                    parentnamevalue = $(this).val().substr(0, 6);
+                    $("input[name='" + parentnamevalue + "']").attr("checked", false);
+                    parentnamevalue = $(this).val().substr(0, 3);
+                    $("input[name='" + parentnamevalue + "']").attr("checked", false);
+                    return;
+                }
+                if (parentvaluelength == 6) {
+                    parentnamevalue = $(this).val().substr(0, 3);
+                    $("input[name='" + parentnamevalue + "']").attr("checked", false);
+                    return;
+                }
+            }
+
+        });
+    });
+    //获取选中的添加
+    var addRelationShip = function () {
+        var oldadd = $("#relationItem input:hidden[name='refidlist']"); //获取已经添加的
+        var leftselectlist = $(".tree_menu input:checkbox[checked='checked']"); //获取要添加的
+        $("#relationItem tr").remove(); //清空
+        $(".tree_menu input:checkbox[checked='checked']").each(function () {
+            $("#relationItem").append("<tr><td><input type='hidden' name='refidlist' value='" + $(this).val() + "'/>" + $(this).parent().text() + "</td><td style='text-align: center;'><a href='javascript:;' onclick='removeObj(this)'>删 除</a></td></tr>");
+        });
+    }
+    //移除
+    var removeObj = function (obj) {
+        var aa = $(obj).parent().parent().remove();
+    }
+    //提交
+    var formsub = function () {
+        var noList = "";
+        $("#relationItem input:hidden[name='refidlist']").each(function () {
+            noList += $(this).val() + ",";
+        });
+        $("#RefContent").val(noList.substr(0, noList.length - 1));
+        $("form").submit();
+    }
+</script>
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.BrandNo);
+    @Html.HiddenFor(model => model.NavigationId)
+    @Html.HiddenFor(model => model.RefContent)
+    <input type="hidden" name="brandName" value="@(Request.QueryString["brandName"])" />
+    <input type="hidden" value="1" id="RefType" name="RefType" />
+}
+@ViewData["tip"]

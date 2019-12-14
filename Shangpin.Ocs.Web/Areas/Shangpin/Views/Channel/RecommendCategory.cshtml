@@ -1,0 +1,190 @@
+﻿@model IEnumerable<Shangpin.Ocs.Entity.Extenstion.ShangPin.SWfsCategoryExtends>
+@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Ocs.Service.Common;
+@{
+    ViewBag.Title = "频道推荐分类列表";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    IEnumerable<Shangpin.Ocs.Entity.Extenstion.ShangPin.SWfsCategoryExtends> childone = null;
+    IEnumerable<Shangpin.Ocs.Entity.Extenstion.ShangPin.SWfsCategoryExtends> childtwo = null;
+    
+    
+}
+@section HeadScript{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("input[name='recommenditem']").click(function () {
+                var cacellist = $("#cancelCategory").val();
+                if (this.checked) {
+                    if (cacellist.length > 0) {
+                        if (cacellist.indexOf(this.value + ",") >= 0) {
+                            $("#cancelCategory").val(cacellist.replace(this.value + ",", ""));
+                        } else {
+                            if (cacellist.indexOf("," + this.value) >= 0) {
+                                $("#cancelCategory").val(cacellist.replace("," + this.value, ""));
+                            } else {
+                                if (cacellist.indexOf(this.value) >= 0) {
+                                    $("#cancelCategory").val(cacellist.replace(this.value, ""));
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    if (cacellist.length == 0) {
+                        $("#cancelCategory").val(cacellist + this.value);
+                    } else {
+                        $("#cancelCategory").val(cacellist + "," + this.value);
+                    }
+                }
+                return;
+            });
+            $("input:checkbox").click(function (event) {
+                event.stopPropagation(); //阻止冒泡
+            });
+        });
+        //显示二级子类
+        var showChild = function (childName) {
+            if ($("tr[title='" + childName + "']").length > 0) {
+                if ($("tr[title='" + childName + "']").is(":hidden")) {
+                    $("tr[title='" + childName + "']").show();
+                } else {
+                    $("tr[title='" + childName + "']").hide();
+                }
+            }
+        }
+        //保存排序
+        var saveSortValue = function (id,objvalue) {
+            $.get("/shangpin/channel/SaveCategorySortValue",{"id":id,"sortValue":objvalue}, function (data) {
+                if(data.result==0){
+                    alert(data.message);
+                }
+             });
+        }
+        //
+        var selChild = function (parentNO, obj) {
+            if (obj.checked) {
+                $("input:checkbox[title='" + parentNO + "']").attr("disabled", false);
+            } else {
+                $("input:checkbox[title='" + parentNO + "']").attr("disabled", true);
+            }
+
+        }
+    </script>
+}
+<h1>
+    OCS > 尚品 > <a href="/Shangpin/channel/ChannelList">频道页列表</a> > 推荐分类
+</h1>
+<form action="/shangpin/channel/AddRecommendCategory" method="post" id="formobj">
+<table width="auto" border="0" class="mx-table" style="width: 100%;">
+    <thead>
+        <tr>
+            <th>
+                分类名称
+            </th>
+            <th>
+                显示状态
+            </th>
+            <th>
+                推荐状态
+            </th>
+            <th>
+                排序
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    @if (Model.Count(p => p.ParentNo == Request.QueryString["channelno"]) > 0)
+    {
+        childone = Model.Where(p => p.ParentNo == Request.QueryString["channelno"]).OrderByDescending(p=>p.Sort);
+        for (int i = 0; i < childone.Count(); i++)
+        {
+            childtwo = Model.Where(p => p.ParentNo == childone.ElementAt(i).CategoryNo).OrderByDescending(p => p.Sort);
+            
+            <tr class="@(i % 2 == 0 ? "cross" : "")" style="cursor:pointer;"  onclick="showChild('child_@i')">
+                <td style="text-align:left">@childone.ElementAt(i).CategoryName <span style="color:Red;">(@childtwo.Count())</span></td>
+                <td>@(childone.ElementAt(i).VisibleState > 0 ? "显示" : "隐藏")</td>
+                <td>
+                    @if (childone.ElementAt(i).VisibleState > 0)
+                    {
+                        if (childone.ElementAt(i).RecommendCategoryID==0)
+                        {
+                            <input type="checkbox" name="itemobj" value="@childone.ElementAt(i).CategoryNo" onclick="selChild('@childone.ElementAt(i).CategoryNo',this)"/> 
+                        }
+                        else
+                        {
+                            <input type="checkbox" name="recommenditem" value="@childone.ElementAt(i).RecommendCategoryID" checked="checked" onclick="selChild('@childone.ElementAt(i).CategoryNo',this)"/> 
+                        }
+
+                    }
+                    else
+                    {
+                        <input type="checkbox" disabled/>
+                    }
+                    
+                </td>
+                <td>
+                    @if (childone.ElementAt(i).RecommendCategoryID != 0)
+                    {
+                        <input type="text" value="@childone.ElementAt(i).Sort" onblur="saveSortValue(@childone.ElementAt(i).RecommendCategoryID,this.value)" />    
+                    }
+                </td>
+            </tr>
+        
+                   
+                    for (int j = 0; j < childtwo.Count(); j++)
+                    {
+                <tr class="@(i % 2 == 0 ? "cross" : "")"  style="display:none;" title="child_@i">
+                    <td style="text-align:left">|— &nbsp;@childtwo.ElementAt(j).CategoryName</td>
+                    <td>@(childtwo.ElementAt(j).VisibleState > 0 ? "显示" : "隐藏")</td>
+                    <td>
+                        @if (childtwo.ElementAt(j).VisibleState > 0)
+                        {
+                            if (childone.ElementAt(i).RecommendCategoryID==0)
+                            {
+                                if (childtwo.ElementAt(j).RecommendCategoryID == 0)
+                                {
+                                    <input type="checkbox" name="itemobj" value="@childtwo.ElementAt(j).CategoryNo" disabled="disabled" title="@childone.ElementAt(i).CategoryNo"/> 
+                                }
+                                else
+                                {
+                                  <input type="checkbox" name="recommenditem" value="@childtwo.ElementAt(j).RecommendCategoryID" checked="checked" disabled="disabled" title="@childone.ElementAt(i).CategoryNo"/> 
+                                }
+                            }
+                            else
+                            {
+                                if (childtwo.ElementAt(j).RecommendCategoryID == 0)
+                                {
+                                    <input type="checkbox" name="itemobj" value="@childtwo.ElementAt(j).CategoryNo" title="@childone.ElementAt(i).CategoryNo"/> 
+                                }
+                                else
+                                {
+                                <input type="checkbox" name="recommenditem" value="@childtwo.ElementAt(j).RecommendCategoryID" checked="checked" title="@childone.ElementAt(i).CategoryNo"/> 
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            <input type="checkbox" disabled/> 
+                        }
+                    </td>
+                    <td>
+                    @if (childtwo.ElementAt(j).RecommendCategoryID != 0)
+                    {
+                        <input type="text" value="@childtwo.ElementAt(j).Sort" onblur="saveSortValue(@childtwo.ElementAt(j).RecommendCategoryID,this.value)" />    
+                    }
+                    </td>
+                </tr>
+                    }
+        }
+    }
+    <tr>
+        <td colspan="4">
+            <a class="button" onclick='$("#formobj").submit();'>保存</a>
+            <a class="button" href="/Shangpin/channel/ChannelList">取消</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<input type="hidden" value="@Request.QueryString["channelno"]" name="channelno"/>
+<input type="hidden" name="cancelCategory" id="cancelCategory" value=""/>
+</form>

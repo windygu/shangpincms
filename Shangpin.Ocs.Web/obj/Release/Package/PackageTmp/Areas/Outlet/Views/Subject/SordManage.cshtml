@@ -1,0 +1,241 @@
+﻿@{
+    int totalCount = (int)ViewBag.Count;
+    int currentPage = (int)ViewBag.CurPage;
+    int pageSize = (int)ViewBag.PageSize;
+
+    ViewBag.Title = "活动分类管理|尚品OCS管理系统";
+    IList<Shangpin.Entity.Wfs.SWfsChannelSord> list = (IList<Shangpin.Entity.Wfs.SWfsChannelSord>)ViewBag.List;
+}
+@using Shangpin.Ocs.Web.Infrastructure;
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="/Areas/outlet/Scripts/page/index/popDiv.js"></script>
+    <script type="text/javascript">
+        //列表页管理JS
+        function ComStr(obj) {
+            return "<a href=\"###\" onclick=\"Edit('" + obj + "')\">编辑</a> <a href=\"###\" onclick=\"Del('" + obj + "')\">删除</a>  <a href=\"/outlet/subject/index?ChannelSord=" + obj.split('_')[1] + " \">查看所属活动</a>";
+        }
+
+        function Del(obj) {
+            if (confirm("确定删除？\r\n删除后关联到该分类下的活动也将不可见")) {
+
+                $.ajax({
+                    url: "/outlet/subject/SordHandler",
+                    type: "post",
+                    data: { SordID: obj.split('_')[1], type: "del" },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.rs == "1") {
+                            window.location.href = "/outlet/subject/SordManage?" + gettimestamp();
+                        }
+                        else {
+                            alert(data.msg);
+                            return false;
+                        }
+                    }
+                });
+            }
+        }
+        function Edit(obj) {
+            var curobj = $("#" + obj);
+            var name = curobj.find("td:first").html();
+            $("#CurSordName").val(name);
+            curobj.find("td:first").html("<input value=" + name + " />");
+            curobj.find("td:last").html("<a href=\"###\" onclick=\"Save('" + obj + "')\">保存</a> <a href=\"###\" onclick=\"Cancle('" + obj + "')\">取消</a>");
+        }
+        function Cancle(obj, name) {
+            $("#" + obj).find("td:first").html($("#CurSordName").val());
+            $("#" + obj).find("td:last").html(ComStr(obj));
+        }
+        function Save(obj) {
+            var TT = $("#" + obj);
+            var name = TT.find("td:first").find("input").val();
+            if (name.length <= 0) {
+                alert("分类不能为空");
+                return false;
+            }
+            else if ($("#CurSordName").val() == name) {
+                TT.find("td:first").html(name);
+                TT.find("td:last").html(ComStr(obj));
+                return false;
+            }
+            else {
+                $.ajax({
+                    url: "/outlet/subject/updateSord",
+                    type: "post",
+                    data: { SordNo: obj.split('_')[1], SordName: name },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.rs == "1") {
+                            TT.find("td:first").html(name);
+                            TT.find("td:last").html(ComStr(obj));
+                        }
+                        else {
+                            alert(data.msg);
+                            return false;
+                        }
+                    }
+                });
+            }
+        }
+
+        $("#mx-rightcontent-fixbarbg .crumb").on("click", function () {
+            PopWindowClose();
+            return false;
+        });
+
+
+        $(function () {
+
+            $("#BtnAdd").bind("click", function () {
+                //PopWindowClose();
+
+                var name = $("#SordName").val();
+                if (name.length <= 0) {
+                    alert("分类不能为空");
+                    return false;
+                }
+                else {
+                    $.ajax({
+                        url: "/outlet/subject/SordHandler",
+                        type: "post",
+                        data: { SordName: name, type: "add" },
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.rs == "1") {
+                                alert("添加成功");
+                                window.location.href = "/outlet/subject/SordManage?" + gettimestamp();
+                            }
+                            else {
+                                alert(data.msg);
+                                return false;
+                            }
+                        }
+                    });
+
+                }
+
+            });
+            $("#BtnCancle").bind("click", function () {
+                PopWindowClose();
+                //                        $("#mx-rightcontent-fixbarbg").hide();
+
+                //                        $("#mx-rightcontent-addbox").hide();
+                //                        $("#mx-rightcontent-fixbar").css({ "bottom": 0 });
+                return false;
+            });
+        });
+    </script>
+}
+<h1>
+    <a href="/outlet/subject/index">活动管理</a> > 活动分类管理</h1>
+<form action="/outlet/subject/SordManage" method="get">
+<div style="padding: 5px;">
+    @*<input type="hidden" name="pageIndex" value="1" />*@ 分类名称
+    <input type="text" value="@ViewBag.Name" style="" name="name">
+    创建时间
+    <input name="datecreate" class="Wdate" value="@ViewBag.Time" type="text" onclick="WdatePicker()" readonly="readonly" >
+    <button type="submit">
+        查询</button>
+</div>
+</form>
+<input type="hidden" id="CurSordName" name="CurSordName" />
+<table class="mx-table">
+    <thead>
+        <tr>
+            <th width="25%">
+                分类名称
+            </th>
+            <th width="25%">
+                创建时间
+            </th>
+            <th width="50%">
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            <tr id="SordName_0" class="cross">
+                <td>
+                    女士
+                </td>
+                <td>
+                    系统创建
+                </td>
+                <td>
+                    <a href="/outlet/subject/index?ChannelSord=0">查看所属活动</a>
+                </td>
+            </tr>
+            <tr id="SordName_1">
+                <td>
+                    男士
+                </td>
+                <td>
+                    系统创建
+                </td>
+                <td>
+                    <a href="/outlet/subject/index?ChannelSord=1">查看所属活动</a>
+                </td>
+            </tr>
+            <tr id="SordName_2" class="cross">
+                <td>
+                    儿童
+                </td>
+                <td>
+                    系统创建
+                </td>
+                <td>
+                    <a href="/outlet/subject/index?ChannelSord=2">查看所属活动</a>
+                </td>
+            </tr>
+            
+            var flag = 0;
+            foreach (var item in list)
+            {
+                flag = flag + 1;
+                                 
+            <tr class="@(flag % 2 == 0 ? "cross" : "")" id="SordName_@item.SordNo">
+                <td>@item.SordName
+                </td>
+                <td>@item.DateCreate
+                </td>
+                <td>
+                    <a href="###" onclick="Edit('SordName_@item.SordNo')">编辑</a> <a href="###" onclick="Del('SordName_@item.SordNo')">
+                        删除</a> <a href="/outlet/subject/index?ChannelSord=@item.SordNo">查看所属活动</a>
+                </td>
+            </tr>
+                                 
+            }
+        }
+    </tbody>
+</table>
+<div class="spPage">@Html.Raw(Html.PagerX("page", currentPage, pageSize, totalCount))</div>
+<div id="mx-rightcontent-fixbarbg">
+    <div class="fixbarcontent">
+        <!-- 面包屑and关闭按钮 -->
+        <div class="crumb">
+            <a href="#">活动分类管理</a> &gt; 添加活动分类 <a href="#" class="closeBtn">&times;</a></div>
+        <!-- 添加订单 start -->
+        <div class="mx-rightcontent-msgbox" id="mx-rightcontent-addbox">
+            <!--h1>添加数据<a href="#" id="mx-rightcontent-addbox-close" class="close">×</a></h1-->
+            <dl>
+                <dt>分类名称：</dt>
+                <dd>
+                    <input type="text" value="" name="SordName" id="SordName"></dd>
+            </dl>
+            <dl>
+                <dt>&nbsp;</dt>
+                <dd>
+                    <button class="secondary" value="" name="BtnAdd" id="BtnAdd" type="button">
+                        确&#12288;定</button>
+                    <button value="" name="BtnCancle" id="BtnCancle" type="button">
+                        取&#12288;消</button></dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<div class="clr" id="mx-rightcontent-fixbar">
+    <a id="mx-btn-add" href="#"></a>@*<a id="mx-btn-del" href="#"></a><a id="mx-btn-search"
+        href="#"></a>@*<a id="mx-btn-folder" href="#"></a>*@
+</div>

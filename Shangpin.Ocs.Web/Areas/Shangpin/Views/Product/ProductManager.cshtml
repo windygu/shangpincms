@@ -1,0 +1,459 @@
+﻿@model IEnumerable<Shangpin.Ocs.Entity.Extenstion.ShangPin.SkillProductExtends>
+@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@using Shangpin.Entity.Wfs;
+@{
+    string query_string = HttpContext.Current.Request.RawUrl;
+
+
+    ViewBag.Title = "商品管理";
+    Layout = "~/Areas/Shangpin/Views/Shared/_LayoutProduct.cshtml";
+    int pageIndex = ViewBag.pageIndex;
+    int pageSize = ViewBag.pageSize;
+    int totalCount = ViewBag.totalCount;
+    string categoryName = "";
+    IEnumerable<SWfsProductSearchHistory> historyList = ViewBag.HistoryList;
+    Shangpin.Ocs.Service.Shangpin.SWfsBrandService dal = new Shangpin.Ocs.Service.Shangpin.SWfsBrandService();
+    IList<ErpCategory> allfirstCategory = dal.SelectErpCategoryByParentNo("ROOT");
+    IList<ErpCategory> secondCategoryList = null;
+    IList<ErpCategory> thirdCategoryList = null;
+    IList<ErpCategory> fourCategoryList = null;
+    string requestCategoryNo = Request.QueryString["CategoryNo"] != null ? Request.QueryString["CategoryNo"].ToUpper() : null;
+    if (requestCategoryNo != null)
+    {
+        if (requestCategoryNo.Length == 3)
+        {
+            allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo).ParentNo = "0";
+            categoryName = allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo).CategoryName;
+        }
+        if (requestCategoryNo.Length == 6)
+        {
+            if (allfirstCategory.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)) > 0)
+            {
+                allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)).ParentNo = "0";
+                categoryName = allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)).CategoryName;
+            }
+            secondCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 3));
+            if (secondCategoryList.Count(p => p.CategoryNo == requestCategoryNo) > 0)
+            {
+                secondCategoryList.Single(p => p.CategoryNo == requestCategoryNo).ParentNo = "0";
+                categoryName += ">" + secondCategoryList.Single(p => p.CategoryNo == requestCategoryNo).CategoryName;
+            }
+        }
+        if (requestCategoryNo.Length == 9)
+        {
+            if (allfirstCategory.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)) > 0)
+            {
+                allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)).ParentNo = "0";
+                categoryName = allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)).CategoryName;
+            }
+            secondCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 3));
+            if (secondCategoryList.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 6)) > 0)
+            {
+                secondCategoryList.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 6)).ParentNo = "0";
+                categoryName += ">" + secondCategoryList.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 6)).CategoryName;
+            }
+            thirdCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 6));
+            if (thirdCategoryList.Count(p => p.CategoryNo == requestCategoryNo) > 0)
+            {
+                thirdCategoryList.Single(p => p.CategoryNo == requestCategoryNo).ParentNo = "0";
+                categoryName += ">" + thirdCategoryList.Single(p => p.CategoryNo == requestCategoryNo).CategoryName;
+            }
+        }
+        if (requestCategoryNo.Length == 12)
+        {
+            if (allfirstCategory.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)) > 0)
+            {
+                allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)).ParentNo = "0";
+                categoryName = allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)).CategoryName;
+            }
+            secondCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 3));
+            if (secondCategoryList.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 6)) > 0)
+            {
+                secondCategoryList.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 6)).ParentNo = "0";
+                categoryName += ">" + secondCategoryList.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 6)).CategoryName;
+            }
+            thirdCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 6));
+            if (thirdCategoryList.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 9)) > 0)
+            {
+                thirdCategoryList.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 9)).ParentNo = "0";
+                categoryName += ">" + thirdCategoryList.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 9)).CategoryName;
+            }
+            fourCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 9));
+            if (fourCategoryList.Count(p => p.CategoryNo == requestCategoryNo) > 0)
+            {
+                fourCategoryList.Single(p => p.CategoryNo == requestCategoryNo).ParentNo = "0";
+                categoryName += ">" + fourCategoryList.Single(p => p.CategoryNo == requestCategoryNo).CategoryName;
+            }
+        }
+    }
+}
+
+<h1>
+    OCS > 尚品 > 商品列表
+</h1>
+<form action="/Shangpin/product/ProductManager" method="get" id="searchform">
+    <div style="padding: 5px;" id="searchOpration">
+        <input type="text" maxlength="30" name="editePeople" value="@(HttpUtility.UrlDecode(Request.QueryString["editePeople"]))" placeholder="编辑人" />&nbsp;
+        <input type="text" maxlength="30" name="publishPeople" value="@(HttpUtility.UrlDecode(Request.QueryString["publishPeople"]))" placeholder="发布人" />&nbsp;
+        <input type="hidden" value="@categoryName" name="CategoryName" id="CategoryName" />
+        <input type="hidden" value="@requestCategoryNo" name="CategoryNo" id="CategoryNo" />
+        品类:&nbsp;&nbsp;
+        <select style="width: 100px;" id="select1" onchange="oneChange(this.value);">
+            <option value="0">一级品类-- </option>
+            @foreach (ErpCategory category in allfirstCategory)
+            {
+                <option value="@category.CategoryNo" @(category.ParentNo == "0" ? "selected=selected" : null)>
+                    @category.CategoryName
+                </option>
+            }
+        </select>
+        <select style="width: 100px;" id="select2" onchange="twoChange(this.value);">
+            <option value="0">二级品类-- </option>
+            @if (secondCategoryList != null)
+            {
+                foreach (ErpCategory category in secondCategoryList)
+                {
+                    <option value="@category.CategoryNo" @(category.ParentNo == "0" ? "selected=selected" : null)>
+                        @category.CategoryName
+                    </option>
+                }
+            }
+        </select>
+        <select style="width: 100px;" id="select3" onchange="threeChange(this.value);">
+            <option value="0">三级品类-- </option>
+            @if (thirdCategoryList != null)
+            {
+                foreach (ErpCategory category in thirdCategoryList)
+                {
+                    <option value="@category.CategoryNo" @(category.ParentNo == "0" ? "selected=selected" : null)>
+                        @category.CategoryName
+                    </option>
+                }
+            }
+        </select>
+        <select style="width: 100px;" id="select4" onchange="fourChange(this.value)">
+            <option value="0">四级品类-- </option>
+            @if (fourCategoryList != null)
+            {
+                foreach (ErpCategory category in fourCategoryList)
+                {
+                    <option value="@category.CategoryNo" @(category.ParentNo == "0" ? "selected=selected" : null)>
+                        @category.CategoryName
+                    </option>
+                }
+            }
+        </select>
+        &nbsp;
+
+        @if (string.IsNullOrEmpty(Request.QueryString["brandno"]))
+        {
+            <input type="text" name="BrandName" id="BrandName" style="width: 120px; color: #666;font-size: 12px;" placeholder="请选择品牌" />
+        }
+        else
+        {
+            <input type="text" name="BrandName" id="BrandName" style="width: 120px; color: #666;font-size: 12px;" value="@(HttpUtility.UrlDecode(Request.QueryString["BrandName"]))" placeholder="请选择品牌" />
+        }
+        <input id="BrandNo" name="BrandNo" type="hidden" value="@Request.QueryString["brandno"]" />
+        &nbsp;
+        <input type="text" maxlength="30" value="@(HttpUtility.UrlDecode(Request.QueryString["keyWord"]))" style="" name="keyWord" placeholder="商品名称" />&nbsp;
+        <input type="text" maxlength="30" value="@Request.QueryString["productNo"]" style="" name="productNo" placeholder="商品编号" />&nbsp;<br /><br />
+        <input type="radio" value="0" name="isnewShelf" @(Request.QueryString["isnewShelf"] == "0" ? Html.Raw("checked=\"checked\"") : null) />新上架&nbsp;&nbsp;
+        <select name="timeType">
+            &nbsp;&nbsp;
+            <option value="0">请选择</option>
+            <option value="3" @(Request.QueryString["timeType"] == "3" ? Html.Raw("selected=\"selected\"") : null)>上架时间</option>
+            <option value="1" @(Request.QueryString["timeType"] == "1" ? Html.Raw("selected=\"selected\"") : null)>编辑时间</option>
+            <option value="2" @(Request.QueryString["timeType"] == "2" ? Html.Raw("selected=\"selected\"") : null)>发布时间</option>
+        </select>&nbsp;&nbsp;
+        <input id="startTime" style="width:200px;" name="startTime" value="@(Request.QueryString["startTime"])" maxlength="30" class="Wdate" type="text" readonly="readonly" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',skin:'whyGreen',lang:'zh-cn',isShowClear:true,alwaysUseStartDate:true,readOnly:true,maxDate:'#F{$dp.$D(\'endTime\',{d:0});}'})" />
+        <span>至</span>
+        <input id="endTime" style="width:200px;" name="endTime" value="@(Request.QueryString["endTime"])" maxlength="30" class="Wdate" type="text" readonly="readonly" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',skin:'whyGreen',lang:'zh-cn',isShowClear:true,alwaysUseStartDate:true,readOnly:true,minDate:'#F{$dp.$D(\'startTime\',{d:0});}'})" />
+        <select name="isout" id="isout">
+            <option value="0">全部商品</option>            
+            <option value="1" @(Request.QueryString["isout"]=="1"?Html.Raw("selected='selected'"):null)>大陆</option>
+            <option value="2" @(Request.QueryString["isout"]=="2"?Html.Raw("selected='selected'"):null)>海外</option>
+        </select>
+        <select name="IsEdite" id="IsEdite">
+            <option value="-1">编辑状态</option>
+            <option value="1" @(Request.QueryString["IsEdite"] == "1" ? Html.Raw("selected=\"slected\"") : null)>已编辑</option>
+            <option value="0" @(Request.QueryString["IsEdite"] == "0" ? Html.Raw("selected=\"slected\"") : null)>未编辑</option>
+        </select>&nbsp;&nbsp;
+        <select name="IsPublish" id="IsPublish">
+            <option value="-1">发布状态</option>
+            <option value="1" @(Request.QueryString["IsPublish"] == "1" ? Html.Raw("selected=\"slected\"") : null)>已发布</option>
+            <option value="0" @(Request.QueryString["IsPublish"] == "0" ? Html.Raw("selected=\"slected\"") : null)>未发布</option>
+        </select>
+        <br /><br />
+        商品价格&nbsp;&nbsp;<input onblur="if(!(this.value>0)&&this.value!='')this.value='0';" style="width:50px;" type="text" name="priceStart" value="@Request.QueryString["priceStart"]" />&nbsp;<input onblur="if(!(this.value>0)&&this.value!='')this.value='0';" style="width:50px;" type="text" name="priceEnd" value="@Request.QueryString["priceEnd"]" />&nbsp;&nbsp;
+        折扣 &nbsp;&nbsp;<input onblur="if(!(this.value>0)&&this.value!='')this.value='0';" type="text" style="width:50px;" name="rateStart" value="@Request.QueryString["rateStart"]" />&nbsp;<input onblur="if(!(this.value>0)&&this.value!='')this.value='0';" style="width:50px;" type="text" name="rateEnd" value="@Request.QueryString["rateEnd"]" />
+        <br /><br />
+        历史查询&nbsp;&nbsp;
+        <select style="width:500px;" id="selectHistory">
+            <option value="0">请选择</option>
+            @if (historyList != null)
+            {
+                for (int i = 0; i < historyList.Count(); i++)
+                {
+                    <option value="@historyList.ElementAt(i).SearchUrl" @(Html.Raw(Request.Url.ToString().Replace("http://" + Request.Url.Host, "") == historyList.ElementAt(i).SearchUrl ? "selected='selected'" : null))>@historyList.ElementAt(i).SearchName</option>
+                }
+            }
+        </select>
+        <button type="submit">提交查询</button>&nbsp;&nbsp;<button type="button" onclick="addHistory()">查询并记录</button>&nbsp;&nbsp;<button type="button" id="pNoListSearch">商品编号批量查询</button>&nbsp;&nbsp;<button type="button" id="clearContent">重置</button>&nbsp;&nbsp;<a href="javascript:clearHistory()">清除历史查询</a>&nbsp;
+        <br /><br />
+        <div id="addProductListAreas" style="display: none;">
+            <textarea id="addProductListText" name="addProductListText" rows="5" cols="95"></textarea>
+            注:多个产品编号回车分隔 (最多支持20个商品编号批量查询)
+            <div>
+                <input type="button" onclick="searchProductByNoList()" value="执行批量查询" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<form id="idlistform" action="/shangpin/channel/DeleteProductByIdList?groupid=@(Request.QueryString["groupid"])&channelno=@(Request.QueryString["channelno"])" method="post">
+    <table class="mx-table" border="0">
+        <thead>
+            <tr>
+                <th width="20"><input type="checkbox" id="check_all" /></th>
+                <th colspan="4">商品信息</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td><input type="checkbox" pid="@item.ProductNo" /></td>
+                        <td>
+                            <img width="70" height="107" src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@item.ProductPicFile&type=1" />
+                        </td>
+                        <td class="lt">
+                            商品编号：@item.ProductNo<br />
+                            商品货号：@item.GoodsNo<br />
+                            商品名称：@item.ProductName<br />
+                            所属品牌: @item.BrandEnName (@item.BrandCnName)<br />
+                            尚品价:@item.StandardPriceRegion<br />
+                            折扣:@item.DiscountShangpinRegion
+                        </td>
+                        <td class="lt">
+                            是否是海外商品 : @(item.IsOutSide==1?" 否":" 是")
+                            <br />
+                            是否编辑:
+                            @if (string.IsNullOrEmpty(item.IsEdite))
+                            {
+                                <span style='color:red;'>未编辑</span>
+                            }
+                            else
+                            {
+                                <text>已编辑</text>
+                            }
+                            <br />
+                            最后编辑时间:@item.EditeDate.ToString("yyyy-MM-dd HH:mm:ss")
+                            <br />
+                            最后编辑人:@item.EditePeople
+                        </td>
+                        <td class="lt">
+                            是否发布:
+                            @if (item.IsPublish > 0)
+                            {
+                                <text>已发布</text>
+                                <br />
+                                <text>发布时间: </text> @item.PublishTime.ToString("yyyy-MM-dd HH:mm:ss")
+                            }
+                            else
+                            {
+                                <span style='color:red;'>未发布</span>
+                                <br />
+                                <text>发布时间:0001-01-01 00:00:00</text>
+                            }
+
+                            <br />
+                            发布人:@item.PublishPeople
+                        </td>
+                        <td>
+                            <a class="button" href="/shangpin/product/ProductRefContent?productNO=@item.ProductNo" style="display:none;">编辑</a>
+                            @if (string.IsNullOrEmpty(item.IsEdite))
+                            {
+                                <a class="button" href="javascript:;" onclick="publishHtml(0)">发布</a>
+                            }
+                            else
+                            {
+                                <a class="button" href="javascript:;" onclick="publishHtml(@item.Id,'@item.ProductNo')">发布</a>
+                            }
+
+                            <a class="button" href="/shangpin/product/GetStructContent?productNO=@item.ProductNo&returnUrl=@Server.UrlEncode(query_string)">详情页编辑</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <button type="button" id="clearRedis">清除缓存</button>
+</form>
+<div class="spPage">
+    @if (totalCount > 0)
+    {
+        @Html.Raw(@Html.PagerX("page", pageIndex, pageSize, totalCount))
+    }
+</div>
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/plug/ERPBrand.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //缓存清除绑定
+            $("#check_all").live({
+                click: function () {
+                    if ($(this).attr("checked"))
+                        $("tbody").find("input[type=checkbox]").attr("checked", true);
+                    else
+                        $("tbody").find("input[type=checkbox]").attr("checked", false);
+                }
+            })
+            $("#clearRedis").live({
+                click: function () {
+                    var ids = "";
+                    $("tbody").find("input[type=checkbox]:checked").each(function () {
+                        ids += "," + $(this).attr("pid");
+                    });
+                    if (ids.length > 0) {
+                        $.getJSON("/Shangpin/product/ProductRedisCacheClear", { ProductNos: ids.substring(1), v: Math.random() }, function (resullt) {
+                            alert("共清除" + resullt.count + "条缓存");
+                        })
+                    } else {
+                        alert("请选择要清除缓存的商品");
+                    }
+                }
+            })
+            //
+
+
+            $("#pNoListSearch").toggle(function () {
+                $("#addProductListAreas").show("slow");
+            }, function () {
+                $("#addProductListAreas").hide("slow");
+            });
+            $("#selectHistory").change(function () {
+                if ($("#selectHistory").val() != "0") {
+                    window.location = $("#selectHistory").val();
+                }
+            });
+            //重置
+            $("#clearContent").click(function () {
+                $("#searchOpration input:text").val("");
+                $("#timeType").val("0");
+                $("#isout").val("0");
+                $("#IsEdite").val("-1");
+                $("#IsPublish").val("-1");
+                $("input[name='isnewShelf']").attr("checked", false);
+            });
+            $("#BrandName").selectBrand('BrandNo', 'BrandName', false, '', '');
+            if ($("#select3").val() != "0") {
+                $.post("/Shangpin/Brand/GetErpCategoryChildList", { 'pNo': $("#select3").val() }, function (data) {
+                    $("#select4").append(data);
+                });
+                return;
+            }
+            if ($("#select2").val() != "0") {
+                $.post("/Shangpin/Brand/GetErpCategoryChildList", { 'pNo': $("#select2").val() }, function (data) {
+                    $("#select3").append(data);
+                });
+                return;
+            }
+            if ($("#select1").val() != "0") {
+                $.post("/Shangpin/Brand/GetErpCategoryChildList", { 'pNo': $("#select1").val() }, function (data) {
+                    $("#select2").append(data);
+                });
+                return;
+            }
+        });
+        //批量查询
+        function searchProductByNoList() {
+            if ($("#addProductListText").val().trim().length == 0) {
+                alert("请输入商品编号");
+                return;
+            }
+            if ($("#addProductListText").val().split('\n').length > 20) {
+                alert("不能超过20个商品编号");
+            }
+            $("#searchOpration input:text").val("");
+            //$("#searchOpration select").val("0");
+            $("#searchform").submit();
+        }
+        function publishHtml(id, pro) {
+            if (id == 0) {
+                alert("请先编辑后再发布");
+                return;
+            }
+            $.get("/shangpin/product/PublishProductContent?publishID=" + id, function (data) {
+                if (data > 0) {
+                    $.getJSON("/Shangpin/product/ProductRedisCacheClear", { ProductNos: pro, v: Math.random() }, function (resullt) {
+                        //alert("共清除" + resullt.count + "条缓存");
+                    })
+                    alert("发布成功");
+                    window.location.reload();
+                    return;
+                }
+                alert("发布失败");
+            });
+        }
+        function addHistory() { //添加历史查询
+            $("#searchform").append("<input type='hidden' value='1' name='IsRecord'/>").submit();
+        }
+        //清除查询历史
+        var clearHistory = function () {
+            $.get("/Shangpin/Product/ClearLabelHistory", function (data) {
+                window.location.reload();
+            });
+        }
+        var oneChange = function (objvalue) {
+            if (objvalue == 0) {
+                $("#CategoryNo").val("");
+                return;
+            }
+            $("#select2").html("<option value='0'>二级品类-- </option>");
+            $("#select3").html("<option value='0'>三级品类-- </option>");
+            $("#select4").html("<option value='0'>四级品类-- </option>");
+            $("#CategoryNo").val(objvalue);
+            $.post("/Shangpin/Brand/GetErpCategoryChildList.html", { 'pNo': objvalue }, function (data) {
+                $("#select2").append(data);
+            });
+        }
+        var twoChange = function (objvalue) {
+            if (objvalue == 0) {
+                $("#CategoryNo").val($("#CategoryNo").val().substr(0, 3));
+                return;
+            }
+            $("#select3").html("<option value='0'>三级品类-- </option>");
+            $("#select4").html("<option value='0'>四级品类-- </option>");
+            $("#CategoryNo").val(objvalue);
+            $.post("/Shangpin/Brand/GetErpCategoryChildList.html", { 'pNo': objvalue }, function (data) {
+                $("#select3").append(data);
+            });
+        }
+        var threeChange = function (objvalue) {
+            if (objvalue == 0) {
+                $("#CategoryNo").val($("#CategoryNo").val().substr(0, 6));
+                return;
+            }
+            $("#select4").html("<option value='0'>四级品类-- </option>");
+            $("#CategoryNo").val(objvalue);
+            $.post("/Shangpin/Brand/GetErpCategoryChildList.html", { 'pNo': objvalue }, function (data) {
+                $("#select4").append(data);
+            });
+        }
+        var fourChange = function (objvalue) {
+            if (objvalue == 0) {
+                $("#CategoryNo").val($("#CategoryNo").val().substr(0, 9));
+                return;
+            }
+            $("#CategoryNo").val(objvalue);
+        }
+
+    </script>
+}
+
+

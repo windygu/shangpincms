@@ -1,0 +1,661 @@
+.through520 {
+    /*background: url(/images/page/520/bg.gif) repeat 0 0;*/
+    background: #f6f6f6;
+}
+
+.through520_new {
+    /*background: url(/images/page/520/520bg.jpg) no-repeat center top;*/
+    background: url(/images/page/520/520_bg_1.jpg) repeat 0 0;
+}
+
+#banner520 {
+    width: 960px;
+    height: 587px;
+    background: url(/images/page/520/520banner.png) no-repeat center top;
+}
+
+.box520 {
+    width: 960px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.box520 img {
+    vertical-align: top;
+	position:relative;
+}
+
+.box520 .mgt24 {
+    margin-top: 24px;
+}
+
+.box520 .mgt12 {
+    margin-top: 12px;
+}
+
+.box520 p, .box520 div {
+    position: relative;
+}
+
+#curdatetime_520 {
+    display: block;
+    width: 960px;
+    position: absolute;
+    font-size: 22px;
+    top: 88px;
+	left:0px;
+    text-align: center;
+    font-family: "微软雅黑", "Microsoft YaHei", "黑体", "Tahoma", "宋体";
+    font-weight: 700;
+    letter-spacing: 1.6px;
+    text-shadow: 1px 1px #ccc;
+}
+
+#leftdays_520, #lefthours_520, #leftminutes_520, #leftseconds_520 {
+    display: block;
+    width: 30px;
+    position: absolute;
+    font-size: 22px;
+    text-align: center;
+    font-family: "微软雅黑", "Microsoft YaHei", "黑体", "Tahoma", "宋体";
+    font-weight: 700;
+    color: #ee065d;
+    top: 129px;
+    left: 332px;
+}
+
+#lefthours_520, #leftminutes_520, #leftseconds_520 {
+    width: 44px;
+    left: 392px
+}
+
+#leftminutes_520 {
+    left: 483px;
+}
+
+#leftseconds_520 {
+    left: 556px;
+}
+
+#curdatetime_520 i {
+    color: #ee065d;
+    font-weight: 700;
+    padding: 0 3px;
+}
+
+#rss520 {
+    display: block;
+    background: #fff;
+    position: absolute;
+    border: 0;
+    outline: none;
+    top: 189px;
+    left: 425px;
+    height: 14px;
+    padding: 1px 0 0;
+    width: 185px;
+}
+
+#rss520_btn {
+    display: block;
+    background: #fff;
+    position: absolute;
+    border: 0;
+    outline: none;
+    top: 185px;
+    left: 630px;
+    height: 25px;
+    width: 77px;
+    cursor: pointer;
+}
+
+#dapai520_btn {
+    display: block;
+    background: #fff;
+    position: absolute;
+    border: 0;
+    outline: none;
+    top: 157px;
+    left: 690px;
+    height: 32px;
+    width: 113px;
+    cursor: pointer;
+}
+
+#signup520_btn {
+    display: block;
+    background: #fff;
+    position: absolute;
+    border: 0;
+    outline: none;
+    top: 171px;
+    left: 200px;
+    height: 33px;
+    width: 175px;
+}
+
+#weibo520_btn {
+    display: block;
+    position: absolute;
+    background: #fff;
+    border: 0;
+    outline: none;
+    top: 146px;
+    left: 128px;
+    height: 32px;
+    width: 112px;
+    cursor: pointer;
+}
+
+#giftcard520_btn {
+    display: block;
+    position: absolute;
+    background: #fff;
+    border: 0;
+    outline: none;
+    top: 146px;
+    left: 708px;
+    height: 32px;
+    width: 134px;
+    cursor: pointer;
+}
+
+#coupon520_btn {
+    display: block;
+    position: absolute;
+    background: #fff;
+    border: 0;
+    outline: none;
+    top: 233px;
+    left: 417px;
+    height: 32px;
+    width: 107px;
+    cursor: pointer;
+}
+
+#jiangfeng520_btn {
+    display: block;
+    position: absolute;
+    background: #fff;
+    border: 0;
+    outline: none;
+    top: 210px;
+    left: 418px;
+    height: 32px;
+    width: 107px;
+    cursor: pointer;
+}
+
+#invite520_btn {
+    display: block;
+    position: absolute;
+    background: #fff;
+    border: 0;
+    outline: none;
+    top: 134px;
+    left: 332px;
+    height: 32px;
+    width: 150px;
+    cursor: pointer;
+}
+
+#gotowoman520 {
+    display: block;
+    background: #fff;
+    position: absolute;
+    border: 0;
+    outline: none;
+    top: 282px;
+    left: 555px;
+    height: 40px;
+    width: 110px;
+    cursor: pointer;
+}
+
+#gotoman520 {
+    display: block;
+    background: #fff;
+    position: absolute;
+    border: 0;
+    outline: none;
+    top: 282px;
+    left: 675px;
+    height: 40px;
+    width: 110px;
+    cursor: pointer;
+}
+
+#gotoaolai520 {
+    display: block;
+    background: #fff;
+    position: absolute;
+    border: 0;
+    outline: none;
+    top: 282px;
+    left: 794px;
+    height: 40px;
+    width: 110px;
+    cursor: pointer;
+}
+
+#signup520_look {
+    display: block;
+    background: #fff;
+    position: absolute;
+    border: 0;
+    outline: none;
+    top: 243px;
+    left: 695px;
+    height: 33px;
+    width: 175px;
+}
+
+#goto_look {
+    display: block;
+    background: #fff;
+    position: absolute;
+    border: 0;
+    outline: none;
+    top: 292px;
+    left: 295px;
+    height: 33px;
+    width: 175px;
+}
+
+#look520_rule {
+    display: block;
+    background: #fff;
+    position: absolute;
+    border: 0;
+    outline: none;
+    top: 0px;
+    left: 0px;
+    height: 65px;
+    width: 960px;
+}
+
+.box520_text {
+    font-family: "宋体";
+    color: #000;
+    position: absolute;
+    left: 202px;
+    width: 690px;
+}
+
+.box520_text dt {
+    font-size: 16px;
+}
+
+.box520_text dd {
+    font-size: 14px;
+    padding-left: 13px;
+    background-position: left 9px;
+    background-repeat: no-repeat;
+    line-height: 24px;
+}
+
+.box520_text dd a {
+    color: #ee065d;
+    text-decoration: underline;
+}
+
+#orange {
+    top: 75px;
+}
+
+#orange dd {
+    background-image: url(/images/page/520/listIcon1.png);
+
+}
+
+#red {
+    top: 95px;
+}
+
+#red dd {
+    background-image: url(/images/page/520/listIcon2.png);
+}
+
+#blue, #pick {
+    top: 105px;
+}
+
+#blue dd {
+    background-image: url(/images/page/520/listIcon3.png);
+}
+
+#pick dd {
+    background-image: url(/images/page/520/listIcon4.png);
+}
+
+.box520_bot {
+    padding: 26px 0 103px 261px;
+}
+#box520_bot {padding:6px 0 0 272px; width:688px; height:40px;  position:absolute; top:0; left:0;}
+#box520_bot a {
+	background: none repeat scroll 0 0 #FFFFFF;
+    border: 0 none;
+    cursor: pointer;
+    display: inline-block;
+    height: 30px;
+    outline: medium none;
+    width: 128px;
+	margin-right:25px;
+}
+.box520_bot a {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 0 none;
+    cursor: pointer;
+    display: block;
+    height: 34px;
+    outline: medium none;
+    position: absolute;
+    top: 26px;
+    width: 140px;
+}
+
+#gotowoman520rule {
+    left: 261px;
+    _left: 0;
+}
+
+#gotoman520rule {
+    left: 420px;
+    _left: 159px;
+}
+
+#gotoaolai520rule {
+    left: 578px;
+    _left: 317px;
+}
+
+.signup520_btn1 {
+    left: 399px !important;
+    top: 302px !important;
+}
+
+.weibo520_btn1 {
+    left: 432px !important;
+    top: 214px !important;
+    width: 112px !important;
+    height: 35px !important;
+}
+
+.box520_nav a {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 0 none;
+    cursor: pointer;
+    display: block;
+    height: 50px;
+    outline: medium none;
+    position: absolute;
+    top: 312px;
+    width: 174px;
+}
+.box520 .new_nav a {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 0 none;
+    cursor: pointer;
+    display: block;
+    height: 66px;
+    outline: medium none;
+    position: absolute;
+    top: 180px;
+    width: 174px;
+}
+#new_nav1 {width:154px; left:0;}
+#new_nav2 {width:163px; left:154px;}
+#new_nav3 {width:162px; left:317px;}
+#new_nav4 {width:162px; right:318px;}
+#new_nav5 {width:162px; right:156px;}
+#new_nav6 {width:156px; right:0;}
+#box520_nav1 {
+    left: 75px;
+}
+
+#box520_nav2 {
+    left: 285px;
+}
+
+#box520_nav3 {
+    left: 498px;
+}
+
+#box520_nav4 {
+    left: 712px;
+}
+
+.box520_w790 {
+    width: 790px;
+    margin: 0 auto;
+}
+
+#coupon520-banner {
+    height: 196px;
+    position: relative;
+    background: url(/images/page/520/couponbanner.png) no-repeat center center;
+    z-index: 1000;
+}
+
+#coupon520-banner span {
+    position: absolute;
+    top: 143px;
+    left: 412px;
+    font-size: 22px;
+}
+
+#coupon520-rule {
+    margin-top: -25px;
+    background-color: #fbf4ec;
+    position: relative;
+    z-index: 500;
+    padding: 30px 50px;
+}
+
+#coupon520-rule dl {
+    float: left;
+}
+
+#coupon520-rule dt {
+    font-weight: 700;
+    color: #666;
+    padding: 0 0 6px;
+    border-bottom: 1px solid #e1dbd4;
+}
+
+#coupon520-rule dd {
+    line-height: 18px;
+    color: #666;
+}
+
+#coupon520-rule dd.ruleddfirst {
+    padding: 6px 0 0;
+    border-top: 1px solid #fff;
+}
+
+dl#coupon520-rule-1 {
+    width: 348px;
+}
+
+dl#coupon520-rule-2 {
+    width: 304px;
+    margin-left: 36px;
+    display: inline;
+}
+
+div.coupon520_sale {
+    background-color: #edecec;
+    margin-top: 20px;
+    height: 302px;
+}
+
+div.coupon520_sale strong {
+    display: block;
+    width: 220px;
+    padding: 20px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+div.coupon520_sale .coupon_img {
+    float: left;
+    z-index: 100;
+    padding: 8px;
+}
+
+.coupon520_sale_left {
+    float: left;
+    width: 260px;
+}
+
+div.coupon520_sale .coupon520_sale_price {
+    background: url(/images/page/520/coupon_price.png) no-repeat 0 0;
+    width: 298px;
+    height: 64px;
+    position: relative;
+    z-index: 200;
+    left: -8px;
+    _background: url(/images/page/520/coupon_price.gif) no-repeat 0 0;
+}
+
+.coupon520_sale_price i, .coupon520_sale_price em {
+    color: #fff;
+    font-size: 22px;
+    float: left;
+    padding: 20px 8px 0 30px;
+}
+
+.coupon520_sale_price em {
+    font-size: 40px;
+    padding: 0;
+    padding-top: 8px;
+    font-weight: 700;
+}
+
+.coupon520_sale p {
+    color: #666666;
+    padding: 6px 0 0 24px;
+}
+
+.coupon520_sale p.coupon_saledcount {
+    padding-top: 20px;
+}
+
+.coupon_saledcount i {
+    font-size: 18px;
+    padding: 0 5px;
+    color: #ee065d;
+}
+
+a.coupon_share, a.prod_preview{
+	float:left;
+}
+a.coupon_share {
+    display: block;
+    width: 111px;
+    height: 26px;
+    margin: 12px 0 0;
+    background: url(/images/page/520/couponshare.gif) no-repeat 0 0;
+}
+a.prod_preview {
+    display: block;
+    width: 82px;
+    height: 28px;
+	line-height:28px;
+    margin: 12px 0 0 15px;
+	text-align:center;
+    background: url(/images/page/520/prodpreview_btn.gif) no-repeat 0 0;
+}
+a.prod_preview:link, a.prod_preview:visited{
+	color:#666;
+}
+a.prod_preview:hover, a.prod_preview:active{
+	color:#ee065d;
+}
+
+span.coupon_unrelease, span.coupon_over, a.coupon_onsale:link, a.coupon_onsale:visited {
+    position: absolute;
+    top: 12px;
+    left: 167px;
+    width: 96px;
+    height: 36px;
+    background: url(/images/page/520/unrelease.gif) no-repeat 0 0;
+}
+
+a.coupon_onsale:link, a.coupon_onsale:visited {
+    background-image: url(/images/page/520/onsale.gif);
+}
+
+a.coupon_onsale:hover, a.coupon_onsale:active {
+    background-image: url(/images/page/520/onsaleclick.gif);
+}
+
+span.coupon_over {
+    background-image: url(/images/page/520/over.gif);
+}
+
+a#coupon520-torule {
+    position: absolute;
+    display: block;
+    width: 100px;
+    font-size: 14px;
+    right: 38px;
+    bottom: 12px;
+}
+
+#coupon520-more {
+    display: block;
+    margin: 20px 0 0;
+    line-height: 60px;
+    font-size: 14px;
+    font-weight: 700;
+    background: #f4ebdd;
+    color: #bd8436;
+    text-align: center;
+}
+
+.shadow960 {
+    height: 5px;
+    background: url(/images/page/520/shadow960.png) no-repeat center 0;
+    _background: none;
+}
+
+.shadow790 {
+    height: 5px;
+    background: url(/images/page/520/shadow790.png) no-repeat center 0;
+    _background: none;
+}
+/*20130502rule_new*/
+#strate1 {top:60px;}
+.strate1 {top:280px !important; left:425px !important; width:132px !important; height:34px !important;}
+#strate1 dd {background-image: url(/images/page/520/strateIcon1.jpg);}
+#strate2 {top:75px;}
+.strate2 {top:252px !important; left:437px !important; width:110px !important; height:34px !important;}
+#strate2 dd {background-image: url(/images/page/520/strateIcon2.jpg);}
+#strate3 {top:65px;}
+.strate3 {top:165px !important; left:437px !important; width:110px !important; height:34px !important;}
+#strate3 dd {background-image: url(/images/page/520/strateIcon3.jpg);}
+#strate4 {top:90px;}
+.strate4 {top:318px !important; left:403px !important; width:175px !important; height:32px !important;}
+#strate4 dd {background-image: url(/images/page/520/strateIcon4.jpg);}
+#strate5 {top:82px;}
+.strate5 {top:435px !important; left:402px !important; width:176px !important; height:33px !important;}
+#strate5 dd {background-image: url(/images/page/520/strateIcon5.jpg);}
+#strate6 {top:96px;}
+#strate6 dd {background-image: url(/images/page/520/strateIcon6.jpg);}
+
+#switchbanner_520 {
+    width: 960px;
+    height: 419px;
+    overflow: hidden;
+    background-color: #fff;
+    position: relative;
+}
+
+#switchbanner_520 img {
+    width: 960px;
+    height: 419px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}

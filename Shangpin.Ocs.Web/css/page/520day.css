@@ -1,0 +1,64 @@
+* html,* html body {background-image:url(about:blank);background-attachment:fixed;}
+.nav_wp { height: 28px; background: #c19343; padding: 10px 0; width:100%; top:0; left:0; z-index:100; box-shadow:0 2px 3px #999;}
+.nav_wp ul { width: 920px; margin: 0 auto; padding: 0 20px; }
+.nav_wp li { float: left; font-size: 14px; font-weight: bold; line-height: 28px; padding-left: 30px; background: url(/images/page/520/520day_icon.gif) no-repeat -136px 0px; margin-right: 20px; }
+.nav_wp li a,.nav_wp li a:link,.nav_wp li a:visited{ color: #fff; padding: 0 5px;}
+.nav_wp li a:hover { text-decoration: underline; }
+.nav_wp li a:active{ background:none;}
+.nav_wp li span a { font-size: 12px; font-weight: normal; }
+.nav_wp li.yyqxa { background-position: -136px -46px; }
+.nav_wp li.spnvs { background-position: -136px -94px; }
+.nav_wp li.spnans { background-position: -136px -142px; }
+.nav_wp li.spal { background-position: -136px -190px; }
+/*banner*/
+.banner_wp { background:#b6ebde url(/images/page/520/520day_banner.jpg) no-repeat center top; width: 100%; height: 317px; }
+/**/
+.containter { background: #878787; padding-bottom: 38px }
+.wp_cn { width: 960px; margin: 0 auto; }
+.wp_cn h2 { background: url(/images/page/520/520day_title_bg.jpg) no-repeat center top; height: 52px; }
+
+.sp_box { margin-bottom: 5px;width:960px; overflow:hidden;}
+.sp_cn ul { margin: 0 -5px 0 0; }
+.sp_cn li {float: left; margin: 0 5px 5px 0;}
+.spnvs_box h2 { background-position: 0 -46px; }
+.spnans_box h2 { background-position: 0 -98px; }
+.spal_box h2{background-position: 0 -150px;}
+
+.tszq_box { position: relative; z-index: 2; margin-top: -46px; }
+.tszq_box h2 { height: 46px;}
+.tszq_cn li{ width:477px;}
+.tszq_cn li.li_r{ width:478px;}
+
+.wp_cn li a,.wp_cn li img{vertical-align:top; display:block;} 
+.tszq_cn .li_one{ width:960px;}
+
+.yysyzq_box{ position:relative;}
+.yysyzq_box p{ position:absolute; left:157px; top:11px;}
+.yysyzq_box p a{ float:left; width:130px; height:63px; background:url(/images/e.gif) no-repeat; margin-right:2px;}
+.yysyzq_box p a#couponTips{ position:absolute; background:url(/images/e.gif) no-repeat; left:-110px;width: 60px;height: 20px;top: 36px;}
+.yysyzq_box p a#couponTips:hover{ border-bottom:1px solid #000;}
+.ft_link_box { background: #333333; width: 100%; margin-bottom:10px;}
+.ft_link_box table { width: 100%; }
+.ft_link_box table td{background-color: #333333; border-bottom: 1px solid #878787; border-left: 1px solid #878787; text-indent: 10px;height: 38px; line-height: 38px;font-size: 14px; color: #ccc;}
+.ft_link_box table td.ft_td_hover{background-color: #666;}
+.ft_link_box a,.ft_link_box a:link, .ft_link_box a:visited  { color: #ccc;}
+.ft_link_box a:hover { text-decoration:underline; color:#fff;}
+.ft_link_box a span { background: url(/images/page/520/520day_icon.gif) no-repeat right -245px; padding-right: 12px; }
+.ft_link_box .left_td { width: 155px; text-align: center; border-right: 2px solid #878787; padding: 0; }
+.ft_link_box .left_td a { display: block; width: 155px; border: none; height: 156px; background: #333 url(/images/page/520/520day_ftlink_img.jpg) no-repeat left top; }
+.ft_link_box .left_td a:hover { background-color: #4c4c4c; background-position: -155px top; }
+.ft_link_box .table_btm a {text-align: center; display:block; text-indent: 0; }
+
+.btm_fx { background: #6e6e6e; padding: 10px 0; margin-top: 38px; }
+.btm_fx ul { width: 405px; margin: 0 auto; }
+.btm_fx li { float: left; width: 135px; }
+.btm_fx a {display: block; width: 125px; height: 40px; background: url(/images/page/520/520day_icon.gif) no-repeat left 0; margin: 0 auto; }
+.btm_fx a.weibo { background-position: 0 -160px; }
+.btm_fx a.weibo:hover { background-position: 0 -200px; }
+.btm_fx a.qweibo { background-position: 0 -80px; }
+.btm_fx a.qweibo:hover { background-position: 0 -120px; }
+.btm_fx a.douban { background-position: 0 0; }
+.btm_fx a.douban:hover { background-position: 0 -40px; }
+.mbtm { margin-bottom: 10px; }
+.tipsWindow_body {width:680px;}
+.tipsWindow_body .tipsLayer p{text-indent:2em;}

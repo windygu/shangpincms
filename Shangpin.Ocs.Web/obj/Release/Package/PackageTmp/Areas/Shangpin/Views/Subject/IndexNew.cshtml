@@ -1,0 +1,271 @@
+﻿@model IEnumerable<SWfsNewSubject>
+@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Entity.Wfs
+@{
+
+    ViewBag.Title = "活动管理";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    int pageIndex = ViewBag.pageIndex;
+    int pageSize = ViewBag.pageSize;
+    int totalCount = ViewBag.totalCount;
+    Shangpin.Ocs.Service.Shangpin.SWfsBrandService dal = new Shangpin.Ocs.Service.Shangpin.SWfsBrandService();
+    IList<Shangpin.Ocs.Entity.Extenstion.ShangPin.ErpCategory> allfirstCategory = dal.SelectErpCategoryByParentNo("ROOT");
+    string requestCategoryNo = Request.QueryString["subjectCategoryNo"] != null ? Request.QueryString["subjectCategoryNo"].ToUpper() : null;
+}
+<h1>
+    OCS > 尚品 > 活动列表<span style="color: Red;">（注意：网站关于活动列表页缓存时间为：10 分钟,列表底部有清除缓存按钮）</span>
+</h1>
+<br />
+<form action="/Shangpin/subject/indexnew" method="get" id="searchform">
+<div style="padding: 5px;" id="searchOpration">
+    活动关键字:
+    <input type="text" maxlength="30" name="subjectNameOrSubjectNo" value="@Request.QueryString["subjectNameOrSubjectNo"]" placeholder="活动名称/活动编号" />&nbsp;
+    商品编号:<input type="text" maxlength="30" name="productNo" value="@(Request.QueryString["productNo"])" placeholder="商品编号" />&nbsp;
+    创建人:<input type="text" maxlength="30" value="@Request.QueryString["createUserId"]" name="createUserId"  placeholder="创建人"/>
+    <select name="subjectStatus">
+        <option value="">活动状态</option>
+        <option value="0" @Html.Raw(Request.QueryString["subjectStatus"] == "0" ? "selected='selected'" : null)>
+            已关闭 </option>
+        <option value="1" @Html.Raw(Request.QueryString["subjectStatus"] == "1" ? "selected='selected'" : null)>
+            已开启 </option>
+    </select>&nbsp;
+    <select name="subjectCategoryNo">
+        <option value="">活动分类</option>
+        @foreach (Shangpin.Ocs.Entity.Extenstion.ShangPin.ErpCategory category in allfirstCategory)
+        {
+            <option value="@category.CategoryNo" @Html.Raw(requestCategoryNo == category.CategoryNo ? "selected='selected'" : null)>
+                @category.CategoryName
+            </option>
+        }
+    </select>
+    &nbsp;
+    <select name="channelType">
+        <option value="">渠道</option>
+        <option value="1">网站</option>
+        <option value="2">移动端</option>
+    </select>
+    &nbsp;
+    <select name="subjectGender">
+        <option value="">性别</option>
+        <option value="0">女士</option>
+        <option value="1">男士</option>
+        <option value="2">中性</option>
+    </select>
+    <br />
+    <br />
+    <input id="startTime" style="width:200px;" name="subjectDateEndStart" value="@(Request.QueryString["subjectDateEndStart"])" maxlength="30" class="Wdate" type="text" readonly="readonly" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',skin:'whyGreen',lang:'zh-cn',isShowClear:true,alwaysUseStartDate:true,readOnly:true,maxDate:'#F{$dp.$D(\'endTime\',{d:0});}'})" />
+    <span>至</span>
+    <input id="endTime" style="width:200px;" name="subjectDateEndEnd" value="@(Request.QueryString["subjectDateEndEnd"])" maxlength="30" class="Wdate" type="text" readonly="readonly" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',skin:'whyGreen',lang:'zh-cn',isShowClear:true,alwaysUseStartDate:true,readOnly:true,minDate:'#F{$dp.$D(\'startTime\',{d:0});}'})" />
+    <button type="submit">
+        提交查询</button>&nbsp;&nbsp;
+    <button type="button" id="clearContent">
+        重置</button>
+</div>
+</form>
+<form id="idlistform" action="/shangpin/subject/indexnew" method="post">
+<table class="mx-table" border="0">
+    <thead>
+        <tr>
+            <th>
+                <input type="checkbox" id="check_all" />
+            </th>
+            <th>
+                活动图片
+            </th>
+            <th>
+                活动信息
+            </th>
+            <th>
+                活动品类
+            </th>
+            <th>
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            for (int i = 0; i < Model.Count(); i++)
+            {
+            <tr>
+                <td>
+                    <input type="checkbox" value="@Model.ElementAt(i).SubjectNo" name="subjectNo" />
+                </td>
+                <td>
+                    @if (string.IsNullOrEmpty(Model.ElementAt(i).SubjectTemplateTopPicNo))
+                    {
+                        <img onmousemove="" onmouseout="" width="130" alt="@Model.ElementAt(i).SubjectName" height="100" src="/ReadPic/GetPic.ashx?width=130&height=100&pictureFileNo=@Model.ElementAt(i).SubjectPreStartBackgroundPic&type=2"/>
+                    }
+                    else
+                    {
+                        <img width="130" alt="@Model.ElementAt(i).SubjectName" height="100" src="/ReadPic/GetPic.ashx?width=130&height=100&pictureFileNo=@Model.ElementAt(i).SubjectTemplateTopPicNo&type=2"/>
+                    }
+                </td>
+                <td class="lt">
+                    活动名称：<a href="http://www.shangpin.com/women/subject/@Model.ElementAt(0).SubjectNo" target="_blank">@Model.ElementAt(i).SubjectName</a><br />
+                    活动编号：@Model.ElementAt(i).SubjectNo<br />
+                    展示渠道：@switch (Model.ElementAt(i).ChannelType)
+                         {
+                             case "0":
+                        @Html.Raw("网站,移动端");
+                                           break;
+                             case "1,2":
+                        @Html.Raw("网站,移动端");
+                                           break;
+                             case "1":
+                        @Html.Raw("网站");
+                                       break;
+                             case "2":
+                        @Html.Raw("移动端");
+                                        break;
+                         }
+                         <br />
+                    活动预热:
+                    @switch (Model.ElementAt(i).SubjectPreTemplateType)
+                    {
+                        case 1:
+                        @Html.Raw("楼层模板");
+                                         break;
+                        case 2:
+                        @Html.Raw("错落模板");
+                                         break;
+                        case 3:
+                        @Html.Raw("普通模板");
+                                         break;
+                    }<br />
+                    活动进行:
+                    @switch (Model.ElementAt(i).SubjectTemplateType)
+                    {
+                        case 1:
+                        @Html.Raw("楼层模板");
+                                         break;
+                        case 2:
+                        @Html.Raw("错落模板");
+                                         break;
+                        case 3:
+                        @Html.Raw("普通模板");
+                                         break;
+                    }<br />
+                    当前活动状态 : <span id="@("status" + Model.ElementAt(i).SubjectNo)">@(Model.ElementAt(i).Status == 1 ? "开启" : "关闭")</span> 
+                    设置: <a href="javascript:;" onclick="updateStatus(this)" subjectno="@(Model.ElementAt(i).SubjectNo)" status="@(Model.ElementAt(i).Status==0?1:0)">@(Model.ElementAt(i).Status == 1 ? "关闭" : "开启")</a>
+                </td>
+                <td class="lt" style="width: 300px;">
+                    商品数量:@Model.ElementAt(i).ProductCount
+                    <br />
+                    所属性别:@switch (Model.ElementAt(i).SubjectGender)
+                         {
+                             case "0":
+                        @Html.Raw("女士");
+                                       break;
+                             case "1":
+                        @Html.Raw("男士");
+                                       break;
+                             case "2":
+                        @Html.Raw("中性");
+                                       break;
+                             case "0,1":
+                        @Html.Raw("女士,男士");
+                                          break;
+                             case "0,1,2":
+                        @Html.Raw("女士,男士,中性");
+                                             break;
+                         }
+                    <br />
+                    所属品类:@for (int j = 0; j < allfirstCategory.Count(); j++)
+                         {
+                             if (Model.ElementAt(i).SubjectCategoryNo.Contains(allfirstCategory.ElementAt(j).CategoryNo))
+                             {
+                        @(allfirstCategory.ElementAt(j).CategoryName + " | ");
+                             }
+                         }
+                    <br />
+                    创建人:@Model.ElementAt(i).CreateUserId
+                </td>
+                <td>
+                    <div style="text-align: left;">
+                        @Html.Raw(Model.ElementAt(i).DatePre.ToString().Contains("9999") ? "" : "预热时间" + Model.ElementAt(i).DatePre.ToString("yyyy-MM-dd HH:mm:ss"))
+                        <br />
+                        时间:@(Model.ElementAt(i).DateBegin + "至" + Model.ElementAt(i).DateEnd)
+                    </div>
+                    <div style="text-align: right; padding-top: 30px;">
+                        <a class="button">编辑</a>
+                        @if (Model.ElementAt(i).SubjectTemplateType == 2)
+                        {
+                            <a class="button" href="/Shangpin/Subject/grouplist.html?subjectNo=@Model.ElementAt(i).SubjectNo">
+                                分组管理</a>
+                        }
+                        else
+                        {
+                            <a class="button">管理商品</a>
+                        }
+                        <a class="button" href="/shangpin/subject/DataStatistics.html?subjectNo=@Model.ElementAt(i).SubjectNo">
+                            数据统计</a> 
+                        <a class="button" href="javascript:deleteProductByQuantity('@Model.ElementAt(i).SubjectNo');">清除无库存商品</a>
+                    </div>
+                </td>
+            </tr>
+            }
+        }
+            <tr>
+                <td><input type="checkbox" onclick="selAll(this.checked)"/> 全选</td>
+                <td><input type="button" value="关闭" onclick="closeAll()" />&nbsp;&nbsp;<input type="button" value="清除所选缓存"/></td>
+            </tr>
+    </tbody>
+</table>
+</form>
+<div class="spPage">
+    @if (totalCount > 0)
+    {
+        @Html.Raw(@Html.PagerX("page", pageIndex, pageSize, totalCount))
+    }
+</div>
+<div class="clr" id="mx-rightcontent-fixbar">
+    <a id="mx-btn-add" href="#"></a>
+</div>
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript">
+        //修改活动状态
+        var updateStatus = function (opobj) {
+            var status = $(opobj).attr("status");
+            var subjectno = $(opobj).attr("subjectno");
+            $.get("/shangpin/subject/SubjectStatusModify", { "subjectNo": subjectno, "status": status }, function (data) {
+                if (data.status > 0) {
+                    $("#status" + subjectno).text(status == 1 ? "开启" : "关闭");
+                    $(opobj).text($(opobj).attr("status") == "1" ? "关闭" : "开启").attr("status", status == "1" ? "0" : "1");
+                }
+                alert(data.message);
+            });
+        }
+        //清除无库存的商品
+        var deleteProductByQuantity=function(subjectNo) {
+            $.get("/shangpin/subject/SubjectDeleteProductByQuantity?subjectNo=" + subjectNo, function (data) {
+                alert(data.message);
+            });
+        }
+        
+        //批量关闭活动
+        var closeAll = function () {
+            var subjectNoList = "";
+            $("input[name='subjectNo']").each(function () {
+                if ($(this).checked) {
+                    subjectNoList += $(this).val() + ",";
+                }
+            });
+            $.post("/shangpin/subject/CloseSubject", { "subjectNos": subjectNoList, "status": "0" }, function (data) {
+                alert(data.message);
+                window.location.reload();
+            });
+        }
+        var selAll = function (ischeck) {
+            $("input[name='subjectNo']").attr("checked", ischeck);
+        }
+        var overshowimg = function () {
+            $("#type" + $(obj).attr("relationtype")).css({ 'top': ($(window).height() / 2) - 200 + $(window).scrollTop(), 'left': ($(window).width() / 2) - 410, 'display': 'block', 'z-index': '99999' });
+        }
+        var outshowimg = function () {
+            $("#type" + $(obj).attr("relationtype")).css({ 'top': ($(window).height() / 2) - 200 + $(window).scrollTop(), 'left': ($(window).width() / 2) - 410, 'display': 'block', 'z-index': '99999' });
+        }
+    </script>
+}

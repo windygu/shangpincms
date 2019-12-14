@@ -1,0 +1,74 @@
+* {
+    font-family:"微软雅黑";	
+	}
+.main {
+	width: 960px;
+	margin: 0 auto;
+}
+.main p {
+	font-size:13px;
+	color:#7e7e7e;
+}
+a.entLink {
+	font-size:15px;
+	color:#d61518;
+	text-decoration:none;
+}
+a.btnLink {
+	display:block;
+	width:185px;
+	height:38px;
+	line-height:38px;
+	background: url(/images/page/desktop/btnBg.jpg) no-repeat left top;
+	font-size:21px;
+	color:#FFF;
+	text-align:center;
+}
+a.btnLink:hover {
+	display:block;
+	width:185px;
+	height:38px;
+	line-height:38px;
+	background: url(/images/page/desktop/btnBg.jpg) no-repeat left -38px;;
+	font-size:21px;
+	color:#FFF;
+}
+.leftDesk,.rightDesk {
+	background-repeat: no-repeat;
+	background-position: left top;
+	float:left;
+}
+.leftDesk{
+	background-image: url(/images/page/desktop/spLeft.jpg);
+	padding-top:354px ;
+	padding-left:24px;
+	height:181px;
+	width:456px;
+}
+.leftDesk p{
+	width:318px;
+}
+.rightDesk p{
+	width:280px;
+}
+.rightDesk{
+	background-image: url(/images/page/desktop/alRight.jpg);
+	padding-top:336px ;
+	padding-left:32px;
+	height:199px;
+	width:448px;
+}
+.empHeight {
+    height:14px;	
+	}
+.texCen {
+	text-align:center;
+	}
+.texCol1 {
+    color:#000;	
+	font-size:14px;
+	}
+.texCol2 {
+    color:#f22021;	
+	text-decoration:underline;
+	}

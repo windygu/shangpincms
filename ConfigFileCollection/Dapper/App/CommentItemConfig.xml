@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<categories>
+  <categoryItem>
+    <category>
+      <item name="鞋靴类">A02</item>
+    </category>
+    <commentItem id="1" name="综合评分" type="5" required="1" default="5" valuetype="int">
+      <option value="1">很差</option>
+      <option value="2">一般</option>
+      <option value="3">满意</option>
+      <option value="4">很好</option>
+      <option value="5">非常好</option>
+    </commentItem>
+    <commentItem id="2" name="款式" type="5" required="1" default="5" valuetype="int">
+      <option value="1">不好看</option>
+      <option value="2">一般</option>
+      <option value="3">还算顺眼</option>
+      <option value="4">很好看</option>
+      <option value="5">非常好看</option>
+    </commentItem>
+    <commentItem id="3" name="舒适度" type="5" required="1" default="5" valuetype="int">
+      <option value="1">很不舒服</option>
+      <option value="2">一般</option>
+      <option value="3">还算舒服</option>
+      <option value="4">很舒服</option>
+      <option value="5">非常舒服</option>
+    </commentItem>
+    <commentItem id="5" name="尺码" type="2" required="1" default="2" valuetype="int">
+      <option value="1">偏小</option>
+      <option value="2">合适</option>
+      <option value="3">偏大</option>
+    </commentItem>
+  </categoryItem>
+  <categoryItem>
+    <category>
+      <item name="服饰类">A01</item>
+    </category>
+    <commentItem id="1" name="综合评分" type="5" required="1" default="5" valuetype="int">
+      <option value="1">很差</option>
+      <option value="2">一般</option>
+      <option value="3">满意</option>
+      <option value="4">很好</option>
+      <option value="5">非常好</option>
+    </commentItem>
+    <commentItem id="2" name="款式" type="5" required="1" default="5" valuetype="int">
+      <option value="1">不好看</option>
+      <option value="2">一般</option>
+      <option value="3">还算顺眼</option>
+      <option value="4">很好看</option>
+      <option value="5">非常好看</option>
+    </commentItem>
+    <commentItem id="3" name="舒适度" type="5" required="1" default="5" valuetype="int">
+      <option value="1">很不舒服</option>
+      <option value="2">一般</option>
+      <option value="3">还算舒服</option>
+      <option value="4">很舒服</option>
+      <option value="5">非常舒服</option>
+    </commentItem>
+    <commentItem id="5" name="尺码" type="2" required="1" default="2" valuetype="int">
+      <option value="1">偏小</option>
+      <option value="2">合适</option>
+      <option value="3">偏大</option>
+    </commentItem>
+    <commentItem id="6" name="身高" type="1" required="0" valuetype="int">
+      <option value="1">cm</option>
+    </commentItem>
+    <commentItem id="7" name="体重" type="1" required="0" valuetype="int">
+      <option value="1">kg</option>
+    </commentItem>
+  </categoryItem>
+  <categoryItem>
+    <category>
+      <item name="箱包">A03</item>
+    </category>
+    <commentItem id="1" name="综合评分" type="5" required="1" default="5" valuetype="int">
+      <option value="1">很差</option>
+      <option value="2">一般</option>
+      <option value="3">满意</option>
+      <option value="4">很好</option>
+      <option value="5">非常好</option>
+    </commentItem>
+    <commentItem id="2" name="款式" type="5" required="1" default="5" valuetype="int">
+      <option value="1">不好看</option>
+      <option value="2">一般</option>
+      <option value="3">还算顺眼</option>
+      <option value="4">很好看</option>
+      <option value="5">非常好看</option>
+    </commentItem>
+    <commentItem id="3" name="舒适度" type="5" required="1" default="5" valuetype="int">
+      <option value="1">很不舒服</option>
+      <option value="2">一般</option>
+      <option value="3">还算舒服</option>
+      <option value="4">很舒服</option>
+      <option value="5">非常舒服</option>
+    </commentItem>
+  </categoryItem>
+  <categoryItem>
+    <category>
+      <item name="配饰">A05</item>
+      <item name="珠宝">A16</item>
+      <item name="腕表">A04</item>
+      <item name="眼镜">A13</item>
+    </category>
+    <commentItem id="1" name="综合评分" type="5" required="1" default="5" valuetype="int">
+      <option value="1">很差</option>
+      <option value="2">一般</option>
+      <option value="3">满意</option>
+      <option value="4">很好</option>
+      <option value="5">非常好</option>
+    </commentItem>
+    <commentItem id="2" name="款式" type="5" required="1" default="5" valuetype="int">
+      <option value="1">不好看</option>
+      <option value="2">一般</option>
+      <option value="3">还算顺眼</option>
+      <option value="4">很好看</option>
+      <option value="5">非常好看</option>
+    </commentItem>
+    <commentItem id="3" name="舒适度" type="5" required="1" default="5" valuetype="int">
+      <option value="1">很不舒服</option>
+      <option value="2">一般</option>
+      <option value="3">还算舒服</option>
+      <option value="4">很舒服</option>
+      <option value="5">非常舒服</option>
+    </commentItem>
+  </categoryItem>
+  <categoryItem>
+    <category>
+      <item name="美妆">A06</item>
+    </category>
+    <commentItem id="1" name="综合评分" type="5" required="1" default="5" valuetype="int">
+      <option value="1">很差</option>
+      <option value="2">一般</option>
+      <option value="3">满意</option>
+      <option value="4">很好</option>
+      <option value="5">非常好</option>
+    </commentItem>
+    <commentItem id="3" name="舒适度" type="5" required="1" default="5" valuetype="int">
+      <option value="1">很不舒服</option>
+      <option value="2">一般</option>
+      <option value="3">还算舒服</option>
+      <option value="4">很舒服</option>
+      <option value="5">非常舒服</option>
+    </commentItem>
+    <commentItem id="8" name="肤质" type="3" required="0" valuetype="int">
+      <option value="1">油性</option>
+      <option value="2">干性</option>
+      <option value="3">中性</option>
+      <option value="4">混合性</option>
+      <option value="5">敏感性</option>
+    </commentItem>
+  </categoryItem>
+  <categoryItem>
+    <category>
+      <item name="家居">A07</item>
+    </category>
+    <commentItem id="1" name="综合评分" type="5" required="1" default="5" valuetype="int">
+      <option value="1">很差</option>
+      <option value="2">一般</option>
+      <option value="3">满意</option>
+      <option value="4">很好</option>
+      <option value="5">非常好</option>
+    </commentItem>
+    <commentItem id="4" name="外观" type="5" required="1" default="5" valuetype="int">
+      <option value="1">不好看</option>
+      <option value="2">一般</option>
+      <option value="3">还算顺眼</option>
+      <option value="4">很好看</option>
+      <option value="5">非常好看</option>
+    </commentItem>
+  </categoryItem>
+  <categoryItem>
+    <category>
+      <item name="内衣">A15</item>
+    </category>
+    <commentItem id="1" name="综合评分" type="5" required="1" default="5" valuetype="int">
+      <option value="1">很差</option>
+      <option value="2">一般</option>
+      <option value="3">满意</option>
+      <option value="4">很好</option>
+      <option value="5">非常好</option>
+    </commentItem>
+    <commentItem id="3" name="舒适度" type="5" required="1" default="5" valuetype="int">
+      <option value="1">很不舒服</option>
+      <option value="2">一般</option>
+      <option value="3">还算舒服</option>
+      <option value="4">很舒服</option>
+      <option value="5">非常舒服</option>
+    </commentItem>
+    <commentItem id="5" name="尺码" type="2" required="1" default="2" valuetype="int">
+      <option value="1">偏小</option>
+      <option value="2">合适</option>
+      <option value="3">偏大</option>
+    </commentItem>
+  </categoryItem>
+</categories>

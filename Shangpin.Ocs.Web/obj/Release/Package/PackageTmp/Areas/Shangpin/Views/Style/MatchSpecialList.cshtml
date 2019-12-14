@@ -1,0 +1,210 @@
+﻿@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Ocs.Entity.Extenstion.Outlet;
+@using Shangpin.Entity.Wfs;
+@{    
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    IList<SWfsStyleMatchSpecial> list = (IList<SWfsStyleMatchSpecial>)ViewBag.List;
+    int totalCount = (int)ViewBag.Count;
+    int currentPage = (int)ViewBag.CurPage;
+    int pageSize = (int)ViewBag.PageSize;
+    ViewBag.Title = "搭配专题管理";
+}
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/ShangPin/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/plug/comm.js"></script>
+}
+<style type="text/css">
+    .divShowClass
+    {
+        position: absolute;
+        top: 0px;
+        height: 250px;
+        left: 135px;
+        z-index: 100;
+        width: 960px;
+    }
+    #divUpload, #divSPage
+    {
+        background-color: #fff;
+        border: 5px solid #2293e2;
+        z-index: 99;
+        width: 300px;
+        height: 130px;
+        left: 50%; /*FF IE7*/
+        top: 50%; /*FF IE7*/
+        margin-left: -250px !important; /*FF IE7*/
+        margin-top: -50px !important; /*FF IE7*/
+        margin-top: 0px;
+        position: fixed !important; /*FF IE7*/
+        position: absolute; /*IE6*/
+        _top: expression(eval(document.compatMode && document.compatMode=='CSS1Compat') ? documentElement.scrollTop + (document.documentElement.clientHeight-this.offsetHeight)/2 : /*IE6*/
+        document.body.scrollTop + (document.body.clientHeight - this.clientHeight)/2); /*IE5 IE5.5*/
+    }
+    
+    #divSPage
+    {
+        width: 500px;
+        height: 300px;
+        overflow: auto;
+    }
+    
+    #divSPage ul li
+    {
+        float: left;
+        width: 220px;
+        height: 20px;
+        line-height: 20px;
+        padding-right: 5px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+</style>
+<h1>
+    <a href="javascript:">OCS</a> > 尚品 > <a href="/shangpin/newchannel/newChannelList">频道列表页</a>
+    > Style > 搭配专题管理</h1>
+<form action="/shangpin/style/MatchSpecialList" method="get" id="frmSearch" name="frmSearch">
+<div style="padding: 5px;">
+    名称
+    <input type="text" value="@ViewBag.Name" style="" name="name" />
+    时间范围
+    <input name="startTime" class="Wdate" value="@ViewBag.BTime" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:00:00'})" readonly="readonly" style="width:150px" />
+    <input name="endTime" class="Wdate" value="@ViewBag.ETime" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:00:00'})" readonly="readonly" style="width:150px" />
+    图片位置
+    <select id="position" name="position">
+        <option value="0">请选择</option>
+        <option value="1" @(ViewBag.Position == "1" ? "selected" : "")>第一张</option>
+        <option value="2" @(ViewBag.Position == "2" ? "selected" : "")>第二张</option>
+        <option value="3" @(ViewBag.Position == "3" ? "selected" : "")>第三张</option>
+        <option value="4" @(ViewBag.Position == "4" ? "selected" : "")>第四张</option>
+        <option value="5" @(ViewBag.Position == "5" ? "selected" : "")>第五张</option>
+        <option value="6" @(ViewBag.Position == "6" ? "selected" : "")>第六张</option>
+        <option value="7" @(ViewBag.Position == "7" ? "selected" : "")>第七张</option>
+        <option value="8" @(ViewBag.Position == "8" ? "selected" : "")>第八张</option>
+        <option value="9" @(ViewBag.Position == "9" ? "selected" : "")>第九张</option>
+        <option value="10" @(ViewBag.Position == "10" ? "selected" : "")>第十张</option>
+    </select>
+    <button type="submit">
+        查询</button>
+    <a href="/shangpin/style/Manage?act=add" class="sumit_btn" style="margin-left:400px">新增</a>
+</div>
+</form>
+<table class="mx-table">
+    <thead>
+        <tr>
+            <th width="20%">
+                预览图
+            </th>
+            <th width="20%">
+                图片名称
+            </th>
+            <th width="15%">
+                开始时间
+            </th>
+            <th width="15%">
+                结束时间
+            </th>
+            <th width="10%">
+                图片位置
+            </th>
+            <th width="20%">
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{  
+            var flag = 0;
+            foreach (var item in list)
+            {
+                flag = flag + 1;
+                                 
+            <tr class="@(flag % 2 == 0 ? "cross" : "")" id="Pic_@item.ID">
+                <td>
+                    <img alt="" src="/ReadPic/GetPic.ashx?width=130&height=100&pictureFileNo=@item.PicNo&type=2" onmouseover="showPic(event,'/ReadPic/GetPic.ashx?width=230&height=132&pictureFileNo=@item.PicNo&type=2')" onmouseout="hiddenPic();" />
+                </td>
+                <td>@item.SpecialName
+                </td>
+                <td>@(item.StartTime)
+                </td>
+                <td>
+                    @item.EndTime
+                </td>
+                <td>
+                    @HtmHelpers.GetPostion(null, item.Position)
+                </td>
+                <td>
+                    <a class="button" href="/shangpin/style/Manage?act=edit&id=@item.ID">编辑</a> <a class="button" href="javascript:"  onclick="Delete('@item.ID')">
+                        删除</a>
+                </td>
+            </tr>
+                                 
+            }
+        }
+    </tbody>
+</table>
+<div id="Layer1" style="display: none; position: absolute; z-index: 99;">
+</div>
+<div class="spPage">@Html.Raw(Html.PagerX("page", currentPage, pageSize, totalCount))</div>
+<script type="text/javascript">
+    function Delete(id) {
+        if (id != "") {
+            if (confirm("确定要删除吗？")) {
+                $.ajax({
+                    url: "/shangpin/style/MatchSpecialDelete",
+                    type: "post",
+                    dataType: "json",
+                    data: "id=" + id,
+                    success: function (data) {
+                        if (data != null) {
+                            if (data.result == 1) {
+                                alert("删除成功！");
+                                window.location.href = gettimestampurl(window.location.href);
+
+                                return true;
+                            } else {
+                                alert("删除失败！");
+                                return false;
+                            }
+                        }
+                    },
+                    error: function (x, e) {
+                        alert(x.responseText);
+                    }
+                });
+            }
+        } else {
+            alert("请选择要删除的数据！");
+            return false;
+        }
+    }
+    function mousePos(e) {
+        var x, y;
+        var e = e || window.event;
+        return { x: e.screenX, y: e.screenY };
+    }
+    function showPic(e, sUrl) {
+        var x, y;
+        x = mousePos(e).x - 190;
+        y = mousePos(e).y - 230;
+        document.getElementById("Layer1").style.left = x;
+        document.getElementById("Layer1").style.top = y;
+        document.getElementById("Layer1").innerHTML = "<img src=\"" + sUrl + "\">";
+        document.getElementById("Layer1").style.display = "block";
+    }
+    function hiddenPic() {
+        document.getElementById("Layer1").innerHTML = "";
+        document.getElementById("Layer1").style.display = "none";
+    }
+
+    function onmousemoveImageShow(id, src) {
+        $("#" + id).empty();
+        $("#" + id).addClass("divShowClass");
+        $("#" + id).html("<img src='" + src + "'></img>");
+    }
+
+    function onmouseoutImageShow(id) {
+        $("#" + id).removeClass("divShowClass");
+        $("#" + id).empty();
+    }
+</script>

@@ -1,0 +1,162 @@
+﻿@using Shangpin.Ocs.Web.Infrastructure;
+@{
+    ViewBag.Title = "轮播图列表";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    int pageIndex = ViewBag.pageIndex;
+    int pageSize = ViewBag.pageSize;
+    int totalCount = ViewBag.TotalCount;
+}
+@section HeadStyle{
+    <style type="text/css">
+        .mx-table {
+            font-size: 12px;
+        }
+
+        .dispalayRegion {
+            display: none;
+            position: absolute;
+            width: 500px;
+            background-color: White;
+            height: auto;
+            top: 0px;
+            left: 0px;
+            font-size: 12px;
+        }
+
+            .dispalayRegion td {
+                padding: 10px;
+            }
+
+        .opratorbutton {
+            width: 90px;
+            height: 27px;
+            background-color: #4D90FE;
+            border: 1px solid #3079ED;
+            color: #FFFFFF;
+            cursor: pointer;
+        }
+    </style>
+}
+@section HeadScript{
+    <link href="/Areas/Outlet/Scripts/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(".mx-table").find("tbody").find("tr:odd").addClass("cross");
+            if (!getUrlParam("seach") == null) {
+                $("#Name").val(getUrlParam("Name"));
+                $("#RefType").val(getUrlParam("RefType"));
+                $("#Sort").val(getUrlParam("Sort"));
+                $("#beginTime").val(getUrlParam("beginTime").replace('+', ' '));
+                $("#endTime").val(getUrlParam("endTime").replace('+', ' '));
+            }
+        })
+        function Del_(id, obj) {
+            if (confirm("确定删除此信息吗")) {
+                $.getJSON("/shangpin/appindexmamager/DelAlterPicById/", { id: id }, function (result) {
+                    if (result.status == 1) {
+                        alert("删除成功！");
+                        $(obj).parent().html('<a class="" href="javascript:void(0)" style="padding: 3px;">已删除</a>');
+                    }
+                });
+            }
+        }
+        function getUrlParam(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        }
+    </script>
+}
+<div id="mx-rightcontent-inner">
+    <h1>
+        轮播图管理
+    </h1>
+    <div>
+        <form action="" method="get">
+            <input type="hidden" name="seach" value="" maxlength="30" placeholder="轮播名称" />
+            <input id="Name" type="text" name="Name" value="@Request.QueryString["Name"]" maxlength="30" placeholder="轮播名称" />
+            <input type="hidden" value="@Request.QueryString["AlterType"]" name="AlterType"/>
+            <select name="RefType" id="RefType">
+                <option value='-1'>选择轮播类型</option>
+                <option value='0' @(Request.QueryString["RefType"]=="0"?Html.Raw("selected=\"selected\""):null)>
+                    活动
+                </option>
+                <option value='1'  @(Request.QueryString["RefType"]=="1"?Html.Raw("selected=\"selected\""):null)>
+                    连接地址
+                </option>
+                <option value='2' @(Request.QueryString["RefType"]=="2"?Html.Raw("selected=\"selected\""):null)>
+                    品牌店
+                </option>
+            </select>
+            <select name="Sort" id="Sort">
+                <option value='-1'>选择展示帧</option>
+                <option value='0' @(Request.QueryString["Sort"] == "0" ? Html.Raw("selected=\"selected\"") : null)>
+                    第一帧
+                </option>
+                <option value='1' @(Request.QueryString["Sort"] == "1" ? Html.Raw("selected=\"selected\"") : null)>
+                    第二帧
+                </option>
+                <option value='2' @(Request.QueryString["Sort"] == "2" ? Html.Raw("selected=\"selected\"") : null)>
+                    第三帧
+                </option>
+            </select>
+            展示日期：<input id="beginTime" value="@Request.QueryString["beginTime"]" readonly="readonly" name="beginTime" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd ',minDate:'2008-03-08 11:30:00',maxDate:'2100-03-10 20:59:30'})" />至
+            <input id="endTime" value="@Request.QueryString["endTime"]" readonly="readonly" name="endTime" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd ',minDate:'2008-03-08 11:30:00',maxDate:'2100-03-10 20:59:30'})" />
+            <button class="button" type="submit" id="seachact" style="margin: 5px; padding: 3px 10px; border-color: #1c8ede; cursor:pointer; background-color: #4d90fe; box-shadow: 0 0 8px rgba(82, 168, 236, 0.6); color: #fff; ">
+                搜&nbsp;索
+            </button>
+        </form>
+    </div>
+    <table class="mx-table">
+        <thead>
+            <tr>
+                @*<th width="5%">
+                        <input type="checkbox" mx-op="mx-checkbox-all" onclick="checkAll(this)">
+                    </th>*@
+                <th width="10%">
+                    日期
+                </th>
+                <th width="10%">
+                    位置
+                </th>
+                <th width="20%">
+                    名称
+                </th>
+                <th width="20%">
+                    轮播图
+                </th>
+                <th width="20%">
+                    展示时间
+                </th>
+                <th width="40%">
+                    操作
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Shangpin.Entity.Wfs.SWfsAppAlterPic item in ViewBag.list as List<Shangpin.Entity.Wfs.SWfsAppAlterPic>)
+            {
+                string strChnNames = "一二三四五六七八九";
+                <tr class="">
+                    @*<th>
+                            <input type="checkbox" name="SubjectNoCheckBox" value="40819564">
+                        </th>*@
+                    <td>@item.StartTime.ToString("yyyy-MM-dd")</td>
+                    <td>第 @strChnNames[item.Sort] 帧</td>
+                    <td>@item.Name</td>
+                    <td><img src="/ReadPic/GetPic.ashx?width=150&height=35&pictureFileNo=@(item.PicNo)&type=2" /></td>
+                    <td>@item.StartTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    <td>
+                        <a class="button" href="/Shangpin/AppIndexMamager/AlterPicEdit/@item.AppSlterPicId?AlterType=@item.AlterType">编辑</a>
+                        <a class="button" href="javascript:void(0)" onclick="Del_(@item.AppSlterPicId,this)" style=" margin-top:5px;">删除</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="spPage">
+        @Html.Raw(Html.PagerX("page", pageIndex, pageSize, totalCount))
+    </div>
+</div>

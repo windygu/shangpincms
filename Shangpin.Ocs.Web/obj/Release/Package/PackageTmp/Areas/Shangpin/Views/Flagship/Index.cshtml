@@ -1,0 +1,564 @@
+﻿@using Shangpin.Entity.Wfs
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@{
+    ViewBag.Title = "店铺编辑";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    List<SwfsFlagShipModule> modules = ViewBag.Modules as List<SwfsFlagShipModule>;
+    Dictionary<int, List<SwfsFlagShipModuleLink>> moduleDic = ViewBag.ModuleLinkDic as Dictionary<int, List<SwfsFlagShipModuleLink>>;
+    SWfsBrandExtendList brandInfo = ViewBag.BrandInfo as SWfsBrandExtendList;
+}
+<style type="text/css">
+    #divCollapse {
+        top: 140px;
+        right: 3px; /*举例右边3像素*/
+        position: fixed;
+        border: 1px solid #cacaca;
+        padding: 5px;
+        background-color: #f1f5f8;
+    }
+
+
+        #divCollapse li {
+            margin: 0 10px 5px;
+        }
+
+            #divCollapse li.first {
+                margin: 118px 10px 5px;
+            }
+
+        #divCollapse a {
+            display: block;
+            padding: 5px 5px 5px 20px;
+            text-shadow: 1px 1px 1px #fff;
+            font-size: 14px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+        }
+
+        #divCollapse p a {
+            font-size: 12px;
+        }
+
+        #divCollapse li.cur {
+            background: #fff;
+            color: #000;
+            font-weight: bold;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            border: 1px solid #2293e2;
+        }
+
+        #divCollapse li a:hover {
+            background: #fff;
+        }
+
+        #divCollapse li.cur a {
+            color: #000;
+        }
+
+        #divCollapse li p {
+            display: none;
+            padding: 0 10px 10px 20px;
+        }
+
+        #divCollapse p a.cur {
+            background-color: #2293e2;
+            color: #fff;
+            text-shadow: 1px 1px 1px #333;
+        }
+
+    a.button:hover {
+        border-color: #1c8ede;
+        -webkit-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+        -moz-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+        box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+    }
+
+    a.button {
+        background-color: #4d90fe;
+        border: 1px solid #3079ed;
+        color: #fff;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        font-size: 14px;
+        display: inline-block;
+        padding: 5px 10px;
+        *padding: 3px 0px 0;
+        position: relative;
+        text-decoration: none;
+        -webkit-transition: border-color 0.218s ease 0s;
+        -moz-transition: border-color 0.218s ease 0s;
+        -o-transition: border-color 0.218s ease 0s;
+        transition: border-color 0.218s ease 0s;
+        cursor: pointer;
+        margin: 0 15px 0 0;
+        *zoom: 1;
+    }
+
+    #mx-rightcontent-inner h1 {
+        float: left;
+        margin-right: 10px;
+        color: #ae0001;
+        font-weight: bolder;
+    }
+
+    /*table td:hover {
+            background: #d6d6d6;
+        }*/
+
+    #wrapper {
+        width: 100%;
+        margin: 0px auto;
+    }
+
+
+    /* main_img */
+    .main_img {
+        overflow: hidden;
+        position: relative;
+        text-align: center;
+    }
+
+        .main_img img {
+            overflow-x: hidden;
+            overflow-y: hidden;
+            position: relative;
+            z-index: 1;
+            transition-delay: 0s;
+            transition-duration: 1s;
+            transition-property: all;
+            transition-timing-function: ease;
+            /* Firefox 4 */
+            -moz-transition-delay: 0s;
+            -moz-transition-duration: 1s;
+            -moz-transition-property: all;
+            -moz-transition-timing-function: ease;
+            /* Safari 和 Chrome */
+            -webkit-transition-delay: 0s;
+            -webkit-transition-duration: 1s;
+            -webkit-transition-property: all;
+            -webkit-transition-timing-function: ease;
+            /* Opera */
+            -o-transition-delay: 0s;
+            -o-transition-duration: 1s;
+            -o-transition-property: all;
+            -o-transition-timing-function: ease;
+        }
+
+        .main_img .show {
+            background: rgba(0, 0, 0, 0.4);
+            height: 100%;
+            left: 0;
+            opacity: 0;
+            filter: alpha(opacity=0);
+            position: absolute;
+            top: 0;
+            transition-delay: 0s;
+            transition-duration: 0.3s;
+            transition-property: opacity;
+            transition-timing-function: ease-in;
+            /* Firefox 4 */
+            -moz-transition-delay: 0s;
+            -moz-transition-duration: 0.3s;
+            -moz-transition-property: opacity;
+            -moz-transition-timing-function: ease-in;
+            /* Safari 和 Chrome */
+            -webkit-transition-delay: 0s;
+            -webkit-transition-duration: 0.3s;
+            -webkit-transition-property: opacity;
+            -webkit-transition-timing-function: ease-in;
+            /* Opera */
+            -o-transition-delay: 0s;
+            -o-transition-duration: 0.3s;
+            -o-transition-property: opacity;
+            -o-transition-timing-function: ease-in;
+            width: 100%;
+            z-index: 200;
+        }
+
+            .main_img .show .imgArea {
+                left: 50%;
+                bottom: 0;
+                margin: -15px 0px 0px -40px;
+                opacity: 0;
+                position: absolute;
+                transition-delay: 0s;
+                transition-duration: 0.4s;
+                transition-property: all;
+                transition-timing-function: ease;
+                /* Firefox 4 */
+                -moz-transition-delay: 0s;
+                -moz-transition-duration: 0.4s;
+                -moz-transition-property: all;
+                -moz-transition-timing-function: ease;
+                /* Safari 和 Chrome */
+                -webkit-transition-delay: 0s;
+                -webkit-transition-duration: 0.4s;
+                -webkit-transition-property: all;
+                -webkit-transition-timing-function: ease;
+                /* Opera */
+                -o-transition-delay: 0s;
+                -o-transition-duration: 0.4s;
+                -o-transition-property: all;
+                -o-transition-timing-function: ease;
+            }
+
+                .main_img .show .imgArea a {
+                    color: rgba(255,255,255, 0.8);
+                    display: block;
+                    padding: 5px 12px;
+                    border: rgba(255,255,255, 0.6) 1px solid;
+                    border-radius: 8px;
+                    font-size: 16px;
+                }
+
+                    .main_img .show .imgArea a:hover {
+                        background: rgba(255,255,255, 0.7);
+                        color: rgba(0,0,0, 0.6);
+                    }
+
+        .main_img:hover .show {
+            opacity: 1;
+            filter: alpha(opacity=100);
+        }
+
+            .main_img:hover .show .imgArea {
+                opacity: 1;
+                filter: alpha(opacity=100);
+                bottom: 40%;
+            }
+
+        .main_img:hover img {
+            transform: scale(1.2, 1.2);
+            -ms-transform: scale(1.2, 1.2); /* IE 9 */
+            -moz-transform: scale(1.2, 1.2); /* Firefox */
+            -webkit-transform: scale(1.2, 1.2); /* Safari 和 Chrome */
+            -o-transform: scale(1.2, 1.2); /* Opera */
+        }
+</style>
+@section HeadScript{
+    <script src="~/Areas/Shangpin/Scripts/page/Flagship/index.js"></script>
+
+}
+<div style="width:900px;text-align:center;">
+    <input type="hidden" id="BrandNo" value="@(Request.QueryString["brandNo"])" name="BrandNo">
+    <h1 id="BrandName" name="BrandName" style="color:black;"></h1>
+    <a class="button" href='/Shangpin/Flagship/FlagshipList.html'>返回</a>
+    @*<a class="button" id="BrandStatus" onclick="changeStates(this, '@(Request.QueryString["brandNo"])')"></a>
+        <span id="currentStatus"></span>*@
+</div>
+<br />
+<br />
+<div id="divCollapse">
+    <ul>
+        <li>
+            <a href="#mx-rightcontent-inner">品牌旗舰店状态设置</a>
+        </li>
+        <li>
+            <a href="#logo">品牌LOGO图管理</a>
+        </li>
+        <li>
+            <a href="#menu">导航管理</a>
+        </li>
+        <li>
+            <a href="#lbt">轮播图管理</a>
+        </li>
+        <li>
+            <a href="#zxsj">最新上架管理</a>
+        </li>
+        <li>
+            <a href="#style">STYLE造型搭配管理</a>
+        </li>
+        <li>
+            <a href="#l1">楼层一</a>
+        </li>
+        <li>
+            <a href="#l2">楼层二</a>
+        </li>
+        <li>
+            <a href="#l3">楼层三</a>
+        </li>
+        <li>
+            <a href="#down">底部运营位管理</a>
+        </li>
+    </ul>
+</div>
+<table width="802" height="2659" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td>
+            <a name="logo"></a> <h1>品牌LOGO图管理</h1>
+            @*<a class="button" href="/shangpin/Flagship/FlagShipLogo/?brandNo=@Request.QueryString["brandNo"]">编 辑</a>*@
+        </td>
+    </tr>
+    <tr>
+        <td style="border:1px solid #999999;">
+            <div id="wrapper">
+                <div class="main_img">
+                    <img src="@ViewBag.logourl" width="528" height="66">
+                    <div class="show">
+                        <span class="imgArea">
+                            <a title="点击编辑广告位" href="/shangpin/Flagship/FlagShipLogo/?brandNo=@Request.QueryString["brandNo"]">点击编辑</a>
+                        </span>
+                    </div>
+                </div><!--main_img end-->
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a name="menu"></a> <h1>导航管理</h1>
+            <a class="button" target="_self" href="@(string.IsNullOrEmpty(brandInfo.BrandNo) ? "#" : "/Shangpin/Brand/NavigateList.html?brandNO=" + brandInfo.BrandNo + "&brandname=" + brandInfo.BrandEnName + "&storetype=" + brandInfo.BrandTypeId)">导航管理</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <img src="~/Areas/Shangpin/Images/topshop/top_shop_cms_02.jpg" width="802" height="54" alt="">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a name="lbt"></a> <h1>轮播图管理</h1>
+            @*<a class="button" href="/shangpin/Flagship/AlterPicEdit/?brandNo=@Request.QueryString["brandNo"]">添加轮播图</a>*@
+            <a class="button" href="/shangpin/Flagship/AlterPicList/?brandNo=@Request.QueryString["brandNo"]">轮播图管理</a>
+        </td>
+    </tr>
+    <tr>
+        <td style="border:1px solid #999999;">
+            <div id="wrapper">
+                <div class="main_img">
+                    <img src="@ViewBag.flash_url" style=" max-width:802px;max-height:459px; min-height:200px;">
+                    <div class="show">
+                        <span class="imgArea">
+                            <a title="点击添加" href="/shangpin/Flagship/AlterPicEdit/?brandNo=@Request.QueryString["brandNo"]">点击添加</a>
+                        </span>
+                    </div>
+                </div><!--main_img end-->
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a name="zxsj"></a> <h1>最新上架管理</h1>
+            <a class="button" href="@Url.Action("NewShelfList", "Boutique")?brandNo=@Request.QueryString["brandNo"]">最新上架管理</a>
+            <a class="button" href="@Url.Action("NewDateManage", "Boutique")?brandNo=@Request.QueryString["brandNo"]">上架时间设置</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <img src="~/Areas/Shangpin/Images/topshop/top_shop_cms_04.jpg" width="802" height="45" alt="">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a name="style"></a> <h1>STYLE造型搭配管理</h1>
+            <a class="button" href="#">管理造型搭配</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <img src="~/Areas/Shangpin/Images/topshop/top_shop_cms_05.jpg" width="802" height="526" alt="">
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <img src="~/Areas/Shangpin/Images/topshop/top_shop_cms_06.jpg" width="802" height="1" alt="">
+        </td>
+    </tr>
+    @{
+        for (int i = 0; i < modules.Count; i++)
+        {
+            switch (modules[i].ModuleType)
+            {
+                case 0:
+                    {
+                        SwfsFlagShipModule f1 = modules[i];
+                        SwfsFlagShipModuleLink link1 = moduleDic[f1.ModuleId].FirstOrDefault(a => a.ShowType == 1) ?? new SwfsFlagShipModuleLink { PicIndex = 0, ModuleId = f1.ModuleId };
+                        SwfsFlagShipModuleLink linkCategory = moduleDic[f1.ModuleId].FirstOrDefault(a => a.ShowType == 0);
+                        string categoryName = linkCategory == null ? "" : linkCategory.LinkUrl == null ? "" : linkCategory.LinkUrl;
+                        <tr>
+                            <td>
+                                <a name="l@(f1.SortId)" class="left"></a>
+                                <div style="float:right;">
+                                    &nbsp;
+                            </td>
+                        </tr>
+                        <tr floorsort="@(f1.SortId)">
+                            <td style="position:relative;">
+                                <div style="position: absolute; left: 20px; top: 10px; background-color: white; width: 95%;">
+                                    <div style="float:left;">
+                                        <h1>@(f1.ModuleName)</h1>
+                                        <a class="button" oldname="修改名称" onclick="ChangeModuleName(this, '@f1.ModuleId')">修改名称</a>
+                                    </div>
+                                    <div style="float:right;">
+                                        <a class="button" status onclick="alterFloorState(this, '@(f1.ModuleId)')">@(f1.State == 1 ? "隐藏" : "显示")</a>
+                                        <a class="button" onclick="alterFloorSort(true, this, '@(f1.ModuleId)')">上移</a>
+                                        <a class="button" onclick="alterFloorSort(false, this, '@(f1.ModuleId)')">下移</a>
+                                        <a class="button" href="/shangpin/flagship/FloorRefOCS?ModuleId=@(f1.ModuleId)">楼层分类设置</a>
+                                    </div>
+                                </div>
+                                <a style="position:absolute;top:64px;left:20px;">当前已关联分类:@categoryName</a>
+                                <a href="/shangpin/Flagship/EditFloorPic?LinkId=@(link1.LinkId)&ModuleId=@(f1.ModuleId)&Index=@(link1.PicIndex)">    <img src="@(!(string.IsNullOrEmpty(link1.PictureNo)) ? "/ReadPic/GetPic.ashx?width=160&height=200&pictureFileNo=" + link1.PictureNo + "&type=2" : "")" width="160" height="230" style="background-color: #CCCCCC; position: absolute; left: 117px; top: 91px; " /></a>
+                                <img src="~/Areas/Shangpin/Images/topshop/top_shop_cms_07.jpg" width="802" height="348" alt="">
+                            </td>
+                        </tr>
+                    }; break;
+                case 1:
+                    {
+                        SwfsFlagShipModule f2 = modules[i];
+                        SwfsFlagShipModuleLink link2 = moduleDic[f2.ModuleId].FirstOrDefault(a => a.ShowType == 1) ?? new SwfsFlagShipModuleLink { PicIndex = 0, ModuleId = f2.ModuleId };
+                        SwfsFlagShipModuleLink linkCategory = moduleDic[f2.ModuleId].FirstOrDefault(a => a.ShowType == 0);
+                        string categoryName = linkCategory == null ? "" : linkCategory.LinkUrl == null ? "" : linkCategory.LinkUrl;
+                        <tr>
+                            <td>
+                                <a name="l@(f2.SortId)" class="left"></a>
+                                <div style="float:right;">
+                                    &nbsp;
+                                </div>
+                            </td>
+                        </tr>
+                        <tr floorsort="@(f2.SortId)">
+                            <td style="position:relative;">
+                                <div style="position: absolute; left: 20px; top: 13px; background-color: white; width: 95%;">
+                                    <div style="float:left;">
+                                        <h1>@(f2.ModuleName)</h1>
+                                        <a class="button" oldname="修改名称" onclick="ChangeModuleName(this, '@f2.ModuleId')">修改名称</a>
+                                    </div>
+                                    <div style="float:right;">
+                                        <a class="button" status onclick="alterFloorState(this, '@(f2.ModuleId)')">@(f2.State == 1 ? "隐藏" : "显示")</a>
+                                        <a class="button" onclick="alterFloorSort(true, this, '@(f2.ModuleId)')">上移</a>
+                                        <a class="button" onclick="alterFloorSort(false, this, '@(f2.ModuleId)')">下移</a>
+                                        <a class="button" href="/shangpin/flagship/FloorRefOCS?ModuleId=@(f2.ModuleId)">楼层分类设置</a>
+                                    </div>
+                                </div>
+                                <a style="position:absolute;top:64px;left:20px;">当前已关联分类:@categoryName</a>
+                                <a href="/shangpin/Flagship/EditFloorPic?LinkId=@(link2.LinkId)&ModuleId=@(f2.ModuleId)&Index=@(link2.PicIndex)">    <img src="@(!(string.IsNullOrEmpty(link2.PictureNo)) ? "/ReadPic/GetPic.ashx?width=160&height=200&pictureFileNo=" + link2.PictureNo + "&type=2" : "")" width="160" height="230" style="background-color: #CCCCCC; position: absolute; left: 546px; top: 108px; " /></a>
+                                <img src="~/Areas/Shangpin/Images/topshop/top_shop_cms_08.jpg" width="802" height="365" alt="">
+                            </td>
+                        </tr>
+                    }; break;
+                case 2:
+                    {
+                        SwfsFlagShipModule f3 = modules[i];
+                        SwfsFlagShipModuleLink link3 = moduleDic[f3.ModuleId].FirstOrDefault(a => a.ShowType == 1 && a.PicIndex == 1) ?? new SwfsFlagShipModuleLink { PicIndex = 1, ModuleId = f3.ModuleId };
+                        SwfsFlagShipModuleLink link4 = moduleDic[f3.ModuleId].FirstOrDefault(a => a.ShowType == 1 && a.PicIndex == 2) ?? new SwfsFlagShipModuleLink { PicIndex = 2, ModuleId = f3.ModuleId };
+                        SwfsFlagShipModuleLink linkCategory = moduleDic[f3.ModuleId].FirstOrDefault(a => a.ShowType == 0);
+                        string categoryName = linkCategory == null ? "" : linkCategory.LinkUrl == null ? "" : linkCategory.LinkUrl;
+                        <tr>
+                            <td>
+                                <a name="l@(f3.SortId)" class="left"></a>
+                                <div style="float:right;">
+                                    &nbsp;
+                                </div>
+                            </td>
+                        </tr>
+                        <tr floorsort="@(f3.SortId)">
+                            <td style="position:relative;">
+                                <div style="position: absolute; left: 18px; top: 23px; background-color: white; width: 95%;">
+                                    <div style="float:left;">
+                                        <h1>@(f3.ModuleName)</h1>
+                                        <a class="button" oldname="修改名称" onclick="ChangeModuleName(this, '@f3.ModuleId')">修改名称</a>
+                                    </div>
+                                    <div style="float:right;">
+                                        <a class="button" status onclick="alterFloorState(this, '@(f3.ModuleId)')">@(f3.State == 1 ? "隐藏" : "显示")</a>
+                                        <a class="button" onclick="alterFloorSort(true, this, '@(f3.ModuleId)')">上移</a>
+                                        <a class="button" onclick="alterFloorSort(false, this, '@(f3.ModuleId)')">下移</a>
+                                        <a class="button" href="/shangpin/flagship/FloorRefOCS?ModuleId=@(f3.ModuleId)">楼层分类设置</a>
+                                    </div>
+                                </div>
+                                <a style="position:absolute;top:64px;left:20px;">当前已关联分类:@categoryName</a>
+                                <a href="/shangpin/Flagship/EditFloorPic?LinkId=@(link3.LinkId)&ModuleId=@(f3.ModuleId)&Index=@(link3.PicIndex)">    <img src="@(!(string.IsNullOrEmpty(link3.PictureNo)) ? "/ReadPic/GetPic.ashx?width=160&height=200&pictureFileNo=" + link3.PictureNo + "&type=2" : "")" width="160" height="100" style="background-color: #CCCCCC; position: absolute; left: 338px; top: 138px" /></a>
+                                <a href="/shangpin/Flagship/EditFloorPic?LinkId=@(link4.LinkId)&ModuleId=@(f3.ModuleId)&Index=@(link4.PicIndex)">    <img src="@(!(string.IsNullOrEmpty(link4.PictureNo)) ? "/ReadPic/GetPic.ashx?width=160&height=200&pictureFileNo=" + link4.PictureNo + "&type=2" : "")" width="160" height="100" style="background-color: #CCCCCC; position: absolute; left: 338px; top: 268px; " /></a>
+                                <img src="~/Areas/Shangpin/Images/topshop/top_shop_cms_09.jpg" width="802" height="390" alt="">
+                            </td>
+                        </tr>
+                    }; break;
+            }
+        }
+    }
+    <tr>
+        <td>
+            <a name="down"></a> <h1>底部运营位管理</h1>
+        </td>
+    </tr>
+    <tr>
+        <td width="802" height="253">
+            <table id="__01" width="802" height="253" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td colspan="7">
+                        <img src="~/Areas/Shangpin/Images/topshop/test_01.jpg" width="802" height="57" alt="">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="~/Areas/Shangpin/Images/topshop/test_02.jpg" width="12" height="183" alt="">
+                    </td>
+                    <td>
+                        <div id="wrapper">
+                            <div class="main_img">
+                                <img src="@ViewBag.picur1" width="253" height="183">
+                                <div class="show">
+                                    <span class="imgArea">
+                                        <a title="点击编辑广告位" href="/Shangpin/Flagship/OperationPicture?brandNo=@Request.QueryString["brandNo"]&index=0">点击编辑</a>
+                                    </span>
+                                </div>
+                            </div><!--main_img end-->
+                        </div>
+
+                    </td>
+                    <td>
+                        <img src="~/Areas/Shangpin/Images/topshop/test_04.jpg" width="6" height="183" alt="">
+                    </td>
+                    <td>
+                        <div id="wrapper">
+                            <div class="main_img">
+                                <img src="@ViewBag.picur2" width="253" height="183">
+                                <div class="show">
+                                    <span class="imgArea">
+                                        <a title="点击编辑广告位" href="/Shangpin/Flagship/OperationPicture?brandNo=@Request.QueryString["brandNo"]&index=1">点击编辑</a>
+                                    </span>
+                                </div>
+                            </div><!--main_img end-->
+                        </div>
+                    </td>
+                    <td>
+                        <img src="~/Areas/Shangpin/Images/topshop/test_06.jpg" width="5" height="183" alt="">
+                    </td>
+                    <td>
+                        <div id="wrapper">
+                            <div class="main_img">
+                                <img src="@ViewBag.picur3" width="253" height="183">
+                                <div class="show">
+                                    <span class="imgArea">
+                                        <a title="点击编辑广告位" href="/Shangpin/Flagship/OperationPicture?brandNo=@Request.QueryString["brandNo"]&index=2">点击编辑</a>
+                                    </span>
+                                </div>
+                            </div><!--main_img end-->
+                        </div>
+                    </td>
+                    <td>
+                        <img src="~/Areas/Shangpin/Images/topshop/test_08.jpg" width="11" height="183" alt="">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                        <img src="~/Areas/Shangpin/Images/topshop/test_09.jpg" width="802" height="13" alt="">
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <img src="~/Areas/Shangpin/Images/topshop/top_shop_cms_11.jpg" width="802" height="42" alt="">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <img src="~/Areas/Shangpin/Images/topshop/top_shop_cms_12.jpg" width="802" height="43" alt="">
+        </td>
+    </tr>
+</table>

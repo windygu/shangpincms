@@ -1,0 +1,71 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td, address, caption, cite, code, dfn, em, strong, th, var {
+    font: 400 12px Arial, "宋体";
+}
+
+#spbrand-indexfinder{
+    padding: 12px 0;
+}
+
+#spbrand-indexfinder span{
+    font-size: 12px;
+    float: left;
+    line-height: 20px;
+    color: #666;
+}
+
+#spbrand-indexfinder a:link, #spbrand-indexfinder a:visited{
+    font-size: 16px;
+    float: left;
+    line-height: 20px;
+    color: #000;
+    margin-right: 8px;
+    width: 20px;
+    text-align: center;
+    display: inline;
+}
+
+#spbrand-indexfinder a:hover, #spbrand-indexfinder a:active{
+    color: #fff;
+    background-color: #000;
+}
+
+#spbrand-indexfinder a.spec:link, #spbrand-indexfinder a.spec:visited{
+    font-size: 12px;
+    float: right;
+    width: auto;
+    margin: 0;
+    color: #666;
+}
+
+#spbrand-indexfinder a.spec:hover, #spbrand-indexfinder a.spec:active{
+    background-color: #fff;
+    color: #000;
+}
+
+#spbrand_dictwrapper{
+    border-top: 1px solid #efefef;
+}
+
+#spbrand_dictwrapper dl{
+    padding: 30px 82px 10px;
+}
+
+#spbrand_dictwrapper dt{
+    font-size: 40px;
+    color: #999;
+}
+
+#spbrand_dictwrapper dt a:hover{
+    color: #999;
+}
+
+#spbrand_dictwrapper dd{
+    font-size: 14px;
+    color: #666;
+    float: left;
+    width: 188px;
+    overflow: hidden;
+    margin: 10px 0 0;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}

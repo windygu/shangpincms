@@ -1,0 +1,212 @@
+﻿@using Shangpin.Ocs.Service.Outlet
+@using Shangpin.Entity.Wfs
+@using Shangpin.Ocs.Entity.Extenstion.Outlet
+@using Shangpin.Entity.Common
+@using Shangpin.Ocs.Service.Common
+@using Shangpin.Ocs.Web.Infrastructure
+@{
+    ViewBag.Title = "奥莱网络推广管理";
+    Layout = "~/Areas/Shangpin/Views/Shared/_VenueLayout.cshtml";
+
+}
+@model Shangpin.Ocs.Entity.Extenstion.Outlet.MarketOptionSearchParm
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/plug/ERPBrand.js"></script>
+    <script src="/Areas/Outlet/Scripts/plug/tipswindown.js" type="text/javascript" charset="UTF-8"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/plug/copy.js"></script>
+    <script src="/Areas/Outlet/Scripts/plug/tipswindown.js" type="text/javascript" charset="UTF-8"></script>
+    <script language="javascript" type="text/javascript">
+        //取消修改并且关闭弹出层
+        function TrueInfo() {
+            $("#windown-close").trigger("click");
+        }
+    </script>
+}
+@section HeadStyle
+{
+    <link href="/Areas/Outlet/Content/css/tipswindown.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .copySpan {
+            color: #05609F;
+        }
+    </style>
+}
+@{
+    IList<SWfsChannelSord> channelSordList = ViewBag.ChannelSordList;
+    RecordPage<SubjectInfo> ModelInfo = ViewBag.List as RecordPage<SubjectInfo>;
+    IEnumerable<SubjectInfo> subjectList = ModelInfo.Items;
+}
+<h1>
+    <a href="/Shangpin/Venue/MeetListManage">市场运营</a> > 奥莱网络推广管理
+</h1>
+@*<h2 style="font-size:14px; font-weight:bold;">奥莱网络推广列表</h2>*@
+<form method="get" action="/outlet/marketoption/index">
+    <table width="auto" border="0" class="mx-table">
+        <tr>
+            <td style="text-align: left;">
+                <input id="SubjectNoName" name="SubjectNoName" value="@(!string.IsNullOrEmpty(Model.SubjectNoName) ? Model.SubjectNoName : "活动名称或活动编号")" style="width: 120px; color: #666; font-size: 12px;"
+                       onfocus="if(this.value == '活动名称或活动编号') this.value = ''" onblur="if(this.value == '') this.value = '活动名称或活动编号'" />
+                <input type="hidden" value="@Model.BrandNo" id="BrandNo" name="BrandNo" />
+                <input id="BrandName" type="text" name="BrandName" value="@(string.IsNullOrWhiteSpace(Model.BrandName) ? "选择品牌" : Model.BrandName)" onfocus="if(this.value == this.defaultValue) this.value = ''"
+                       onblur="if(this.value == '') this.value = this.defaultValue">
+                申请时间
+                <input id="ApplyBeginTime" name="ApplyBeginTime" value="@Model.ApplyBeginTime" maxlength="30" class="Wdate" type="text" onclick="WdatePicker()" readonly="readonly" style="width:100px;" />—<input id="ApplyEndTime" name="ApplyEndTime" value="@Model.ApplyEndTime" maxlength="30" class="Wdate" type="text" onclick="WdatePicker()" readonly="readonly" style="width:100px;" />
+                <select name="SpreadStatus" id="SpreadStatus">
+                    <option value="" @(Model.SpreadStatus == "" ? "selected=selected" : "")>推广操作状态 </option>
+                    <option value="1" @(Model.SpreadStatus == "1" ? "selected=selected" : "")>已推广</option>
+                    <option value="0" @(Model.SpreadStatus == "0" ? "selected=selected" : "")>未推广</option>
+                </select>
+                <select name="Level" id="Level">
+                    <option value="" @(Model.Level == "" ? "selected=selected" : "")>推广强度</option>
+                    <option value="1" @(Model.Level == "1" ? "selected=selected" : "")>A级</option>
+                    <option value="2" @(Model.Level == "2" ? "selected=selected" : "")>B级</option>
+                    <option value="3" @(Model.Level == "3" ? "selected=selected" : "")>C级</option>
+                    <option value="4" @(Model.Level == "4" ? "selected=selected" : "")>D级</option>
+                </select>
+                <select name="CategoryNo" id="CategoryNo">
+                    <option value="">分类</option>
+                    @foreach (var channel in channelSordList)
+                    {
+                        <option value="@channel.SordNo" @(Model.CategoryNo == channel.SordNo ? "selected=selected" : "")>
+                            @channel.SordName
+                    </option>
+                    }
+                </select>
+                <select name="SubjectType" id="SubjectType">
+                    <option value="" @(Model.SubjectType == "" ? "selected=selected" : "")>活动类型</option>
+                    <option value="1" @(Model.SubjectType == "1" ? "selected=selected" : "")>纯图片</option>
+                    <option value="3" @(Model.SubjectType == "3" ? "selected=selected" : "")>小图模式</option>
+                    <option value="2" @(Model.SubjectType == "2" ? "selected=selected" : "")>大图模式</option>
+                    <option value="4" @(Model.SubjectType == "4" ? "selected=selected" : "")>专题模式</option>
+                    <option value="5" @(Model.SubjectType == "5" ? "selected=selected" : "")>秒杀模式</option>
+                </select>
+                <input class="button" type="submit" value=" 查 询 " />
+                <input class="button" type="button" onclick="resetSelect();" value=" 重 置 " />
+            </td>
+        </tr>
+    </table>
+</form>
+<table class="mx-table" id="ApplyBox">
+    <thead>
+        <tr>
+            <th width="15%">
+                活动图片
+            </th>
+            <th width="40%">
+                活动信息
+            </th>
+            <th width="20%">
+                推广信息
+            </th>
+            <th width="25%">
+                操作
+            </th>
+        </tr>
+    </thead>
+    @if (subjectList != null && subjectList.Count() > 0)
+    {
+        var flag = 0;
+        foreach (var subject in subjectList)
+        {
+            IList<string> sordlist = null;
+            flag = flag + 1;
+
+            <tbody>
+                <tr class="@(flag % 2 == 0 ? "cross" : "")">
+                    <td>
+                        @if (!string.IsNullOrEmpty(@subject.BelongsSubjectPic))
+                        {
+                            <img width="130" height="100" src="/ReadPic/GetPic.ashx?width=130&height=100&pictureFileNo=@(subject.SubjectTemplate == 4 ? subject.TitlePic1 : subject.BelongsSubjectPic)&type=2 ">
+                        }
+                        else
+                        {  <img width="130" height="100" src="" alt="没有添加图片" />}
+                    </td>
+                    <td style="text-align: left; vertical-align: top;">
+                        活动名称：<a href="@AppSettingManager.AppSettings["AolaiDomain"]Subject/Index/@subject.SubjectNo" target="_blank">@subject.SubjectName</a>
+                        (<span class="copySpan" copytxt="@AppSettingManager.AppSettings["AolaiDomain"]Subject/Index/@subject.SubjectNo">复制链接</span>)<br />
+                        预热地址：
+                        @if (subject.IsPreheat == 1)
+                        {
+                            <a href="@(AppSettingManager.AppSettings["AolaiDomain"] + "activity/notice/" + subject.StExpand + "?sno=" + subject.SubjectNo)" target="_blank">
+                                点击进入
+                            </a> <text>(<span class="copySpan" copytxt="@(AppSettingManager.AppSettings["AolaiDomain"] + "activity/notice/" + subject.StExpand + "?sno=" + subject.SubjectNo)">复制链接</span>)<br /></text>
+                        }
+                        else
+                        {
+                            <text>活动未预热<br /></text>
+                        }
+                        活动编号：@subject.SubjectNo<br />
+                        活动类型：@(subject.SubjectTemplate == 4 ? "专题" : "活动")<br />
+                        所属分类：
+                        @if (subject.ChannelSordList != null)
+                        {
+                            sordlist = subject.ChannelSordList.Select(s => s.SordNo).ToList();
+                            foreach (Shangpin.Entity.Wfs.SWfsChannelSord sord in channelSordList)
+                            {
+                                if (sordlist.Contains(sord.SordNo))
+                                {
+                                    <span>@sord.SordName</span>  @Html.Raw("、")
+                                }
+                            }
+                        }
+                        <br />
+                        所属品牌：@(subject.BrandEnName + "/" + subject.BrandCnName)
+                        <br />
+                    </td>
+                    <td style="text-align: left; vertical-align: top;">
+                        推广状态：@(subject.SpreadStatus == 1 ? "已推广" : "未推广")<br />
+                        推广强度：@(Html.GetLevel(subject.Level))<br />
+                        素材地址：<span class="copySpan" copytxt="@(subject.PicFileUrl)">点击复制</span>
+                    </td>
+                    <td style="text-align: left; vertical-align: top;">
+                        推广申请时间：@subject.PromotionApplyTime.ToString("yyyy-MM-dd HH:mm:ss")<br />
+                        推广确认时间：@(subject.IsChecked == 1 ? subject.PromotionConfirmTime.ToString("yyyy-MM-dd HH:mm:ss") : "----------------------")<br />
+                        活动预热时间：@(subject.IsPreheat == 1 ? subject.PreheatTime.ToString("yyyy-MM-dd HH:mm:ss") : "----------------------")<br />
+                        活动开启时间：@subject.DateBegin.ToString("yyyy-MM-dd HH:mm:ss")<br />
+                        活动结束时间：@subject.DateEnd.ToString("yyyy-MM-dd HH:mm:ss")<br />
+                        <a class="button" href="/outlet/subject/OutletSubjectProductRef?SubjectNo=@subject.SubjectNo&looktype=read&IsSystem=" target="_blank">
+                            查看商品
+                        </a> <a flag="CheckApply" subjectno="@subject.SubjectNo" apid="@subject.APID" class="button" href="#" name="ApplyEdit">
+                            推广内容
+                        </a> <a flag="AddSeo" subjectno="@subject.SubjectNo" apid="@subject.APID" class="button" href="#" name="ApplyEdit">
+                            SEO优化
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        }
+    }
+</table>
+<div class="spPage">
+    @Html.Raw(@Html.PagerX("page", ModelInfo.CurrentPage, ModelInfo.ItemsPerPage, ModelInfo.TotalItems, false))
+</div>
+<script type="text/javascript">
+    (function (window, $, undefined) {
+        $(function () {
+            $("#BrandName").selectBrand('BrandNo', 'BrandName', false, '', ''); //执行品牌选择操作
+        });
+
+    })(window, jQuery);
+
+    $(function () {
+        $("#ApplyBox td a[name='ApplyEdit']").click(function () {
+            var obj = $(this);
+            var APID = obj.attr("apid");
+            var subjectNo = obj.attr("subjectNo");
+            var flag = obj.attr("flag");
+            //alert(APID + "|" + subjectNo)
+            tipsWindown((flag == "CheckApply" ? "推广内容" : "SEO优化"), "iframe:/outlet/marketoption/AddApply?subjectNo=" + subjectNo + "&flag=" + flag, "700", "600", "true", "", "true", "text");
+        });
+    });
+    function resetSelect() {
+        $("#SubjectNoName").val("活动名称或活动编号");
+        $("#BrandName").val("选择品牌");
+        $("#ApplyBeginTime").val("");
+        $("#ApplyEndTime").val("");
+        $("#SpreadStatus").val("");
+        $("#Level").val("");
+        $("#CategoryNo").val("");
+        $("#SubjectType").val("");
+    }
+</script>

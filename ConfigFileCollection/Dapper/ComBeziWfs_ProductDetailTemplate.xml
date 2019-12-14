@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <!--验证结构是否存在按结构名称-->
+  <statement id="ComBeziWfs_SWfsProductRefTemplate_IsExistsStructName">
+    SELECT COUNT(0)
+    FROM [SWfsProductRefTemplate](nolock) WHERE  ParentId=0 AND ModuleStatus=0 AND ModuleName=@ModuleName
+  </statement>
+  <statement id="ComBeziWfs_SWfsProductRefTemplate_IsExistsStruct">
+    SELECT COUNT(0)
+    FROM [SWfsProductRefTemplate](nolock) WHERE  ParentId!=0 AND ModuleStatus=@ModuleStatus
+    AND ProductNo=@ProductNo AND TemplateNo=@TemplateNo
+  </statement>
+  <!--增加结构的父类-->
+  <statement id="ComBeziWfs_SWfsProductRefTemplate_SaveStructParentReturnID">
+    INSERT INTO SWfsProductRefTemplate(ParentId,ModuleName,ModuleStatus,TemplateNo,ProductNo,Sort,TemplateHtmlCode)
+    VALUES(0,@ModuleName,@ModuleStatus,'',@ProductNo,0,'');
+    select cast(@@IDENTITY as varchar(50))
+  </statement>
+  <!--使用结构-->
+  <statemtnt id="ComBeziWfs_SWfsProductRefTemplate_UseStructById">
+    update SWfsProductRefTemplate set ModuleStatus=1 where ProductNo=@ProductNo;
+    update SWfsProductRefTemplate set ModuleStatus=1 where ProductRefTemplateID=@ProductRefTemplateID
+    update SWfsProductRefTemplate set 
+  </statemtnt>
+  <!--获取模板的html-->
+  <statement id="ComBeziWfs_SWfsProductTemplate_GetTemplateHtmlByTemplateNoList">
+    select TemplateNO,TemplateCode,TemplateCodeMobile from SWfsProductTemplate(nolock) where TemplateNO in @TemplateNOList
+  </statement>
+  <!--保存编辑好的内容-->
+  <statement id="ComBeziWfs_SWfsProductRefTemplate_SaveContentByStruct">
+    update SWfsProductRefTemplate set TemplateHtmlCode=@TemplateHtmlCode where ProductRefTemplateID=@ProductRefTemplateID
+  </statement>
+  <!--按结构ID获取 子类 编辑好的 当前的 html列表-->
+  <statement id="ComBeziWfs_SWfsProductRefTemplate_SaveRegionContentList">
+    select Sort,TemplateHtmlCode from  SWfsProductRefTemplate(nolock) where ParentId=@ParentId
+  </statement>
+  <!--保存编辑好的html-->
+  <statement id="ComBeziWfs_SWfsProductRef_SaveAllHtml">
+    update SWfsProductRef set HTMLCode=@HTMLCode where RefID=@RefID
+  </statement>
+
+  <!--按ID获取结构-->
+  <statement id="ComBeziWfs_SWfsProductRef_ParentStructById">
+    SELECT [ProductRefTemplateID]
+    ,[ParentId]
+    ,[ModuleName]
+    ,[ModuleStatus]
+    ,[TemplateNo]
+    ,[ProductNo]
+    ,[Sort]
+    ,[TemplateHtmlCode]
+    FROM [SWfsProductRefTemplate](nolock) WHERE ProductRefTemplateID=@ProductRefTemplateID
+  </statement>
+  <!--获取结构父类列表-->
+  <statement id="ComBeziWfs_SWfsProductRef_ParentStruct">
+    SELECT [ProductRefTemplateID]
+    ,[ModuleName]
+    ,[ModuleStatus]
+    FROM [SWfsProductRefTemplate](nolock) WHERE  ParentId=0 AND ModuleStatus=0
+  </statement>
+  <!--按商品编号 获取当前使用的结构父类-->
+  <statement id="ComBeziWfs_SWfsProductRef_UseParentStruct">
+    SELECT [ProductRefTemplateID]
+    ,[ProductNo]
+    ,[ModuleName]
+    ,[ModuleStatus]
+    FROM [SWfsProductRefTemplate](nolock) WHERE  ParentId=0 AND ModuleStatus=1 AND ProductNo=@ProductNo
+  </statement>
+  <!--获取当前使用结构的子类-->
+  <statement id="ComBeziWfs_SWfsProductRef_SaveChildStruct">
+    SELECT [ProductRefTemplateID]
+    ,[ParentId]
+    ,[ModuleName]
+    ,[ModuleStatus]
+    ,[TemplateNo]
+    ,[ProductNo]
+    ,[Sort]
+    ,[TemplateHtmlCode]
+    ,[TemplateHtmlCodeMobile]
+    FROM [SWfsProductRefTemplate](nolock)  WHERE  ParentId=@ProductRefTemplateID
+  </statement>
+  <!--获取当前使用保存好的html-->
+  <statement id="ComBeziWfs_SWfsProductRef_TemplateHtml">
+    select TemplateCode from SWfsProductTemplate(nolock) where TemplateNO = @TemplateNOList
+  </statement>
+  <!--获取模板列表-->
+  <statement id="ComBeziWfs_SWfsProductTemplate_GetTemplatePreviewList">
+    select TemplateNO,TemplateName from SWfsProductTemplate(nolock)
+  </statement>
+  <!--获取商品title-->
+  <statement id="ComBeziWfs_SWfsProductRef_GetProductTitle">
+    select ProductTitle from SWfsProductRef(nolock) where ProductNO=@ProductNO
+  </statement>
+  <!--查询商品信息-->
+  <statement id="ComBeziWfs_WfsProduct_GetProductInfoByProductNo">
+    select  ProductName,CategoryNo from SpProduct(nolock) where ProductNo=@ProductNo
+  </statement>
+  <!--获取商品分类-->
+  <statement id="ComBeziWfs_SWfsCategory_GetProductCategoryAllByCategoryNoList">
+    select CategoryNo,CategoryName from SpCategory(nolock) where CategoryNo in @CategoryNoList
+  </statement>
+
+  <!--查询产品列表wx20141001-->
+  <statement id="ComBeziWfs_SWfsProduct_SelectSWfsProductListNew">
+    with temp as (
+    SELECT a1.ProductNo
+    ,d.StandardPrice as LimitedPrice
+    ,d.StandardPrice
+    ,a1.ProductModel as GoodsNo
+    ,a1.ProductModel
+    ,a1.ProductName
+    ,a3.ProductShowPic as ProductPicFile
+    ,a3.ProductShowPic
+    ,a3.IsOutSide
+    ,b.BrandCnName
+    ,b.BrandEnName
+    ,c.RefID as Id
+    ,c.status as IsPublish
+    ,c.EditeDate
+    ,c.PublishTime
+    ,c.PublishPeople
+    ,c.EditePeople
+    ,c.ProductNO as IsEdite
+    ,d.DiscountShangpin as DiscountRate
+    ,row_number() over(order by a1.CreateTime desc) as row
+    FROM
+    SpProduct as a1 (nolock)
+    left join SpfSkuExtend as a2 (nolock) on a2.ProductNo=a1.ProductNo
+    left join SpfSkuPrice as d(nolock) on a2.SkuNo=d.SkuNo
+    left join SpfProductExtend as a3 (nolock) on a3.ProductNo=a2.ProductNo
+    left join SpBrand (nolock) as b on b.BrandNo=a1.BrandNo
+    left join SWfsProductRef (nolock) as c on a1.productNO=c.ProductNO
+    where 1=1
+    #if($IsEdite =='0')
+    and c.ProductNO is null
+    #end
+    #if($IsEdite =='1')
+    and c.ProductNO is not null
+    #end
+    #if($IsPublish =='1')
+    and c.status =1
+    #end
+    #if($IsPublish =='0')
+    and (c.status =0 or c.ProductNO is null)
+    #end
+    #if($EditePeople !='')
+    and c.EditePeople like '%'+@EditePeople+'%'
+    #end
+    #if($PublishPeople !='')
+    and c.PublishPeople like '%'+@PublishPeople+'%'
+    #end
+    #if($KeyWord!='')
+    and a1.ProductName like '%'+@KeyWord+ '%'
+    #end
+    #if($ProductNo!='')
+    and a1.ProductNo =@ProductNo
+    #end
+    #if($CategoryNo !='')
+    and a1.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($BrandNO !='')
+    and a1.BrandNO=@BrandNO
+    #end
+    #if($IsnewShelf=='0')
+    and a2.PcShelfDate >= @NewShelfStart
+    #end
+    #if($TimeType=='1')
+    #if($StartTime!='')
+    and c.EditeDate>=@StartTime
+    #end
+    #if($EndTime!='')
+    and @EndTime >= c.EditeDate
+    #end
+    #end
+    #if($TimeType=='2')
+    #if($StartTime!='')
+    and c.PublishTime>=@StartTime
+    #end
+    #if($EndTime!='')
+    and @EndTime >= c.PublishTime
+    #end
+    #end
+    #if($TimeType=='3')
+    #if($StartTime!='')
+    and a2.PcShelfDate>=@StartTime
+    #end
+    #if($EndTime!='')
+    and @EndTime >= a2.PcShelfDate
+    #end
+    #end
+    #if($PriceStart!='')
+    and d.StandardPrice >= @PriceStart
+    #end
+    #if($PriceEnd!='')
+    and  @PriceEnd >= d.StandardPrice
+    #end
+    #if($RateStart!='')
+    and d.DiscountShangpin >= @RateStart
+    #end
+    #if($RateEnd!='')
+    and  @RateEnd >= d.DiscountShangpin
+    #end
+    #if($ProductNoList!='')
+    and a1.ProductNO in @ProductNoList
+    #end
+    #if($IsOutSide!='')
+    and a3.IsOutSide =@IsOutSide
+    #end
+    )
+    select * from temp  where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!--正在修改wx20141001-->
+  <statement id="ComBeziWfs_SWfsProduct_SelectSWfsProductCountNew">
+    select count(0) from
+    --WfsProduct (NOLOCK) as a
+    SpProduct as a1 (nolock)
+    left join SpfSkuExtend as a2 (nolock) on a2.ProductNo=a1.ProductNo
+    left join SpfSkuPrice as d(nolock) on a2.SkuNo=d.SkuNo
+    left join SpfProductExtend as a3 (nolock) on a3.ProductNo=a2.ProductNo
+    left join SpBrand (nolock) as b on b.BrandNo=a1.BrandNo
+    left join SWfsProductRef (nolock) as c on a1.productNO=c.ProductNO
+    where 1=1
+    #if($IsEdite =='0')
+    and c.ProductNO is null
+    #end
+    #if($IsEdite =='1')
+    and c.ProductNO is not null
+    #end
+    #if($IsPublish =='1')
+    and c.status =1
+    #end
+    #if($IsPublish =='0')
+    and (c.status =0 or c.ProductNO is null)
+    #end
+    #if($EditePeople !='')
+    and c.EditePeople like '%'+@EditePeople+'%'
+    #end
+    #if($PublishPeople !='')
+    and c.PublishPeople like '%'+@PublishPeople+'%'
+    #end
+    #if($KeyWord!='')
+    and a1.ProductName like '%'+@KeyWord+ '%'
+    #end
+    #if($ProductNo!='')
+    and a1.ProductNo =@ProductNo
+    #end
+    #if($CategoryNo !='')
+    and a1.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($BrandNO !='')
+    and a1.BrandNO=@BrandNO
+    #end
+    #if($IsnewShelf=='0')
+    and a2.PcShelfDate >= @NewShelfStart
+    #end
+    #if($TimeType=='1')
+    #if($StartTime!='')
+    and c.EditeDate>=@StartTime
+    #end
+    #if($EndTime!='')
+    and @EndTime >= c.EditeDate
+    #end
+    #end
+    #if($TimeType=='2')
+    #if($StartTime!='')
+    and c.PublishTime>=@StartTime
+    #end
+    #if($EndTime!='')
+    and @EndTime >= c.PublishTime
+    #end
+    #end
+    #if($TimeType=='3')
+    #if($StartTime!='')
+    and a2.PcShelfDate>=@StartTime
+    #end
+    #if($EndTime!='')
+    and @EndTime >= a2.PcShelfDate
+    #end
+    #end
+    #if($PriceStart!='')
+    and d.StandardPrice >= @PriceStart
+    #end
+    #if($PriceEnd!='')
+    and  @PriceEnd >= d.StandardPrice
+    #end
+    #if($RateStart!='')
+    and d.DiscountShangpin >= @RateStart
+    #end
+    #if($RateEnd!='')
+    and  @RateEnd >= d.DiscountShangpin
+    #end
+    #if($ProductNoList!='')
+    and a1.ProductNO in @ProductNoList
+    #end
+    #if($IsOutSide!='')
+    and a3.IsOutSide =@IsOutSide
+    #end
+  </statement>
+
+  <!--查询历史记录-->
+  <statement id="ComBeziWfs_SWfsProductSearchHistory_GetProductSearchHistory">
+    select top $getCount * from SWfsProductSearchHistory(nolock) where SearchUser=@SearchUser and LogType=1 order by CreateDate desc
+  </statement>
+  <!--清除查询历史-->
+  <statement id="ComBeziWfs_SWfsProductSearchHistory_DeleteProductHistory">
+    delete SWfsProductSearchHistory where SearchUser=@SearchUser
+  </statement>
+  <!--按ID查询模板-->
+  <statement id="ComBeziWfs_SWfsProductTemplate_GetProductTemplateById">
+    SELECT [TemplateID]
+    ,[TemplateNO]
+    ,[TemplateName]
+    ,[TemplateDirection]
+    ,[CreateDate]
+    ,[TemplateCode]
+    ,[TemplateCodeMobile]
+    FROM [SWfsProductTemplate](nolock) WHERE TemplateID=@TemplateID
+  </statement>
+  <!--查询预览加载-->
+  <statement id="ComBeziWfs_SWfsProductRef_GetProductPreviewHtml">
+    select
+    #if($type=='1')
+    HTMLCode
+    #end
+    #if($type=='2')
+    HTMLCodeMobile
+    #end
+    from SWfsProductRef(nolock) where ProductNo=@ProductNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsProduct_GetSpProductById">
+    select * from spproduct(nolock) where productNo=@ProductNo
+  </statement>
+</statements>

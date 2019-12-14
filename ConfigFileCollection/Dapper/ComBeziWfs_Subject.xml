@@ -1,0 +1,1193 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <!--公用分页-->
+  <statement id="ComBeziWfs_SWfsNewSubject_PageListSearch">
+
+    declare @recct int
+    DECLARE  @STMT nvarchar(max)
+
+
+    IF LTRIM(RTRIM(@condition)) = '' SET @condition = '1 = 1'
+    IF @pageSize IS NULL
+    BEGIN
+    SET @STMT =  'SELECT  '+@selectfield+'  FROM(SELECT   ' + @field + 'FROM ' + @tableName +'WHERE    ' + @condition + 'ORDER BY   ' + @orderBy+') as tb'
+
+    EXEC (@STMT)
+    select @recct as totalCount
+    END
+    ELSE
+    BEGIN
+    SET @STMT =  'SELECT   @recct = COUNT(*) FROM     ' + @tableName + '    WHERE    ' + @condition
+    EXEC sp_executeSQL @STMT, @params = N'@recct INT OUTPUT', @recct = @recct OUTPUT
+    DECLARE  @lbound int,@ubound int
+    SET @curPage = ABS(@curPage)
+    SET @pageSize = ABS(@pageSize)
+    IF @curPage &lt; 1 SET @curPage = 1
+    IF @pageSize &lt; 1 SET @pageSize = 1
+    SET @lbound = ((@curPage - 1) * @pageSize)
+    SET @ubound = @lbound + @pageSize + 1
+    IF @lbound >= @recct
+    BEGIN
+    SET @ubound = @recct + 1
+    SET @lbound = @ubound - (@pageSize + 1)
+    END
+    SET @STMT =  'SELECT  '+@selectfield+'
+    FROM    (
+    SELECT  ROW_NUMBER() OVER(ORDER BY ' + @orderBy + ') AS row, '+  @field +'
+    FROM    ' + @tableName + '
+    WHERE   ' + @condition + '
+    ) AS tbl
+    WHERE
+    row > ' + CONVERT(varchar(9), @lbound) + ' AND
+    row &lt; ' + CONVERT(varchar(9), @ubound)
+
+    EXEC  sp_executeSQL @STMT
+    select @recct as totalCount
+    END
+  </statement>
+  <!--查询活动信息-->
+  <statement id="ComBeziWfs_SWfsNewSubject_SelectBySubjectNo">
+    select * from SWfsNewSubject  with (NoLock) where SubjectNo = @SubjectNo
+  </statement>
+  <!--更新活动状态--> 
+  <statement id="ComBeziWfs_SWfsNewSubject_UpdateStatus">
+    update SWfsNewSubject set Status=@Status where SubjectNo=@SubjectNo
+  </statement>
+  <!--读取活动商品编号-->
+  <statement id="ComBeziWfs_SWfsNewSubjectProductRef_SelectByCategoryNoProudctNo">
+    select SWfsNewSubjectProductRef.ProductNo
+    from  SWfsNewSubject with(nolock)  join SWfsNewSubjectCategory  with(nolock)  on SWfsNewSubject.SubjectNo=SWfsNewSubjectCategory.SubjectNo join
+    SWfsNewSubjectProductRef  with(nolock) on SWfsNewSubjectProductRef.CategoryNo =SWfsNewSubjectCategory.CategoryNo
+    inner join
+    SpProduct  with(nolock)
+    on
+    SWfsNewSubjectProductRef.ProductNo = SpProduct.ProductNo
+    inner join SpfProductExtend
+    on SpfProductExtend.ProductNo=SWfsNewSubjectProductRef.ProductNo
+    inner join SpfSkuExtend
+    on SpfSkuExtend.ProductNo=SWfsNewSubjectProductRef.ProductNo
+    inner join
+    SpBrand with(nolock)
+    on
+    SpProduct.BrandNo=SpBrand.BrandNo
+    where
+    SWfsNewSubject.SubjectNo =@SubjectNo
+    and SpfSkuExtend.PcSaleState=2 and SpfProductExtend.TypeFlag=1 and SpfSkuExtend.PcShowState=1
+    and SWfsNewSubjectProductRef.IsShow=1   AND IsDelete=1
+  </statement>
+  <!--查询分组信息-->
+  <statement id="ComBeziWfs_SWfsNewSubjectCategory_SelectByGroupNo">
+    select * from SWfsNewSubjectCategory with (NoLock) where categoryNo = @GroupNo
+  </statement>
+  <!--读取活动商品列表-->
+  <statement id="ComBeziWfs_SWfsNewSubjectProductRef_SelectByCategoryNoProudctListALL">
+    select
+    SWfsNewSubject.SubjectNo,
+    SWfsNewSubject.SubjectTemplateType,
+    SWfsNewSubject.Status,
+    SWfsNewSubjectCategory.CategoryNo,
+    SWfsNewSubjectProductRef.SubjectProductRefId,
+    SWfsNewSubjectProductRef.PropertyValue,
+    SWfsNewSubjectProductRef.TopFlag,
+    SWfsNewSubjectProductRef.SortNo,
+    SWfsNewSubjectProductRef.BuyType,
+    SWfsNewSubjectProductRef.ShowTime,
+    SWfsNewSubjectProductRef.IsShow,
+    SWfsNewSubjectProductRef.DateCreate,
+    SWfsNewSubjectProductRef.ProductFlag,
+    SpProduct.ProductNo,
+    SpProduct.ProductName,
+    SpfProductExtend.ProductShowPic as ProductPicFile,
+    SpfProductExtend.ProductShowPic,
+    SpProduct.ProductModel as GoodsNo,
+    SpProduct.ProductModel,
+    SpfSkuPrice.MarketPrice,
+    SpfSkuPrice.GoldPrice as SellPrice,
+    SpfSkuPrice.GoldPrice,
+    SpfSkuPrice.PlatinumPrice,
+    SpfSkuPrice.DiamondPrice,
+    SpfSkuPrice.StandardPrice as LimitedPrice,
+    --SpfSkuPrice.LimitedVipPrice,
+    SpfSkuPrice.PromotionPrice,
+    SUBSTRING(SpProduct.ProductShowFlag, 4, 1) AS ProductPromotionFlag,
+    SpfSkuExtend.PcSaleState as IsShelf,
+    SpfSkuExtend.PcSaleState,
+    SpBrand.BrandNo,
+    SpBrand.BrandCnName,
+    SpBrand.BrandEnName,
+    SpfSkuPrice.DiscountShangpin
+    from  SWfsNewSubject with(nolock)  join SWfsNewSubjectCategory  with(nolock)  on SWfsNewSubject.SubjectNo=SWfsNewSubjectCategory.SubjectNo join
+    SWfsNewSubjectProductRef  with(nolock) on SWfsNewSubjectProductRef.CategoryNo =SWfsNewSubjectCategory.CategoryNo
+    inner join
+    SpProduct(nolock) on SWfsNewSubjectProductRef.ProductNo = SpProduct.ProductNo
+    left join SpfSkuExtend (nolock) on SpfSkuExtend.ProductNo=SpProduct.ProductNo
+    left join SpfSkuPrice (nolock) on SpfSkuPrice.SkuNo=SpfSkuExtend.SkuNo
+    left join SpfProductExtend (nolock) on SpfProductExtend.ProductNo=SpProduct.ProductNo
+    inner join SpBrand with(nolock) on SpProduct.BrandNo=SpBrand.BrandNo
+    where
+    SWfsNewSubject.SubjectNo =@SubjectNo
+    and SpfSkuExtend.PcSaleState=2 and SpfProductExtend.TypeFlag=1 and SpfSkuExtend.PcShowState=1
+    and SWfsNewSubjectProductRef.IsShow=1 and getdate() >= SWfsNewSubjectProductRef.ShowTime AND IsDelete=1
+    order by SWfsNewSubjectProductRef.SortNo asc
+  </statement>
+<!--获取商品列表-->
+  <statement id="ComBeziWfs_WfsProduct_SelectProductListNew">
+    with temp as(select
+    a.ProductNo,
+    a.ProductModel as GoodsNo,
+    a.ProductModel,
+    b.PcSaleState as IsShelf,
+    b.PcSaleState,
+    a.ProductName,
+    e.ProductShowPic as ProductPicFile,
+    e.ProductShowPic,
+    e.IsOutside,
+    c.GoldPrice as SellPrice,
+    c.GoldPrice,
+    c.PlatinumPrice,
+    c.DiamondPrice,
+    c.StandardPrice as LimitedPrice,
+    c.StandardPrice,
+    c.MarketPrice,
+    c.PromotionPrice,
+    d.BrandNo,
+    d.BrandCnName,
+    d.BrandEnName,
+    row_number() over(order by a.ProductNo desc) as row
+    from SpProduct(nolock) as a
+    inner join SpfSkuExtend as b (nolock) on b.ProductNo=a.ProductNo
+    inner join SpfSkuPrice as c(nolock) on c.SkuNo=b.SkuNo
+    inner join SpfProductExtend as e(nolock) on e.ProductNo=a.ProductNo
+    inner join SpBrand as d(nolock) on a.BrandNo = d.BrandNo
+    where b.PcSaleState =2 and b.PcShowState=1 and e.TypeFlag=1
+    #if($GenderStyle!='')
+    and a.ProductSex =@GenderStyle
+    #end
+    #if($SCategoryNo !='')
+    and a.ProductNo not in (select ProductNo from SWfsNewSubjectProductRef where CategoryNo=@SCategoryNo)
+    #end
+    #if($CategoryNo !='')
+    and a.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($IsShelf!='')
+    and b.PcSaleState =@isShelf
+    #end
+    #if($BrandNo!='')
+    and a.BrandNo =@BrandNo
+    #end
+    #if($StartPrice!='0')
+    and c.StandardPrice>=@StartPrice
+    #end
+    #if($EndPrice!='0')
+    and c.StandardPrice&lt;=@EndPrice
+    #end
+    #if($Keyword!='')
+    and (a.ProductName like '%'+@KeyWord+ '%' or a.ProductNo like '%'+@KeyWord+ '%' or a.ProductModel like '%'+@KeyWord+ '%')
+    #end
+    #if($IsOutSide!='')
+    and e.IsOutSide=@IsOutSide
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!--获取商品列表总条数-->
+  <statement id="ComBeziWfs_WfsProduct_SelectProductListNewCount">
+    select count(0)
+    from SpProduct(nolock) as a
+    inner join SpfSkuExtend as b (nolock) on b.ProductNo=a.ProductNo
+    inner join SpfSkuPrice as c(nolock) on c.SkuNo=b.SkuNo
+    inner join SpfProductExtend as e(nolock) on e.ProductNo=a.ProductNo
+    inner join SpBrand as d(nolock) on a.BrandNo = d.BrandNo
+    where b.PcSaleState =2 and b.PcShowState=1 and e.TypeFlag=1
+    #if($GenderStyle!='')
+    and a.ProductSex =@GenderStyle
+    #end
+    #if($SCategoryNo !='')
+    and a.ProductNo not in (select ProductNo from SWfsNewSubjectProductRef where CategoryNo=@SCategoryNo)
+    #end
+    #if($CategoryNo !='')
+    and a.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($IsShelf!='')
+    and b.PcSaleState =@isShelf
+    #end
+    #if($BrandNo!='')
+    and a.BrandNo =@BrandNo
+    #end
+    #if($StartPrice!='0')
+    and c.StandardPrice>=@StartPrice
+    #end
+    #if($EndPrice!='0')
+    and c.StandardPrice&lt;=@EndPrice
+    #end
+    #if($Keyword!='')
+    and (a.ProductName like '%'+@KeyWord+ '%' or a.ProductNo like '%'+@KeyWord+ '%' or a.ProductModel like '%'+@KeyWord+ '%')
+    #end
+    #if($IsOutSide!='')
+    and e.IsOutSide=@IsOutSide
+    #end
+  </statement>
+  <!--获取商品列表-->
+  <statement id="ComBeziWfs_WfsProduct_SelectAllProductListNew">
+    select
+    SpProduct.ProductNo,
+    SpProduct.ProductModel as GoodsNo,
+    SpProduct.ProductModel,
+    --Status,
+    SpfSkuExtend.PcShowState,
+    SpProduct.ProductName,
+    SpfProductExtend.ProductShowPic as ProductPicFile,
+    SpfProductExtend.ProductShowPic,
+    SpfSkuPrice.GoldPrice as SellPrice,
+    SpfSkuPrice.GoldPrice,
+    SpfSkuPrice.PlatinumPrice,
+    SpfSkuPrice.DiamondPrice,
+    SpfSkuPrice.StandardPrice as LimitedPrice,
+    SpfSkuPrice.StandardPrice ,
+    --LimitedVipPrice,
+    SpfSkuPrice.MarketPrice,
+    SpfSkuPrice.PromotionPrice,
+    SpBrand.BrandNo,
+    SpBrand.BrandCnName,
+    SpBrand.BrandEnName
+    from SpProduct with(nolock)
+    inner join SpfSkuExtend (nolock) on SpfSkuExtend.ProductNo=SpProduct.ProductNo
+    inner join SpfSkuPrice (nolock) on SpfSkuPrice.SkuNo=SpfSkuExtend.SkuNo
+    inner join SpfProductExtend (nolock) on SpfProductExtend.ProductNo=SpProduct.ProductNo
+    inner join SpBrand with(nolock) on SpProduct.BrandNo=SpBrand.BrandNo
+    where SpfProductExtend.TypeFlag=1 and SpfSkuExtend.PcShowState=1
+    #if($SCategoryNo !='')
+    and SpProduct.ProductNo not in (select ProductNo from SWfsNewSubjectProductRef where CategoryNo=@SCategoryNo)
+    #end
+    #if($CategoryNo !='')
+    and SpProduct.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($IsShelf!='')
+    and SpfSkuExtend.PcShowState =@isShelf
+    #end
+    #if($BrandNo!='')
+    and SpProduct.BrandNo =@BrandNo
+    #end
+    #if($Keyword!='')
+    and (SpProduct.ProductName like '%'+@KeyWord+ '%' or SpProduct.ProductNo like '%'+@KeyWord+ '%' or SpProduct.ProductModel like '%'+@KeyWord+ '%')
+    #end
+    #if($IsOutSide!='')
+    and SpfProductExtend.IsOutSide=@IsOutSide
+    #end
+  </statement>
+  
+  <!--根据活动子类编号获取商品列表 by tianxiuquan 20141002-->
+  <statement id="ComBeziWfs_SWfsNewSubjectProductRef_SelectByCategoryNo">
+    select
+    SWfsNewSubjectProductRef.SubjectProductRefId,
+    SWfsNewSubjectProductRef.PropertyValue,
+    SWfsNewSubjectProductRef.TopFlag,
+    SWfsNewSubjectProductRef.SortNo,
+    SWfsNewSubjectProductRef.BuyType,
+    SWfsNewSubjectProductRef.ShowTime,
+    SWfsNewSubjectProductRef.IsShow,
+    SpProduct.ProductNo,
+    SpProduct.ProductName,
+    SpfProductExtend.ProductShowPic as ProductPicFile,
+    SpfProductExtend.ProductShowPic,
+    SpProduct.ProductModel as GoodsNo,
+    SpProduct.ProductModel,
+    SpfSkuPrice.MarketPrice,
+    SpfSkuPrice.GoldPrice as SellPrice,
+    SpfSkuPrice.GoldPrice,
+    SpfSkuPrice.PlatinumPrice,
+    SpfSkuPrice.DiamondPrice,
+    SpfSkuPrice.PromotionPrice,
+    SpfSkuPrice.StandardPrice as LimitedPrice,
+    SpfSkuPrice.StandardPrice,
+    SpfSkuExtend.PcSaleState as IsShelf,
+    SpfSkuExtend.PcSaleState ,
+    SpBrand.BrandNo,
+    SpBrand.BrandCnName,
+    SpBrand.BrandEnName,
+    SpfProductExtend.IsOutSide
+    from
+    SWfsNewSubjectProductRef  with(nolock)
+    inner join
+    SpProduct  with(nolock)
+    on
+    SWfsNewSubjectProductRef.ProductNo = SpProduct.ProductNo
+    inner join SpfProductExtend
+    on SpfProductExtend.ProductNo=SpProduct.ProductNo
+    inner join SpfSkuExtend with(nolock)
+    on SpfSkuExtend.ProductNo=SpProduct.ProductNo
+    inner join SpfSkuPrice
+    on SpfSkuPrice.SkuNo=SpfSkuExtend.SkuNo
+    inner join
+    SpBrand with(nolock)
+    on
+    SpProduct.BrandNo=SpBrand.BrandNo
+    where
+    SWfsNewSubjectProductRef.CategoryNo =@CategoryNo
+    and SpfSkuExtend.PcSaleState=2 and SpfSkuExtend.PcShowState=1 and SpfProductExtend.TypeFlag=1
+
+    #if($SCategoryNo !='')
+    and SpProduct.CategoryNo like '%' + @SCategoryNo + '%'
+    #end
+    #if($IsShelf!='')
+    and SpfSkuExtend.PcSaleState =@isShelf
+    #end
+    #if($BrandNo!='')
+    and SpProduct.BrandNo =@BrandNo
+    #end
+    #if($Keyword!='')
+    and (SpProduct.ProductName like '%'+@KeyWord+ '%' or SpProduct.ProductNo like '%'+@KeyWord+ '%' or SpProduct.ProductModel like '%'+@KeyWord+ '%')
+    #end
+    #if($IsOutSide!='')
+    and SpfProductExtend.IsOutSide=@IsOutSide
+    #end
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewSubjectProductRef_SelectByCategoryNoPage">
+    select
+    SWfsNewSubjectProductRef.SubjectProductRefId,
+    SWfsNewSubjectProductRef.PropertyValue,
+    SWfsNewSubjectProductRef.TopFlag,
+    SWfsNewSubjectProductRef.SortNo,
+    SWfsNewSubjectProductRef.BuyType,
+    SWfsNewSubjectProductRef.ShowTime,
+    SWfsNewSubjectProductRef.IsShow,
+    SpProduct.ProductNo,
+    SpProduct.ProductName,
+    SpfProductExtend.ProductShowPic as ProductPicFile,
+    SpfProductExtend.ProductShowPic,
+    SpProduct.ProductModel as GoodsNo,
+    SpProduct.ProductModel,
+    SpfSkuPrice.MarketPrice,
+    SpfSkuPrice.GoldPrice as SellPrice,
+    SpfSkuPrice.GoldPrice,
+    SpfSkuPrice.PlatinumPrice,
+    SpfSkuPrice.DiamondPrice,
+    SpfSkuPrice.PromotionPrice,
+    SpfSkuPrice.StandardPrice as LimitedPrice,
+    SpfSkuPrice.StandardPrice,
+    SpfSkuExtend.PcSaleState as IsShelf,
+    SpfSkuExtend.PcSaleState ,
+    SpBrand.BrandNo,
+    SpBrand.BrandCnName,
+    SpBrand.BrandEnName,
+    SpfProductExtend.IsOutSide
+    from
+    SWfsNewSubjectProductRef  with(nolock)
+    inner join
+    SpProduct  with(nolock)
+    on
+    SWfsNewSubjectProductRef.ProductNo = SpProduct.ProductNo
+    inner join SpfProductExtend
+    on SpfProductExtend.ProductNo=SpProduct.ProductNo
+    inner join SpfSkuExtend with(nolock)
+    on SpfSkuExtend.ProductNo=SpProduct.ProductNo
+    inner join SpfSkuPrice
+    on SpfSkuPrice.SkuNo=SpfSkuExtend.SkuNo
+    inner join
+    SpBrand with(nolock)
+    on
+    SpProduct.BrandNo=SpBrand.BrandNo
+    where
+    SWfsNewSubjectProductRef.CategoryNo =@CategoryNo
+    and SpfSkuExtend.PcSaleState=2 and SpfSkuExtend.PcShowState=1 and SpfProductExtend.TypeFlag=1
+
+    #if($SCategoryNo !='')
+    and SpProduct.CategoryNo like '%' + @SCategoryNo + '%'
+    #end
+    #if($IsShelf!='')
+    and SpfSkuExtend.PcSaleState =@isShelf
+    #end
+    #if($BrandNo!='')
+    and SpProduct.BrandNo =@BrandNo
+    #end
+    #if($Keyword!='')
+    and (SpProduct.ProductName like '%'+@KeyWord+ '%' or SpProduct.ProductNo like '%'+@KeyWord+ '%' or SpProduct.ProductModel like '%'+@KeyWord+ '%')
+    #end
+    #if($IsOutSide!='')
+    and SpfProductExtend.IsOutSide=@IsOutSide
+    #end
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewSubjectProductRef_SelectByCategoryNoPageCount">
+    select count(0)
+    from
+    SWfsNewSubjectProductRef  with(nolock)
+    inner join
+    SpProduct  with(nolock)
+    on
+    SWfsNewSubjectProductRef.ProductNo = SpProduct.ProductNo
+    inner join SpfProductExtend
+    on SpfProductExtend.ProductNo=SpProduct.ProductNo
+    inner join SpfSkuExtend with(nolock)
+    on SpfSkuExtend.ProductNo=SpProduct.ProductNo
+    inner join SpfSkuPrice
+    on SpfSkuPrice.SkuNo=SpfSkuExtend.SkuNo
+    inner join
+    SpBrand with(nolock)
+    on
+    SpProduct.BrandNo=SpBrand.BrandNo
+    where
+    SWfsNewSubjectProductRef.CategoryNo =@CategoryNo
+    and SpfSkuExtend.PcSaleState=2 and SpfSkuExtend.PcShowState=1 and SpfProductExtend.TypeFlag=1
+    #if($SCategoryNo !='')
+    and SpProduct.CategoryNo like '%' + @SCategoryNo + '%'
+    #end
+    #if($IsShelf!='')
+    and SpfSkuExtend.PcSaleState =@isShelf
+    #end
+    #if($BrandNo!='')
+    and SpProduct.BrandNo =@BrandNo
+    #end
+    #if($Keyword!='')
+    and (SpProduct.ProductName like '%'+@KeyWord+ '%' or SpProduct.ProductNo like '%'+@KeyWord+ '%' or SpProduct.ProductModel like '%'+@KeyWord+ '%')
+    #end
+    #if($IsOutSide!='')
+    and SpfProductExtend.IsOutSide=@IsOutSide
+    #end
+  </statement>
+  
+  <!--<statement id="ComBeziWfs_SWfsNewSubject_SelectBySubjectNo">
+    select BackgroundPic,BelongsSubjectPic,ChannelNo,ContentIntroduction,
+    ContentRecommended,CreateUserId,DateBegin,DateCreate,DateEnd,Discount,DiscountType,DiscountTypeValue,
+    FlapPic,IPhonePic,IPhoneText,Status,SubjectName,SubjectNo,SubjectTemplate,
+    TitlePic2,TopFlag,ContentTitleOne,ContentTitleTwo,SubjectPreStartTemplateType,PrivilegeValue,
+    DateDiff(hour,DateBegin,DateEnd) as Hours,DatePart(Hour,DateBegin) as Hour
+    from SWfsNewSubject  with (NoLock) where SubjectNo = @SubjectNo
+  </statement>-->
+  <!--根据商品编号获得其所在分组-->
+  <statement id="ComBeziWfs_SWfsNewSubjectCategory_SelectSubjectCategoryListByProductNo">
+    SELECT sc.* FROM dbo.SWfsNewSubjectCategory AS sc with(nolock),dbo.SWfsNewSubjectProductRef AS scref with(nolock),
+    dbo.SWfsNewSubject AS subject with(nolock)
+    WHERE sc.CategoryNo=scref.CategoryNo AND subject.subjectno=sc.SubjectNo AND IsDelete=1
+    AND scref.ProductNo=@ProductNo
+    #if($Status!='')
+    AND subject.Status=1
+    #end
+    AND GETDATE() BETWEEN subject.DateBegin AND subject.DateEnd
+    ORDER BY sc.SortNo ASC,sc.DateCreate DESC
+  </statement>
+  <!--根据商品编号获得其商品列表-->
+  <statement id="ComBeziWfs_SWfsNewSubjectProductRef_SelectSubjectProductRefListByProductNo">
+    SELECT * FROM dbo.SWfsNewSubjectProductRef with(nolock)
+    WHERE ProductNo=@ProductNo
+  </statement>
+  <!--根据商品编号获得其所在活动-->
+  <statement id="ComBeziWfs_SWfsNewSubject_SelectSubjectListBySubjectProductRefId">
+    SELECT subject.* FROM dbo.SWfsNewSubjectCategory AS sc with(nolock),dbo.SWfsNewSubjectProductRef AS scref with(nolock),
+    dbo.SWfsNewSubject AS subject with(nolock)
+    WHERE sc.CategoryNo=scref.CategoryNo AND subject.subjectno=sc.SubjectNo
+    AND SCREF.SubjectProductRefId=@SubjectProductRefId AND IsDelete=1
+    ORDER BY sc.SortNo ASC,sc.DateCreate DESC
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewSubjectProductRef_ReadByCategoryNo">
+    select ProductNo from SWfsNewSubjectProductRef with (NoLock)  where CategoryNo = @CategoryNo 
+    <!--and TypeFlag=0-->
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewSubjectProductRef_DeleteBySubjectProductRefId">
+    delete SWfsNewSubjectProductRef where  SubjectProductRefId = @RelationId
+  </statement>
+  <!--商品可视化查询SQL-->
+  <statement id="ComBeziWfs_SWfsNewSubjectProductRef_SelectByCategoryNoView">
+    select
+    SWfsNewSubjectProductRef.SubjectProductRefId,
+    SWfsNewSubjectProductRef.PropertyValue,
+    SWfsNewSubjectProductRef.TopFlag,
+    SWfsNewSubjectProductRef.SortNo,
+    SWfsNewSubjectProductRef.BuyType,
+    SWfsNewSubjectProductRef.ShowTime,
+    SWfsNewSubjectProductRef.IsShow,
+    SpProduct.ProductNo,
+    SpProduct.ProductName,
+    SpfProductExtend.ProductShowPic as ProductPicFile,
+    SpfProductExtend.ProductShowPic,
+    SpProduct.ProductModel as GoodsNo,
+    SpProduct.ProductModel,
+    SpfSkuPrice.MarketPrice,
+    SpfSkuPrice.GoldPrice as SellPrice,
+    SpfSkuPrice.GoldPrice,
+    SpfSkuPrice.PlatinumPrice,
+    SpfSkuPrice.DiamondPrice,
+    SpfSkuPrice.StandardPrice as LimitedPrice,
+    --SpfSkuPrice.LimitedVipPrice,
+    SpfSkuPrice.PromotionPrice,
+    SUBSTRING(SpProduct.ProductShowFlag, 4, 1) AS ProductPromotionFlag,
+    SpfSkuExtend.PcSaleState as IsShelf,
+    SpBrand.BrandNo,
+    SpBrand.BrandCnName,
+    SpBrand.BrandEnName,
+    SpfSkuPrice.DiscountShangpin as DiscountRate,
+    SpfSkuPrice.DiscountShangpin
+    from
+    SWfsNewSubjectProductRef  with(nolock)
+    inner join
+    SpProduct(nolock) on SWfsNewSubjectProductRef.ProductNo = SpProduct.ProductNo
+    left join SpfSkuExtend (nolock) on SpfSkuExtend.ProductNo=SpProduct.ProductNo
+    left join SpfSkuPrice (nolock) on SpfSkuPrice.SkuNo=SpfSkuExtend.SkuNo
+    left join SpfProductExtend (nolock) on SpfProductExtend.ProductNo=SpProduct.ProductNo
+    inner join SpBrand with(nolock) on SpProduct.BrandNo=SpBrand.BrandNo
+    where
+    SWfsNewSubjectProductRef.CategoryNo =@CategoryNo
+    and SpfSkuExtend.PcSaleState=1 and SpfProductExtend.TypeFlag=1 and SpfSkuExtend.PcShowState=1
+    and SWfsNewSubjectProductRef.IsShow=1 and SWfsNewSubjectProductRef.ShowTime &lt;= getdate()
+  </statement>
+  <!--读取活动商品列表分组管理商品试图-->
+  <statement id="ComBeziWfs_SWfsNewSubjectProductRef_SelectByCategoryNoProudctList">
+    select
+    SWfsNewSubject.SubjectNo,
+    SWfsNewSubject.SubjectTemplateType,
+    SWfsNewSubject.Status,
+    SWfsNewSubjectCategory.CategoryNo,
+    SWfsNewSubjectProductRef.SubjectProductRefId,
+    SWfsNewSubjectProductRef.PropertyValue,
+    SWfsNewSubjectProductRef.TopFlag,
+    SWfsNewSubjectProductRef.SortNo,
+    SWfsNewSubjectProductRef.BuyType,
+    SWfsNewSubjectProductRef.ShowTime,
+    SWfsNewSubjectProductRef.IsShow,
+    SWfsNewSubjectProductRef.DateCreate,
+    SWfsNewSubjectProductRef.ProductFlag,
+    SpProduct.ProductNo,
+    SpProduct.ProductName,
+    SpfProductExtend.ProductShowPic as ProductPicFile,
+    SpfProductExtend.ProductShowPic,
+    SpProduct.ProductModel as GoodsNo,
+    SpProduct.ProductModel,
+    SpfSkuPrice.MarketPrice,
+    SpfSkuPrice.GoldPrice as SellPrice,
+    SpfSkuPrice.GoldPrice,
+    SpfSkuPrice.PlatinumPrice,
+    SpfSkuPrice.DiamondPrice,
+    SpfSkuPrice.StandardPrice as LimitedPrice,
+    SpfSkuPrice.StandardPrice,
+    --SpfSkuPrice.LimitedVipPrice,
+    SpfSkuPrice.PromotionPrice,
+    SUBSTRING(SpProduct.ProductShowFlag, 4, 1) AS ProductPromotionFlag,
+    SpfSkuExtend.PcSaleState as IsShelf,
+    SpfSkuExtend.PcSaleState,
+    SpBrand.BrandNo,
+    SpBrand.BrandCnName,
+    SpBrand.BrandEnName,
+    SpfSkuPrice.DiscountShangpin
+    from  SWfsNewSubject with(nolock)  join SWfsNewSubjectCategory  with(nolock)  on SWfsNewSubject.SubjectNo=SWfsNewSubjectCategory.SubjectNo join
+    SWfsNewSubjectProductRef  with(nolock) on SWfsNewSubjectProductRef.CategoryNo =SWfsNewSubjectCategory.CategoryNo
+    inner join
+    SpProduct(nolock) on SWfsNewSubjectProductRef.ProductNo = SpProduct.ProductNo
+    inner join SpfSkuExtend (nolock) on SpfSkuExtend.ProductNo=SpProduct.ProductNo
+    inner join SpfSkuPrice (nolock) on SpfSkuPrice.SkuNo=SpfSkuExtend.SkuNo
+    inner join SpfProductExtend (nolock) on SpfProductExtend.ProductNo=SpProduct.ProductNo
+    inner join SpBrand with(nolock) on SpProduct.BrandNo=SpBrand.BrandNo
+    where
+    SWfsNewSubject.SubjectNo =@SubjectNo and SWfsNewSubjectCategory.CategoryNo =@CategoryNo
+    and SpfSkuExtend.PcSaleState=2 and SpfProductExtend.TypeFlag=1 and SpfSkuExtend.PcShowState=1
+    and SWfsNewSubjectProductRef.IsShow=1 and getdate() >= SWfsNewSubjectProductRef.ShowTime AND IsDelete=1
+    order by SWfsNewSubjectCategory.SortNo,SWfsNewSubjectProductRef.SortNo asc
+  </statement>
+
+  <!--更新商品列表排序信息-->
+  <statement id="ComBeziWfs_SWfsNewSubjectProductRef_UpdateProudctSort">
+    update [SWfsNewSubjectProductRef] set  [SortNo]=@SortNo where CategoryNo=@CategoryNo and ProductNo=@ProductNo
+  </statement>
+
+  <!--读取活动对应的分组表息-->
+  <statement id="ComBeziWfs_SWfsNewSubjectCategory_SelectByCategoryNoSingle">
+    select top 1 * from SWfsNewSubjectCategory with (NoLock) where SubjectNo = @SubjectNo and IsDelete=1
+  </statement>
+  <!--读取所有活动分组列表-->
+  <statement id="ComBeziWfs_SWfsNewSubjectCategory_List">
+    SELECT * FROM SWfsNewSubjectCategory where IsDelete=1
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewSubjectCategory_ListBySubjectNo">
+    SELECT * FROM SWfsNewSubjectCategory
+    where SubjectNo=@SubjectNo and IsDelete=1 order by SortNo
+  </statement>
+
+
+  <statement id ="ComBeziReport_SubjectSaleStatistics_SelectByConditonListing">
+    #if($rang=='0')
+    select top 1 SubjectNo,DateStatistics,OrderNums,Amount,CostAmount,StockCount,SKUCount,SaleCount,SaledSKUCount
+    from [OcsReport].[dbo].[SubjectSaleStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo
+    AND ListingOutletFlag=1
+    ORDER BY DateStatistics DESC
+    #else
+    with tbl as
+    (Select top 1 SubjectNo,DateStatistics,OrderNums,Amount,CostAmount,StockCount,SKUCount,SaleCount,SaledSKUCount
+    from [OcsReport].[dbo].[SubjectSaleStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo AND  DateStatistics&lt;@BeginTime AND ListingOutletFlag=1
+    ORDER BY DateStatistics DESC
+    UNION ALL
+    Select top 1 SubjectNo,DateStatistics,OrderNums,Amount,CostAmount,StockCount,SKUCount,SaleCount,SaledSKUCount
+    from [OcsReport].[dbo].[SubjectSaleStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo  AND DateStatistics BETWEEN @BeginTime AND @EndTime AND ListingOutletFlag=1
+    ORDER BY DateStatistics DESC)
+    select * from tbl
+    #end
+  </statement>
+  <statement id ="ComBeziReport_SubjectVisitDataStatistics_SelectByConditonListing">
+    #if($rang=='0')
+    select top 1 SubjectNo,DateStatistics,PV,UV,VIP,GoldenVIP,PlatinaVIP,DiamondVIP,OrderNums
+    from [OcsReport].[dbo].[SubjectVisitStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo
+    AND ListingOutletFlag=1
+    ORDER BY DateStatistics DESC
+    #else
+    with tbl as
+    (select top 1 SubjectNo,DateStatistics,PV,UV,VIP,GoldenVIP,PlatinaVIP,DiamondVIP,OrderNums
+    from [OcsReport].[dbo].[SubjectVisitStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo AND  DateStatistics&lt; @BeginTime AND ListingOutletFlag=1
+    ORDER BY DateStatistics DESC
+    UNION ALL
+    select top 1 SubjectNo,DateStatistics,PV,UV,VIP,GoldenVIP,PlatinaVIP,DiamondVIP,OrderNums
+    from [OcsReport].[dbo].[SubjectVisitStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo  AND DateStatistics BETWEEN @BeginTime AND @EndTime AND ListingOutletFlag=1
+    ORDER BY DateStatistics DESC)
+    select * from tbl
+    #end
+  </statement>
+  <statement id ="ComBeziReport_SubjectProductDataStatistics_SelectByConditonListing">
+    select a.SubjectNo,a.DateStatistics,a.BrandNo,a.BrandName,a.CategoryNo,a.CategoryName,a.SKUCount,a.StockCount,a.SaleCount,a.BU 
+    from [OcsReport].[dbo].SubjectProductStatistics a
+    inner join (select SubjectNo,BrandNo,CategoryNo,Max(DateStatistics) DateStatistics
+    from [OcsReport].[dbo].SubjectProductStatistics
+    WHERE SubjectNo = @SubjectNo
+    and DateStatistics BETWEEN @BeginTime AND @EndTime AND ListingOutletFlag=1
+    group by SubjectNo,BrandNo,CategoryNo
+    )  b
+    on a.SubjectNo = b.SubjectNo and a.BrandNo = b.BrandNo and a.CategoryNo = b.CategoryNo
+    and a.DateStatistics = b.DateStatistics
+    Order by BrandName desc
+  </statement>
+  <statement id="ComBeziReport_SubjectProductDataStatistics_SelectBeforeProjectListing">
+    select top 1 SubjectNo,DateStatistics,BrandNo,BrandName,CategoryNo,CategoryName,SKUCount,StockCount,SaleCount,BU   
+    from [OcsReport].[dbo].SubjectProductStatistics
+    where SubjectNo=@SubjectNo AND BrandNo=@BrandNo AND CategoryNo=@CategoryNo AND DateStatistics &lt; @BeginTime
+    AND ListingOutletFlag=1
+    order by DateStatistics desc
+  </statement>
+
+
+  <!--批量获取商品列表添加信息20131007添加-->
+  <statement id="ComBeziWfs_WfsProduct_BatchSelectProductListNew_LXYADD">
+    select
+    SpProduct.ProductNo
+    from SpProduct with(nolock)
+    inner join SpfProductExtend(nolock) on SpfProductExtend.ProductNo=SpProduct.ProductNo
+    inner join SpfSkuExtend(nolock) on SpfSkuExtend.ProductNo=SpProduct.ProductNo
+    left join SpBrand with(nolock) on SpProduct.BrandNo = SpBrand.BrandNo where SpfSkuExtend.PcShowState=1 and SpfProductExtend.TypeFlag=1
+    #if($SCategoryNo !='')
+    and SpProduct.ProductNo not in (select ProductNo from SWfsNewSubjectProductRef where CategoryNo=@SCategoryNo
+    <!--and TypeFlag=0-->
+    )
+    #end
+    #if($CategoryNo !='')
+    and SpProduct.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($IsShelf!='')
+    and SpfSkuExtend.PcSaleState =@isShelf
+    #end
+    #if($BrandNo!='')
+    and SpProduct.BrandNo =@BrandNo
+    #end
+    #if($Keyword!='')
+    and  SpProduct.ProductNo in @KeyWord
+    #end
+  </statement>
+
+
+  <!--获取商品列表20131007新添加-->
+  <statement id="ComBeziWfs_WfsProduct_SelectAllProductListNew_LXYADD">
+    select
+    SpProduct.ProductNo
+    from SpProduct with(nolock)
+    inner join SpfProductExtend(nolock) on SpfProductExtend.ProductNo=SpProduct.ProductNo
+    inner join SpfSkuExtend(nolock) on SpfSkuExtend.ProductNo=SpProduct.ProductNo
+    left join SpBrand with(nolock) on SpProduct.BrandNo = SpBrand.BrandNo where SpfSkuExtend.PcShowState=1 and SpfProductExtend.TypeFlag=1
+    #if($GenderStyle!='')
+    and SpProduct.ProductSex =@GenderStyle
+    #end
+    #if($SCategoryNo !='')
+    and SpProduct.ProductNo not in (select ProductNo from SWfsNewSubjectProductRef where CategoryNo=@SCategoryNo
+    )
+    #end
+    #if($CategoryNo !='')
+    and SpProduct.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($IsShelf!='')
+    and SpfSkuExtend.PcSaleState =@isShelf
+    #end
+    #if($BrandNo!='')
+    and SpProduct.BrandNo =@BrandNo
+    #end
+    #if($StartPrice!='0')
+    and SpProduct.StandardPrice>=@StartPrice
+    #end
+    #if($EndPrice!='0')
+    and SpProduct.StandardPrice &lt;=@EndPrice
+    #end
+    #if($Keyword!='')
+    and (SpProduct.ProductName like '%'+@KeyWord+ '%' or SpProduct.ProductNo like '%'+@KeyWord+ '%' or SpProduct.ProductModel like '%'+@KeyWord+ '%')
+    #end
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewSubjectProductRef_ReadByCategoryNo_ProductNoS">
+    select ProductNo  from SWfsNewSubjectProductRef with (NoLock)  where CategoryNo = @CategoryNo and ProductNo in @ProductNo
+    <!--and TypeFlag=0-->
+  </statement>
+
+
+  <statement id="ComBeziWfs_SWfsNewSubjectProductRef_UpdateProductCount">
+    update [SWfsNewSubject] set ProductCount=@ProductCount where SubjectNo =@SubjectNo
+  </statement>
+  <!--拆分商品统计 by tianxiuquan 20141011-->
+  <statement id="ComBeziWfs_SWfsNewSubjectProductRef_GetReadyUpdateProductCount">
+    select SpProduct.ProductNo
+    from  SWfsNewSubject with(nolock)  join SWfsNewSubjectCategory  with(nolock)  on SWfsNewSubject.SubjectNo=SWfsNewSubjectCategory.SubjectNo join
+    SWfsNewSubjectProductRef  with(nolock) on SWfsNewSubjectProductRef.CategoryNo =SWfsNewSubjectCategory.CategoryNo
+    inner join
+    SpProduct  with(nolock)
+    on
+    SWfsNewSubjectProductRef.ProductNo = SpProduct.ProductNo
+    inner join SpfProductExtend(nolock)
+    on SpfProductExtend.ProductNo=SWfsNewSubjectProductRef.ProductNo
+    inner join SpfSkuExtend
+    on SpfSkuExtend.ProductNo=SWfsNewSubjectProductRef.ProductNo
+    inner join
+    SpBrand with(nolock)
+    on
+    SpProduct.BrandNo=SpBrand.BrandNo
+    where
+    SWfsNewSubject.SubjectNo =@SubjectNo
+    and SpfSkuExtend.PcSaleState=2 and SpfProductExtend.TypeFlag=1 and SpfSkuExtend.PcShowState=1
+    and SWfsNewSubjectProductRef.IsShow=1   AND IsDelete=1
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsNewSubjectPriceType_SelectList">
+    select *  from SWfsNewSubjectPriceType with (NoLock)  where  PriceType=@PriceType and IsDelete=0
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewSubjectPriceType_SelectSingle">
+    select count(*) from SWfsNewSubjectPriceType with (NoLock)  where  PriceTag=@PriceTag and IsDelete=0
+  </statement>
+
+  <statement id="ComBeziWfs_WfsOrder_GetOrderBySWfsNewSubject">
+    select S.SubjectNo,SubjectName,O.OrderNo,O.status,productNo,ProductName from
+    SWfsNewSubject as S with(nolock)    INNER JOIN WfsOrderDetail AS D with(nolock) ON  D.CategoryNo=S.SubjectNo
+    INNER JOIN WfsOrder as O  with(nolock) ON D.OrderNo= O.OrderNo
+    where O.ListingOutletFlag=1    AND S.SubjectNo=@SubjectNo
+  </statement>
+  
+  <statement id ="ComBeziReport_SubjectSaleStatistics_SelectByConditonListingNew">
+    #if($rang=='0')
+    select top 1 SubjectNo,DateStatistics,OrderNums,Amount,CostAmount,StockCount,SKUCount,SaleCount,SaledSKUCount,StockTotalAmount
+    from [OcsReport].[dbo].[SubjectSaleStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo
+    AND ListingOutletFlag=1
+    ORDER BY DateStatistics DESC
+    #else
+    with tbl as
+    (Select top 1 SubjectNo,DateStatistics,OrderNums,Amount,CostAmount,StockCount,SKUCount,SaleCount,SaledSKUCount,StockTotalAmount
+    from [OcsReport].[dbo].[SubjectSaleStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo AND  DateStatistics&lt;@BeginTime AND ListingOutletFlag=1
+    ORDER BY DateStatistics DESC
+    UNION ALL
+    Select top 1 SubjectNo,DateStatistics,OrderNums,Amount,CostAmount,StockCount,SKUCount,SaleCount,SaledSKUCount,StockTotalAmount
+    from [OcsReport].[dbo].[SubjectSaleStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo  AND DateStatistics BETWEEN @BeginTime AND @EndTime AND ListingOutletFlag=1
+    ORDER BY DateStatistics DESC)
+    select * from tbl
+    #end
+  </statement>
+
+  <statement id ="ComBeziReport_SubjectVisitDataStatistics_SelectByConditonListingNew">
+    #if($rang=='0')
+    select top 1 SubjectNo,DateStatistics,PV,UV,VIP,GoldenVIP,PlatinaVIP,DiamondVIP,OrderNums
+    from [OcsReport].[dbo].[SubjectVisitStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo
+    AND ListingOutletFlag=1
+    ORDER BY DateStatistics DESC
+    #else
+    with tbl as
+    (select top 1 SubjectNo,DateStatistics,PV,UV,VIP,GoldenVIP,PlatinaVIP,DiamondVIP,OrderNums
+    from [OcsReport].[dbo].[SubjectVisitStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo AND  DateStatistics&lt; @BeginTime AND ListingOutletFlag=1
+    ORDER BY DateStatistics DESC
+    UNION ALL
+    select top 1 SubjectNo,DateStatistics,PV,UV,VIP,GoldenVIP,PlatinaVIP,DiamondVIP,OrderNums
+    from [OcsReport].[dbo].[SubjectVisitStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo  AND DateStatistics BETWEEN @BeginTime AND @EndTime AND ListingOutletFlag=1
+    ORDER BY DateStatistics DESC)
+    select * from tbl
+    #end
+  </statement>
+  
+    <statement id="ComBeziWfs_SWfsNewSubject_GetSWfsNewSubjectByDataStatisticsList">
+      SELECT *  FROM  [SWfsNewSubject] Where 1=1  
+      #if($TypeValue =='2')
+       and (DateBegin&lt;=getdate() or  DatePre&lt;=getdate())  and  Status=1
+      #end
+      #if($TypeValue =='0')
+      and   SubjectNo in @SubjectNos
+      #end
+      #if($TypeValue =='1')
+      and (DateBegin >=@BeginTime AND DateBegin&lt;=@EndTime) 
+      #end
+  </statement>
+
+
+  <!--读取活动商品编号，删除商品-->
+  <statement id="ComBeziWfs_SWfsNewSubjectProductRef_SelectByCategoryNoProudctNoDelete">
+    select SWfsNewSubjectProductRef.ProductNo +','+str(SWfsNewSubjectProductRef.SubjectProductRefId)
+    from  SWfsNewSubject with(nolock)  join SWfsNewSubjectCategory  with(nolock)  on SWfsNewSubject.SubjectNo=SWfsNewSubjectCategory.SubjectNo join
+    SWfsNewSubjectProductRef  with(nolock) on SWfsNewSubjectProductRef.CategoryNo =SWfsNewSubjectCategory.CategoryNo
+    inner join
+    SpProduct  with(nolock)
+    on
+    SWfsNewSubjectProductRef.ProductNo = SpProduct.ProductNo
+    inner join SpfProductExtend
+    on SpfProductExtend.ProductNo=SWfsNewSubjectProductRef.ProductNo
+    inner join SpfSkuExtend
+    on SpfSkuExtend.ProductNo=SWfsNewSubjectProductRef.ProductNo
+    inner join
+    SpBrand with(nolock)
+    on
+    SpProduct.BrandNo=SpBrand.BrandNo
+    where
+    SWfsNewSubject.SubjectNo =@SubjectNo
+    and SpfSkuExtend.PcSaleState=2 and SpfProductExtend.TypeFlag=1 and SpfSkuExtend.PcShowState=1
+    and SWfsNewSubjectProductRef.IsShow=1   AND IsDelete=1
+  </statement>
+  <statement id="ComBeziWfs_SWfsSpProduct_ValidateProductExistByProductNo">
+    select count(0) from SpProduct(nolock) WHERE ProductNo=@ProductNo
+  </statement>
+  
+  <!--活动列表页 by tianxiuquan 2014-10-12-->
+  <statement id="ComBeziWfs_SWfsSubject_GetSubjectList">
+    with temp as(
+    select SWfsNewSubject.SubjectNo
+    ,SWfsNewSubject.SubjectPreStartBackgroundPic
+    ,SWfsNewSubject.SubjectTemplateTopPicNo
+    ,SWfsNewSubject.SubjectName
+    ,SWfsNewSubject.ChannelType
+    ,SWfsNewSubject.SubjectPreTemplateType
+    ,SWfsNewSubject.SubjectTemplateType
+    ,SWfsNewSubject.[Status]
+    ,SWfsNewSubject.ProductCount
+    ,SWfsNewSubject.SubjectGender
+    ,SWfsNewSubject.SubjectCategoryNo
+    ,SWfsNewSubject.createUserId
+    ,SWfsNewSubject.DatePre
+    ,SWfsNewSubject.DateBegin
+    ,SWfsNewSubject.DateEnd
+    ,row_number() over(order by SWfsNewSubject.DateCreate desc) as row
+    from SWfsNewSubject where 1=1
+    #if($SubjectName!='')
+    and  SWfsNewSubject.SubjectName like '%'+@SubjectName+'%'
+    #end
+    #if($SubjectNo!='')
+    and SWfsNewSubject.SubjectNo=@SubjectNo
+    #end
+    #if($ProductNo!='')
+    and SWfsNewSubject.SubjectNo in
+    (select SWfsNewSubjectCategory.subjectNo from SWfsNewSubjectProductRef inner join SWfsNewSubjectCategory
+    on SWfsNewSubjectProductRef.CategoryNo=SWfsNewSubjectCategory.CategoryNo
+    where SWfsNewSubjectProductRef.ProductNo=@ProductNo)
+    #end
+    #if($CreateUserId!='')
+    and SWfsNewSubject.CreateUserId=@CreateUserId
+    #end
+    #if($SubjectStatus!='')
+    and SWfsNewSubject.[Status]=@SubjectStatus
+    #end
+    #if($SubjectCategoryNo!='')
+    and SWfsNewSubject.SubjectCategoryNo=@SubjectCategoryNo
+    #end
+    #if($ChannelType=='1')
+    --and (SWfsNewSubject.ChannelType='1,2' or SWfsNewSubject.ChannelType='0' or SWfsNewSubject.ChannelType='1')
+    #end
+    #if($ChannelType=='2')
+    and (SWfsNewSubject.ChannelType='1,2' or SWfsNewSubject.ChannelType='0' or SWfsNewSubject.ChannelType='2')
+    #end
+    #if($SubjectGender!='')
+    and SWfsNewSubject.SubjectGender=@SubjectGender
+    #end
+    #if($SubjectDateEndStart!='')
+    and SWfsNewSubject.DateEnd >= @SubjectDateEndStart
+    #end
+    #if($SubjectDateEndEnd!='')
+    and  @SubjectDateEndEnd >= SWfsNewSubject.DateEnd
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize +1 and @pageIndex*@pageSize
+  </statement>
+  <!--活动列表页 by tianxiuquan-->
+  <statement id="ComBeziWfs_SWfsSubject_GetSubjectListTotalCount">
+    select count(0) from SWfsNewSubject where 1=1
+    #if($SubjectName!='')
+    and  SWfsNewSubject.SubjectName like '%'+@SubjectName+'%'
+    #end
+    #if($SubjectNo!='')
+    and SWfsNewSubject.SubjectNo=@SubjectNo
+    #end
+    #if($ProductNo!='')
+    and SWfsNewSubject.SubjectNo in
+    (select SWfsNewSubjectCategory.subjectNo from SWfsNewSubjectProductRef inner join SWfsNewSubjectCategory
+    on SWfsNewSubjectProductRef.CategoryNo=SWfsNewSubjectCategory.CategoryNo
+    where SWfsNewSubjectProductRef.ProductNo=@ProductNo)
+    #end
+    #if($CreateUserId!='')
+    and SWfsNewSubject.CreateUserId=@CreateUserId
+    #end
+    #if($SubjectStatus!='')
+    and SWfsNewSubject.[Status]=@SubjectStatus
+    #end
+    #if($SubjectCategoryNo!='')
+    and SWfsNewSubject.SubjectCategoryNo=@SubjectCategoryNo
+    #end
+    #if($ChannelType=='1')
+    and (SWfsNewSubject.ChannelType='1,2' or SWfsNewSubject.ChannelType='0' or SWfsNewSubject.ChannelType='1')
+    #end
+    #if($ChannelType=='2')
+    and (SWfsNewSubject.ChannelType='1,2' or SWfsNewSubject.ChannelType='0' or SWfsNewSubject.ChannelType='2')
+    #end
+    #if($SubjectGender!='')
+    and SWfsNewSubject.SubjectGender=@SubjectGender
+    #end
+    #if($SubjectDateEndStart!='')
+    and SWfsNewSubject.DateEnd >= @SubjectDateEndStart
+    #end
+    #if($SubjectDateEndEnd!='')
+    and  @SubjectDateEndEnd >= SWfsNewSubject.DateEnd
+    #end
+  </statement>
+  <!--查询活动头图是否上传 否则不能开启活动-->
+  <statement id="ComBeziWfs_SWfsSubject_ValidateExistSubjectPic">
+    select SubjectTemplateTopPicNo from SWfsNewSubject(nolock) where SubjectNo=@SubjectNo
+  </statement>
+
+
+
+  <!--批量获取商品列表-->
+  <statement id="ComBeziWfs_SpProduct_BatchSelectProductListNew">
+    with temp as(select
+    a.ProductNo,
+    a.ProductModel as GoodsNo,
+    a.ProductModel,
+    b.SkuNo,
+    b.PcSaleState as IsShelf,
+    b.PcSaleState,
+    a.ProductName,
+    e.ProductShowPic as ProductPicFile,
+    e.ProductShowPic,
+    c.GoldPrice as SellPrice,
+    c.GoldPrice,
+    c.PlatinumPrice,
+    c.DiamondPrice,
+    c.StandardPrice as LimitedPrice,
+    c.StandardPrice,
+    c.MarketPrice,
+    c.PromotionPrice,
+    a.BrandNo,
+    d.BrandCnName,
+    d.BrandEnName,
+    e.IsOutSide,
+    row_number() over(order by a.ProductNo) as row
+    from SpProduct(nolock) as a
+    inner join SpfSkuExtend as b (nolock) on b.ProductNo=a.ProductNo and b.PcShowState=1 and b.PcSaleState=2 and b.PcShowState=1
+    inner join SpfSkuPrice as c(nolock) on c.SkuNo=b.SkuNo
+    inner join SpfProductExtend as e(nolock) on e.ProductNo=a.ProductNo and e.TypeFlag=1 and e.ProductShowPic!=''
+    inner join SpBrand as d(nolock) on a.BrandNo = d.BrandNo
+    #if($IsAddProduct =='0')
+    --inner join SWfsNewSubjectProductRef(nolock) as f on f.ProductNo=a.ProductNo
+    #end
+    WHERE 1=1
+    #if($IsAddProduct =='1')
+    and a.ProductNo not in(select ProductNo from SWfsNewSubjectProductRef(nolock) where CategoryNo=@SCategoryNo)
+    #end
+    #if($ProductNoList!='')
+    and a.ProductNo in @ProductNoList
+    #end
+    #if($ProductName!='')
+    and  a.ProductName like '%'+@ProductName+'%'
+    #end
+    #if($CategoryNo !='')
+    and a.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($IsShelf!='')
+    and b.PcSaleState =@isShelf
+    #end
+    #if($BrandNo!='')
+    and a.BrandNo =@BrandNo
+    #end
+    #if($ProductNoOrProductModel!='')
+    and  (a.ProductNo =@ProductNoOrProductModel or a.ProductModel =@ProductNoOrProductModel)
+    #end
+    #if($IsOutSide!='')
+    and e.IsOutSide=@IsOutSide
+    #end
+    #if($ProductSex!='')
+    and a.ProductSex=@ProductSex
+    #end
+    #if($lpstart!='')
+    and c.StandardPrice > @lpstart
+    #end
+    #if($lpend!='')
+    and @lpend > c.StandardPrice
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!---批量获取商品类表总条数-->
+  <statement id="ComBeziWfs_SpProduct_BatchSelectProductListNewTotalCount">
+    select count(0)
+    from SpProduct(nolock) as a
+    left join SpfSkuExtend as b (nolock) on b.ProductNo=a.ProductNo and b.PcShowState=1 and b.PcSaleState=2 and b.PcShowState=1
+    left join SpfSkuPrice as c(nolock) on c.SkuNo=b.SkuNo
+    left join SpfProductExtend as e(nolock) on e.ProductNo=a.ProductNo and e.TypeFlag=1 and e.ProductShowPic!=''
+    left join SpBrand as d(nolock) on a.BrandNo = d.BrandNo
+    #if($IsAddProduct =='0')
+    --inner join SWfsNewSubjectProductRef(nolock) as f on f.ProductNo=a.ProductNo
+    #end
+    where 1=1
+    #if($IsAddProduct =='1')
+    and a.ProductNo not in(select ProductNo from SWfsNewSubjectProductRef(nolock) where CategoryNo=@SCategoryNo)
+    #end
+    #if($ProductNoList!='')
+    and a.ProductNo in @ProductNoList
+    #end
+    #if($ProductName!='')
+    and  a.ProductName like '%'+@ProductName+'%'
+    #end
+    #if($CategoryNo !='')
+    and a.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($IsShelf!='')
+    and b.PcSaleState =@isShelf
+    #end
+    #if($BrandNo!='')
+    and a.BrandNo =@BrandNo
+    #end
+    #if($ProductNoOrProductModel!='')
+    and  (a.ProductNo =@ProductNoOrProductModel or a.ProductModel =@ProductNoOrProductModel)
+    #end
+    #if($IsOutSide!='')
+    and e.IsOutSide=@IsOutSide
+    #end
+    #if($ProductSex!='')
+    and a.ProductSex=@ProductSex
+    #end
+    #if($lpstart!='')
+    and c.StandardPrice >= @lpstart
+    #end
+    #if($lpend!='')
+    and @lpend >= c.StandardPrice
+    #end
+  </statement>
+  <!--批量添加商品-->
+  <statement id="ComBeziWfs_SpProduct_BatchSelectProductListAddToSubjectFloor">
+    insert into SWfsNewSubjectProductRef(ProductNo,CategoryNo,PropertyValue,TopFlag,SortNo,BuyType,ProductFlag,IsShow,ShowTime,DateCreate)
+    select ProductNo,@SCategoryNo,0,0,999,'',0,1,getdate(),getdate() from SpProduct
+    where ProductNo in @ProductNoList
+  </statement>
+  <!--查询已经添加的商品编号-->
+  <statement id="ComBeziWfs_SWfsNewSubject_ExsitsSubjectFloorProduct">
+    SELECT ProductNo from SWfsNewSubjectProductRef(nolock) WHERE CategoryNo=@SCategoryNo
+  </statement>
+  <!--查询活动的商品总数量-->
+  <statement id="ComBeziWfs_SWfsNewSubject_GetSubjectTotalCount">
+    select count(0) from  SWfsNewSubjectProductRef where CategoryNo in (select CategoryNo from SWfsNewSubjectCategory
+    where SubjectNo=@SubjectNo and IsDelete=1)
+  </statement>
+  <!--更新活动添加的商品数量-->
+  <statement id="ComBeziWfs_SWfsNewSubject_UpdateSubjectProductCount">
+    UPDATE  SWfsNewSubject set ProductCount=@ProductCount  WHERE SubjectNo=@SubjectNo
+  </statement>
+  
+  <!--获取已经添加的商品的活动的商品列表-->
+  <statement id="ComBeziWfs_SWfsNewSubjectProductRef_GetAlReadyAddSubjectProductList">
+    with temp as(
+    select row_number() over(order by SWfsNewSubjectProductRef.SortNo) as row,
+    SWfsNewSubjectProductRef.SubjectProductRefId,
+    SWfsNewSubjectProductRef.PropertyValue,
+    SWfsNewSubjectProductRef.TopFlag,
+    SWfsNewSubjectProductRef.SortNo,
+    SWfsNewSubjectProductRef.BuyType,
+    SWfsNewSubjectProductRef.ShowTime,
+    SWfsNewSubjectProductRef.IsShow,
+    SpProduct.ProductNo,
+    SpProduct.ProductName,
+    SpfProductExtend.ProductShowPic as ProductPicFile,
+    SpfProductExtend.ProductShowPic,
+    SpProduct.ProductModel as GoodsNo,
+    SpProduct.ProductModel,
+    SpfSkuPrice.MarketPrice,
+    SpfSkuPrice.GoldPrice as SellPrice,
+    SpfSkuPrice.GoldPrice,
+    SpfSkuPrice.PlatinumPrice,
+    SpfSkuPrice.DiamondPrice,
+    SpfSkuPrice.PromotionPrice,
+    SpfSkuPrice.StandardPrice as LimitedPrice,
+    SpfSkuPrice.StandardPrice,
+    SpfSkuExtend.PcSaleState as IsShelf,
+    SpfSkuExtend.PcSaleState ,
+    SpBrand.BrandNo,
+    SpBrand.BrandCnName,
+    SpBrand.BrandEnName,
+    SpfProductExtend.IsOutSide
+    from
+    SWfsNewSubjectProductRef  with(nolock)
+    inner join SpProduct  with(nolock) on SWfsNewSubjectProductRef.ProductNo = SpProduct.ProductNo
+    inner join SpfProductExtend(nolock) on SpfProductExtend.ProductNo=SpProduct.ProductNo
+    --and SpfProductExtend.TypeFlag=1
+    inner join SpfSkuExtend (nolock) on SpfSkuExtend.ProductNo=SpProduct.ProductNo
+    --and SpfSkuExtend.PcSaleState=2 and SpfSkuExtend.PcShowState=1
+    inner join SpfSkuPrice on SpfSkuPrice.SkuNo=SpfSkuExtend.SkuNo
+    inner join SpBrand with(nolock) on SpProduct.BrandNo=SpBrand.BrandNo
+    where 1=1
+    #if($ProductNoOrProductModel!='')
+    and  (SpProduct.ProductNo =@ProductNoOrProductModel or SpProduct.ProductModel =@ProductNoOrProductModel)
+    #end
+    #if($CategoryNo !='')
+    and SpProduct.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($ProductName!='')
+    and  SpProduct.ProductName like '%'+@ProductName+'%'
+    #end
+    #if($IsShelf!='')
+    and SpfSkuExtend.PcSaleState =@isShelf
+    #end
+    #if($BrandNo!='')
+    and SpProduct.BrandNo =@BrandNo
+    #end
+    #if($IsOutSide!='')
+    and SpfProductExtend.IsOutSide=@IsOutSide
+    #end
+    and SWfsNewSubjectProductRef.CategoryNo =@SCategoryNo)
+    select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize 
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewSubjectProductRef_GetAlReadyAddSubjectProductListTotalCount">
+    select count(0)
+    from
+    SWfsNewSubjectProductRef  (nolock)
+    inner join SpProduct  (nolock) on SWfsNewSubjectProductRef.ProductNo = SpProduct.ProductNo
+    inner join SpfProductExtend(nolock) on SpfProductExtend.ProductNo=SpProduct.ProductNo
+    --and SpfProductExtend.TypeFlag=1
+    inner join SpfSkuExtend (nolock) on SpfSkuExtend.ProductNo=SpProduct.ProductNo
+    and SpfSkuExtend.PcSaleState=2 --and SpfSkuExtend.PcShowState=1
+    inner join SpfSkuPrice(nolock) on SpfSkuPrice.SkuNo=SpfSkuExtend.SkuNo
+    inner join SpBrand (nolock) on SpProduct.BrandNo=SpBrand.BrandNo
+    where 1=1
+    #if($ProductNoOrProductModel!='')
+    and  (SpProduct.ProductNo =@ProductNoOrProductModel or SpProduct.ProductModel =@ProductNoOrProductModel)
+    #end
+    #if($CategoryNo !='')
+    and SpProduct.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($ProductName!='')
+    and  SpProduct.ProductName like '%'+@ProductName+'%'
+    #end
+    #if($IsShelf!='')
+    and SpfSkuExtend.PcSaleState =@isShelf
+    #end
+    #if($BrandNo!='')
+    and SpProduct.BrandNo =@BrandNo
+    #end
+    #if($IsOutSide!='')
+    and SpfProductExtend.IsOutSide=@IsOutSide
+    #end
+    and SWfsNewSubjectProductRef.CategoryNo =@SCategoryNo
+  </statement>
+</statements>

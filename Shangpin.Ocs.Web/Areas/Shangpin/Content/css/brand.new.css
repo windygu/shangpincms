@@ -1,0 +1,294 @@
+﻿
+.spBrand_body {
+    margin: 0 auto;
+    width: 968px;
+    margin-top:20px;
+}
+.banner_top {
+    padding: 10px 0;
+    width: 100%;
+}
+.banner_left {
+    display: inline-block;
+    float: left;
+    height: 200px;
+    overflow: hidden;
+    width: 570px;
+}
+.banner_right {
+    display: inline-block;
+    float: right;
+    height: 200px;
+    overflow: hidden;
+    width: 380px;
+}
+.sp_tab_menu {
+}
+.sp_tab_menu_fixed {
+    background: none repeat scroll 0 0 #fff;
+    height: 73px;
+    left: 50%;
+    margin-left: -480px;
+    position: fixed;
+    top: 0;
+    width: 960px;
+    z-index: 99999;
+}
+.spBrand_body h6 {
+    border-bottom: 1px solid #000;
+    color: #212121;
+    font-size: 16px;
+    line-height: 24px;
+    overflow: hidden;
+    padding: 15px 15px 2px;
+}
+.spBrand_body h6 span {
+    float: left;
+    vertical-align: top;
+}
+.spBrand_body h6 span.right {
+    float: right;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 22px;
+    padding-top: 2px;
+}
+.spBrand_body h6 ul.tab_menu {
+    float: left;
+    padding-left: 320px;
+}
+.spBrand_body h6 ul.tab_menu li {
+    float: left;
+    font-size: 14px;
+    line-height: 21px;
+    padding-top: 0;
+}
+.spBrand_body h6 ul.tab_menu li span {
+    cursor: pointer;
+    line-height: 21px;
+}
+.spBrand_body h6 ul.tab_menu li em {
+    display: inline-block;
+    line-height: 21px;
+    padding: 0 5px;
+    width: 10px;
+}
+.logo_list {
+    padding: 10px 0;
+    width: 100%;
+}
+.logo_list li {
+    width: 100%;
+}
+.logo_list li span {
+    display: inline-block;
+    float: left;
+    height: 57px;
+    position: relative;
+    width: 120px;
+}
+.logo_list li em {
+    border: 1px solid #e4e8e9;
+    display: none;
+    height: 55px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 118px;
+}
+.image_list {
+    padding: 10px 0 5px;
+    width: 970px;
+}
+.image_list li {
+    height: 140px;
+    padding-bottom: 5px;
+    padding-right: 7px;
+    width: 235px;
+}
+.image_list li.first {
+    padding-right: 6px;
+}
+.logo_list li, .image_list li {
+    float: left;
+}
+.letterBox {
+    background: url("/images/page/brand/pic_bgline.jpg") repeat-x scroll 0 bottom rgba(0, 0, 0, 0);
+    margin-top: 5px;
+    overflow: hidden;
+    padding: 10px 0;
+    width: 960px;
+}
+.letterBox h3 {
+    font-size: 24px;
+    font-weight: normal;
+    padding: 0 15px 8px;
+}
+.letterBox ul {
+    margin: 0 auto;
+    overflow: hidden;
+    width: 940px;
+}
+.letterBox li {
+    color: #212121;
+    float: left;
+    overflow: hidden;
+    padding: 0 5px 5px;
+    width: 225px;
+}
+.letterBox li a {
+    color: #212121;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 18px;
+}
+.letterBox li a:hover {
+    color: #de4747;
+}
+.letterBox li span.flag_ship, .letterBox li span.new {
+    display: inline-block;
+    font-size: 12px;
+    height: 18px;
+    line-height: 18px;
+    margin-left: 5px;
+    padding: 0 3px;
+    vertical-align: middle;
+}
+.letterBox li span.flag_ship {
+    background: none repeat scroll 0 0 #000;
+}
+.letterBox li span.new {
+    background: none repeat scroll 0 0 #67b512;
+}
+.index_list {
+    border-bottom: 1px dotted #000;
+    width: 100%;
+}
+.index_list li {
+    float: left;
+    font-size: 14px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 12px 0 13px;
+}
+.index_list li.curr {
+    font-weight: bold;
+}
+#spIndex_imgroll {
+    height: 280px;
+    margin-top: 4px;
+}
+#spIndex_imgroll_prev, #spIndex_imgroll_next {
+    background: url("/images/plug/arrow/sp_xli.gif") no-repeat scroll -81px 226px rgba(0, 0, 0, 0);
+    height: 500px;
+    left: 5px;
+    opacity: 0.7;
+    position: absolute;
+    top: 0;
+    width: 40px;
+    z-index: 99;
+}
+#spIndex_imgroll_next {
+    background: url("/images/plug/arrow/sp_xli.gif") no-repeat scroll -30px 226px rgba(0, 0, 0, 0);
+    left: 910px;
+}
+#spIndex_imgroll_prev:hover, #spIndex_imgroll_next:hover {
+    opacity: 0.9;
+}
+#spIndex_imgroll_wrapper ul {
+    display: block;
+    width: auto;
+}
+#spIndex_imgroll_wrapper li {
+    float: left;
+    width: 960px;
+}
+#spIndex_imgroll_index {
+    height: 28px;
+    margin-top: 20px;
+    padding: 10px 0 0;
+    text-align: center;
+}
+#spIndex_board {
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    margin: 15px auto 0;
+}
+#spIndex_board li {
+    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    display: block;
+    float: left;
+    height: 226px;
+    overflow: hidden;
+    padding: 9px;
+    width: 301px;
+}
+#spIndex_board a {
+    display: block;
+    height: 225px;
+    width: 300px;
+}
+.spIndex_cir {
+    display: inline-block;
+    margin: 0 2px;
+}
+.spIndex_cir a {
+    background: url("/images/page/index/spWindow.png") no-repeat scroll -30px top rgba(0, 0, 0, 0);
+    display: block;
+    height: 15px;
+    overflow: hidden;
+    text-indent: -128px;
+    width: 15px;
+}
+#spIndex_window_nav .ciron {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+#spIndex_imgroll_index {
+    margin: 0 auto;
+    padding-top: 20px;
+    text-align: center;
+    width: 960px;
+}
+#spIndex_imgroll_index ul {
+    overflow: hidden;
+}
+#spIndex_imgroll_index li {
+    display: inline-block;
+    overflow: hidden;
+    padding: 5px;
+}
+#spIndex_imgroll_index ul li a {
+    background: url("/Areas/Shangpin/Images/page/brand/pic_dot.gif") no-repeat scroll -18px 0 rgba(0, 0, 0, 0);
+    display: block;
+    height: 8px;
+    width: 9px;
+}
+#spIndex_imgroll_index ul li.curr a {
+    background-position: 0 0;
+}
+.banner_left a, .banner_right a, .logo_list li a, .image_list li a {
+    display: block;
+}
+.letterBox h3, .index_list li a, .spBrand_body h6 ul.tab_menu li.curr span, .spBrand_body h6, .spBrand_body h6 span {
+    color: #212121;
+    font-family: "微软雅黑","Microsoft YaHei","黑体","Tahoma","宋体";
+}
+.spBrand_body h6 ul.tab_menu li em, .spBrand_body h6 ul.tab_menu li span {
+    color: #717171;
+    font-family: "微软雅黑","Microsoft YaHei","黑体","Tahoma","宋体";
+}
+.letterBox li span.new, .letterBox li span.flag_ship {
+    color: #fff;
+    font-family: "微软雅黑","Microsoft YaHei","黑体","Tahoma","宋体";
+}
+
+
+.spBrand_body .bodymain {
+    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding:3px;
+    margin-bottom:10px;
+}

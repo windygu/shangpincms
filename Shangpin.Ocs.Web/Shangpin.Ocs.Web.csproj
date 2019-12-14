@@ -1,0 +1,1614 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9D9CE942-5E2C-46CC-BD65-E49C1F3313A1}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Shangpin.Ocs.Web</RootNamespace>
+    <AssemblyName>Shangpin.Ocs.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Com.Bezi.BizCore">
+      <HintPath>..\binpublic\Com.Bezi.BizCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Com.Shang.SensitiveWord">
+      <HintPath>..\binpublic\Com.Shang.SensitiveWord.dll</HintPath>
+    </Reference>
+    <Reference Include="Com.Shang.SMSService, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\binpublic\Com.Shang.SMSService.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\binpublic\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="ImageServer.Client">
+      <HintPath>..\binpublic\ImageServer.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="ISendSMS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5622ce6a19949fb3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\binpublic\ISendSMS.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NLog">
+      <HintPath>..\binpublic\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI">
+      <HintPath>..\binpublic\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML">
+      <HintPath>..\binpublic\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net">
+      <HintPath>..\binpublic\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats">
+      <HintPath>..\binpublic\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
+    <Reference Include="NVelocity">
+      <HintPath>..\binpublic\NVelocity.dll</HintPath>
+    </Reference>
+    <Reference Include="SecurityHelper">
+      <HintPath>..\binpublic\SecurityHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="Shangpin.Entity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\binpublic\Shangpin.Entity.dll</HintPath>
+    </Reference>
+    <Reference Include="Shangpin.Framework.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\binpublic\Shangpin.Framework.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Shangpin.Framework.Configuration">
+      <HintPath>..\binpublic\Shangpin.Framework.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Shangpin.Framework.WebMvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\binpublic\Shangpin.Framework.WebMvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.6\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20710.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BaseController.cs" />
+    <Compile Include="App_Start\OCSAuthorization.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Outlet\Controllers\ADComentController.cs" />
+    <Compile Include="Areas\Outlet\Controllers\ChannelController.cs" />
+    <Compile Include="Areas\Outlet\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Outlet\Controllers\IndexADController.cs" />
+    <Compile Include="Areas\Outlet\Controllers\IndexFouctPicController.cs" />
+    <Compile Include="Areas\Outlet\Controllers\MarketOptionController.cs" />
+    <Compile Include="Areas\Outlet\Controllers\MobileADController.cs" />
+    <Compile Include="Areas\Outlet\Controllers\NoticeController.cs" />
+    <Compile Include="Areas\Outlet\Controllers\StatesController.cs" />
+    <Compile Include="Areas\Outlet\Controllers\SubjectConsoleController.cs" />
+    <Compile Include="Areas\Outlet\Controllers\SubjectController.cs" />
+    <Compile Include="Areas\Outlet\Controllers\GroupTimeController.cs" />
+    <Compile Include="Areas\Outlet\Controllers\SubjectExtendController.cs" />
+    <Compile Include="Areas\Outlet\Controllers\TopicController.cs" />
+    <Compile Include="Areas\Outlet\Models\ProductShowInfo.cs" />
+    <Compile Include="Areas\Outlet\OutletAreaRegistration.cs" />
+    <Compile Include="Areas\Permission\Controllers\CacheManageController.cs" />
+    <Compile Include="Areas\Permission\Controllers\RedirectController.cs" />
+    <Compile Include="Areas\Permission\PermissionAreaRegistration.cs" />
+    <Compile Include="Areas\ProductFlat\Controllers\ProductController.cs" />
+    <Compile Include="Areas\ProductFlat\ProductFlatAreaRegistration.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\AppRecommendProductMangerController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\NewChannelsController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\BoutiqueController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\BrandIndexController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\FlagshipController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\NewShelfController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\ADManageController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\AppIndexMamagerController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\BrandController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\ChannelController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\CurtainController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\DetailController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\HomePageController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\NewChannelController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\NewCommingController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\OrderController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\ProductController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\ProductLabelController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\ProductSortController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\StyleController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\VCodeController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\VenueController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\ListController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\PromotionController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\SEOController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\SubjectController.cs" />
+    <Compile Include="Areas\Shangpin\Controllers\VSinsController.cs" />
+    <Compile Include="Areas\Shangpin\ShangpinAreaRegistration.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Infrastructure\HtmHelpers.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReadPic\GetPic.ashx.cs">
+      <DependentUpon>GetPic.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="ReadPic\GetPicII.ashx.cs">
+      <DependentUpon>GetPicII.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="ReadPic\ReadPic.ashx.cs">
+      <DependentUpon>ReadPic.ashx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="Areas\Outlet\Content\css\core.css" />
+    <Content Include="Areas\Outlet\Content\css\init.css" />
+    <Content Include="Areas\Outlet\Content\css\layout\body.css" />
+    <Content Include="Areas\Outlet\Content\css\layout\footer.css" />
+    <Content Include="Areas\Outlet\Content\css\layout\header.css" />
+    <Content Include="Areas\Outlet\Content\css\page\index\index.active.css" />
+    <Content Include="Areas\Outlet\Content\css\page\index\index.icons.css" />
+    <Content Include="Areas\Outlet\Content\css\page\index\index.imgtextnews.css" />
+    <Content Include="Areas\Outlet\Content\css\page\index\index.news.css" />
+    <Content Include="Areas\Outlet\Content\css\page\index\index.rollimg.css" />
+    <Content Include="Areas\Outlet\Content\css\page\info\info.content.css" />
+    <Content Include="Areas\Outlet\Content\css\page\info\info.right.css" />
+    <Content Include="Areas\Outlet\Content\css\page\leftmenu\leftmenu.css" />
+    <Content Include="Areas\Outlet\Content\css\page\rightcontent\brandcontent.css" />
+    <Content Include="Areas\Outlet\Content\css\page\rightcontent\list.css" />
+    <Content Include="Areas\Outlet\Content\css\page\rightcontent\rightcontent.css" />
+    <Content Include="Areas\Outlet\Content\css\page\rightcontent\sort.css" />
+    <Content Include="Areas\Outlet\Content\css\tablesorter.style.css" />
+    <Content Include="Areas\Outlet\Content\css\tipswindown.css" />
+    <Content Include="Areas\Outlet\Images\ex\1.png" />
+    <Content Include="Areas\Outlet\Images\ex\2.png" />
+    <Content Include="Areas\Outlet\Images\ex\3.png" />
+    <Content Include="Areas\Outlet\Images\ex\4.png" />
+    <Content Include="Areas\Outlet\Images\ex\5.png" />
+    <Content Include="Areas\Outlet\Images\ex\6.png" />
+    <Content Include="Areas\Outlet\Images\ex\7.png" />
+    <Content Include="Areas\Outlet\Images\ex\8.png" />
+    <Content Include="Areas\Outlet\Images\ex\a.jpg" />
+    <Content Include="Areas\Outlet\Images\ex\asc.gif" />
+    <Content Include="Areas\Outlet\Images\ex\b.jpg" />
+    <Content Include="Areas\Outlet\Images\ex\bg.gif" />
+    <Content Include="Areas\Outlet\Images\ex\desc.gif" />
+    <Content Include="Areas\Outlet\Images\ex\img.jpg" />
+    <Content Include="Areas\Outlet\Images\ex\img0.jpg" />
+    <Content Include="Areas\Outlet\Images\ex\img1.jpg" />
+    <Content Include="Areas\Outlet\Images\ex\img2.jpg" />
+    <Content Include="Areas\Outlet\Images\ex\img3.jpg" />
+    <Content Include="Areas\Outlet\Images\ex\img4.jpg" />
+    <Content Include="Areas\Outlet\Images\ex\info.jpg" />
+    <Content Include="Areas\Outlet\Images\layout\add.png" />
+    <Content Include="Areas\Outlet\Images\layout\add_1.png" />
+    <Content Include="Areas\Outlet\Images\layout\delete.png" />
+    <Content Include="Areas\Outlet\Images\layout\delete_1.png" />
+    <Content Include="Areas\Outlet\Images\layout\e.gif" />
+    <Content Include="Areas\Outlet\Images\layout\edit.png" />
+    <Content Include="Areas\Outlet\Images\layout\folder.png" />
+    <Content Include="Areas\Outlet\Images\layout\header-bg.png" />
+    <Content Include="Areas\Outlet\Images\layout\search.png" />
+    <Content Include="Areas\Outlet\Images\layout\selected-bg-left.png" />
+    <Content Include="Areas\Outlet\Images\layout\selected-bg-right.png" />
+    <Content Include="Areas\Outlet\Images\layout\selected-bg.png" />
+    <Content Include="Areas\Outlet\Images\logo\logo.png" />
+    <Content Include="Areas\Outlet\Images\logo\logo1.png" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\CommKindeditor.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\kindeditor-all-min.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\kindeditor-all.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\kindeditor-min.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\kindeditor.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\lang\ar.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\lang\en.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\lang\ko.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\lang\zh_CN.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\lang\zh_TW.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\license.txt" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\anchor\anchor.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\autoheight\autoheight.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\baidumap\baidumap.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\baidumap\index.html" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\baidumap\map.html" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\clearhtml\clearhtml.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\code\code.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\code\prettify.css" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\code\prettify.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\emoticons.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\0.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\1.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\10.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\100.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\101.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\102.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\103.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\104.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\105.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\106.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\107.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\108.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\109.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\11.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\110.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\111.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\112.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\113.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\114.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\115.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\116.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\117.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\118.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\119.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\12.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\120.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\121.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\122.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\123.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\124.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\125.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\126.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\127.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\128.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\129.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\13.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\130.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\131.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\132.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\133.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\134.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\14.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\15.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\16.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\17.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\18.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\19.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\2.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\20.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\21.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\22.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\23.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\24.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\25.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\26.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\27.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\28.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\29.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\3.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\30.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\31.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\32.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\33.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\34.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\35.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\36.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\37.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\38.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\39.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\4.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\40.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\41.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\42.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\43.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\44.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\45.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\46.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\47.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\48.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\49.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\5.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\50.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\51.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\52.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\53.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\54.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\55.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\56.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\57.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\58.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\59.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\6.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\60.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\61.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\62.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\63.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\64.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\65.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\66.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\67.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\68.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\69.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\7.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\70.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\71.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\72.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\73.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\74.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\75.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\76.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\77.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\78.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\79.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\8.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\80.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\81.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\82.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\83.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\84.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\85.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\86.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\87.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\88.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\89.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\9.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\90.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\91.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\92.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\93.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\94.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\95.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\96.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\97.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\98.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\99.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\emoticons\images\static.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\filemanager\filemanager.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\filemanager\images\file-16.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\filemanager\images\file-64.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\filemanager\images\folder-16.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\filemanager\images\folder-64.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\filemanager\images\go-up.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\flash\flash.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\image\image.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\image\images\align_left.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\image\images\align_right.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\image\images\align_top.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\image\images\refresh.png" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\insertfile\insertfile.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\lineheight\lineheight.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\link\link.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\map\map.html" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\map\map.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\media\media.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\multiimage\images\image.png" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\multiimage\images\select-files-en.png" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\multiimage\images\select-files-zh_CN.png" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\multiimage\images\swfupload.swf" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\multiimage\multiimage.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\pagebreak\pagebreak.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\plainpaste\plainpaste.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\preview\preview.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\quickformat\quickformat.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\table\table.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\template\html\1.html" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\template\html\2.html" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\template\html\3.html" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\template\template.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\plugins\wordpaste\wordpaste.js" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\themes\common\anchor.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\themes\common\blank.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\themes\common\flash.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\themes\common\loading.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\themes\common\media.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\themes\common\rm.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\themes\default\background.png" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\themes\default\default.css" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\themes\default\default.png" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\themes\qq\editor.gif" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\themes\qq\qq.css" />
+    <Content Include="Areas\Outlet\Scripts\kindeditor-4.1.10\themes\simple\simple.css" />
+    <Content Include="Areas\Outlet\Scripts\layer\extend\layer.ext.js" />
+    <Content Include="Areas\Outlet\Scripts\layer\layer.js" />
+    <Content Include="Areas\Outlet\Scripts\layer\skin\default\textbg.png" />
+    <Content Include="Areas\Outlet\Scripts\layer\skin\default\xubox_ico0.png" />
+    <Content Include="Areas\Outlet\Scripts\layer\skin\default\xubox_loading0.gif" />
+    <Content Include="Areas\Outlet\Scripts\layer\skin\default\xubox_loading1.gif" />
+    <Content Include="Areas\Outlet\Scripts\layer\skin\default\xubox_loading2.gif" />
+    <Content Include="Areas\Outlet\Scripts\layer\skin\default\xubox_loading3.gif" />
+    <Content Include="Areas\Outlet\Scripts\layer\skin\default\xubox_title0.png" />
+    <Content Include="Areas\Outlet\Scripts\layer\skin\layer.css" />
+    <Content Include="Areas\Outlet\Scripts\layer\skin\layer.ext.css" />
+    <Content Include="Areas\Outlet\Scripts\lib\jquery.form.js" />
+    <Content Include="Areas\Outlet\Scripts\lib\jquery.js" />
+    <Content Include="Areas\Outlet\Scripts\My97DatePicker\calendar.js" />
+    <Content Include="Areas\Outlet\Scripts\My97DatePicker\lang\en.js" />
+    <Content Include="Areas\Outlet\Scripts\My97DatePicker\lang\zh-cn.js" />
+    <Content Include="Areas\Outlet\Scripts\My97DatePicker\lang\zh-tw.js" />
+    <Content Include="Areas\Outlet\Scripts\My97DatePicker\skin\datePicker.gif" />
+    <Content Include="Areas\Outlet\Scripts\My97DatePicker\skin\default\datepicker.css" />
+    <Content Include="Areas\Outlet\Scripts\My97DatePicker\skin\default\img.gif" />
+    <Content Include="Areas\Outlet\Scripts\My97DatePicker\skin\WdatePicker.css" />
+    <Content Include="Areas\Outlet\Scripts\My97DatePicker\skin\whyGreen\bg.jpg" />
+    <Content Include="Areas\Outlet\Scripts\My97DatePicker\skin\whyGreen\datepicker.css" />
+    <Content Include="Areas\Outlet\Scripts\My97DatePicker\skin\whyGreen\img.gif" />
+    <Content Include="Areas\Outlet\Scripts\My97DatePicker\WdatePicker.js" />
+    <Content Include="Areas\Outlet\Scripts\page\index\index.rollimg.js" />
+    <Content Include="Areas\Outlet\Scripts\page\index\test.js" />
+    <Content Include="Areas\Outlet\Scripts\page\index\comm.js" />
+    <Content Include="Areas\Outlet\Scripts\page\subject\brand.js" />
+    <Content Include="Areas\Outlet\Scripts\page\subject\OutletProductview.js" />
+    <Content Include="Areas\Outlet\Scripts\page\subject\productview.js" />
+    <Content Include="Areas\Outlet\Scripts\plug\autoComplete.js" />
+    <Content Include="Areas\Outlet\Scripts\plug\Brand.js" />
+    <Content Include="Areas\Outlet\Scripts\plug\checkStr.js" />
+    <Content Include="Areas\Outlet\Scripts\plug\ColumnTD.js" />
+    <Content Include="Areas\Outlet\Scripts\plug\comm.js" />
+    <Content Include="Areas\Outlet\Scripts\plug\copy.js" />
+    <Content Include="Areas\Outlet\Scripts\plug\DivWaitMsg.js" />
+    <Content Include="Areas\Outlet\Scripts\plug\dragDrop.js" />
+    <Content Include="Areas\Outlet\Scripts\plug\ERPBrand.js" />
+    <Content Include="Areas\Outlet\Scripts\plug\j.MXImage.js" />
+    <Content Include="Areas\Outlet\Scripts\page\index\popDiv.js" />
+    <Content Include="Areas\Outlet\Scripts\plug\jquery.tablesorter.js" />
+    <Content Include="Areas\Outlet\Scripts\plug\jquery.zclip.js" />
+    <Content Include="Areas\Outlet\Scripts\plug\leftMenu.js" />
+    <Content Include="Areas\Outlet\Scripts\plug\tipswindown.js" />
+    <Content Include="Areas\Outlet\Scripts\plug\ZeroClipboard.swf" />
+    <Content Include="Areas\Outlet\Scripts\sortable\jquery-1.8.2.js" />
+    <Content Include="Areas\Outlet\Scripts\sortable\jquery-ui.js" />
+    <Content Include="Areas\Outlet\Scripts\uploadify\picbox.css" />
+    <Content Include="Areas\Outlet\Scripts\uploadify\cancel.png" />
+    <Content Include="Areas\Outlet\Scripts\uploadify\jquery.uploadify.v2.1.0.js" />
+    <Content Include="Areas\Outlet\Scripts\uploadify\swfobject.js" />
+    <Content Include="Areas\Outlet\Scripts\uploadify\uploadify.css" />
+    <Content Include="Areas\Outlet\Scripts\uploadify\uploadify.swf" />
+    <Content Include="Areas\Outlet\Scripts\uploadify\picreview.js" />
+    <Content Include="Areas\ProductFlat\Content\BtnBg.gif" />
+    <Content Include="Areas\ProductFlat\Content\CSS\list.css" />
+    <Content Include="Areas\ProductFlat\Content\CSS\ProductIndex.css" />
+    <Content Include="Areas\ProductFlat\Content\CSS\ProductSortLayout.css" />
+    <Content Include="Areas\ProductFlat\Content\jquery-ui.min.css" />
+    <Content Include="Areas\ProductFlat\Content\Js\AllProduct.js" />
+    <Content Include="Areas\ProductFlat\Content\Js\json2.js" />
+    <Content Include="Areas\ProductFlat\Content\TitleBg1.gif" />
+    <Content Include="Areas\ProductFlat\Content\TitleBg2.gif" />
+    <Content Include="Areas\ProductFlat\Scripts\jquery-ui.min.js" />
+    <Content Include="Areas\ProductFlat\Scripts\jquery.js" />
+    <Content Include="Areas\Shangpin\Content\css\brand.new.css" />
+    <Content Include="Areas\Shangpin\Content\css\core.css" />
+    <Content Include="Areas\Shangpin\Content\css\init.css" />
+    <Content Include="Areas\Shangpin\Content\css\layout\body.css" />
+    <Content Include="Areas\Shangpin\Content\css\layout\footer.css" />
+    <Content Include="Areas\Shangpin\Content\css\layout\header.css" />
+    <Content Include="Areas\Shangpin\Content\css\layout\sp.modewindow.brfs.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\108\108.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\108\108mobile.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\108\core.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\108\part\acc.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\108\part\bags.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\108\part\beauty.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\108\part\choes.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\108\part\index.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\108\index.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\108\part\men.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\108\part\sales.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\108\part\trend.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\108\part\women.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\1111\index.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\blackfriday\blackfriday.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\blackfriday\index.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\channel\channel.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\channel\channel.new.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\christmas\index.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\index\homepage.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\index\index.active.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\index\index.icons.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\index\index.imgtextnews.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\index\index.news.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\index\index.rollimg.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\channel\channels_201408.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\index\index201408.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\index\index_201408.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\info\info.content.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\info\info.right.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\Label\Label.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\leftmenu\leftmenu.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\newyearsale\index.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\rightcontent\brandcontent.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\rightcontent\list.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\rightcontent\rightcontent.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\rightcontent\sort.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\Thanksgiving2\index.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\wap\1111\1111.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\wap\base.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\wap\ifc.css" />
+    <Content Include="Areas\Shangpin\Content\css\page\weixin\flagshop.css" />
+    <Content Include="Areas\Shangpin\Content\css\sp.modewindow.brfs.css" />
+    <Content Include="Areas\Shangpin\Content\css\sp.template.brfs.css" />
+    <Content Include="Areas\Shangpin\Content\css\tipswindown.css" />
+    <Content Include="Areas\Shangpin\Content\css\tree\lTREE.default.css" />
+    <Content Include="Areas\Shangpin\Content\data\templ_example.txt" />
+    <Content Include="Areas\Shangpin\Content\data\templ_upload.txt" />
+    <Content Include="Areas\Shangpin\Content\jquery.reveal.js" />
+    <Content Include="Areas\Shangpin\Images\layout\add.png" />
+    <Content Include="Areas\Shangpin\Images\layout\add_1.png" />
+    <Content Include="Areas\Shangpin\Images\layout\arrow.png" />
+    <Content Include="Areas\Shangpin\Images\layout\close.png" />
+    <Content Include="Areas\Shangpin\Images\layout\delete.png" />
+    <Content Include="Areas\Shangpin\Images\layout\delete_1.png" />
+    <Content Include="Areas\Shangpin\Images\layout\e.gif" />
+    <Content Include="Areas\Shangpin\Images\layout\edit.png" />
+    <Content Include="Areas\Shangpin\Images\layout\folder.png" />
+    <Content Include="Areas\Shangpin\Images\layout\go.jpg" />
+    <Content Include="Areas\Shangpin\Images\layout\header-bg.png" />
+    <Content Include="Areas\Shangpin\Images\layout\minus.png" />
+    <Content Include="Areas\Shangpin\Images\layout\plus.png" />
+    <Content Include="Areas\Shangpin\Images\layout\refresh.png" />
+    <Content Include="Areas\Shangpin\Images\layout\search.png" />
+    <Content Include="Areas\Shangpin\Images\layout\selected-bg-left.png" />
+    <Content Include="Areas\Shangpin\Images\layout\selected-bg-right.png" />
+    <Content Include="Areas\Shangpin\Images\layout\selected-bg.png" />
+    <Content Include="Areas\Shangpin\Images\loading.gif" />
+    <Content Include="Areas\Shangpin\Images\logo\logo.png" />
+    <Content Include="Areas\Shangpin\Images\logo\logo1.png" />
+    <Content Include="Areas\Shangpin\Images\page\brand\pic_dot.gif" />
+    <Content Include="Areas\Shangpin\Images\table\u104_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u10_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u13_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u14_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u15_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u17_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u18_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u19_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u20_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u21_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u24_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u26_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u30_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u32_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u33_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u34_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u35_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u36_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u39_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u40_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u41_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u42_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u43_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u44_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u45_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u46_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u47_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u49_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u4_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u50_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u51_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u52_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u53_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u54_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u55_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u56_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u57_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u59_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u60_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u62_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u63_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u65_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u6_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u74_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u77_normal.png" />
+    <Content Include="Areas\Shangpin\Images\table\u8_normal.png" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\banner01.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\banner02.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\banner960_420_02.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\banner960_420_03.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\hotbrand.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\image01.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\image02.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\image03.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\image04.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\image05.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\image06.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\image07.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\image120_160.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\image140_186.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\image160_250.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\image310_185_01.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\image310_185_02.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\image310_380.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\image310_380_01.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\image315_150.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\InternationalBrand.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\logo01.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\logo02.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\logo03.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\logo04.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\logo05.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\logo06.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\logo07.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\logo08.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\logo09.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\logo10.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\logo11.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\logo12.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\logo13.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\logo14.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\logo15.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\logo16.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\logo17.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\logo18.jpg" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\swarr.gif" />
+    <Content Include="Areas\Shangpin\Images\page\index_201408\swarr.png" />
+    <Content Include="Areas\Shangpin\Images\topshop\test_01.jpg" />
+    <Content Include="Areas\Shangpin\Images\topshop\test_02.jpg" />
+    <Content Include="Areas\Shangpin\Images\topshop\test_03.jpg" />
+    <Content Include="Areas\Shangpin\Images\topshop\test_04.jpg" />
+    <Content Include="Areas\Shangpin\Images\topshop\test_05.jpg" />
+    <Content Include="Areas\Shangpin\Images\topshop\test_06.jpg" />
+    <Content Include="Areas\Shangpin\Images\topshop\test_07.jpg" />
+    <Content Include="Areas\Shangpin\Images\topshop\test_08.jpg" />
+    <Content Include="Areas\Shangpin\Images\topshop\test_09.jpg" />
+    <Content Include="Areas\Shangpin\Images\topshop\top_shop_cms_01.jpg" />
+    <Content Include="Areas\Shangpin\Images\topshop\top_shop_cms_02.jpg" />
+    <Content Include="Areas\Shangpin\Images\topshop\top_shop_cms_03.jpg" />
+    <Content Include="Areas\Shangpin\Images\topshop\top_shop_cms_04.jpg" />
+    <Content Include="Areas\Shangpin\Images\topshop\top_shop_cms_05.jpg" />
+    <Content Include="Areas\Shangpin\Images\topshop\top_shop_cms_06.jpg" />
+    <Content Include="Areas\Shangpin\Images\topshop\top_shop_cms_07.jpg" />
+    <Content Include="Areas\Shangpin\Images\topshop\top_shop_cms_08.jpg" />
+    <Content Include="Areas\Shangpin\Images\topshop\top_shop_cms_09.jpg" />
+    <Content Include="Areas\Shangpin\Images\topshop\top_shop_cms_10.jpg" />
+    <Content Include="Areas\Shangpin\Images\topshop\top_shop_cms_11.jpg" />
+    <Content Include="Areas\Shangpin\Images\topshop\top_shop_cms_12.jpg" />
+    <Content Include="Areas\Shangpin\Images\tree\elbow-line.gif" />
+    <Content Include="Areas\Shangpin\Images\tree\folder-opened.gif" />
+    <Content Include="Areas\Shangpin\Images\icon.png" />
+    <Content Include="Areas\Shangpin\Images\validata\bg-form-field.gif" />
+    <Content Include="Areas\Shangpin\Images\validata\cross_circle.png" />
+    <Content Include="Areas\Shangpin\Images\validata\information.png" />
+    <Content Include="Areas\Shangpin\Images\validata\tick_circle.png" />
+    <Content Include="Areas\Shangpin\Scripts\Ad\Ad.js" />
+    <Content Include="Areas\Shangpin\Scripts\css\axurerp_pagespecificstyles.css" />
+    <Content Include="Areas\Shangpin\Scripts\css\axurerp_pagespecificstyles_ie6.css" />
+    <Content Include="Areas\Shangpin\Scripts\css\validate.css" />
+    <Content Include="Areas\Shangpin\Scripts\homepage\jquery.image-maps.js" />
+    <Content Include="Areas\Shangpin\Scripts\homepage\saveindexpic.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\Flagship\index.js" />
+    <Content Include="Areas\Shangpin\Scripts\validata\bg-form-field.gif" />
+    <Content Include="Areas\Shangpin\Scripts\validata\jquery-1.8.2.js" />
+    <Content Include="Areas\Shangpin\Scripts\validata\jquery.form.js" />
+    <Content Include="Areas\Shangpin\Scripts\validata\jquery.metadata.js" />
+    <Content Include="Areas\Shangpin\Scripts\validata\jquery.validate.js" />
+    <Content Include="Areas\Shangpin\Scripts\json2.js" />
+    <Content Include="Areas\Shangpin\Scripts\js\axurerp_pagespecificscript.js" />
+    <Content Include="Areas\Shangpin\Scripts\js\data.js" />
+    <Content Include="Areas\Shangpin\Scripts\js\DivWaitMsg.js" />
+    <Content Include="Areas\Shangpin\Scripts\js\jquery.form.js" />
+    <Content Include="Areas\Shangpin\Scripts\Alias\Alias.js" />
+    <Content Include="Areas\Shangpin\Scripts\js\jquery.uploadify.js" />
+    <Content Include="Areas\Shangpin\Scripts\js\jquery.validate.js" />
+    <Content Include="Areas\Shangpin\Scripts\js\sp.modewindow.brfs.js" />
+    <Content Include="Areas\Shangpin\Scripts\js\sp.modewindow.js" />
+    <Content Include="Areas\Shangpin\Scripts\js\sp.page.brfs.js" />
+    <Content Include="Areas\Shangpin\Scripts\js\sp.template.brfs.js" />
+    <Content Include="Areas\Shangpin\Scripts\js\sp.template.js" />
+    <Content Include="Areas\Shangpin\Scripts\js\tipswindown.js" />
+    <Content Include="Areas\Shangpin\Scripts\js\uploadify.swf" />
+    <Content Include="Areas\Shangpin\Scripts\lib\jquery.form.js" />
+    <Content Include="Areas\Shangpin\Scripts\lib\jquery.js" />
+    <Content Include="Areas\Shangpin\Scripts\lib\Jude.js" />
+    <Content Include="Areas\Shangpin\Scripts\validata\messages_cn.js" />
+    <Content Include="Areas\Shangpin\Scripts\My97DatePicker\calendar.js" />
+    <Content Include="Areas\Shangpin\Scripts\My97DatePicker\lang\en.js" />
+    <Content Include="Areas\Shangpin\Scripts\My97DatePicker\lang\zh-cn.js" />
+    <Content Include="Areas\Shangpin\Scripts\My97DatePicker\lang\zh-tw.js" />
+    <Content Include="Areas\Shangpin\Scripts\My97DatePicker\skin\datePicker.gif" />
+    <Content Include="Areas\Shangpin\Scripts\My97DatePicker\skin\default\datepicker.css" />
+    <Content Include="Areas\Shangpin\Scripts\My97DatePicker\skin\default\img.gif" />
+    <Content Include="Areas\Shangpin\Scripts\My97DatePicker\skin\WdatePicker.css" />
+    <Content Include="Areas\Shangpin\Scripts\My97DatePicker\skin\whyGreen\bg.jpg" />
+    <Content Include="Areas\Shangpin\Scripts\My97DatePicker\skin\whyGreen\datepicker.css" />
+    <Content Include="Areas\Shangpin\Scripts\My97DatePicker\skin\whyGreen\img.gif" />
+    <Content Include="Areas\Shangpin\Scripts\My97DatePicker\WdatePicker.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\index\CategoryChoose.js" />
+    <Content Include="Areas\Shangpin\Scripts\NewChanne\ListePager.css" />
+    <Content Include="Areas\Shangpin\Scripts\NewChanne\ListePager.js" />
+    <Content Include="Areas\Shangpin\Scripts\NewChanne\Navigate.css" />
+    <Content Include="Areas\Shangpin\Scripts\NewChanne\Navigate.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\Detail\ajax-file-upload.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\Detail\ajaxfileupload.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\index\comm.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\index\index.rollimg.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\index\index_201408.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\index\j.MXImage.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\index\j.MXScroll.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\index\j.MXTimer.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\index\popDiv.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\index\tab.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\index\tabs.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\index\test.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\artDialog.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\artDialog.source.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\jquery.artDialog.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\jquery.artDialog.source.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\license.txt" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\plugins\iframeTools.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\plugins\iframeTools.source.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\plugins\下载说明.txt" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\aero.css" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\aero\aero_s.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\aero\aero_s2.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\aero\ie6\aui_close.hover.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\aero\ie6\aui_close.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\aero\ie6\aui_e.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\aero\ie6\aui_n.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\aero\ie6\aui_ne.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\aero\ie6\aui_nw.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\aero\ie6\aui_s.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\aero\ie6\aui_se.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\aero\ie6\aui_sw.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\aero\ie6\aui_title_icon.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\aero\ie6\aui_w.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\black.css" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\black\bg.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\black\bg2.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\black\bg_css3.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\black\bg_css3_2.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\black\ie6\close.hover.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\black\ie6\close.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\black\ie6\e.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\black\ie6\n.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\black\ie6\ne.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\black\ie6\nw.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\black\ie6\s.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\black\ie6\se.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\black\ie6\sw.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\black\ie6\w.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\blue.css" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\blue\bg.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\blue\bg2.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\blue\bg_css3.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\blue\bg_css3_2.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\blue\ie6\close.hover.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\blue\ie6\close.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\blue\ie6\e.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\blue\ie6\n.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\blue\ie6\ne.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\blue\ie6\nw.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\blue\ie6\s.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\blue\ie6\se.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\blue\ie6\sw.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\blue\ie6\w.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\chrome.css" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\chrome\border.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\chrome\chrome_s.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\default.css" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\green.css" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\green\bg.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\green\bg2.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\green\bg_css3.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\green\bg_css3_2.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\green\color_bg.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\green\ie6\close.hover.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\green\ie6\close.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\green\ie6\e.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\green\ie6\n.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\green\ie6\ne.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\green\ie6\nw.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\green\ie6\s.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\green\ie6\se.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\green\ie6\sw.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\green\ie6\w.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\icons\error.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\icons\face-sad.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\icons\face-smile.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\icons\loading.gif" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\icons\question.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\icons\succeed.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\icons\warning.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\idialog.css" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\idialog\idialog_s.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\idialog\idialog_s2.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\idialog\ie6\aui_close.hover.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\idialog\ie6\aui_close.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\idialog\ie6\aui_e.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\idialog\ie6\aui_n.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\idialog\ie6\aui_ne.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\idialog\ie6\aui_nw.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\idialog\ie6\aui_s.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\idialog\ie6\aui_se.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\idialog\ie6\aui_sw.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\idialog\ie6\aui_w.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\opera.css" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\opera\ie6\aui_close.hover.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\opera\ie6\aui_close.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\opera\ie6\aui_e.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\opera\ie6\aui_n.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\opera\ie6\aui_ne.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\opera\ie6\aui_nw.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\opera\ie6\aui_s.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\opera\ie6\aui_se.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\opera\ie6\aui_sw.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\opera\ie6\aui_w.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\opera\s1.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\opera\s2.png" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\simple.css" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\artDialog\skins\twitter.css" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\JqueryCookie.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\Label.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\Label\refLabel.js" />
+    <Content Include="Areas\Shangpin\Scripts\page\newchannel\channel.js" />
+    <Content Include="Areas\Shangpin\Scripts\plug\Brand.js" />
+    <Content Include="Areas\Shangpin\Scripts\plug\checkStr.js" />
+    <Content Include="Areas\Shangpin\Scripts\plug\comm.js" />
+    <Content Include="Areas\Shangpin\Scripts\plug\dragDrop.js" />
+    <Content Include="Areas\Shangpin\Scripts\plug\ERPBrand.js" />
+    <Content Include="Areas\Shangpin\Scripts\plug\j.MXImage.js" />
+    <Content Include="Areas\Shangpin\Scripts\plug\jquery-ui-1.10.3.custom.min.js" />
+    <Content Include="Areas\Shangpin\Scripts\plug\leftMenu.js" />
+    <Content Include="Areas\Shangpin\Scripts\plug\modewindow.brfs.js" />
+    <Content Include="Areas\Shangpin\Scripts\plug\modewindow.js" />
+    <Content Include="Areas\Shangpin\Scripts\plug\tabChange.js" />
+    <Content Include="Areas\Shangpin\Scripts\plug\uploadPreview.min.js" />
+    <Content Include="Areas\Shangpin\Scripts\plug\tipswindown.js" />
+    <Content Include="Areas\Shangpin\Scripts\validata\validate.form.js" />
+    <Content Include="Areas\Shangpin\Scripts\Venue\flagtemplaterender.js" />
+    <Content Include="Areas\Shangpin\Scripts\Venue\jquery.form.js" />
+    <Content Include="Areas\Shangpin\Scripts\Venue\jquery.pagers.js" />
+    <Content Include="Areas\Shangpin\Scripts\Venue\jquery.utils.min.js" />
+    <Content Include="Areas\Shangpin\Scripts\Venue\templaterender.js" />
+    <Content Include="Areas\Shangpin\Scripts\Venue\newtemplaterender.js" />
+    <Content Include="Areas\Shangpin\Scripts\Venue\venuetemplate.js" />
+    <Content Include="Areas\Shangpin\Views\NewShelf\NewShelfBrandProductList.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Contents\Css\login.css" />
+    <Content Include="Contents\Images\loginindexbj.gif" />
+    <Content Include="Contents\Scripts\jquery-1.7.2.min.js" />
+    <Content Include="Contents\Scripts\SignIn.js" />
+    <Content Include="Default.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Areas\Outlet\Scripts\kindeditor-4.1.10\attached\" />
+    <Folder Include="Areas\Permission\Models\" />
+    <Folder Include="Areas\Permission\Views\Shared\" />
+    <Folder Include="Areas\ProductFlat\Models\" />
+    <Folder Include="Areas\Shangpin\Views\Models\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shangpin.Ocs.Entity.Extenstion\Shangpin.Ocs.Entity.Extenstion.csproj">
+      <Project>{652ACF8C-B13A-4BA1-AA99-806CD992D133}</Project>
+      <Name>Shangpin.Ocs.Entity.Extenstion</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shangpin.Ocs.Service\Shangpin.Ocs.Service.csproj">
+      <Project>{befad2e4-1f39-409f-88aa-ed6ac543d13f}</Project>
+      <Name>Shangpin.Ocs.Service</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\Shared\_Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\_ViewStart.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\Subject\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\Subject\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Login\SignIn.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\Subject\Edit.cshtml" />
+    <Content Include="Areas\Outlet\Views\Subject\ProductList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\Subject\SordManage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ReadPic\GetPic.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\Subject\SubjectView.cshtml" />
+    <Content Include="Areas\Outlet\Views\Subject\SubjectProductRef.cshtml" />
+    <Content Include="Areas\Outlet\Views\Subject\AjaxCategory.cshtml" />
+    <Content Include="Areas\Outlet\Views\Subject\AjaxBrand.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\Subject\ProductView.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\Topic\Index.cshtml" />
+    <Content Include="Areas\Outlet\Views\Subject\LogManage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\Topic\Manage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\Channel\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\Channel\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\Channel\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\Channel\SubjectList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\Topic\AddProduct.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\Subject\DataStatistics.cshtml" />
+    <Content Include="Areas\Outlet\Views\Topic\ManageProduct.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Shared\_Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Brand\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Brand\BrandIndexCreate.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Brand\BrandsList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Brand\NavigateList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Brand\FlagShipStore.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Brand\AboutProduct.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Brand\AboutLink.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Brand\AboutOcs.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Brand\GetProductList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Brand\ManagerNavRelationProduct.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Brand\FlagRelationProduct.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Brand\ManagerFlagRelationProduct.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Brand\Flagshipstorelist.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Brand\BrandSpecialityStoreEdit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Brand\AIIBrandsSelect.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Brand\BrandPreviewList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Brand\StoresList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\IndexAD\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\IndexAD\Manage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Permission\Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Permission\Views\Redirect\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\ADComent\Manage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\ADComent\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\Subject\SubjectChildCreate.cshtml" />
+    <Content Include="Areas\Outlet\Views\Subject\SubjectChildEdit.cshtml" />
+    <Content Include="Areas\Outlet\Views\Subject\SubjectChildList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Brand\ChangeRelationShip.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\SEO\BrandAlias.cshtml" />
+    <Content Include="Areas\Shangpin\Views\SEO\CategoryAlias.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Shared\_VenueLayout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Venue\TemplateVersionList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Venue\TemplateEdite.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Venue\VenueTemplateEditeByID.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Venue\MeetListManage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Venue\MeetingIndex.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Venue\SelectMeetingTemplate.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Venue\ChildMeetListManage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Venue\AddSubjectTopic.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Venue\SubjectTopicList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\domainname\TestMobilePreView.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\domainname\TestMobileStartView.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\domainname\TestWebPreView.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\domainname\TestWebStartView.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Venue\LogManageList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Venue\VenueVisitList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\TestMobilePreView.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\TestWebStartView.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\TestMobileStartView.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\TestWebPreView.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Subject\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Subject\CreateSubject.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Shared\_LayoutSubject.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Subject\EditSubject.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Subject\ProductView.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Subject\SubjectProductRef.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Subject\ProductList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Subject\AjaxCategory.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Subject\CreateGroup.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Subject\GroupList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Subject\EditGroup.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Subject\DataStatistics.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Subject\SubjectBrand.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\ADManage\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\ADManage\CreateAd.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\ADManage\EditAd.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Brand\AlterPicList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Brand\AlterPicAdd.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Brand\BrandsListGuoJi.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Brand\BrandGouJiInsert.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\Notice\Manage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\Notice\PicManage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\Notice\PicIndex.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Outlet\Views\Notice\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Login\Phoneverification.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Promotion\PromotionsList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Promotion\PromotionsInsert.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\List\AlterList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\List\AlterCreate.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\List\AlterimageCreate.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Venue\GetRelationRegionList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\part\acc.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shangpin\Views\Order\CMBOrderIDQuery.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\1111\mobile1111.cshtml" />
+    <Content Include="Areas\Permission\Views\CacheManage\Clear.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Curtain\CurtainList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Curtain\CurtainCreate.cshtml" />
+    <Content Include="Areas\Outlet\Views\Subject\ProjectToExcel.cshtml" />
+    <Content Include="Areas\Shangpin\Views\SEO\NoBdAlias.cshtml" />
+    <Content Include="Areas\Shangpin\Views\SEO\NoCyAlias.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\Thanksgiving\WebThanksgiving.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\Thanksgiving\MobileThanksgiving.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\Thanksgiving\WebBlackFriday.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\Thanksgiving\MobileBlackFriday.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\ChannelTemplate\WebThanksgiving.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\1212\DoubleDecember.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VCode\VCodeList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VCode\VCodeCreate.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VCode\VCodeManagement.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VCode\RelatedTopicsList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Shared\_LayoutOrders.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\ChannelList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\EditeChannel.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\EditeTemplate.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\SelectMeetingTemplate.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\TemplateList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\VenueTemplateEditeByID.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\ChannelAdverList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\ChannelAdverCreate.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\ChannelAlterList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\AlterCreate.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\AlterimageCreate.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\AboutProductList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\ChannelBrandGroupManager.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\ChannelProductGroupManager.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\ChannelProductList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\EditeProductGroup.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\EditeBrandGroup.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\Christmas\WebChristmas.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\Christmas\MobileChristmas.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Brand\EditeTemplate.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Brand\GetMobileFlagShipStore.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Brand\SelectMeetingTemplate.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Brand\TemplateList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\newyear\Mobilenewyear.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\newyear\Webnewyear.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\flagshipstore\ASH.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\flagshipstore\LANVIN.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\flagshipstore\WebThanksgiving.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\ChannelTemplate\channel001.cshtml" />
+    <Content Include="Areas\Outlet\Views\Channel\Spike.cshtml" />
+    <Content Include="Areas\Outlet\Views\Channel\SpikeProduct.cshtml" />
+    <Content Include="Areas\Outlet\Views\Channel\SearchSubjectProduct.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\newyear\Mobilenewyear20140115.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Product\ProductRefContent.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Product\TemplateList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Product\EditeTemplate.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Product\SelectMeetingTemplate.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Product\ProductManager.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Shared\_LayoutProduct.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\BrandAlterPicGroup.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\EditeBrandAlterPicGroup.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\BrandAlterPicList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\RecommendCategory.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\RecommendBrandList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Channel\ChannelRecommendLink.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\ChannelTemplate\CommonTemplate.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Subject\DataStatisticsNew.cshtml" />
+    <Content Include="Areas\Outlet\Views\Subject\DataStatisticsNew.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\Index.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\IndexList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\CreateTopSwitch.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\UpdateTopSwitch.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\IndexBigList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\CreateBigPagePosition.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\CreateSmallPagePosition.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\UpdateBigPagePosition.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\UpdateSmallPagePosition.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\IndexSmallList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\IndexBottonList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\UpdateBottonPagePosition.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\CreateBottonPagePosition.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\CreateSecKill.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\HomeSecKillList.cshtml" />
+    <Content Include="Areas\Outlet\Views\Notice\SelectPrdheatHtml.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\IndexBrandList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\AddHomeBrand.cshtml" />
+    <Content Include="Areas\Outlet\Views\SubjectConsole\SubjectManageList.cshtml" />
+    <Content Include="Areas\Outlet\Views\SubjectConsole\SubjectMonitorToday.cshtml" />
+    <Content Include="Areas\Outlet\Views\SubjectConsole\SubjectWaiting.cshtml" />
+    <Content Include="Areas\Outlet\Views\SubjectConsole\DataMonitor.cshtml" />
+    <Content Include="Areas\Outlet\Views\MarketOption\AddApply.cshtml" />
+    <Content Include="Areas\Outlet\Views\MarketOption\Index.cshtml" />
+    <Content Include="Areas\Outlet\Views\MarketOption\CheckApply.cshtml" />
+    <Content Include="Areas\Outlet\Views\MarketOption\AddSeo.cshtml" />
+    <Content Include="Areas\Outlet\Views\SubjectConsole\ConsoleEdit.cshtml" />
+    <Content Include="Areas\Outlet\Views\Subject\AjaxBrandNew.cshtml" />
+    <Content Include="Areas\Outlet\Views\SubjectConsole\EditSubjectTime.cshtml" />
+    <Content Include="Areas\Outlet\Views\SubjectConsole\SubjectManagePreheatList.cshtml" />
+    <Content Include="Areas\Outlet\Views\SubjectConsole\SubjectMonitorRuning.cshtml" />
+    <Content Include="Areas\Outlet\Views\SubjectConsole\SubjectMonitorEnd.cshtml" />
+    <Content Include="Areas\Outlet\Views\SubjectConsole\SubjectMonitorInPreheat.cshtml" />
+    <Content Include="Areas\Outlet\Views\SubjectConsole\SubjectMonitorOutPromotion.cshtml" />
+    <Content Include="Areas\Outlet\Views\SubjectConsole\SubjectUVFromList.cshtml" />
+    <Content Include="Areas\Outlet\Views\Notice\PartUpoladPicPage.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VCode\RelatedTopicsListV.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Detail\CommentManager.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Detail\CreateNewQA.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Detail\QuestAnswerManager.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Detail\QuestAnswerRefEdit.cshtml" />
+    <Content Include="Areas\Outlet\Views\IndexFouctPic\Index.cshtml" />
+    <Content Include="Areas\Outlet\Views\IndexFouctPic\Add.cshtml" />
+    <Content Include="Areas\Outlet\Views\MobileAD\Create.cshtml" />
+    <Content Include="Areas\Outlet\Views\MobileAD\Edit.cshtml" />
+    <Content Include="Areas\Outlet\Views\MobileAD\Index.cshtml" />
+    <Content Include="Areas\Outlet\Views\GroupTime\Manage.cshtml" />
+    <Content Include="Areas\Outlet\Views\GroupTime\Index.cshtml" />
+    <Content Include="Areas\ProductFlat\Views\Shared\ProductSortLayout.cshtml" />
+    <Content Include="Areas\ProductFlat\Views\Web.config" />
+    <Content Include="Areas\ProductFlat\Views\Product\Index.cshtml" />
+    <Content Include="Areas\ProductFlat\Views\Product\SortProductIndex.cshtml" />
+    <Content Include="Areas\ProductFlat\Views\Product\test.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\newyear\summersale备份.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\newyear\summersale.cshtml" />
+    <Content Include="Areas\ProductFlat\Views\Product\ProductList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\ProductLabel\Index.cshtml" />
+    <Content Include="Areas\Shangpin\Views\ProductLabel\ProductLabelManager.cshtml" />
+    <Content Include="Areas\Shangpin\Views\ProductLabel\ProductList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\ProductLabel\ProductRefLabel.cshtml" />
+    <Content Include="Areas\Outlet\Views\Subject\ProductMobileView.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Detail\AddComment.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Detail\AddReviewBack.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Detail\CommentVerifyConfig.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Detail\CommentVerify.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannel\NewChannelList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannel\NewChannelNavigate.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannel\NewChannelListePager.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannel\NewChannelPager.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewComming\AddNewComming.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewComming\AddNewCommingDate.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewComming\NewCommingIndex.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Product\GetStructContent.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Product\PreviewWebDetail.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Product\PreviewWebDetailMobile.cshtml" />
+    <Content Include="Areas\Shangpin\Views\AppIndexMamager\ShopCategory.cshtml" />
+    <Content Include="Areas\Shangpin\Views\AppIndexMamager\AlterPicEdit.cshtml" />
+    <Content Include="Areas\Shangpin\Views\AppIndexMamager\AlterPicList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\AppIndexMamager\Indexsss.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\HomeManager.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\HomeManager_FloorGlobalSet.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\HomeManager_FloorLinkSet.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\HomeManager_FloorADPicManager.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\BrandSelectList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\AddBrands.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewComming\AddGoods.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\HomeManager_EditFloorAD.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\HomeManager_EditTodyStylePic.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\HomeManager_TodayStyleSet.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\HomeManager_FloorSort.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewComming\UpdateGoods.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewComming\UpdateNewCommingManager.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\FloorCategoryPicSet.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewShelf\Index.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewShelf\AddNewShelfProductList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewShelf\NewActivityCreate.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewShelf\NewActivityList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewShelf\NewShelfProductList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewShelf\NewActivityEdit.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewShelf\NewBrandList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewShelf\NewBrandManage.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewShelf\NewBrandAdd.cshtml" />
+    <Content Include="Areas\Shangpin\Views\AppIndexMamager\OperatingPositionList.cshtml" />
+    <Content Include="Areas\ProductFlat\Views\Product\ViewPageInfo.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\NavManger.cshtml" />
+    <Content Include="Areas\Shangpin\Views\AppIndexMamager\Index.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Style\TagRelList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Style\MatchSpecialList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Style\TagRelCreateList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Style\ActivityPicManage.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Style\ActivityPicCreate.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Style\ActivityPicEdit.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Style\ManageMatchSpecial.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\Shoes.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\ShoesTopPiclist.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\ShoesNewProductList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\AddShoesNewDate.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\ShoesUpdateTopSwitch.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\shoescreatetopswitch.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\ShoesBrandSelectList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\AddShoesBrands.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\shoescreatebottonpageposition.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\FloorSort.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\FloorADPicManager.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\EditFloorAD.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\ClassifiedFloorADManager.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\EditClassifiedFloorAD.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\FloorLinkSet.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\NewProductManage.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\ShoesIndexBottonList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\ShoesUpdateBottonPagePosition.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\ShoesNewArrivalNoticeList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\CreateTopSwitchImgMap.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\UpdateTopSwitchImgMap.cshtml" />
+    <Content Include="Areas\Shangpin\Views\BrandIndex\Index.cshtml" />
+    <Content Include="Areas\Shangpin\Views\BrandIndex\AdIndex.cshtml" />
+    <Content Include="Areas\Shangpin\Views\BrandIndex\ManageAd.cshtml" />
+    <Content Include="Areas\Outlet\Views\Channel\FeaturedEventAdd.cshtml" />
+    <Content Include="Areas\Outlet\Views\Channel\FeaturedEventsList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\TaggingTopSwitchImgMap.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\IndexListIsMap.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Flagship\FlagShipLogo.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Boutique\NewShelfList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Boutique\NewShelfProductListManage.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Boutique\AddNewShelfProductList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Boutique\AddProductImage.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Flagship\AlterPicEdit.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Flagship\AlterPicList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Boutique\NewDateManage.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Flagship\EditFloorPic.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Flagship\FloorRefOCS.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Flagship\Index.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Flagship\OperationPicture.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Flagship\FlagshipList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\IndexHotProductList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\AddIndexHotProductList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Subject\IndexNew.cshtml" />
+    <Content Include="Areas\Outlet\Views\Subject\OutletProductList.cshtml" />
+    <Content Include="Areas\Outlet\Views\Subject\OutletProductMobileView.cshtml" />
+    <Content Include="Areas\Outlet\Views\Subject\OutletProductView.cshtml" />
+    <Content Include="Areas\Outlet\Views\Subject\OutletSubjectProductRef.cshtml" />
+    <Content Include="Areas\Shangpin\Views\HomePage\RecomemendBrandSelectList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\AppRecommendProductManger\Index.cshtml" />
+    <Content Include="Areas\Shangpin\Views\AppRecommendProductManger\AppRecommendProductList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Shared\_AppRecommendLayout.cshtml" />
+    <Content Include="Areas\ProductFlat\Views\Product\AppReCommendProduct.cshtml" />
+    <Content Include="Areas\ProductFlat\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\ProductFlat\Views\Product\TopShopProductList.cshtml" />
+    <None Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\part\bags.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\AddShoesNewProductList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\EditShoesNew.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\AddShoesHomeBrands.cshtml" />
+    <Content Include="Areas\Shangpin\Views\NewChannels\AddShoesNew.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <None Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\part\bags.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\part\beauty.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\part\men.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\part\shoes.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\part\trend.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\part\sales.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\part\women.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\wappart\acc.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\wappart\women.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\wappart\bags.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\wappart\beauty.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\wappart\men.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\wappart\sales.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\wappart\shoes.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\wappart\trend.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\part\extends.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VenueTemlate\zhengshi\wappart\extends.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Venue\SkillManager.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Venue\SkillGroupManager.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Venue\SkillProductList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Venue\AboutSkillProductList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Venue\MeetingNavList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Venue\AddMeetingNav.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Venue\NavContentList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Venue\NavThirdList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Venue\TemplateFileEdite.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VSins\VSinsList.cshtml" />
+    <Content Include="Areas\Shangpin\Views\VSins\CreateHotProduct.cshtml" />
+    <Content Include="ReadPic\ReadPic.ashx" />
+    <Content Include="Areas\Shangpin\Views\Venue\PartUpoladPicPage.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Venue\VenueTemplateEdite.cshtml" />
+    <Content Include="Areas\Shangpin\Views\Venue\VenueTemplateiframe.cshtml" />
+    <None Include="Properties\PublishProfiles\配置文件1.pubxml" />
+    <Content Include="ReadPic\GetPicII.ashx" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>27959</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:35936/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>http://cmsv3.shangpin.com</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

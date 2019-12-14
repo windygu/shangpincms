@@ -1,0 +1,58 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.Outlet
+@{
+    Layout = null;
+    List<SubjectUVFromM> list = ViewBag.UVFromList as List<SubjectUVFromM>;
+    int ResultCount = ViewBag.UVResultCount != null ? (int)ViewBag.UVResultCount : 0;
+}
+<link href="/Areas/Shangpin/Content/css/init.css" rel="stylesheet" type="text/css"
+    charset="utf-8" />
+<link href="/Areas/Shangpin/Content/css/core.css" rel="stylesheet" type="text/css"
+    charset="utf-8" />
+<link href="/Areas/Shangpin/Content/css/page/rightcontent/rightcontent.css" rel="stylesheet"
+    type="text/css" charset="utf-8" />
+<script src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+<div style="width: 350px;">
+    <form action="/Outlet/SubjectConsole/SubjectUVFromList" method="get">
+    <span>查询时间</span>
+    <input id="StartTime" name="startDateTime" value="@ViewBag.StartTime" maxlength="30" class="Wdate" type="text"
+        onclick="WdatePicker()" readonly="readonly" style="width: 100px;" />
+    <span>至</span>
+    <input id="EndTime" name="endDateTime" value="@ViewBag.EndTime" maxlength="30" class="Wdate" type="text"
+        onclick="WdatePicker()" readonly="readonly" style="width: 100px;" />
+    &nbsp;&nbsp;&nbsp;<input type="hidden" name="subjectNo" value="@ViewBag.SubjectNo" /><input type="submit" value="确 定" />
+    </form>
+</div>
+@if (list == null || list.Count() == 0)
+{
+    @Html.Raw("<br/><font color='red'>暂无推广流量来源数据</font>") 
+}
+else
+{
+<table cellpadding="1" cellspacing="1" class="mx-table">
+    <thead>
+        <tr>
+            @if (list != null && list.Count() > 0)
+            {
+                foreach (var item in list)
+                {
+                <th>@item.ChannelName
+                </th>
+                }
+            }
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            @if (list != null && list.Count() > 0)
+            {
+                foreach (var item in list)
+                {
+                    double result = Convert.ToDouble(item.DataCount) / Convert.ToDouble(ResultCount);
+                <td>@(item.DataCount + "(" + result.ToString("0.00") + "%)")
+                </td>
+                }
+            }
+        </tr>
+    </tbody>
+</table>
+}

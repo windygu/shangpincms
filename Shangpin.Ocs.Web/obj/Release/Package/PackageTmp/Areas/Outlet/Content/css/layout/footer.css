@@ -1,0 +1,25 @@
+#mx-footer {
+    border-top: 1px solid #1175ba;
+    background: #0d7dcb;
+}
+
+#mx-footer span {
+    color: #fff;
+    padding: 5px 0;
+}
+
+#mx-footer span i {
+    color: #ccc;
+}
+
+#mx-footer a:link, #mx-footer a:visited {
+    color: #fff;
+    padding: 5px 12px;
+    float: left;
+}
+
+#mx-footer a:hover, #mx-footer a:active {
+    background: #fff;
+    color: #0d5c93;
+    border-radius: 5px;
+}

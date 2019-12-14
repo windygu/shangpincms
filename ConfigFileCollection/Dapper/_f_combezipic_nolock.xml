@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <statement id="ComBeziPic_ProductPictureFile_FetchEntityByIdentity_NoLock" primarykey="PictureFileNo">
+    SELECT *  FROM ProductPictureFile  WITH(NOLOCK)  WHERE PictureFileNo=@PictureFileNo
+  </statement>
+  <statement id="ComBeziPic_ProductVideoFile_FetchEntityByIdentity_NoLock" primarykey="VideoFileNo">
+    SELECT *  FROM ProductVideoFile  WITH(NOLOCK)  WHERE VideoFileNo=@VideoFileNo
+  </statement>
+  <statement id="ComBeziPic_SystemPictureFile_FetchEntityByIdentity_NoLock" primarykey="PictureFileNo">
+    SELECT *  FROM SystemPictureFile  WITH(NOLOCK)  WHERE PictureFileNo=@PictureFileNo
+  </statement>
+  <statement id="ComBeziPic_UserPictureFile_FetchEntityByIdentity_NoLock" primarykey="PictureFileNo">
+    SELECT *  FROM UserPictureFile  WITH(NOLOCK)  WHERE PictureFileNo=@PictureFileNo
+  </statement>
+</statements>

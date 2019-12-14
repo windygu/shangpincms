@@ -1,0 +1,119 @@
+.bgHook {
+	background:#f6f6f6;
+	position:relative;
+	margin:-10px 0;
+	padding:10px 0;
+	zoom:1;
+}
+#helpCenter_main{
+	background:#fff;
+	font-family:Arial,"宋体";
+}
+.helpCenter_asidebox{
+	width:190px;
+	padding:0 0 10px 30px;
+	font-family:Arial,"宋体";
+}
+.helpCenter_aside h4{
+	font-size:12px;
+	color: #343434;
+	font-weight:bold;
+	font-family:Arial,"宋体";
+	margin: 16px 0;
+}
+.helpCenter_aside h4 a{
+	color: #343434;
+}
+.helpCenter_asidebox a{
+	display: block;
+	font-family:Arial,"宋体";
+	color: #696969;
+	margin-bottom:22px;
+}
+.helpCenter_asidebox a:hover , .helpCenter_asidebox a.on{
+	color: #b9976a;
+	position: relative;
+}
+.helpCenter_asidebox a.on i{
+	display: block;
+	width:10px;
+	height:10px;
+	position: absolute;
+	top:7px;
+	left:-12px;
+	background:url(/images/page/help_center/helpCenter_sp.gif) left top no-repeat;
+}
+
+.helpCenter_con{
+	width:625px;
+	padding:12px 50px 10px 54px;
+	border-left:1px solid #e3e3e3;
+}
+.helpCenter_con img{
+	display: block;
+	font-size:0;
+	float: left;
+}
+.helpCenter_con h3{
+	font-size:16px;
+	color: #666;
+	font-weight:bold;
+	font-family:Arial,"宋体";
+	border-bottom:1px solid #e3e3e3;
+	padding-bottom:5px;
+	width:635px;
+}
+.helpCenter_con h3 i{
+	display: inline-block;
+	width:20px;
+	height:15px;
+	background:url(/images/page/help_center/helpCenter_sp.gif) 8px -17px no-repeat;
+}
+
+.helpCenter_con dl{
+	width:630px;
+	margin:40px 0 20px 0;
+}
+
+.helpCenter_con dl dt{
+	width:234px;
+}
+.helpCenter_con dl dd{
+	width:365px;
+	margin-left:28px;
+}
+.helpCenter_con dl dd p{
+	font-family:Arial,"宋体";
+}
+.helpCenter_con dl dd p.tt{
+	color: #999;
+	height:105px;
+	overflow: hidden;
+	text-indent:24px;
+	line-height:20px;
+	margin-bottom:10px;
+	background:url(/images/page/help_center/helpCenter_ttBg.gif) left -2px no-repeat;
+}
+.helpCenter_con dl dd h4{
+	font-family:Arial,"宋体";
+	width:365px;
+	height:26px;
+	line-height:26px;
+	font-size:14px;
+	color: #666;
+	font-weight:bold;
+	overflow: hidden;
+	margin-bottom:10px;
+}
+.helpCenter_con dl dd a , .helpCenter_con dl dd a.en_more{
+	color: #b9976a;
+	padding-right:10px;
+	background:url(/images/page/help_center/helpCenter_sp.gif) 48px 5px no-repeat;
+	font-family:Arial,"宋体";
+}
+.helpCenter_con dl dd a.en_more{
+	background:url(/images/page/help_center/helpCenter_sp.gif) 28px 5px no-repeat;
+}
+.helpCenter_con dl dd a:hover{
+	text-decoration:underline;
+}

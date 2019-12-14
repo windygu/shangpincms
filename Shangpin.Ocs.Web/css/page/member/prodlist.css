@@ -1,0 +1,142 @@
+/*  ============== Member product ==============  */
+.member_content{
+	border-width:0 1px 0 1px;
+}
+#member_right .order_link{
+	line-height:26px;
+}
+#member_right .order_link span{
+	padding-right:20px;
+	color:#adadad;
+}
+#member_right .order_link span em{
+	color:#ea1616;
+}
+#member_right .order_link span i.txt{
+	color:#666;
+}
+#member_right .order_link span a:link, #member_right .order_link span a:visited{
+	color:#666;
+}
+#member_right .order_link span a:hover, #member_right .order_link span a:active{
+	color:#666;
+	text-decoration:underline;
+}
+
+.prodList{
+	width:100%;
+	table-layout:fixed;
+}
+.prodList th{
+	height:36px;
+	line-height:36px;
+	text-align:center;
+	color:#333;
+	background:url(/images/page/member/index/tabsBg.gif) repeat-x 0 center;
+	border-bottom:1px solid #dddcdc;
+}
+.prodList td{
+	text-align:center;
+	padding:10px 0;
+	color:#666;
+	line-height:18px;
+	word-break:break-all;
+	word-wrap:break-word;
+	border-bottom:1px solid #dddcdc;
+}
+
+.prodList td.txtLeft{
+	text-align:left;
+}
+
+.prodList td.pord_img{
+	line-height:0px;
+}
+.prodList td.pord_img a{
+	display:inline-block;
+	width:40px;
+	height:52px;
+	overflow:hidden;
+	border:1px solid #fff;
+	margin:0 5px;
+}
+.prodList td.pord_img a:hover, .prodList td.pord_img a:active{
+	border:1px solid #dddcdc;
+}
+.prodList td.pord_img a img{
+	width:40px;
+	height:52px;
+	display:block;
+}
+.prodList td.pord_img a.one{
+	margin-right:0;
+}
+
+.prodList td em{
+	font-weight:bold;
+	color:#333;
+}
+
+.prodList td table td{
+	border-bottom:none;
+}
+
+.prodList a.member_smallBtn{
+	margin-bottom:5px;
+}
+
+.prodList a.follow{
+	display:inline-block;
+	width:100%;
+	color:#333;
+	background:url(/images/page/member/index/down_trigon.gif) no-repeat 70px 8px;
+}
+
+.prodList a.txtLink:link, .prodList a.txtLink:visited{
+	color:#666;
+}
+.prodList a.txtLink:hover, .prodList a.txtLink:active{
+	color:#666;
+	text-decoration:underline;
+}
+
+.prodList a.link:link, .prodList a.link:visited{
+	color:#ac8c48;
+}
+.prodList a.link:hover, .prodList a.link:active{
+	color:#ac8c48;
+}
+
+.prod_more{
+	height:38px;
+	line-height:38px;
+	padding-right:10px;
+	text-align:right;
+	font-family:"宋体";
+	color:#666;
+}
+.prod_more ul li{
+	height:18px;
+	line-height:18px;
+	padding:10px 0;
+	margin-right:0;
+}
+.prod_more ul li.txt{
+	padding-right:10px;
+}
+.prod_more ul li a{
+	height:18px;
+	line-height:18px;
+	display:inline-block;
+	background-position: -5px -661px;
+}
+.prod_more ul li a.pagePrv{
+	border:none 0;
+	background-position: -40px -681px;
+}
+.prod_more a:link, .prod_more a:visited{
+	color:#666;
+}
+.prod_more a:hover, .prod_more a:active{
+	color:#333;
+}

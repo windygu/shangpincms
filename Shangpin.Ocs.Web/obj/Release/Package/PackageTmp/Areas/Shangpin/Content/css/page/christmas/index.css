@@ -1,0 +1,28 @@
+
+/**/
+.main_box { margin-top: 0; position: relative; z-index: 3; }
+.main_box .box { padding: 0 13px; width: 934px; overflow: hidden; margin-bottom: 15px; *padding-bottom:15px;
+_padding-bottom: 0; background: #fff; }
+.main_box .box h3 { margin: 0 -13px 18px; }
+.main_box .box ul { width: 952px; }
+.main_box .box ul li { float: left; margin: 0 18px 18px 0; width: 220px; height: 320px; background-color: #c5c5c5; }
+.main_box .box ul li img { display: block; }
+.main_box .box ul li a { display: block; position: relative; z-index: 1; }
+.main_box .box .btn_box { padding-bottom: 18px; *padding:18px 0 0;
+_padding: 0 0 18px; text-align: center; }
+.main_box .box .btn_box a { display: inline-block; width: 222px; height: 39px; margin: 0 8px; overflow: hidden; }
+.main_box .last_box { padding: 0; width: 960px; height: 186px; overflow: hidden; background: none; }
+.main_box .last_box img { vertical-align: top; }
+.main_box .last_box ul { width: 973px; }
+.main_box .last_box ul li { width: 291px; height: 170px; padding: 8px 10px; background: #C5C5C5; margin: 0 13px 0 0; }
+.main_box .last_box ul li span.hover_bg { width: 291px; height: 170px; }
+span.hover_bg { display: none; position: absolute; top: 0; left: 0; z-index: 2; background: url(/images/page/christmas/hover_bg.png) no-repeat center; height: 320px; width: 220px; border: none; padding: 0; _background: url(/images/page/christmas/hover_bg_ie6.png) no-repeat center; _filter: alpha(opacity = 40); }
+/**/
+.main_box .aolai_box { background: url(/images/page/christmas/box_bg_01.png) repeat -11px 0; /*_background: url(/images/page/christmas/box_bg_01_ie6.png) repeat -11px 0;*/ }
+.main_box .bags_box { background: url(/images/page/christmas/box_bg_02.png) repeat -17px 0; /*_background: url(/images/page/christmas/box_bg_02_ie6.png) repeat -17px 0; */}
+.main_box .women_box { background: url(/images/page/christmas/box_bg_03.png) repeat -29px 0; /*_background: url(/images/page/christmas/box_bg_03_ie6.png) repeat -29px 0;*/ }
+.main_box .men_box { background: url(/images/page/christmas/box_bg_04.png) repeat -17px 0; /*_background: url(/images/page/christmas/box_bg_04_ie6.png) repeat -17px 0; */}
+.main_box .footwear_box { background: url(/images/page/christmas/box_bg_05.png) repeat -30px 0; /*_background: url(/images/page/christmas/box_bg_05_ie6.png) repeat -30px 0;*/ }
+.main_box .accessories_box { background: url(/images/page/christmas/box_bg_06.png) repeat -25px 0;/* _background: url(/images/page/christmas/box_bg_06_ie6.png) repeat -25px 0; */}
+.main_box .watch_box { background: url(/images/page/christmas/box_bg_07.png) repeat -3px 0; /*_background: url(/images/page/christmas/box_bg_07_ie6.png) repeat -3px 0; */}
+.main_box .beauty_box { background: url(/images/page/christmas/box_bg_08.png) repeat -36px 0; /*_background: url(/images/page/christmas/box_bg_08_ie6.png) repeat -36px 0;*/ }

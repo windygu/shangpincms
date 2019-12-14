@@ -1,0 +1,185 @@
+﻿#LabelIcon {
+    width: auto;
+    height: 38px;
+    border-bottom: 2px solid #344566;
+    background: url(/Areas/Shangpin/images/page/LabelIcon.gif) no-repeat 10px 4px;
+    background-color: #8492a9;
+}
+
+#SearchLabel {
+    width: auto;
+    height: 34px;
+    border-bottom: 3px solid #8593aa;
+    background-color: #ededed;
+}
+
+#SearchLabelName {
+    width: 100px;
+    height: 34px;
+    line-height: 34px;
+    text-align:center;
+    font-size:14px;
+    float:left;
+}
+
+.SearchBtn {
+    width: 80px;
+    height: 20px;
+    line-height: 20px;
+    font-family: Arial;
+    font-size: 12px;
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+    border: 1px solid #8593aa;
+    display:block;
+    float:left;
+    margin-top:7px;
+}
+
+.SearchInput {
+    width: 100px;
+    height: 20px;
+    line-height: 20px;
+    display: block;
+    float: left;
+    text-align: left;
+    padding: 1px;
+    padding-left: 3px;
+    border: 1px solid #8593aa;
+    margin-top: 7px;
+}
+
+#NoProductLabel {
+    width: auto;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+    display: none;
+}
+
+#ProductLabelList {
+    border:0px none white;
+    width:100%;
+}
+
+#ProductLabelListTr {
+    width: auto;
+    background-color: #8695ab;
+    color: white;
+    height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    font-size:14px;
+}
+
+.ProductLabelListHead {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.ProductLabelListItem {
+    width: auto;
+    background-color: #dddddd;
+    text-align: center;
+    vertical-align:top;
+}
+.ProductLabelListItem2 {
+    width: auto;
+    background-color: #cfcfcf;
+    text-align: center;
+    vertical-align:top;
+}
+
+.ProductLabelListItem td {
+    padding: 10px;
+    padding-top:10px;
+}
+
+.ProductLabelType {
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.ProductLabelSpan {
+    background-color:#8492a9;
+    border:1px solid #314566;
+    padding:3px;
+    text-align:center;
+    color:white;
+    margin-right:5px;
+    display:block;
+    float:left;
+    /*width:150px;*/
+    margin-bottom:5px;
+    padding:6px;
+}
+
+.LabelAdd {
+    width: 30px;
+    height: 30px;
+    display: block;
+    float: left;
+    background: url(/Areas/Shangpin/images/page/LabelAdd.gif) no-repeat 0px 0px;
+    cursor: pointer;
+}
+
+.RepeatName {
+    color: red;
+    margin-left: 5px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.EditLabelFst {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    font-weight:normal;
+    font-size:12px;
+    text-decoration:underline;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:14px;
+    letter-spacing:2px;
+}
+
+.DelLabelFst {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    font-weight:normal;
+    font-size:12px;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+.EditSndLabel {
+     cursor:pointer;
+}
+
+.DelSndLabel {
+ margin-left:5px;
+ cursor:pointer;
+}
+
+#ErrorMsg {
+    width: auto;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 14px;
+    color: red;
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+
+#TxtLabelTypeName {
+    width: 160px;
+}

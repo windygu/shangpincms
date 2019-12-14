@@ -1,0 +1,1053 @@
+﻿@using Shangpin.Ocs.Web.Infrastructure
+@using Shangpin.Entity.Wfs;
+@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_LayoutSubject.cshtml";
+    ViewBag.Title = "创建活动";
+    string url = Request.UrlReferrer != null ? Request.UrlReferrer.ToString() : "/shangpin/subject/index.html";
+    Dictionary<int, string> dic = ViewBag.PriceItem;
+    IList<Shangpin.Ocs.Entity.Extenstion.ShangPin.ErpCategory> CategoryList = ViewBag.CList;
+    IList<SWfsNewSubjectPriceType> PriceTypeList = ViewBag.PriceTypeList;
+    List<Shangpin.Ocs.Entity.Extenstion.ShangPin.ErpCategory> chanelCategoryList = ViewBag.ChanelCategoryList;
+}
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/Venue/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+    @*<script src="/Areas/Shangpin/Scripts/lib/jquery.form.js" type="text/javascript"></script>*@
+    <script src="/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+    <script src="/Areas/Shangpin/Scripts/plug/tabChange.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            $("#CouponNewOne:checkbox").click(function () {
+                if ($(this).attr("checked") == true || $(this).attr("checked") == "checked") {
+                    $("#oneHotSelect").val(1)
+                    $("#PrivilegeOrUrl").hide();
+                } else {
+                    $("#oneHotSelect").val(2)
+                    $("#PrivilegeOrUrl").show();
+                }
+            });
+
+            $("#CouponNewTwo:checkbox").click(function () {
+                if ($(this).attr("checked") == true || $(this).attr("checked") == "checked") {
+                    $("#StartoneHotSelect").val(1)
+                    $("#StartPrivilegeOrUrl").hide();
+                } else {
+                    $("#StartoneHotSelect").val(2)
+                    $("#StartPrivilegeOrUrl").show();
+                }
+            });
+
+            $("input[name='TempPreType']:radio").click(function () {
+
+                if ($(this).val() == 1 || $("input[name='Temp']:checked").val() == 1)
+                { $(".hotblock").show(); }
+                else
+                { $(".hotblock").hide(); }
+
+                if ($("input[name='Temp']:checked").val() != 1 || ($(this).val() == 3 && FlagHotTime()))
+                { $(".hotblockTempShow").show(); }
+                else
+                { $(".hotblockTempShow").hide(); }
+
+
+                if ($(this).val() == 2) {
+                    $("input[name='Temp'][value='2']").attr("checked", true);
+                } else {
+                    if ($("input[name='Temp']:checked").val() == 2) {
+                        $("input[name='Temp'][value='" + $(this).val() + "']").attr("checked", true);
+                        alert("进行中模板不可选择为楼层模板");
+                    }
+                }
+            });
+
+            $("input[name='Temp']:radio").click(function () {
+
+                if ($(this).val() == 1 || $("input[name='TempPreType']:checked").val() == 1)
+                { $(".hotblock").show(); }
+                else
+                { $(".hotblock").hide(); }
+
+                if (($("input[name='TempPreType']:checked").val() == 3 && FlagHotTime()) || $(this).val() !=1)
+                { $(".hotblockTempShow").show(); }
+                else
+                { $(".hotblockTempShow").hide(); }
+
+
+                if ($(this).val() == 2) {
+                    $("input[name='TempPreType'][value='2']").attr("checked", true);
+                } else {
+                    if (FlagHotTime()) {
+                        if ($("input[name='TempPreType']:checked").val() == 2) {
+                            $("input[name='TempPreType'][value='" + $(this).val() + "']").attr("checked", true);
+                            alert("预热模板不可选择为楼层模板");
+                        }
+                    }
+                }
+            });
+
+
+            //预热日期选择
+            $("#HotDateBegin").blur(function () {
+                if (!FlagHotTime()) {
+                      $(".hotblockpreshow").hide();
+                     if ( $("input[name='Temp']:checked").val() != 1) {
+                         $(".hotblockTempShow").show();
+                         $(".hotblock").hide();  
+                    }
+                }
+                else {
+                    $(".hotblockpreshow").show();
+                    if ($("input[name='TempPreType']:checked").val() !=1 || $("input[name='Temp']:checked").val() != 1)
+                    { $(".hotblockTempShow").show(); }
+                }
+            })
+
+            //预热运营选择
+            $("#oneHotSelect").click(function () {
+                if ($("#oneHotSelect").val() == "1") {
+                    $("#PrivilegeOrUrl").hide();
+                }
+                else {
+                    $("#PrivilegeOrUrl").show();
+                }
+            })
+            //运营选择
+            $("#StartoneHotSelect").click(function () {
+                if ($("#StartoneHotSelect").val() == "1") {
+                    $("#StartPrivilegeOrUrl").hide();
+                }
+                else {
+                    $("#StartPrivilegeOrUrl").show();
+                }
+            })
+
+            //手机介绍判断
+            $("#txtIPhoneText").focus(function () {
+                if (this.value == this.defaultValue && this.value == "30字以内") this.value = '';
+            });
+            $("#txtIPhoneText").blur(function () {
+                if (this.value == '') this.value = this.defaultValue;
+            });
+            //活动描述判断
+            $("#txtSubjectText").focus(function () {
+                if (this.value == this.defaultValue) this.value = '';
+            });
+            $("#txtSubjectText").blur(function () {
+                if (this.value == '') this.value = this.defaultValue;
+            });
+            //价格类型判断
+            $("#txtPriceType").focus(function () {
+                if (this.value == this.defaultValue) this.value = '';
+            });
+
+            $("#txtPriceType").blur(function () {
+                if (this.value == '') this.value = this.defaultValue;
+            });
+
+
+            //PC端html代码
+            $("#txtTopTopImgCodePC").focus(function () {
+                if (this.value == this.defaultValue) this.value = '';
+            });
+            $("#txtTopTopImgCodePC").blur(function () {
+                if (this.value == '') this.value = this.defaultValue;
+            });
+
+
+            //移动端html代码
+            $("#txtTopTopImgCodeM").focus(function () {
+                if (this.value == this.defaultValue) this.value = '';
+            });
+            $("#txtTopTopImgCodeM").blur(function () {
+                if (this.value == '') this.value = this.defaultValue;
+            });
+
+        })
+
+        //判断Flag是否选择
+        function FlagHotTime() {
+            var time = $("#HotDateBegin").val();
+            if (time == null || time == "" || time == undefined) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+    </script>
+}
+@section HeadStyle
+{
+    <link href="/Areas/Shangpin/Content/css/page/rightcontent/brandcontent.css" rel="stylesheet"
+        type="text/css" charset="utf-8" />
+    <style type="text/css">
+        .hotblockTempShow
+        {
+                display: block;
+        }
+        .hotblock
+        {
+            display: none;
+        }
+        .hotblockShow
+        {
+            display: block;
+        }
+        .hotblockCategory
+        {
+            display: none;
+        }
+        .titleColor, span
+        {
+            color: Red;
+        }
+        .hotblockpreshow
+        {
+            display: none;
+        }
+        
+    </style>
+}
+<h1>
+    OCS > 尚品 > 活动管理><a href="/Shangpin/Subject/CreateSubject.html">创建活动</a></h1>
+<hr style="border: 1px solid Black; border-left: none; border-right: none; height: inherit;" />
+<form id="formAddSubject" action="/Shangpin/Subject/CreateHandle.html" method="post"
+enctype="multipart/form-data">
+<div id="mx-rightcontent" style="margin-top: 40px;">
+    <div id="mx-rightcontent-inner">
+        <div class="tabNav">
+            <a href="javascript:;" class="curr">基本信息</a> <a href="javascript:;">销售信息</a> <a href="javascript:;">
+                展示信息</a> <a href="javascript:;">运营信息</a> <a href="javascript:;">素材上传</a>
+        </div>
+        <div id="" class="mx-brandcontent-msgbox greyBg">
+            <div class="tabsCont">
+                <dl>
+                    <dt class="titleColor">活动名称：</dt>
+                    <dd>
+                        <input id="SubjectName" type="text" name="SubjectName" value="" maxlength="30" />
+                        <span>*活动名称不能大于30字符</span></dd>
+                </dl>
+                <dl>
+                    <dt class="titleColor">副标题：</dt>
+                    <dd>
+                        <input id="HotTitle" type="text" name="HotTitle" value="" maxlength="20" />
+                        <span>*副标题不能大于20字符</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="titleColor">活动状态：</dt>
+                    <dd>
+                        <input type="radio" name="Status" value="1" id="Status1" checked="checked" /><label
+                            for="Status1">开启</label>
+                        <input type="radio" name="Status" value="0" id="Status0" /><label for="Status0">关闭</label>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="titleColor">活动日期：</dt>
+                    <dd>
+                        <input id="DateBegin" name="DateBegin" class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm:00'})"
+                            readonly="readonly" />
+                        <input id="DateEnd" name="DateEnd" class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm:00'})"
+                            readonly="readonly" />
+                        @*<span>结束时间不选择视为永不结束</span>*@
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>预热开始日期：</dt>
+                    <dd>
+                        <input id="HotDateBegin" name="HotDateBegin" class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm:00'})"
+                            readonly="readonly" />
+                        <span>不选择则无预热状态</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="titleColor">活动描述：</dt>
+                    <dd>
+                        <textarea id="txtSubjectText" onkeyup="CheckSendNum(this)" onblur="CheckSendNum(this)"
+                            name="txtSubjectText" rows="5" cols="50">80字以内</textarea>
+                        <span id="txtSubjectText_val"></span>
+                        <br />
+                       <span> （注意：最多3行描述）</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="titleColor">移动端介绍：</dt>
+                    <dd>
+                        <input id="txtIPhoneText" name="IPhoneText" type="text" value="30字以内" maxlength="30"
+                            style="width: 380px" />
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>&nbsp;</dt>
+                    <dd>
+                        <button type="button" id="" name="" value="" class="secondary nextStep">
+                            下一步</button></dd>
+                </dl>
+                <br />
+ 
+            </div>
+            <div class="tabsCont non">
+                <dl>
+                    <dt class="titleColor">BU部门：</dt>
+                    <dd>
+                        <input id="bubm001" type="radio" value="1" name="BUNo" />
+                        <label for="bubm001">
+                            BU1</label>
+                        <input id="bubm002" type="radio" value="2" name="BUNo" />
+                        <label for="bubm002">
+                            BU2</label>
+                        <input id="bubm003" type="radio" value="3" name="BUNo" />
+                        <label for="bubm003">
+                            BU3</label>
+                        <input id="bubm004" type="radio" value="4" name="BUNo" />
+                        <label for="bubm004">
+                            BU4</label>
+                        <input id="bubm005" type="radio" value="5" name="BUNo" />
+                        <label for="bubm005">
+                            BU5</label>
+
+                        <input id="bubm007" type="radio" value="7" name="BUNo" />
+                        <label for="bubm007">
+                            BU6</label>
+
+                        <input id="bubm006" type="radio" value="6" name="BUNo" />
+                        <label for="bubm006">
+                            其他</label>
+                    </dd>
+                </dl>
+
+                <dl>
+                    <dt class="titleColor">销售额预估：</dt>
+                    <dd>
+                        <input type="text" name="ForecastSalesAmountNums" id="ForecastSalesAmountNums" maxlength="30"
+                            value="" />
+                    </dd>
+                </dl>
+                <dl>
+                    <dt  class="titleColor">所属品牌：</dt>
+                    <dd>
+                        @{Html.RenderAction("SubjectBrand", "Subject");}
+                    </dd>
+                </dl>  
+                
+                <dl>
+                    <dt class="titleColor">是否支持免运费：</dt>
+                    <dd>
+                        <input id="FreightFree" type="radio" checked="checked" value="0"
+                               name="IsFreightFree" />
+                        <label for="FreightFree">
+                            不支持
+                        </label>
+                        <input id="NotFreightFree" type="radio" value="1"
+                               name="IsFreightFree" />
+                        <label for="NotFreightFree">
+                            支持
+                        </label>
+                    </dd>
+                </dl>
+
+                <dl>
+                    <dt class="titleColor">品类：</dt>
+                    <dd>
+                        @foreach (var item in CategoryList)
+                        {
+                            <input id= "CategoryNo_@item.CategoryNo" type="checkbox" value="@item.CategoryNo" name="CategoryNo"  />
+                            <label for="CategoryNo_@item.CategoryNo">
+                                @item.CategoryName
+                            </label>
+                        }
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>&nbsp;</dt>
+                    <dd>
+                        <button type="button" id="" name="" value="" class="secondary previousStep">
+                            上一步</button>
+                        <button type="button" id="" name="" value="" class="secondary nextStep">
+                                下一步</button></dd>
+                </dl>
+                <br />
+            </div>
+            <div class="tabsCont non">
+                <dl>
+                    <dt class="titleColor">展示渠道：</dt>
+                    <dd>
+                        <input id="zsqd001" type="checkbox" value="1" name="ChannelNo" checked="checked" />
+                        <label for="zsqd001">
+                            网站</label>
+                        <input id="zsqd002" type="checkbox" value="2" name="ChannelNo" checked="checked" />
+                        <label for="zsqd002">
+                            移动端</label>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="titleColor">性别：</dt>
+                    <dd>
+                        <input id="sex001" type="checkbox" value="0" name="SexNo" checked="checked" />
+                        <label for="sex001">
+                            女</label>
+                        <input id="sex002" type="checkbox" value="1" name="SexNo" />
+                        <label for="sex002">
+                            男</label>
+                        <input id="sex003" type="checkbox" value="2" name="SexNo" />
+                        <label for="sex003">
+                            中性</label>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>展示分类：</dt>
+                    <dd>
+                        @foreach (var item in chanelCategoryList)
+                        { 
+                            <input id= "chanelCategoryNo_@item.CategoryNo" type="checkbox" value="@item.CategoryNo" name="chanelCategoryNo"  />
+                            <label for="chanelCategoryNo_@item.CategoryNo">
+                                @item.CategoryName
+                            </label>
+                            if (item.CategoryNo.ToLower().Equals("a01b07"))
+                            {
+                            <br /> 
+                            }
+                        }
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>关注基数：</dt>
+                    <dd>
+                        <input type="text" name="FocusNums" id="FocusNums" maxlength="7" value="0" style="width: 100px" />
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>商品价格标签：</dt>
+                    <dd>
+                        <select id="CommodityPItem" name="CommodityPItem" style="width: 100px">
+                            @foreach (var item in dic)
+                            {
+                                <option value="@item.Key">@item.Value</option>
+                            }
+                        </select>
+                        <input type="text" name="CommodityP" id="CommodityP" maxlength="7" style="width: 100px" />
+                        (会场使用标签)
+                    </dd>
+                </dl>
+              <dl class="hotblockpreshow">
+                    <dt class="titleColor">预热价格标签：</dt>
+                    <dd>
+                        <select style="width: 100px" name="hotPrice" id="hotPrice">
+                            <option value="0">请选择</option>
+                            @if (PriceTypeList != null)
+                            {
+                                foreach (var priceType in PriceTypeList)
+                                {
+                                <option value="@priceType.PriceTypeId" title="@priceType.PriceTag" >@(priceType.PriceTag)</option>
+                                }
+                            }
+                        </select>
+                        <input id="txtPriceType" name="PriceType" type="text" value="8字以内" maxlength="32"
+                            style="width: 100px" />
+                        <a type="button" class="button" style="background-color: #4D90FE; border: 1px solid #3079ED;
+                            border-radius: 5px; color: #FFFFFF; cursor: pointer; display: inline-block; font-size: 14px;
+                            margin: 0 15px 0 0; padding: 2px 4px; position: relative; text-decoration: none;
+                            transition: border-color 0.218s ease 0s;" id="btnSavePriceType" onclick="createPriceType();">
+                            添 加</a>
+                    </dd>
+                </dl>
+
+                <dl class="hotblockpreshow">
+                    <dt class="titleColor">预热状态模板：</dt>
+                    <dd>
+                      <input type="hidden" value="2" name="TempPreTypeValue" id="TempPreTypeValue" />
+                        <input type="radio" value="2" name="TempPreType" id="TempLCPre" />
+                        <label for="TempLCPre">
+                            楼层模板（选择楼层时预热，进行模板类型必须一样）
+                        </label>
+                        <input type="radio" value="3" name="TempPreType" id="TempBZPre" checked="checked" />
+                        <label for="TempBZPre">
+                            标准模板
+                        </label>
+                        <input type="radio" value="1" name="TempPreType" id="TempCLPre" />
+                        <label for="TempCLPre">
+                            错落模板
+                        </label>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="titleColor">进行状态模板：</dt>
+                    <dd>
+                          <input type="hidden" value="2" name="TempTypeValue" id="TempTypeValue" />
+                        <input type="radio" value="2" name="Temp" id="TempLC" />
+                        <label for="TempLC">
+                            楼层模板（选择楼层时预热，进行模板类型必须一样）
+                        </label>
+                        <input type="radio" value="3" name="Temp" id="TempBZ" checked="checked" />
+                        <label for="TempBZ">
+                            标准模板
+                        </label>
+                        <input type="radio" value="1" name="Temp" id="TempCL" />
+                        <label for="TempCL">
+                            错落模板
+                        </label>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="titleColor">商品显示模板：</dt>
+                    <dd>
+                        <input type="radio" value="3" name="ShowColumn" id="ShowColumnThree" />
+                        <label for="ShowColumnThree">
+                            3列
+                        </label>
+                        <input type="radio" value="4" name="ShowColumn" checked="checked" id="ShowColumnFour" />
+                        <label for="ShowColumnFour">
+                            4列(只适用于标准，楼层模板)
+                        </label>
+                    </dd>
+                </dl>
+                <dl  style="display:none;">
+                    <dt>楼层运营位名称</dt>
+                    <dd>
+                        <input type="text" name="BrandName" id="BrandName" />
+                    </dd>
+                </dl>
+                <dl  style="display:none;">
+                    <dt>楼层运营位链接</dt>
+                    <dd>
+                        <input type="text" name="BrandUrl" id="BrandUrl" />
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>&nbsp;</dt>
+                    <dd>
+                        <button type="button" id="" name="" value="" class="secondary previousStep">
+                            上一步</button>
+                        <button type="button" id="" name="" value="" class="secondary nextStep">
+                                下一步</button></dd>
+                </dl>
+                <br />
+            </div>
+            <div class="tabsCont non">
+                @*     <dl>
+                        <dt class="titleColor">加入活动会场：</dt>
+                        <dd>
+                            <input id="zsqd001" type="checkbox" value="1" name="ChannelNo" checked="checked" />
+                            <label for="zsqd001">
+                                会场1</label>
+                        </dd>
+                    </dl>*@
+                <dl>
+                    <dt>优惠券激活码：</dt>
+                    <dd>
+                        <input id="CouponNewOne" type="checkbox" value="1" name="CouponNew" />
+                        <label for="CouponNewOne">
+                            预热可领</label>
+                        <input id="CouponNewTwo" type="checkbox" value="2" name="CouponNew" />
+                        <label for="CouponNewTwo">
+                            进行中可领</label>
+                        <input id="CouponText" type="text" name="CouponText" value="" maxlength="20" style="width: 100px" />
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="titleColor">开售提醒：</dt>
+                    <dd>
+                        <input type="radio" value="0" name="SubjectPreRemind" id="SubjectPreRemindOne" />
+                        <label for="SubjectPreRemindOne">
+                            关闭
+                        </label>
+                        <input type="radio" value="1" name="SubjectPreRemind" checked="checked" id="SubjectPreRemindTwo" />
+                        <label for="SubjectPreRemindTwo">
+                            开启
+                        </label>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>&nbsp;</dt>
+                    <dd>
+                        <button type="button" id="" name="" value="" class="secondary previousStep">
+                            上一步</button>
+                        <button type="button" id="" name="" value="" class="secondary nextStep">
+                                下一步</button></dd>
+                </dl>
+                <br />
+            </div>
+            <div class="tabsCont non">
+            <h1>
+                    活动客户端入口图素材</h1>
+
+                      <dl>
+                    <dt class="titleColor">客户端入口图：</dt>
+                    <dd>
+                        <input id="IphoneClientImg" type="file" name="IphoneClientImg" />
+                        <span>*尺寸：640-584;格式：jpg gif;大小：150K以下</span>
+                    </dd>
+                </dl>
+
+
+                <h1>
+                    活动错落模板页面素材</h1>
+                <hr style="border: 1px; border-left: none; border-right: none; height: inherit;" />
+        
+                <dl class="hotblock">
+                    <dt class="titleColor">背景图：</dt>
+                    <dd>
+                        <input id="FileHotImg" type="file" name="FileHotImg" />
+                        <span>*尺寸：(1200-1900)*不限;格式：jpg gif;大小：400K以下</span>
+                    </dd>
+                </dl>
+                <dl class="hotblock">
+                    <dt class="titleColor">品牌图 </dt>
+                    <dd>
+                        <input id="FlapHotLOGO" type="file" name="FlapHotLOGO" />
+                        <span>*尺寸：250*100;格式：jpg gif;大小：100K以下</span>
+                        <br />
+                        <input id="FlapHotLOGOUrl" type="text" name="FlapHotLOGOUrl" style="display: none"
+                            value="" />
+                    </dd>
+                </dl>
+                <dl class="hotblock">
+                    <dt class="titleColor">运营位1：</dt>
+                    <dd>
+                        <select style="width: 100px" id="oneHotSelect" name="oneHotSelect">
+                            <option value="1">优惠信息</option>
+                            <option value="2">图片链接</option>
+                        </select>
+                        <span id="OneHotCoupon"></span><span id="OneHotImg">
+                            <br />
+                            网站图：
+                            <span style="color:Black;">
+                            <input id="FlapHotOne" type="file" name="FlapHotOne" /></span><span>*尺寸：310*不限;格式：jpg gif;大小：100K以下</span>
+                            <br />
+                             客户端图： 
+                           <span style="color:Black;"> <input id="IphoneFlapHotOne" type="file" name="IphoneFlapHotOne" /></span><span>*尺寸：640*90;格式：jpg
+                                gif;大小：100K以下</span>
+                            <br />
+                            <span id="PrivilegeOrUrl" style="display: none; color: Black;">图片链接：
+                                <input id="PrivilegeValueOrUrl" type="text" name="PrivilegeValueOrUrl" /></span>
+                        </span>
+                    </dd>
+                </dl>
+                <dl class="hotblock">
+                    <dt class="titleColor">运营位2： </dt>
+                    <dd>
+                        <input id="FlapHotTwo" type="file" name="FlapHotTwo" />
+                        <span>*尺寸：310*不限;格式：jpg gif;大小：100K以下</span>
+                        <br />
+                        链接地址：<input id="HotTwoUrl" type="text" name="HotTwoUrl" value="" />
+                    </dd>
+                </dl>
+                <dl style="display: none;">
+                    <dt class="titleColor">描述：</dt>
+                    <dd>
+                        <input id="HotDes" name="HotDes" value="" type="text" maxlength="30" style="width: 380px" />
+                        <span>*预热描述不能大于60字符</span>
+                    </dd>
+                </dl>
+                <h1>
+                    活动楼层、标准版页面素材</h1>
+                <hr style="border: 1px; border-left: none; border-right: none; height: inherit;" />
+                     <div class="hotblockTempShow">
+                <dl>
+                    <dt class="titleColor">活动头图模板：</dt>
+                    <dd>
+                        <input type="radio" value="1" name="TopPic" id="TopPicImg" checked="checked" onclick="onClickSubmitTypeCategory(1)" />
+                        <label for="TopPicImg">
+                            纯图片
+                        </label>
+                        <input type="radio" value="2" name="TopPic" id="TopPicImg1" onclick="onClickSubmitTypeCategory(0)" />
+                        <label for="TopPicImg">
+                            代码
+                        </label>
+                    </dd>
+                </dl>
+                <dl class="hotblockShow">
+                    <dt class="titleColor">顶部头图：</dt>
+                    <dd>
+                        <input id="FileTopTopImg" type="file" name="FileTopTopImg" />
+                        <span>*尺寸：960*250;格式：jpg gif;大小：300K以下</span>
+                    </dd>
+                </dl>
+                <dl class="hotblockCategory">
+                    <dt class="titleColor">代码：</dt>
+                    <dd>
+                        <textarea id="txtTopTopImgCodePC" name="txtTopTopImgCodePC" rows="5" cols="80">请输入网页html代码</textarea>
+                        <br />
+                        <textarea id="txtTopTopImgCodeM" name="txtTopTopImgCodeM" rows="5" cols="80">请输入移动端html代码</textarea>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>背景图：</dt>
+                    <dd>
+                        <input id="FileBackImg" type="file" name="FileBackImg" />
+                        <span>*尺寸：(1200-1900)*不限;格式：jpg gif;大小：400K以下</span>
+                        <!--20130910需求更改 可以不传背景图       
+             <input type="radio" value="forhotbackimg" name="ForHotBackImg" id="ForHotBackImg" />
+             <label for="ForHotBackImg">
+                同预热背景图
+            </label>-->
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="titleColor">客户端顶部头图：</dt>
+                    <dd>
+                        <input id="IphoneTopImg" type="file" name="IphoneTopImg" />
+                        <span>*尺寸：640-;格式：jpg gif;大小：150K以下</span>
+                    </dd>
+                </dl> 
+                <dl  style="display:none;">
+                    <dt>Wap端入口图：</dt>
+                    <dd>
+                        <input id="IphoneWapImg" type="file" name="IphoneWapImg" />
+                        <span>*尺寸：640-320;格式：jpg gif;大小：150K以下</span>
+                    </dd>
+                </dl> 
+                <dl>
+                    <dt>运营位1：</dt>
+                    <dd>
+                        <select style="width: 100px" id="StartoneHotSelect" name="StartoneHotSelect"> 
+                            <option value="2">图片链接</option>
+                            <option value="1">优惠信息</option>
+                        </select>
+                        <span id="StartOneHotImg" style="color:Black;">
+                            <br />
+                            网站图：
+                            <input id="StartFlapHotOne" type="file" name="StartFlapHotOne" /><span>*尺寸：177*113;格式：jpg
+                                gif;大小：100K以下</span>
+                            <br />
+                            客户端图：
+                            <input id="StartIphoneFlapHotOne" type="file" name="StartIphoneFlapHotOne" /><span>*尺寸：640*90;格式：jpg
+                                gif;大小：100K以下</span>
+                            <br />
+                            <span id="StartPrivilegeOrUrl" style="color: Black;">图片链接：
+                                <input id="StartPrivilegeValueOrUrl" type="text" name="StartPrivilegeValueOrUrl" /></span>
+                        </span>
+                    </dd>
+                </dl>
+                <dl style="display:none;">
+                    <dt>运营位2： </dt>
+                    <dd>
+                        <input id="StartFlapHotTwo" type="file" name="StartFlapHotTwo" />
+                        <span>*尺寸：474*不限;格式：jpg gif;大小：100K以下</span>
+                        <br />
+                        链接地址：<input id="StartHotTwoUrl" type="text" name="StartHotTwoUrl" value="" />
+                    </dd>
+                </dl>
+                </div>
+
+                <dl>
+                    <dt>&nbsp;</dt>
+                    <dd>
+                        <button type="button" id="" name="" value="" class="secondary previousStep">
+                            上一步</button>
+                        <button type="button" id="btnSave" name="" value="" class="secondary" onclick="return CheckSubmit();">
+                            确 定</button>
+                        <button type="button" id="btnCancle" name="" value="" onclick="window.location='@url'">
+                            取 消</button></dd>
+                </dl>
+                <input type="hidden" name="SubjectManage" value="Create" />
+                <br />
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+<script type="text/javascript">
+    function onClickSubmitTypeCategory(type) {
+        if (type == 1) {
+            $(".hotblockCategory").hide();
+            $(".hotblockShow").show();
+        }
+        else {
+            $(".hotblockCategory").show();
+            $(".hotblockShow").hide();
+        }
+
+    }
+    function createPriceType() {
+        if (!FlagEmpty("txtPriceType")) {
+            alert("预热价格标签不能为空");
+            return false;
+        }
+        if (!CountChar("txtPriceType",16)) {
+            alert("预热价格标签为8汉字或者16字符");
+        } else {
+
+            $.ajax({
+                url: "/Shangpin/subject/AddNewSubjectPriceType.html",
+                type: "post",
+                async: false,
+                timeout: 60000,
+                data: { priceTag: $("#txtPriceType").val(), ran: Math.random() },
+                dataType: "json",
+                success: function (data) {
+                    if (data.Ok == "1") {
+                        var selObj = $("#hotPrice");
+                        var value = data.Count;
+                        var text = data.TS;
+                        selObj.prepend("<option value='" + value + "'>" + text + "</option>");
+                        alert("添加成功,请在选择框中选择");
+                    } else if (data.Ok == "0") {
+                        alert("添加失败");
+                    } else
+                    { alert("价格标签重复，请重新填写"); }
+                }
+            });
+        }
+
+    }
+
+
+    function CheckSubmit() {
+        if (!FlagEmpty("SubjectName")) {
+            alert("活动名不能为空");
+            return false;
+        }
+        if (!CountChar("SubjectName", 30)) {
+            alert("活动名称为15汉字或者30字符");
+            return false;
+        }
+        if (!FlagEmpty("HotTitle")) {
+            alert("副标题不能为空");
+            return false;
+        }
+        if (!CountChar("HotTitle", 20)) {
+            alert("活动副标题为10汉字或者20字符");
+            return false;
+        }
+        if (!FlagCheckBoxCheck("BUNo")) {
+            alert("请选择BU部门！");
+            return false;
+        }
+
+        //20131015新增关注基数
+        if (!CheckFlagNum("FocusNums")) {
+            alert("请正确添加价格基数，默认为0");
+            return false;
+        }
+        //验证商品价格类型
+        if ($("#CommodityPItem").val() != 0 && $("#CommodityPItem").val() != 12) {
+            if (!CheckFlagNum("CommodityP")) {
+                alert("请正确填写商品价格标签值");
+                return false;
+            }
+        }
+    
+        //20140303新增销售额预估值
+        if (!CheckFlagNum("ForecastSalesAmountNums")) {
+            alert("请正确添加销售额预估值，默认为0");
+            return false;
+        }
+        if (!FlagCheckBoxCheck("ChannelNo")) {
+            alert("请选择展示渠道！");
+            return false;
+        }
+        //20131111增加性别和分类
+        if (!FlagCheckBoxCheck("SexNo")) {
+            alert("请选择性别！");
+            return false;
+        }
+
+       if (!FlagCheckBoxCheck("ck_Brand")) {
+                        alert("请选择所属品牌！");
+                        return false;
+          } 
+
+        //           if (!FlagCheckBoxCheck("chanelCategoryNo")) {
+        //                alert("请选择要展示分类！");
+        //                return false;
+        //            } 
+        if (!FlagCheckBoxCheck("CategoryNo")) {
+            alert("请选择分类！");
+            return false;
+        }
+        if (!FlagEmpty("DateBegin")) {
+            alert("请选择开始日期");
+            return false;
+        }
+        if (!FlagEmpty("DateEnd")) {
+            alert("请选择结束日期");
+            return false;
+        }
+
+
+        if ($("input[name='Temp']:checked").val() != 1 || (FlagEmpty("HotDateBegin") && $("input[name='TempPreType']:checked").val()!=1)) {
+
+            if ($("input[name='TopPic']:checked").val() == 1) {
+                if (!FlagEmpty("FileTopTopImg")) {
+                    alert("请选择顶部头图");
+                    return false;
+                }
+            }
+
+            //20131003新增手机端图片--开始 
+            if (!FlagEmpty("IphoneTopImg")) {
+                alert("请选择手机端顶部头图");
+                return false;
+            } 
+        }
+        if (!FlagEmpty("IphoneClientImg")) {
+            alert("请选择手机客户端入口图");
+            return false;
+        } 
+
+        //20140421作废 lxy
+        //        if (!FlagEmpty("IphoneWapImg")) {
+        //            alert("请选择Wap端入口图");
+        //            return false;
+        //        }
+        //20131003新增手机端图片--结束
+        if (!FlagEmpty("txtSubjectText") || $("#txtSubjectText").val() == "80字以内") {
+            alert("活动描述不能为空");
+            return false;
+        }
+        if (!CountChar("txtSubjectText", 160)) {
+            alert("活动描述为80汉字或者160字符");
+            return false;
+        }
+        if (!CheckEnter("txtSubjectText", 3)) {
+            alert("活动描述里回车过多，请仔细检查最后一行是否有回车，注意：最多3行数据");
+            return false;
+        }
+        //20131017新增手机端端介绍
+        if (!FlagEmpty("txtIPhoneText") || $("#txtIPhoneText").val() == "30字以内") {
+            alert("移动端介绍不能为空");
+            return false;
+        }
+
+
+        //判断是否选择预热
+        if (FlagEmpty("HotDateBegin") || $("input[name='Temp']:checked").val() == 1) {
+
+            if ($("input[name='TempPreType']:checked").val() == 1 || $("input[name='Temp']:checked").val() == 1) {
+                if (!FlagEmpty("FileHotImg")) {
+                    alert("请选择活动错落模板背景图");
+                    return false;
+                }
+                //判断选择的是优惠劵还是预热图片1
+                if (($("#StartoneHotSelect").val() == "1" && $("input[name='Temp']:checked").val() != 1) || (FlagEmpty("HotDateBegin") && $("input[name='TempPreType']:checked").val() == 1 && $("#oneHotSelect").val() == "1") || ($("#oneHotSelect").val() == "1" && $("input[name='Temp']:checked").val() == 1)) 
+                { 
+                    if (!FlagEmpty("CouponText")) {
+                        alert("素材上传运营位1选择了优惠信息，请填写优惠劵优惠码以及领取活动类型，否则请选择图片链接"); 
+                        return false;
+                    }
+                }
+                if (!FlagEmpty("FlapHotOne")) {
+                    alert("请选择活动错落模板运营位1网站图片");
+                    return false;
+                }
+                if (!FlagEmpty("IphoneFlapHotOne") && $("#oneHotSelect").val() == "1") {
+                    alert("请选择活动错落模板运营位1客户端图片");
+                    return false;
+                }
+                //判断选择的是优惠劵还是预热图片1
+                //                if ($("#oneHotSelect").val() == "2") {
+                //                    if (!FlagEmpty("PrivilegeValueOrUrl")) {
+                //                        alert("请填写预热运营位1图片链接");
+                //                        return false;
+                //                    }
+                //                }
+                //预热图片2
+                if (!FlagEmpty("FlapHotTwo")) {
+                    alert("请选择活动错落模板运营位2图片");
+                    return false;
+                }
+                if (!FlagEmpty("FlapHotLOGO")) {
+                    alert("活动错落模板品牌图Logo图不能为空");
+                    return false;
+                }
+
+            }
+        }
+        FormSubmit();
+    }
+    function FormSubmit() {
+        $("#formAddSubject").ajaxSubmit({
+            success: function (html) {
+                var data = eval("(" + html + ")");
+                //                if (typeof (html) == "string") {
+//                    //var rs = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+//                    data = eval("(" + html + ")");
+//                }
+//                else {
+//                    data = html;
+//                }
+                if (data.result != "1") {
+                    alert(data.message);
+                    return false;
+                }
+                else if (data.result == "1") {
+                    alert("活动创建成功！");
+                    window.location = "/Shangpin/Subject/Index.html";
+                    return true;
+                }
+            }
+        })
+    }
+
+    //20131111新增内容介绍输入字符数显示
+    function CheckSendNum(obj) {
+        var msg = "";
+        var sendid = $(obj).attr("id");
+        var nums = SendCountChar(sendid);
+        if (nums == 0) {
+            msg = "";
+        }
+        else if (nums > 160) {
+            msg = "已输入" + nums + "字符,超过字符限制";
+        }
+        else {
+            msg = "已输入" + nums + "字符，还可以输入" + (160 - nums) + "字符";
+        }
+        var valid = sendid + "_val";
+        $("#" + valid).text(msg);
+    }
+    //判断输入字符个数
+    function SendCountChar(id) {
+        var msg = $("#" + id).val()
+        var nums = msg.replace(/[^\x00-\xff]/g, "00").length;
+        return nums;
+    }
+
+    //判断文本框是否为空
+    function FlagEmpty(Id) {
+        var msg = $("#" + Id).val()
+        if (msg == "" || msg == null || msg == undefined) {
+            return false;
+        }
+        return true;
+    }
+    //判断复选框有没有都不选
+    function FlagCheckBoxCheck(Name) {
+        var SordNos = "";
+        $("input[name='" + Name + "']:checked").each(function () {
+            SordNos += $(this).val() + ",";
+        });
+        if (SordNos == "") {
+            return false;
+        }
+        return true;
+    }
+    //判断字符个数是否超出限制
+    function CountChar(id, len) {
+        var msg = $("#" + id).val()
+        var nums = msg.replace(/[^\x00-\xff]/g, "00").length;
+        if (nums > len) {
+            return false;
+        }
+        return true;
+    }
+    //判断有多少个回车
+    function CheckEnter(id, len) {
+        var msg = $("#" + id).val()
+        var nums = msg.split("\r").length - 1;
+        if (nums > len) {
+            return false;
+        }
+        return true;
+    }
+    //验证小数
+    function CheckFlagNum(id) {
+        var msg = $("#" + id).val()
+        if (!/^[0-9]+(.[0-9]{1})?$/.test(msg)) {
+            return false;
+        }
+        return true;
+    }
+
+</script>

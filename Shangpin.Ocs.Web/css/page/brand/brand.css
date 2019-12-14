@@ -1,0 +1,96 @@
+.brand_wp { width: 960px; margin: 0 auto; }
+.brand_top_nav { border-bottom: 1px solid #666; margin-bottom: 10px; width: 960px; background: #fff; top: 0; _top:expression(eval(document.documentElement.scrollTop));
+}
+.brand_top_nav ul { padding: 4px 0; }
+.brand_top_nav li { float: left; margin-right: 12px; }
+.brand_top_nav li a { padding: 3px 12px 4px; *padding:4px 12px 3px;
+display: block; }
+.brand_top_nav li a:hover, .brand_top_nav li.cur a { background: #333; color: #fff; }
+.brand_box { margin-bottom: 10px; }
+.brand_box_title { line-height: 24px; background: url(/images/page/brand/flagshop/chose_box_bg.png) repeat-x left 24px; padding-bottom: 1px; margin-bottom: 6px; }
+.brand_box_title h3 { float: left; line-height: 24px; font-size: 14px; background: url(/images/page/brand/brand_icon.gif) no-repeat left top; padding-left: 20px; }
+.brand_box_title h3 span { font-weight: bold; }
+.brand_box_title a { float: right; }
+.brand_title_clothing h3 { background-position: left -24px; }
+.brand_title_bags h3 { background-position: left -48px; }
+.brand_title_shoes h3 { background-position: left -72px; }
+.brand_title_watches h3 { background-position: left -96px; }
+.brand_title_other h3 { background-position: left -120px; }
+.brand_box_cn { margin-right: -6px; min-height: 412px; _height:412px; position:relative; }
+.brand_box_cn img { vertical-align: text-bottom; }
+.brand_box_cn dl{ float: left; margin: 0 6px 6px 0;position: relative;}
+.brand_box_cn dt {font-weight: bold; display: none; position: absolute; bottom: 0; left: 0; width: 316px; height: 38px; line-height: 38px; }
+.brand_box_cn dt a{position: absolute; left: 16px; top: 0; z-index: 2; }
+.brand_box_cn dt a:link,.brand_box_cn dt a:visited { color: #fff; }
+.brand_box_cn dt a.attention_btn,.brand_box_cn dt a.attention_already { width:62px; text-align:center; color: #fff;  margin: 10px 0;left:auto; right: 16px;height: 18px; background:#cf9732 url(/images/page/brand/brand_title_attention_bg.gif) repeat-x 0 -72px;}
+.brand_box_cn dt a em{padding-left:12px; font-weight:normal;background:url(/images/page/brand/brand_title_attention_bg.gif) no-repeat; display:block;line-height: 18px; height: 18px; width:50px;}
+.brand_box_cn dt a.attention_btn em{background-position: 13px -19px;}
+.brand_box_cn dt a.attention_already em{ background-position: 4px -51px; color:#333;}
+.brand_box_cn dt span { display: block; width: 316px; height: 38px; background: #333; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)"; filter: alpha(opacity=60); opacity: 0.6; position: absolute; top: 0; left: 0; z-index: 1; }
+
+.brand_box_cn ul { margin-bottom: 20px;}
+.brand_box_cn ul li{ position:relative;width:155px; height:74px;float: left; margin: 0 6px 6px 0;}
+.brand_box_cn ul li:hover{-webkit-transform:scale(1.1);-moz-transform:scale(1.1)}
+.brand_box_cn ul li a{ position:absolute; top:0; left:0;}
+.brand_box_cn ul li a img{ width:100%;}
+.brand_box_cn ul li a em{ line-height:21px; background:url(/images/page/brand/brand_title_attention_bg.gif) no-repeat; display:block; margin:0 auto; width:50px; padding-left:12px; height:21px;}
+
+.brand_box_cn ul li a.attention_btn,.brand_box_cn ul li a.attention_delete,.brand_box_cn ul li a.attention_already{ position:absolute; width:100%; top:auto; bottom:0; left:0; display:none; text-align:center; background:#cf9732; color:#fff; height:21px; line-height:21px; cursor:pointer; text-align:center; z-index:2;}
+.brand_box_cn ul li a.attention_already{ color:#333;}
+.brand_box_cn ul li a.attention_already em{ background-position:7px -49px;}
+.brand_box_cn ul li a.attention_btn em{ background-position:13px -18px;}
+.brand_box_cn ul li a.attention_delete{ background:#ccc;}
+.brand_box_cn ul li a.attention_delete em{ background-position:0 9px;}
+
+.brand_box_cn .brand_cn_left { float: left; width: 644px; }
+.brand_box_cn ul.brand_cn_right { float: right; width: 322px; position:absolute;top:0;right:0;_right:-6px; }
+.brand_box_cn ul.brand_cn_right li { margin-bottom: 4px; } 
+
+.brand_flag .brand_box_cn { height: auto; min-height: 232px; _height: 232px; }
+.brand_sort_nav { margin-bottom: 10px; top: 41px; top: 40px\9; padding-top: 10px; background: #fff; margin-top: -10px; _top:expression(eval(document.documentElement.scrollTop+40));
+width: 960px; }
+.brand_sort_nav dl { background: #f6f6f6; }
+.brand_sort_nav dt { padding: 0 12px; background: #e6e6e6; color: #333; float: left; text-align: center; line-height: 22px; margin-right: 10px; }
+.brand_sort_nav dd { width: 878px; float: left; }
+.brand_sort_nav dd a { line-height: 22px; height: 22px; padding: 0 10px; display: inline-block; *display:inline;
+*zoom:1;
+}
+.brand_sort_nav dd a:hover { text-decoration: underline; }
+.brand_sort_box { border-bottom: 1px dashed #d2d2d2; overflow: hidden; width: 100%; }
+.brand_sort_box a.brand_nav_mao { float: left; width: 76px; padding: 10px 0; height: 22px; line-height: 22px; text-align: center; font-size: 14px; font-weight: bold; }
+.brand_sort_box ul { padding: 10px; float: left; width: 860px; }
+.brand_sort_box ul li { line-height: 22px; font-size: 14px; float: left; width: 25%; }
+.brand_sort_box ul li a { display: inline-block; padding: 0 10px; }
+.brand_sort_box ul li a:hover { background: #333; color: #fff; }
+.brand_topnav_fixed { position: fixed; z-index: 1000; _position: absolute; _bottom: auto; }
+
+
+
+/*国际高端*/
+.brand_height_box .brand_box_title h3 { background-position: 0 -144px; }
+.brand_height_box .brand_box_cn dl { margin-bottom: 13px; }
+.brand_flag .brand_box_cn{ min-height:196px; _height:196px;}
+
+/*我关注的品牌*/
+.bradn_attention .brand_box_cn{ height:auto;}
+.brand_box_favorite .brand_box_title h3{ background-position:0 -170px;}
+.brand_box_browsed .brand_box_title h3{ background-position:0 -197px;}
+
+
+/*首页轮播图*/
+#spIndex_mxImageSwitch { width: 960px; height: 250px; overflow: hidden; margin:15px auto 10px; position: relative; }
+#spIndex_mxImageSwitch span { display: none; position: absolute; width: 40px; height: 250px; top: 0; z-index: 1000; cursor: pointer; background: url(/images/page/index/swarr.png) no-repeat 8px center; _background-image: url(/images/page/index/swarr.gif) }
+#spIndex_mxImageSwitch span#switchnext { right: 0; background-position: -200px center; }
+.switchsort { padding: 10px 0; text-align: center;bottom: 0;right: 14px; position:absolute; z-index:1001;}
+.switchsort li { display: inline-block; *display:inline;*zoom:1;padding: 0 1px; }
+.switchsort li a {/* display: none; */width: 16px; height: 16px; line-height:16px; overflow: hidden; color:#000; position:relative;}
+.switchsort li a.cur { color:#fff;}
+.switchsort li a i{background: #333; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)"; filter: alpha(opacity=60); opacity: 0.6; display:block;width: 16px; height: 16px; position:absolute; z-index:1; top:0; left:0;}
+.switchsort li a em{ z-index:2;position:absolute;top:0; left:0;display:block;width: 16px; height: 16px;}
+#switchhref { display: block; width: 960px; height: 250px; overflow: hidden; background: url(/images/plug/loader/aloader-greybg.gif) no-repeat center center; }
+#switchhref.loaderhide { background-position: -1000px -1000px; }
+/*圆点导航*/
+.spIndex_cir { display: inline-block; *background: none;background: none\0; margin: 0 2px; *display:inline;*zoom: 1;}
+.spIndex_cir a { text-indent: -128px; display: block; width: 15px; height: 15px; _width: 12px; _height: 12px; background: url(/images/page/index/spWindow.png) -30px top no-repeat; _background: #333; overflow: hidden; *border:0;border: 0\0; }
+#spIndex_window_nav .ciron { background: none; }
+.spIndex_ciron a { background: url(/images/page/index/spWindow.png) 1px top no-repeat; _background: #ea0600; }

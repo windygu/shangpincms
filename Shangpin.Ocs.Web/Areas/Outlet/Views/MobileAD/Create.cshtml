@@ -1,0 +1,169 @@
+﻿@using Shangpin.Entity.Wfs
+@{
+    Layout = null;
+    IList<SWfsChannel> channelList = ViewBag.ChannelList;
+    
+}
+
+<div class="crumb">
+    <a href="#">频道移动端内容管理</a> &gt; 添加广告 <a href="#" class="closeBtn" onclick="Cancle();">
+        &times;</a></div>
+<div class="mx-rightcontent-msgbox" id="mx-rightcontent-addbox">
+    <form id="formCreate" method="post" action="/outlet/MobileAD/CreateMobileAD" enctype="multipart/form-data">
+    <dl>
+        <dt style="color: Red">广告名称: </dt>
+        <dd>
+            <input id="Name" name="Name" type="text" maxlength="15" />
+            <input name="channelNo" type="hidden" value="@ViewBag.ChannelNo" />
+        </dd>
+    </dl>
+    <dl>
+        <dt style="color: red">广告状态: </dt>
+        <dd>
+            <input id="Status0" name="Status" type="radio" value="0" checked="checked" />关闭
+            <input id="Status1" name="Status" type="radio" value="1" />开启
+        </dd>
+    </dl>
+    <dl>
+        <dt style="color: Red">展示时间: </dt>
+        <dd>
+            <input id="DateBegin" name="DateBegin" class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:00'})"
+                readonly="readonly" />
+            <input id="DateEnd" name="DateEnd" class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:00'})"
+                readonly="readonly" />
+        </dd>
+    </dl>
+    <dl>
+        <dt style="color: Red">上传图片: </dt>
+        <dd>
+            <input id="AdPic" type="file" name="AdPic" />
+            <label style="color: Red; font-size: small">
+               尺寸：608*380 小于150kb jpg、png</label>
+            <br />
+        </dd>
+    </dl>
+    <dl>
+        <dt style="color: Red">展示序号: </dt>
+        <dd>
+            <input id="Sort" name="Sort" type="text" onkeyup="this.value=this.value.replace(/\D/g,'')" onblur="this.value=this.value.replace(/\D/g,'')"  />
+        </dd>
+    </dl>
+    <dl>
+        <dt style="color: red">展示方式: </dt>
+        <dd>
+            <input id="ShowType1" name="ShowType" type="radio" value="1" checked="checked" onclick="ChangeShowType(this.value);" /><label
+                for="ShowType1">尚品客户端</label>
+            <input id="ShowType2" name="ShowType" type="radio" value="2" onclick="ChangeShowType(this.value);" /><label
+                for="ShowType2">进入频道页</label>
+            <input id="ShowType3" name="ShowType" type="radio" value="3" onclick="ChangeShowType(this.value);" /><label
+                for="ShowType3">自定义连接</label>
+        </dd>
+        <dt>&nbsp;</dt>
+        <dd>
+            <select id="channelList" name="channelList" style="display: none">
+                <option value="3">首页</option>
+                <option value="0">女士</option>
+                <option value="1">男士</option>
+                <option value="2">儿童</option>
+                @foreach (var item in channelList)
+                {
+                    <option value="@item.ChannelNo">@item.ChannelName</option>
+                }
+            </select>
+            <input id="ShowUrl" name="ShowUrl" type="text" style="display: none" value="http://"
+                onfocus="if(this.value == 'http://') this.value = ''" onblur="if(this.value == '') this.value = 'http://'" />
+        </dd>
+    </dl>
+    <dl>
+        <dt>&nbsp;</dt>
+        <dd>
+            <button type="button" id="btnSave" name="" value="" class="secondary" onclick="return checkSubmit();">
+                确 定</button>
+            <button type="button" id="btnCancle" name="" value="" onclick="Cancle();">
+                取 消</button>
+        </dd>
+    </dl>
+    </form>
+</div>
+<script type="text/javascript" language="javascript">
+    function ChangeShowType(value) {
+        if (value == 2) {
+            $("#channelList").show();
+            $("#ShowUrl").hide();
+        } else if (value == 3) {
+            $("#ShowUrl").show();
+            $("#channelList").hide();
+        } else {
+            $("#ShowUrl").hide();
+            $("#channelList").hide();
+        }
+    }
+    function Cancle() {
+        $("#mx-rightcontent-fixbarbg").css({ "height": 79, "overflow-y": "hidden" });
+        //$("#mx-rightcontent-fixbar").css({ "bottom": 0 });
+    };
+    $("#mx-rightcontent-fixbarbg .crumb").on("click", function () {
+        Cancle();
+        return false;
+    });
+    function checkSubmit() {
+        if ($("#Name").val() == "") {
+            alert("请填写广告名称!");
+            return false;
+        }
+        var showBeginTime = $("#DateBegin").val();
+        var showEndTime = $("#DateEnd").val();        
+        if (showBeginTime == "" || showEndTime == "") {
+            alert("展示时间不能为空！");
+            return false;
+        }
+        var begin = new Date(showBeginTime.replace(/-/g, "/"));
+        var end = new Date(showEndTime.replace(/-/g, "/"));
+        if (begin.dateFormat("yyyy-MM-dd HH:mm:00") < new Date().dateFormat("yyyy-MM-dd HH:mm:00")) {
+            alert("展示开始时间不能小于当前时间！");
+            return false;
+        }
+        if (begin - end >= 0) {
+            alert("展示结束时间必须大于开始时间！");
+            return false;
+        }
+        
+        if ($("#AdPic").val() == "") {
+            alert("请上传广告图片！");
+            return false;
+        }
+        var sort = $("#Sort").val();
+        if (sort == "") {
+            alert("请填写展示序号！");
+            return false;
+        }
+        var showType = $("input[name='ShowType']:checked").val();
+        var url = $("#ShowUrl").val();
+        if (showType == 3) {
+            if (url == "" || url == "http://") {
+                alert("请填写连接地址！");
+                return false;
+            }
+        }
+
+        $("#formCreate").ajaxSubmit({
+            success: function (html, status) {
+                var data;
+                if (typeof (html) == "string") {
+                    html = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+                    data = eval("(" + html + ")");
+                }
+                else {
+                    data = html;
+                }
+                if (data.result == "1") {
+                    window.location.href = gettimestampurl(window.location.href);
+                }
+                else {
+                    alert(data.message);
+                    //window.location.href = gettimestampurl(window.location.href);
+                }
+            }
+        });
+    }
+</script>

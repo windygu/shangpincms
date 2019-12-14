@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "更改从属";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    Shangpin.Entity.Wfs.SWfsBrandNavigation obj = null;
+    if (Model.Count(p => p.NavigationId == ViewBag.NavID) == 1)
+    {
+        obj = Model.Single<Shangpin.Entity.Wfs.SWfsBrandNavigation>(p => p.NavigationId == ViewBag.NavID);
+    }
+
+}
+@model IList<Shangpin.Entity.Wfs.SWfsBrandNavigation>
+@section HeadStyle{
+    <link charset="utf-8" type="text/css" rel="stylesheet" href="/Areas/Shangpin/Content/css/page/rightcontent/brandcontent.css" />
+}
+@section HeadScript{
+    <script charset="utf-8" type="text/javascript" src="/Areas/Shangpin/Scripts/plug/comm.js"></script>
+    <script type="text/javascript">
+        var changeRelation = function () {
+            var parentid=-1;
+            if (document.getElementById("navList").value == "0") {
+                alert("父类不能从属自己的子类");
+                return;
+            }else{
+                if(document.getElementById("navList").value=="-1"){
+                    parentid=0;
+                }else{
+                    parentid=document.getElementById("navList").value;
+                }
+            }
+
+            $.post("/ShangPin/Brand/ChangeParent.html", { 'navNo': @ViewBag.NavID, 'pId': parentid,'brandNo':'@ViewBag.BrandNo' }, function (data) {
+                if (data > 0) {
+                    alert("修改成功");
+                    window.location =  "/Shangpin/Brand/NavigateList.html?brandNO=@Request.QueryString["brandNO"]&brandname=@Request.QueryString["brandName"]&storetype=@Request.QueryString["storetype"]"
+                } else {
+                    alert("修改失败");
+                }
+            });
+        }
+    </script>
+}
+<h1>
+    <a href="/Shangpin/Brand/NavigateList.html?brandNo=@(ViewBag.BrandNo)&brandName=@(Request.QueryString["brandName"])">导航编辑</a> > 更改从属
+</h1>
+<div style="padding: 20px;">
+    <div style="padding: 20px;">
+        导航名称: @(obj != null ? obj.NavigationName : null)
+    </div>
+    <select id="navList" name="navList" style="width: auto;">
+        <option value="-1">顶级</option>
+        @foreach (var item in Model)
+        {
+            if (item.NavigationId == ViewBag.NavID || item.ParentId == ViewBag.NavID)
+            {
+                <option value="0">@item.NavigationName</option>
+            }
+            else
+            {
+                <option value="@item.NavigationId">@item.NavigationName</option>
+            }
+        }
+    </select>
+    <input type="button" value="确定" onclick="changeRelation()" />
+</div>

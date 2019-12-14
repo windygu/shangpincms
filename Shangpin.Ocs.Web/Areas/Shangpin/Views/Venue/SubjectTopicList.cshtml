@@ -1,0 +1,470 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.ShangPin
+@using Shangpin.Ocs.Web.Infrastructure
+@using Shangpin.Ocs.Service.Shangpin
+@model IList<Shangpin.Ocs.Entity.Extenstion.ShangPin.SWfsMeetingSubjectTopicM>
+@{
+    ViewBag.Title = "专题活动列表";
+    Layout = "~/Areas/Shangpin/Views/Shared/_VenueLayout.cshtml";
+}
+@{
+    int page = ViewBag.pageIndex != null ? (int)ViewBag.pageIndex : 1;
+    int pageSize = ViewBag.PageSize != null ? (int)ViewBag.PageSize : 20;
+    int totalCount = ViewBag.TotalCount != null ? (int)ViewBag.TotalCount : 0;
+}
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/js/DivWaitMsg.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script src="/Areas/Outlet/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+    <script language="javascript" type="text/javascript">
+        function delSubjectTopic(id, type) {
+            var pidStr = "";
+            var tf = false;
+            if (type == 1) {
+                $("[name='SubjectNoCheckBox']").each(function () {
+                    if ($(this).prop("checked")) {
+                        tf = true;
+                        pidStr += $(this).val() + ",";
+                    }
+                });
+                if (!tf) {
+                    alert("请选择要移除的专题活动！");
+                    return false;
+                }
+            } else {
+                if (id > 0) {
+                    tf = true;
+                    pidStr = id;
+                }
+            }
+            if (confirm("确定要移除吗？")) {
+                $.ajax({
+                    url: "/shangpin/venue/DelSubjectTopicRelation",
+                    type: "post",
+                    dataType: "json",
+                    data: "type=" + type + "&aId=" + pidStr,
+                    success: function (data) {
+                        if (data != null) {
+                            if (data.result == true) {
+                                alert(data.message);
+                                window.location.href = "/shangpin/venue/subjecttopiclist?mainMeetNo=@ViewBag.MainMeetNo&meetNo=@ViewBag.ChildMeettNo&topicsubjecttype=@ViewBag.TopicSubjectType&webSiteType=@ViewBag.WebSiteType";
+                                return true;
+                            } else {
+                                alert(data.message);
+                                return false;
+                            }
+                        }
+                    },
+                    error: function (x, e) {
+                        alert(x.responseText);
+                    }
+                });
+            }
+        }
+
+        function saveSubjectTopicRelation() {
+            var pidStr = "";
+            var tf = false;
+            $("[name='SubjectNoCheckBox']").each(function () {
+                if ($(this).prop("checked")) {
+                    tf = true;
+                    pidStr += $(this).val() + ",";
+                } else {
+                    pidStr += "0,";
+                }
+            });
+            if (!tf) {
+                pidStr = "";
+            }
+            $("#hidCheckId").val(pidStr);
+            if (!tf) {
+                alert("请选择需要修改的专题活动！");
+                return false;
+            }
+            if (confirm("确定要修改选择中的专题活动吗？")) {
+                $('#frmSubjectTopic').ajaxSubmit({
+                    success: function (html, status) {
+                        if (typeof (html) == "string") {
+                            var rs = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+                            data = eval("(" + rs + ")");
+                        }
+                        else {
+                            data = html;
+                        }
+                        if (data.result == "1") {
+                            alert(data.message);
+                            //window.location.href = "/Shangpin/Venue/SubjectTopicList?mainMeetNo=@ViewBag.MainMeetNo&meetNo=@ViewBag.ChildMeettNo&topicSubjectType=@ViewBag.TopicSubjectType";
+                            window.location.reload();
+                            return true;
+                        } else {
+                            alert(data.message);
+                            LoadMsgEnd();
+                            return false;
+                        }
+                        LoadMsgEnd();
+                    }, beforeSubmit: function () {
+                        LoadMsgBegin("保存中...");
+                    },
+                    error: function (XmlHttpRequest, textStatus, errorThrown) {
+                        alert("error");
+                        return false;
+                    }
+                });
+            }
+        }
+
+        function checkAll(obj) {
+            if (obj.checked) {
+                $("[name='SubjectNoCheckBox']").each(function () {
+                    $(this).attr("checked", "true");
+                });
+            }
+            else {
+                $("[name='SubjectNoCheckBox']").each(function () {
+                    $(this).removeAttr("checked");
+                });
+            }
+        }
+
+        function resetForm() {
+            $("input[name='subjectTopicName']").val("专题活动名称");
+            $("input[name='activityTopicNo']").val("专题活动编号");
+            $("select[name='webSiteType']").val("");
+            $("select[name='channelNo']").val("");
+            $("select[name='topicSubjectType']").val("");
+            $("select[name='status']").val("");
+            $("#startTime").val("");
+            $("#endTime").val("");
+        }
+    </script>
+}
+<h1>
+    OCS > 尚品 > 会场列表 > 专题活动库
+</h1>
+<form method="get" action="/Shangpin/Venue/SubjectTopicList?mainMeetNo=@ViewBag.MainMeetNo" id="SearchSujectTopic">
+<input type="hidden" name="mainMeetNo" value="@ViewBag.MainMeetNo" />
+<table width="auto" border="0" class="mx-table">
+    <tr>
+        <td style="text-align: left;">
+            <input name="subjectTopicName" value="@(!string.IsNullOrEmpty(ViewBag.SubjectTopicName) ? ViewBag.SubjectTopicName : "专题活动名称")"  style="width: 150px; color: #666; font-size: 12px;"
+               onfocus="if(this.value == '专题活动名称') this.value = ''" onblur="if(this.value == '') this.value = '专题活动名称'"  />
+        </td>
+        <td>
+            <input name="activityTopicNo" value="@(!string.IsNullOrEmpty(ViewBag.ActivityTopicNo) ? ViewBag.ActivityTopicNo : "专题活动编号")"  style="width: 130px; color: #666; font-size: 12px;"
+                onfocus="if(this.value == '专题活动编号') this.value = ''" onblur="if(this.value == '') this.value = '专题活动编号'"  />
+        </td>
+        <td align="left">
+            <select style="width: 80px;" name="status">
+                <option value="">状态 </option>
+                <option value="0" @(ViewBag.Status == "0" ? "selected=selected" : "")>已关闭</option>
+                <option value="1" @(ViewBag.Status == "1" ? "selected=selected" : "")>已开启</option>
+            </select>
+        </td>
+        <td>
+            <select style="width: 80px;" name="webSiteType">
+                <option value="0" @(ViewBag.WebSiteType == "0" ? "selected=selected" : "")>尚品</option>
+                <option value="1" @(ViewBag.WebSiteType == "1" ? "selected=selected" : "")>奥莱</option>
+            </select>
+        </td>
+        <td align="left">
+            <select name="channelNo" id="channelNo" style="width: 60px">
+                <option value="">渠道</option>
+                <option  value="zsqd001" @(ViewBag.ChannelNo == "zsqd001" || ViewBag.ChannelNo == "1" ? "selected=selected" : "")>
+                    网站</option>
+                <option  value="zsqd002" @(ViewBag.ChannelNo == "zsqd002" || ViewBag.ChannelNo == "2" ? "selected=selected" : "")>
+                    移动端</option>
+            </select>
+        </td>
+        <td>
+            <select style="width: 80px;" name="topicSubjectType">
+                <option value="0" @(ViewBag.TopicSubjectType == "0" ? "selected=selected" : "")>专题</option>
+                <option value="1" @(ViewBag.TopicSubjectType == "1" ? "selected=selected" : "")>活动</option>
+            </select>
+        </td>
+        <td width="380px" align="left" style="padding-left: 15px;">
+            <span>会场时间：</span>
+            <input id="startTime" name="startTime" value="@ViewBag.StartTime" maxlength="30"  class="Wdate" type="text" readonly="readonly" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',lang:'zh-cn',isShowClear:true,alwaysUseStartDate:true,readOnly:true,maxDate:'#F{$dp.$D(\'endTime\',{d:0});}'})" />
+            <span>至</span>
+            <input id="endTime" name="endTime" value="@ViewBag.EndTime" maxlength="30" class="Wdate" type="text" readonly="readonly" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',lang:'zh-cn',isShowClear:true,alwaysUseStartDate:true,readOnly:true,minDate:'#F{$dp.$D(\'startTime\',{d:0});}'})"/>
+        </td>
+        <td>
+            <input class="button" type="submit" value="查 询" />&nbsp;&nbsp;&nbsp;<input class="button"
+                type="button" onclick="javascript:resetForm();" value="重 置" />
+        </td>
+    </tr>
+</table>
+</form>
+<table cellpadding="1" cellspacing="1" class="mx-table">
+    <tbody>
+        <tr>
+            <td width="30%" style="text-align: left;">
+                <h1>
+                    <b>@(ViewBag.ListName)@(ViewBag.TypeName)列表</b></h1>
+            </td>
+            <td width="70%" style="text-align: right;">
+                <a id="addChildMeeting" class="button" href="/Shangpin/Venue/AddSubjectTopic?meetNo=@ViewBag.MainMeetNo&childMeetId=@ViewBag.ChildMeettNo&topicSubjectType=@ViewBag.TopicSubjectType" name="child">
+                    添加@(ViewBag.TypeName)</a>&nbsp; <a id="addChildMeeting" class="button" href="javascript:window.location.href='/Shangpin/Venue/MeetListManage';"
+                        name="child">返回</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<form id="frmSubjectTopic" action="/shangpin/venue/UpdateRelationSubjectTopic" method="post">
+<input type="hidden" id="MainMeetingNO" name="MainMeetingNO" value="@ViewBag.MainMeetNo"/>
+<input type="hidden" id="MeetingNO" name="MeetingNO" value="@ViewBag.ChildMeetNo"/>
+<input type="hidden" id="hidCheckId" name="hidCheckId" value="" />
+<input type="hidden" name="IsActive" value="@ViewBag.TopicSubjectType"/>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="mx-table">
+ <thead>
+        <tr>
+            <th>
+            <input type="checkbox" onclick="checkAll(this)"/>  
+            </th>
+            <th>
+               @(ViewBag.TypeName)图片
+            </th>
+             <th>
+               @(ViewBag.TypeName)信息
+            </th>
+            <th>
+                操作
+            </th>
+        </tr>
+</thead>
+@if (Model != null && Model.Count() > 0)
+{
+    var flag = 0;
+    foreach (var item in Model)
+    {
+        flag = flag + 1;
+        string style = flag % 2 == 0 ? "border:#ccc 0px solid;width:100%; background-color:#f0f0f0;" : "border:#ccc 0px solid;width:100%;";
+        if (item.IsActive == 1)
+        { 
+        <tbody>
+            <tr style="@style">
+                <td width="2%">
+                    <input type="checkbox" name="SubjectNoCheckBox" value="@item.ActiveID" style="text-align:center;"/>
+                    <input type="hidden" name="hidSTNo" value="@item.ActiveNO" />
+                </td>
+                <td width="15%">
+                    <img width="130" height="100" src="/ReadPic/GetPic.ashx?width=130&height=100&pictureFileNo=@item.BelongsSubjectPic&type=2">
+                </td>
+                <td colspan="2">
+                    <table width="100%" border="0" align="left" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td width="2%">
+                                &nbsp;
+                            </td>
+                            <td width="20%" style="text-align: left;">
+                                活动名称：@item.SubjectName
+                            </td>
+                            <td width="16%">
+                                &nbsp;
+                            </td>
+                            <td width="30%" style="text-align: left;">
+                                @{
+            TimeSpan ts1 = new TimeSpan(item.StartTime.Ticks);
+            TimeSpan ts2 = new TimeSpan(item.EndTime.Ticks);
+            TimeSpan ts = ts2.Subtract(ts1).Duration();
+            double TotalHour = ts.TotalHours;
+                                }
+                                <b>时间：@item.StartTime.ToString("yyyy-MM-dd HH:mm") 至 @item.EndTime.ToString("yyyy-MM-dd HH:mm")（@(item.EndTime.ToShortDateString() == "9999/12/31" ? "999" : TotalHour.ToString("N"))
+                                    小时）</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                &nbsp;
+                            </td>
+                            <td style="text-align: left;">
+                                活动编号：@item.ActiveNO
+                            </td>
+                            <td style="text-align: left;">
+                                所属网站：@Html.Raw(ViewBag.WebSiteType == "0" ? "尚品" : "奥莱")
+                            </td>
+                            <td style="text-align: left;">
+                            <span style="display:none;">
+                                活动地址：<input type="text" id="activityUrl" name="activityUrl" value="@item.ActiveLink" style="width: 270px;" /></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                &nbsp;
+                            </td>
+                            <td style="text-align: left;">
+                                展示渠道：@(Html.Raw(item.ChannelNo == "1" || item.ChannelNo == "zsqd001" ? "网站" : ""))
+                                     @(Html.Raw(item.ChannelNo == "2" || item.ChannelNo == "zsqd002" ? "移动端" : ""))
+                                     @(Html.Raw(item.ChannelNo == "1,2" || item.ChannelNo == "zsqd001,zsqd002" || item.ChannelNo == "zsqd001,zsqd002,zsqd003" ? "网站、移动端" : ""))
+                            </td>
+                            <td>
+                                &nbsp;
+                            </td>
+                            <td style="text-align: left;">
+                            <span style="display:none;">
+                                品牌地址：<input type="text" id="brandUrl" name="brandUrl" value="@item.BrandLink" style="width: 270px;" /></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                &nbsp;
+                            </td>
+                            <td style="text-align: left;">
+                                当前活动状态： @(item.Status == 1 ? "开启" : "关闭")
+                            </td>
+                            <td>
+                            </td>
+                            <td style="text-align: left; vertical-align: middle;">
+                            <span style="display:none;">
+                                品牌选择：<select style="width: 200px;" name="brandStatus" id="brandStatus">
+                                    <option value="">请选择品牌</option>
+                                    @{
+            List<Brand> list = ViewBag.BindList as List<Brand>;
+            if (list != null && list.Count > 0)
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                                        <option value='@list[i].BrandNo' @(item.BrandNO.Trim().Equals(list[i].BrandNo.Trim()) ? "selected=selected" : "")>@list[i].BrandCnName</option>
+                }
+            }           
+                                    }
+                                </select>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td style="text-align: right;">
+                                <a class="button" href="javascript:void(0);" onclick="javascript:delSubjectTopic(@item.ActiveID, 0);">
+                                    移除</a>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+        }
+        else if (item.IsActive == 0)
+        {
+        <tbody>
+            <tr style="@style">
+                <td width="2%">
+                    <input type="checkbox" name="SubjectNoCheckBox" value="@item.ActiveID" style="text-align:center;"/>
+                     <input type="hidden" name="hidSTNo" value="@item.ActiveNO" />
+                </td>
+                <td width="15%">
+                    <img width="130" height="100" src="/ReadPic/GetPic.ashx?width=130&height=100&pictureFileNo=@item.TopicPic&type=2"/>
+                </td>
+                <td colspan="2">
+                    <table width="100%" border="0" align="left" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td width="2%">
+                                &nbsp;
+                            </td>
+                            <td width="20%" style="text-align: left;">
+                                专题名称：@item.TopicName
+                            </td>
+                            <td width="16%">
+                                &nbsp;
+                            </td>
+                            <td width="30%" style="text-align: left;">
+                                @{
+            TimeSpan ts1 = new TimeSpan(item.StartTime.Ticks);
+            TimeSpan ts2 = new TimeSpan(item.EndTime.Ticks);
+            TimeSpan ts = ts2.Subtract(ts1).Duration();
+            double TotalHour = ts.TotalHours;
+                                }
+                                <b>时间：@item.StartTime.ToString("yyyy-MM-dd HH:mm") 至 @item.EndTime.ToString("yyyy-MM-dd HH:mm")（@(item.EndTime.ToShortDateString() == "9999/12/31" ? "999" : TotalHour.ToString())
+                                    小时）</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                &nbsp;
+                            </td>
+                            <td style="text-align: left;">
+                                专题编号：@item.ActiveNO
+                            </td>
+                            <td style="text-align: left;">
+                                &nbsp;
+                            </td>
+                            <td style="text-align: left;">
+                                活动地址：<input type="text" id="activityUrl" name="activityUrl" value="@item.ActiveLink" style="width: 270px;" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                &nbsp;
+                            </td>
+                            <td style="text-align: left;">
+                                展示渠道：@Html.Raw(item.ChannelNo == "zsqd002" ? "移动端" : "网站")
+                            </td>
+                            <td>
+                            </td>
+                            <td style="text-align: left;">
+                                品牌地址：<input type="text" id="brandUrl" name="brandUrl" value="@item.BrandLink" style="width: 270px;" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                &nbsp;
+                            </td>
+                            <td style="text-align: left;">
+                                当前专题状态： @(item.Status == 1 ? "开启" : "关闭")
+                            </td>
+                            <td>
+                                &nbsp;
+                            </td>
+                            <td style="text-align: left;">
+                                品牌选择：<select style="width: 200px;" name="brandStatus" id="brandStatus">
+                                    <option value="">请选择品牌</option>
+                                    @{
+            List<Brand> list = ViewBag.BindList as List<Brand>;
+            if (list != null && list.Count > 0)
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                                        <option value='@list[i].BrandNo' @(item.BrandNO.Trim().Equals(list[i].BrandNo.Trim()) ? "selected=selected" : "")>@list[i].BrandCnName</option>
+                }
+            }           
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td style="text-align: right;">
+                                <a class="button" href="javascript:void(0);" onclick="javascript:delSubjectTopic(@item.ActiveID, 0);">
+                                    移除</a>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+        }
+    }
+}
+</table>
+<div class="spPage" style="margin-bottom:10px;padding-bottom:10px;">
+    @Html.Raw(@Html.PagerX("page", page, pageSize, totalCount))
+</div>
+<label>
+    <input type="checkbox" onclick="checkAll(this)" style="margin-left: 20px;" />全选</label>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="mx-table">
+    <tr>
+        <td>
+            <a class="button" href="javascript:void(0);" onclick="javascript:saveSubjectTopicRelation();">保 存</a>&nbsp;&nbsp;&nbsp;<a class="button" href="javascript:void(0);" onclick="javascript:delSubjectTopic(0, 1);">批量移除</a>&nbsp;&nbsp;&nbsp;<a class="button" href="javascript:window.location.href ='/Shangpin/Venue/MeetListManage';" onclick="">返
+                回</a>
+        </td>
+    </tr>
+</table>
+</form>

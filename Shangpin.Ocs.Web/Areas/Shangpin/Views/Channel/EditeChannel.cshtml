@@ -1,0 +1,158 @@
+﻿@model Shangpin.Entity.Wfs.SWfsSpChannel
+@using Shangpin.Ocs.Service.Common
+@{
+    ViewBag.Title = "添加频道";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    IEnumerable<SelectListItem> manchanneloption = new List<SelectListItem>()
+    {
+        new SelectListItem{Text="服饰CLOTHING",Value=AppSettingManager.AppSettings["MenClothing"]},
+        new SelectListItem{Text="箱包BAGS",Value=AppSettingManager.AppSettings["MenBags"]},
+        new SelectListItem{Text="鞋靴SHOES",Value=AppSettingManager.AppSettings["MenShoes"]},
+        new SelectListItem{Text="配饰ACCESSORIES",Value=AppSettingManager.AppSettings["MenAccessories"]},
+        new SelectListItem{Text="腕表眼镜WATCHES",Value=AppSettingManager.AppSettings["MenWatches"]},
+        new SelectListItem{Text="美妆BEAUT",Value=AppSettingManager.AppSettings["MenBeauty"]},
+        new SelectListItem{Text="家居HOME",Value=AppSettingManager.AppSettings["MenHomes"]},
+    };
+    IEnumerable<SelectListItem> womanchanneloption = new List<SelectListItem>()
+    {
+        new SelectListItem{Text="服饰CLOTHING",Value=AppSettingManager.AppSettings["WomenClothing"]},
+        new SelectListItem{Text="箱包BAGS",Value=AppSettingManager.AppSettings["WomenBags"]},
+        new SelectListItem{Text="鞋靴SHOES",Value=AppSettingManager.AppSettings["WomenShoes"]},
+        new SelectListItem{Text="配饰ACCESSORIES",Value=AppSettingManager.AppSettings["WomenAccessories"]},
+        new SelectListItem{Text="腕表眼镜WATCHES",Value=AppSettingManager.AppSettings["WomenWatches"]},
+        new SelectListItem{Text="美妆BEAUT",Value=AppSettingManager.AppSettings["WomenBeauty"]},
+        new SelectListItem{Text="家居HOME",Value=AppSettingManager.AppSettings["WomenHomes"]},
+    };
+    if (Model.ChannelNO.IndexOf("A01") == 0)
+    {
+        if (womanchanneloption.Count(p => p.Value == Model.ChannelNO) == 1)
+        {
+            womanchanneloption.Single(p => p.Value == Model.ChannelNO).Selected = true;
+        }
+    }
+    else if (Model.ChannelNO.IndexOf("A02") == 0)
+    {
+        if (manchanneloption.Count(p => p.Value == Model.ChannelNO) == 1)
+        {
+            manchanneloption.Single(p => p.Value == Model.ChannelNO).Selected = true;
+        }
+    }
+}
+@section HeadStyle{
+    <link href="/Areas/Shangpin/Content/css/tipswindown.css" rel="stylesheet" type="text/css" />
+    <link href="/Areas/Shangpin/Content/css/page/rightcontent/brandcontent.css" rel="stylesheet" type="text/css" charset="utf-8" />
+}
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/js/tipswindown.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="/Areas/Shangpin/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+    <script src="/Areas/Shangpin/Scripts/js/DivWaitMsg.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        //加载男士或者女士的频道下拉列表
+        function getgenderchannellist(obj) {
+            if ($(obj).val() == 0) {
+                $("#womanchannelno").show();
+                $("#manchannelno").hide();
+            } else {
+                $("#womanchannelno").hide();
+                $("#manchannelno").show();
+            }
+        }
+        $(document).ready(function () {
+            //加载男士或者女士的频道下拉列表
+            if ($("#channelGender").val() == "0") {
+                $("#womanchannelno").show();
+                $("#manchannelno").hide();
+            } else {
+                $("#womanchannelno").hide();
+                $("#manchannelno").show();
+            }
+            //选择会场模板
+            $("#selectMeetingTemp").click(function () {
+                tipsWindown("选择会场模板", "iframe:/shangpin/Channel/SelectMeetingTemplate?seltemplateno=" + $("#WebTemplateNO").val(), "600", "350", "true", "", "true", "text");
+            });
+        });
+
+        //弹出层选择行 返回数据
+        function ClickRowNew(value) {
+            $("#templateTip").html("已选择").css({ color: "green" });
+            $("#WebTemplateNO").val(value);
+            $("#windown-close").trigger("click");
+        }
+        //清除模板选择
+        function TrueInfo() {
+            $("#templateTip").html("未选择").css({ color: "red" });
+            $("#WebTemplateNO").val("");
+            $("#windown-close").trigger("click");
+        }
+    </script>
+}
+<h1>
+    OCS > 尚品 > <a href="/Shangpin/Channel/ChannelList">频道列表</a> > 添加频道
+</h1>
+<div  class="mx-brandcontent-msgbox">
+    <form action="/Shangpin/Channel/EditeChannel" method="post" >
+        <dl>
+            <dt><span style="color:Red;">频道位置:</span></dt>
+            <dd>
+                @if (Model.ChannelID == 0)
+                {
+                    <select onchange="getgenderchannellist(this)" id="channelGender" name="channelGender">
+                     <option value="0"  @(Model.ChannelNO.IndexOf("A01") == 0 ? "selected" : null)>女士</option>
+                     <option value="1"  @(Model.ChannelNO.IndexOf("A02") == 0 ? "selected" : null)>男士</option>
+                    </select>
+                    @Html.DropDownList("womanchannelno", womanchanneloption)
+                    @Html.DropDownList("manchannelno", manchanneloption, new { @style = "display:none;" })
+                }
+                else
+                {
+                    if (Model.ChannelNO.IndexOf("A01") == 0)
+                    {
+                        @Html.Raw("女士 > " + womanchanneloption.Single(p => p.Value == Model.ChannelNO).Text)
+                    }
+                    else if (Model.ChannelNO.IndexOf("A02") == 0)
+                    {
+                        @Html.Raw("男士 > " + manchanneloption.Single(p => p.Value == Model.ChannelNO).Text)
+                    }
+                    @Html.HiddenFor(model=>model.ChannelNO)
+                }
+                
+            </dd>
+        </dl>
+        <dl>
+            <dt>频道状态:</dt>
+            <dd>
+                @Html.RadioButtonFor(model => model.Status, 1) 开启
+                @Html.RadioButtonFor(model => model.Status, 0) 关闭
+            </dd>
+        </dl>
+        <dl>
+            <dt>选择模板:</dt>
+            <dd>
+                @Html.HiddenFor(model => model.ChannelID)
+                <input type="hidden" value="@ViewBag.WebTemplateNO" name="WebTemplateNO" id="WebTemplateNO"/>
+                <input type="button" id="selectMeetingTemp" value="选择模板"
+                            style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;"/>
+                @if (string.IsNullOrEmpty(ViewBag.WebTemplateNO))
+                {
+                    <span id="templateTip" style="padding-left: 10px; color: red;">未选择</span>
+                }
+                else
+                {
+                    <span id="templateTip" style="padding-left: 10px; color: green;">已选择</span>
+                }
+            </dd>
+        </dl>
+        <dl>
+            <dt>&nbsp;
+            </dt>
+            <dd>
+                <input type="submit" value="保存" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;"/>
+                <input type="button" value="取消" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;" onclick="window.location.href='/Shangpin/channel/ChannelList'"/>
+            </dd>
+        </dl>
+    </form>
+</div>
+@ViewData["tip"]

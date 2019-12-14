@@ -1,0 +1,158 @@
+﻿@using Shangpin.Entity.Wfs
+@using Shangpin.Ocs.Entity.Extenstion.Outlet
+@using System.Text;
+@model Shangpin.Ocs.Entity.Extenstion.Outlet.SubjectInfo
+@{ 
+    Layout = null;
+    string subjectNo = Request.QueryString["SubjectNo"].ToString();
+    SubjectPreheatInfoM preheatModel = ViewBag.SubjectPredheatModel as SubjectPreheatInfoM;
+    string brandNo = Model.BrandContent;
+    StringBuilder categoryNo = new StringBuilder();
+    if (Model.ChannelCategoryList != null && Model.ChannelCategoryList.Count() > 0)
+    {
+        int num = 0;
+        foreach (var item in Model.ChannelCategoryList)
+        {
+            num++;
+            categoryNo.Append(item.Category);
+            if (num < Model.ChannelCategoryList.Count())
+            {
+                categoryNo.Append(",");
+            }
+        }
+    }  
+}
+<link href="/Areas/Outlet/Content/css/init.css" rel="stylesheet" type="text/css"
+    charset="utf-8" />
+<link href="/Areas/Outlet/Content/css/core.css" rel="stylesheet" type="text/css"
+    charset="utf-8" />
+<link href="/Areas/Outlet/Content/css/page/rightcontent/rightcontent.css" rel="stylesheet"
+    type="text/css" charset="utf-8" />
+<script type="text/javascript" src="/Areas/Outlet/Scripts/lib/jquery.js" charset="utf-8"></script>
+<script src="/Areas/Outlet/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+<script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script language="javascript" type="text/javascript">
+    $(function () {
+        $("#btnCancle").bind("click", parent.window.TrueInfo);
+    });
+    function checkSubmit() {
+        if ($("#DateBegin").val() == "") {
+            alert("请选择开始时间！");
+            return false;
+        }
+        if ($("#SubjectDuration").val() == "") {
+            alert("请填写持续时间！");
+            return false;
+        }
+        var hidIsPreheat = $("input[name='hidIsPreheat']").val();
+        if (hidIsPreheat == "1") {
+            if ($("#txtPreheatTime").val() == "") {
+                alert("预热时间不能为空！");
+                return false;
+            }
+        }
+        var diffCheck = checkDiffBrandCategory($("#subjectNo").val(), $("#DateBegin").val(), '@brandNo', '@categoryNo');
+        if (diffCheck) {
+            if (!confirm("结束时间7天内已经存在同品牌同分类的活动！\n是否继续保存？")) {
+                return false;
+            }
+        }
+        $('#formEditSubjectTime').ajaxSubmit({
+            beforeSubmit: function () {
+                $("#btnSave").html("正在处理中...");
+            },
+            error: function () {
+
+                $("#btnSave").html("确定");
+            },
+            success: function (html, status) {
+                if (typeof (html) == "string") {
+                    var rs = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+                    data = eval("(" + rs + ")");
+                }
+                else {
+                    data = html;
+                }
+                if (data.result != "1" && data.result != "0") {
+                    $("#span" + data.result).html(data.message);
+                    $("#btnSave").html("确定");
+                    alert(data.message);
+                    return false;
+                }
+                else if (data.result == "1") {
+                    $("#btnSave").html("确定");
+                    alert(data.message);
+                    var id = $("#subjectNo").val();
+                    parent.window.ClickRowNew(id, data.returnStr, data.H);
+                    return true;
+                } else {
+                    $("#btnSave").html("确定");
+                    alert(data.message);
+                    return false;
+                }
+            }
+        });
+    }
+    function checkDiffBrandCategory(subjectNo, beginTime, brandNo, categoryNo) {
+        var flag = false;
+        $.ajax({
+            url: "/Outlet/SubjectConsole/CheckDiffBrandCategory",
+            type: "post",
+            dataType: "json",
+            data: "subjectNo=" + subjectNo + "&beginTime=" + beginTime + "&brandNo=" + brandNo + "&categoryNo=" + categoryNo + "&t=" + new Date().getTime(),
+            async: false,
+            success: function (data) {
+                if (data != null) {
+                    if (data.result == "1") {
+                        flag = true;
+                    }
+                }
+            },
+            error: function (x, e) {
+                alert(x.responseText);
+            }
+        });
+        return flag;
+    }
+</script>
+<div id="mx-rightcontent-addbox" class="mx-rightcontent-msgbox" style="height: 300px;">
+    <form id="formEditSubjectTime" action="/outlet/SubjectConsole/SaveSubjectTime" method="post">
+    <dl>
+        <dt style="width: 13%;">开始时间：</dt>
+        <dd>
+            <input type="hidden" id="subjectNo" name="subjectNo" value="@Model.SubjectNo" />
+            <input id="DateBegin" name="DateBegin" class="Wdate" type="text"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:00:00'})"
+                readonly="readonly" value="@Model.DateBegin.ToString("yyyy-MM-dd HH:mm:ss")" />
+        </dd>
+    </dl>
+    <dl>
+        <dt style="width: 13%;">持续时间：</dt>
+        <dd>
+            <input type="hidden" name="hidIsPreheat" value="@Model.IsPreheat"/>
+            @{
+                string year = Model.DateEnd.Year.ToString();
+                string hours = year == "9999" ? "0" : Model.Hours;
+            }
+            <input id="SubjectDuration" type="text" name="SubjectDuration" value="@hours" onkeyup="this.value=this.value.replace(/\D/g,'')" onblur="this.value=this.value.replace(/\D/g,'')" />小时
+        </dd>
+    </dl>
+    @if (Model.IsPreheat == 1)
+    {
+        <dl>
+            <dt id="PreheatTime" style="width: 13%;">预热时间：</dt>
+            <dd>
+                <input id="txtPreheatTime" name="txtPreheatTime" class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:00:00'})"
+                readonly="readonly" value="@(preheatModel != null ? preheatModel.PreheatTime.ToString("yyyy-MM-dd HH:mm:ss") : "")"/>&nbsp;&nbsp;&nbsp;<font
+                    color="red">预热日期不可大于活动开始日期</font></dd>
+        </dl>
+    }
+    <dl>
+        <dt>&nbsp;</dt>
+        <dd>
+            <button type="button" id="btnSave" name="" value="" class="secondary" onclick="return checkSubmit();">
+                确 定</button>
+            <button type="button" id="btnCancle" name="" value="">
+                取 消</button></dd>
+    </dl>
+    </form>
+</div>

@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Shangpin.Ocs.Entity.Extenstion.ShangPin.BrandExtendForAlias>
+@using Shangpin.Ocs.Web.Infrastructure
+@{
+    ViewBag.Title = "品牌别名设置";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+@section HeadScript{
+<script src="/Areas/Shangpin/Scripts/plug/comm.js" charset="utf-8" type="text/javascript"></script>
+    <script src="/Areas/Shangpin/Scripts/Alias/Alias.js" charset="utf-8" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            document.onkeydown = function (e) {
+                var ev = document.all ? window.event : e;
+                if (ev.keyCode == 13) {
+                    brandserach();
+                }
+
+            }
+        });
+    </script>
+}
+<h1>
+    OCS > 尚品 > 别名管理><a href="/Shangpin/seo/BrandAlias.html">品牌别名设置</a></h1>
+   
+   
+    <table style=" margin-top:10px;">
+     <tr>
+     <td>品牌名称：</td><td><input id="brandName" value="@ViewBag.BrandName" maxlength="30" />&nbsp;&nbsp;</td>
+     <td>别名：</td><td><input id="aliasName" value="@ViewBag.AliasName" maxlength="30" />&nbsp;&nbsp;
+     <input type="button" value="搜索" onclick="brandserach();" /></td>
+     </tr>
+    </table>
+<table class="mx-table">
+    <thead>
+    <tr>
+        <th width="10%">
+            品牌编号
+        </th>
+        <th width="7%">
+            品牌英文名称
+        </th>
+        <th width="12%">
+            品牌中文名称
+        </th>
+        <th  width="4%">
+              显示
+          </th>
+        <th width="6%">
+            品牌别名
+        </th>
+        </tr>
+    </thead>
+    @foreach (var m in Model)
+    {
+        <tr>
+            <td>@m.BrandNo
+            </td>
+            <td>@m.BrandEnName
+            </td>
+            <td>@m.BrandCnName
+            </td>
+             <td>
+            @(m.IsShow==1?"是":"否")
+            </td>
+            <td>
+                @Html.TextBox(m.BrandNo, m.ObjectAlias)
+                <input type="button" value="保存" onclick="AliasSave('@m.BrandNo',2,0)" />
+            </td>
+        </tr>
+    }
+    <tbody>
+    </tbody>
+</table>
+<div class="spPage" style="text-align: center; margin-top: 10px;">@Html.Raw(Html.PagerX("page", (int)ViewBag.PageIndex, (int)ViewBag.PageSize, (int)ViewBag.TotalCount))</div>

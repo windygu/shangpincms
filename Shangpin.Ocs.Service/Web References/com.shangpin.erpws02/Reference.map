@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Results>
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://erpws02.shangpin.com/WebService/ToWfsWebService.asmx?wsdl" filename="ToWfsWebService.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.DiscoveryDocumentReference" url="http://erpws02.shangpin.com/WebService/ToWfsWebService.asmx?disco" filename="ToWfsWebService.disco" />
+  </Results>
+</DiscoveryClientResultsFile>

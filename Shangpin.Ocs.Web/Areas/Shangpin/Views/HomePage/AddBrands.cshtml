@@ -1,0 +1,123 @@
+﻿@model Shangpin.Entity.Wfs.SWfsSpChannelRecommendBrand
+@using Shangpin.Ocs.Service.Common
+@{
+    ViewBag.Title = "添加品牌";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+@section HeadStyle{
+    <link href="/Areas/Shangpin/Content/css/page/rightcontent/brandcontent.css" rel="stylesheet" type="text/css" charset="utf-8" />
+
+}
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/plug/ERPBrand.js"></script>
+    <script type="text/javascript">
+        var saveBrand = function () {
+            var selected = "";
+            //alert($("#" + $('#BrandNo').val()).length);
+            if ($("#selectList input").length <= 0) {
+                alert("请选择品牌");
+                return;
+            }
+            else {
+                $("input[name=brandSelectedValue]").each(function (i) {
+                    selected += $(this).val() + ",";
+                });
+            }
+
+            $.post("/shangpin/homepage/AddBrands", { "pageNo": $("#PageNo").val(), "pagePositionName": $("#PagePositionName").val(), "pagePositionNo": $("#PagePositionNo").val(), "brandSelected": selected }, function (data) {
+                alert(data.message);
+                if (data.status == 2)
+                    //location.href = 'BrandSelectList?pageNo=' + $("#PageNo").val() + '&PagePositionNo=' + $("#PagePositionNo").val();
+                    location.href = 'BrandSelectList?PageNo=' + $("#PageNo").val() + '&PagePositionNo=' + $("#PagePositionNo").val() + '&PagePositionName=' + $("#PagePositionName").val() + '&isRecommendBrand=0';
+            });
+        }
+
+        var addBrand = function () {
+            $("#btnAdd").click(function () {
+                if ($("#" + $('#BrandNo').val()).length > 0) {
+                    alert('这个品牌已经添加了！');
+                    return;
+                }
+                else if ($("#BrandName") && $("#BrandName").length > 0 && $("#BrandName").val() != "") {
+                    var $defaultSpan = $("#selectList>span");
+                    //首次加载去除默认值
+                    if ($defaultSpan && $defaultSpan.length > 0) {
+                        $("#selectList").html("");
+                    }
+                    var $obj = $("#" + $("#BrandName").val());
+                    if ($obj && $obj.length > 0) {
+                        alert("这个品牌已经添加了");
+                        return;
+                    }
+                    //添加选择品牌
+                    $("#selectList").append("<input name=\"brandSelected\" readonly=\"readonly\" ondblclick=\"Inputdblclick(this,'" + $("#BrandNo").val() + "');\" value=\"" + $("#BrandName").val() + "\" title=\"" + $("#BrandName").val() +
+                        "\" type=\"text\" style=\"width:60;overflow-x:visible;overflow-y:visible;cursor: pointer;margin-right: 5px;\" /><input name=\"brandSelectedValue\" id=\"" + $("#BrandNo").val() + "\" readonly=\"readonly\" value=\"" + $("#BrandNo").val() + "\"  type=\"hidden\" />");
+                }
+                else {
+                    alert("请选择品牌");
+                    return;
+                }
+            });
+        }
+        var checkValid = function ($name) {
+            $("$#selectList input").each(function (i, item) {
+            });
+        }
+
+        //添加的Input双击事件
+        var Inputdblclick = function (t, n) {
+            $(t).remove(); $("#" + n).remove();
+        }
+
+        $(document).ready(function () {
+            $("#BrandName").selectBrand('BrandNo', 'BrandName', false, '', '');
+            addBrand();
+        });
+    </script>
+}
+<h1>
+    OCS > 尚品 > 首页品牌墙管理 > @(Request.QueryString["PagePositionName"]) > 新增品牌
+</h1>
+
+<div class="mx-brandcontent-msgbox">
+    <form action="/Shangpin/HomePage/AddBrands" method="post">
+        <dl>
+            <dt>当前位置：</dt>
+            <dd><span>@Request.QueryString["PagePositionName"]</span></dd>
+        </dl>
+        <dl>
+            <dt>
+                <span style="color:Red;">选择品牌：</span>
+            </dt>
+            <dd>
+                @if (string.IsNullOrEmpty(Request.QueryString["brandno"]))
+                {
+                    <input type="text" name="BrandName" id="BrandName" style="width: 120px; color: #666;font-size: 12px;" placeholder="请选择品牌" />
+                }
+                else
+                {
+                    <input type="text" name="BrandName" id="BrandName" style="width: 120px; color: #666;font-size: 12px;" value="@Request.QueryString["BrandName"]" placeholder="请选择品牌" />
+                }
+                <input type="button" value="添加品牌" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;" id="btnAdd" />
+                <input id="BrandNo" name="BrandNo" type="hidden" value="@Request.QueryString["brandno"]" />
+                <input id="PageNo" name="PageNo" type="hidden" value="@Request.QueryString["PageNo"]" />
+                <input id="PagePositionNo" name="PagePositionNo" type="hidden" value="@Request.QueryString["PagePositionNo"]" />
+                <input id="PagePositionName" name="PagePositionName" type="hidden" value="@Request.QueryString["PagePositionName"]" />
+            </dd>
+        </dl>
+        <dl>
+            <dt>已选品牌：</dt>
+            <dt id="selectList" style="width:400px;text-align:left"><span>暂无</span></dt>
+        </dl>
+        <dl>
+            <dt>&nbsp;&nbsp;</dt>
+            <dd>
+                <input type="button" onclick="saveBrand();" value="保存" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;" />
+                <input type="button" value="取消" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;" onclick="window.location.href = '/Shangpin/HomePage/HomeManager?PageNo=index'" />
+            </dd>
+        </dl>
+    </form>
+</div>

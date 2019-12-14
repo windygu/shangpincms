@@ -1,0 +1,299 @@
+
+/* CSS Document */
+
+/* ============== Account favorite ============== */
+
+#spAccount_favorite{
+	width:100%;
+	margin:10px 0 0;
+	/* border-top:1px solid #f2f2f2; */
+}
+#spAccount_favorite .favorite_filter{
+	height:20px;
+	padding:0 0 6px;
+}
+.favorite_filter li{
+	float:left;
+	line-height:20px;
+	padding:0 0 0 20px;
+	color:#666;
+}
+.favorite_filter li .input_ckbox{
+	margin:0 5px 0 0;
+	vertical-align:middle;
+	position:relative;
+	top:-1px;
+	*top:0px;
+	_top:-2px;
+	*zoom:1;
+}
+.favorite_filter li label{
+	cursor:pointer;
+}
+.favorite_filter li a{
+	text-decoration:underline;
+}
+
+#spAccount_favorite table{
+	width:100%;
+	margin-bottom:10px;
+}
+#spAccount_favorite table th{
+	background:#999999;
+	color:#fff;
+	line-height:17px;
+	height:24px;
+	line-height:24px;
+	text-align:center;
+}
+#spAccount_favorite table td{
+	color:#666;
+	line-height:21px;
+	border:1px solid #f2f2f2;
+	text-align:center;
+}
+#spAccount_favorite table td.tab_txtLeft{
+	text-align:left;
+	padding-left:4px;
+}
+#spAccount_favorite table .input_ckbox{
+	margin:0 20px;
+	vertical-align:middle;
+}
+#spAccount_favorite table img{
+	margin:15px 0;
+	vertical-align:middle;
+	width:72px;
+	height:96px;
+}
+#spAccount_favorite table .giftCard img{
+	margin:0;
+	vertical-align:middle;
+	width:75px;
+	height:41px;
+}
+#spAccount_favorite table span{
+	display:block;
+	/* padding-bottom:10px; */
+	/* font-weight:700; */
+}
+#spAccount_favorite table em{
+	color:#cbcbcb;
+}
+#spAccount_favorite table span a:link, #spAccount_favorite table span a:visited {
+	color:#666;
+	text-decoration:underline;
+}
+#spAccount_favorite table span a:hover, #spAccount_favorite table span a:active {
+	color:#000;
+	text-decoration:none;
+}
+#spAccount_favorite table .favorite_delete{
+	position:relative;
+	zoom:1;
+	padding:10px 0;
+}
+.favorite_delete a:hover, .favorite_delete a:active{
+	text-decoration:none;
+}
+.favorite_tips{
+	width:155px;
+	padding-top:6px;
+	position:absolute;
+	top:-60px;
+	left:-38px;
+	text-align:center;
+	border:1px solid #979797;
+	background:#fff;
+	display:none;
+}
+.favorite_tips li{
+	display:block;
+	height:55px;
+	position:relative;
+	font-family:"宋体";
+	line-height:23px;
+}
+.favorite_tips li i{
+	background-image:url(/images/plug/arrow/sp_li.gif);
+    background-position: -149px -233px;
+    background-repeat: no-repeat;
+	background-color:#fff;
+	display:block;
+	width:9px;
+	height:6px;
+	overflow:hidden;
+	position:absolute;
+	left:80px;
+	bottom:-6px;
+	_bottom:-7px;
+}
+.favorite_tips li a{
+	display:inline-block;
+	width:53px;
+	height:20px;
+	border:1px solid #999;
+	border-radius:.3em;
+	-webkit-border-radius:.3em;
+	background:#f0f0f0;
+}
+.favorite_tips li a:link, .favorite_tips li a:visited{
+	text-decoration:none;
+}
+.favorite_tips li a:hover, .favorite_tips li a:active{
+	color:#666;
+	border:1px solid #333;
+}
+
+#spAccount_favorite.favBrands{
+	border-top:none;
+	/*margin:23px 0 0 0;*/
+}
+#spAccount_favorite.favBrands table{
+	border-bottom:1px solid #f2f2f2;
+}
+#spAccount_favorite.favBrands table td{
+	border:1px solid #f2f2f2;
+	padding:13px 0;
+}
+#spAccount_favorite.favBrands table .giftCard{
+	padding:6px 0;
+}
+#spAccount_favorite.favBrands table tr.last_brand td{
+	padding:13px 0;
+}
+
+#spAccount_favorite.favBrands table .giftCard span{
+	width:67px;
+	height:43px;
+	line-height:43px;
+	text-align:center;
+	vertical-align: middle;
+	color:#fff;
+    display:inline-block;
+    font-size:14px;
+    font-weight:700;
+	overflow:hidden;
+	background:url(/images/page/account/giftCard_bg.jpg) no-repeat;
+}
+#spAccount_favorite.favBrands table .giftCard span.kindImg{
+	background-position:0 0;
+}
+#spAccount_favorite.favBrands table .giftCard span.giftImg{
+	color:#000;
+	background-position:0 -63px;
+}
+
+.spPage{
+	padding-top:12px;
+}
+
+#spAccount_right input.submit_Btn{
+	margin-bottom:10px;
+}
+#fav_sift {
+	padding-bottom:18px;
+	color:#333;
+}
+
+#fav_sift li.flt {
+	padding-right:18px;
+}
+#fav_sift li * {
+	vertical-align:middle;
+}
+
+
+
+#simlar_fav {
+	width:685px;
+	height:244px;
+	position:relative;
+	
+}
+#simlar_fav dt {
+	/* font:bold 14px "宋体"; */
+	font-size:14px;
+	color:#333;
+	font-weight:bold;
+	padding-bottom:15px;
+	border-bottom:1px solid #f2f2f2;
+	margin-bottom:8px;
+}
+#simlar_fav dd {
+	height:215px;
+	position:relative;
+	zoom:1;
+}
+#simlar_favbox {
+	width:685px;
+	height:215px !important;
+	overflow:hidden;
+}
+#simlar_fav ul {
+	height:215px;
+	overflow:hidden;
+}
+#simlar_fav ul li { 
+    float:left; 
+	display:inline; 
+	height:215px;
+	width:128px; 
+	overflow:hidden; 
+	text-align:center;
+	padding-right:10px;
+}
+#simlar_fav ul li img {
+	padding-bottom:10px;
+}
+#ac_leftbar ,#ac_rightbar {
+	width:18px;
+	height:0;
+	padding-top:35px;
+	overflow:hidden;
+	position:absolute;
+	top:85px;
+	z-index:10;
+	background:url(/images/page/account/scroll_icons.png) no-repeat 0 -70px;
+}
+#ac_leftbar {
+	left:-18px;
+}
+#ac_rightbar {
+	right:-18px;
+	background-position:0 -105px;
+}
+#ac_leftbar:hover {
+	background-position:0 0;
+}
+#ac_rightbar:hover {
+	background-position:0 -35px;
+}
+
+#achot_fav {
+	width:685px;
+	overflow:hidden;
+}
+#achot_fav dt{
+	/* font:bold 14px "宋体"; */
+	font-size:14px;
+	font-weight:bold;
+	color:#333;
+	padding-bottom:15px;
+	border-bottom:1px solid #f2f2f2;
+}
+#achot_fav dd {
+	width:700px;
+}
+#achot_fav dd li {
+	float:left; 
+	display:inline; 
+	width:128px; 
+	height:191px;
+	overflow:hidden; 
+	text-align:center;
+	padding:0 10px 20px 0;
+}
+
+
+

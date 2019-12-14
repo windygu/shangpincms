@@ -1,0 +1,161 @@
+﻿@{
+    ViewBag.Title = "NavManger";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript" language="javascript">
+    function AddStr() {
+        if ($("#tbodyNavManger").find("input").size() == 0) {
+            var str = "<tr><td><input type='text' style='width:90%;height:90%' id='txt_name' /></td><td><input id='txt_link' type='text' style='width:90%;height:90%' /></td><td><a class='button' onclick='SaveAdd()'>保存</a><a class='button' onclick='chancel()' >取消</a></td></tr>";
+            $("#tbodyNavManger").append(str);
+        }
+        else {
+            alert("您还有操作未完成，请完成后再编辑");
+        }
+    }
+
+    function SaveAdd() {
+        if (checkedCur('txt_name', 'txt_link')) {
+            $.ajax({
+                type: "POST",
+                url: "/Shangpin/HomePage/AddNavManger",
+                data: { name: $.trim($("#txt_name").val()), link: $.trim($("#txt_link").val()) },
+                dataType: "text",
+                success: function (data) {
+                    window.location.reload()
+                }
+            });
+        }
+        else {
+            alert("输入信息部正确，重新输入");
+            $("#txt_name").val("");
+            $("#txt_link").val("");
+        }
+    }
+
+    function checkedCur(nameid, linkid) {
+        var result = true;
+        if ($.trim($("#" + nameid).val()) == "" || $.trim($("#" + nameid).val()).length > 24) {
+            result = false
+        }
+        else {
+            if ($.trim($("#" + linkid).val()) == "" || $.trim($("#" + linkid).val()).length < 5 || $.trim($("#" + linkid).val()).substring(0, 4) != "http" || $.trim($("#" + linkid).val()).length > 199) {
+                result = false
+            }
+        }
+        return result;
+    }
+
+    function Edit(obj) {
+        if ($("#tbodyNavManger").find("input").size() == 0) {
+            var str = "<td><input type='text' style='width:90%;height:90%' id='txt_editname' value='" + $(obj).attr("aname") + "' /></td><td><input id='txt_editlink' type='text' style='width:90%;height:90%'  value='" + $(obj).attr("alink") + "'  /></td><td><a class='button' onclick='Saveedit(this)' editid='" + $(obj).attr("aid") + "' >保存修改</a><a class='button' onclick='chancel()' >取消修改</a></td>";
+            $(obj).parent().parent().html(str);
+        } else {
+            alert("您还有操作未完成，请完成后再编辑");
+        }
+    }
+
+
+    function chancel() {
+        window.location.reload();
+    }
+
+    function Saveedit(obj) {
+        if (checkedCur('txt_editname', 'txt_editlink')) {
+            $.ajax({
+                type: "POST",
+                url: "/Shangpin/HomePage/EidtNavManger",
+                data: { name: $.trim($("#txt_editname").val()), link: $.trim($("#txt_editlink").val()), nid: $(obj).attr("editid") },
+                dataType: "text",
+                success: function (data) {
+                    window.location.reload()
+                }
+            });
+        }
+        else {
+            alert("输入信息部正确，重新输入");
+
+        }
+    }
+    function delNaviga(obj) {
+        var isdel = confirm("确定删除吗？");
+        if (isdel) {
+            $.ajax({
+                type: "POST",
+                url: "/Shangpin/HomePage/delNavManger",
+                data: { nid: $(obj).attr("aid") },
+                dataType: "text",
+                success: function (data) {
+                    window.location.reload()
+                }
+            });
+        }
+    }
+
+    function GotoTop(obj) {
+        var curObj = $(obj).parent().parent();
+        if ($(curObj).index() != 0) {
+            var nid = $(curObj).attr("nid");
+            var nsortid = $(curObj).attr("nsortid");
+            var oid = $(curObj).prev().attr("nid");
+            var osortid = $(curObj).prev().attr("nsortid");
+            UpdateMoveDB(nid, nsortid, oid, osortid)
+        }
+    }
+
+    function GotoNext(obj) {
+        var curObj = $(obj).parent().parent();
+        if ($(curObj).index() != ($(curObj).parent().find("tr").size() - 1)) {
+            var nid = $(curObj).attr("nid");
+            var nsortid = $(curObj).attr("nsortid");
+            var oid = $(curObj).next().attr("nid");
+            var osortid = $(curObj).next().attr("nsortid");
+            UpdateMoveDB(nid, nsortid, oid, osortid)
+        }
+    }
+
+    function UpdateMoveDB(newId, newSort, oldId, OldSortId) {
+        $.ajax({
+            type: "POST",
+            url: "/Shangpin/HomePage/MoveNavg",
+            data: { newid: newId, newsortid: newSort, oldid: oldId, oldsortid: OldSortId },
+            dataType: "text",
+            success: function (data) {
+                window.location.reload()
+            }
+        });
+    }
+</script>
+<form id="idlistform">
+    <h2>导航设置</h2> <a style="float:right;cursor:pointer;font-size:16px;color:#1027de" class="button" onclick="AddStr()">新增</a>
+    <table class="mx-table" border="0">
+        <thead>
+            <tr>
+                <th style=" text-align:center;">导航文字</th>
+                <th style=" text-align: center;">导航链接</th>
+                <th style=" text-align: center;">操作</th>
+            </tr>
+        </thead>
+        <tbody id="tbodyNavManger" style='width:100%;height:100%'>
+            @if (Model != null)
+            {
+                var flag = 0;
+                foreach (Shangpin.Entity.Wfs.SWfsNavigationManage item in Model)
+                {
+                    <tr class="@(flag % 2 == 0 ? "cross" : "")" nid="@item.NavigationId" nsortid="@item.SortId">
+                        <td style=" text-align: center; width: 30%;">
+                            @item.NavigationTitle
+                        </td>
+                        <td style=" text-align: center; width: 45%;">
+                            @item.NavigationLink
+                        </td>
+                        <td style=" text-align: center; width: 25%;">
+                            <a class="button" style="cursor:pointer" onclick="GotoTop(this)">上移</a><a class="button" style="cursor:pointer" onclick="GotoNext(this)">下移</a><a class="button" style="cursor:pointer" aname="@item.NavigationTitle" alink="@item.NavigationLink" aid="@item.NavigationId" onclick="Edit(this)">编辑</a><a class="button" style="cursor:pointer" aid="@item.NavigationId" onclick="delNaviga(this)">删除</a>
+                        </td>
+
+                    </tr>
+                    flag++;
+                }
+            }
+        </tbody>
+    </table>
+</form>

@@ -1,0 +1,76 @@
+.styles_con {
+	color:#333;
+}
+.styles_con h1 {
+	font:bold 16px "宋体";
+	color:#333;
+	padding:10px 0 20px;
+}
+.review_styles {
+	overflow:hidden;
+	padding-bottom:20px;
+}
+.review_styles dt {
+	font:14px "宋体";
+	padding:20px 0;
+	color:#333;
+}
+.review_styles dd {
+	width:856px;
+	overflow:hidden;
+	padding:52px;
+	background:#f6f6f6;
+}
+.review_stylelist {
+	width:900px;
+	overflow:hidden;
+}
+.review_stylelist li {
+	float:left;
+	_display:inline;
+	margin:0 30px 10px 0;
+	padding:10px;
+	background:#fff;
+}
+.review_stylelist li img {
+	padding-bottom:8px;
+	display:block;
+	width:245px;
+	height:145px;
+}
+.review_stylelist li a {
+	color:#333 !important;
+}
+
+/**/
+#slide_con {
+	position:relative;
+	zoom:1;
+	width:960px;
+	height:580px;
+	overflow:hidden;
+}
+.slide_bigimg {
+	width:960px;
+	height:580px;
+	overflow:hidden;
+}
+.slide_changebar i {
+	position:absolute;
+	height:580px;
+	width:0;
+	padding-left:40px;
+	overflow:hidden;
+	top:0;
+	z-index:100;
+	cursor:pointer;
+	background:url(/images/plug/arrow/sp_xli.gif) no-repeat -81px 50%;
+}
+#styles_prev {
+	left:10px;
+}
+#styles_next {
+	right:10px;
+	background-position: -30px 50%;
+}
+

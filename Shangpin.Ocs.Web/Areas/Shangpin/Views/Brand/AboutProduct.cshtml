@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "关联商品";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+@model Shangpin.Entity.Wfs.SWfsBrandNavigation
+@section HeadStyle{
+    <link charset="utf-8" type="text/css" rel="stylesheet" href="/Areas/Shangpin/Content/css/page/rightcontent/brandcontent.css" />
+}
+@section HeadScript{
+    <script charset="utf-8" src="/Areas/Shangpin/Scripts/plug/comm.js"></script>
+}
+<h1>
+    <a href="/Shangpin/Brand/NavigateList.html?brandNO=@Model.BrandNo&brandName=@(Request.QueryString["brandName"])">导航编辑</a> > 关联商品
+</h1>
+@Html.Action("refTypeStyle", new { refType = @Model.RefType, navNO = @Model.NavigationId, select = Request.QueryString["select"] != null ? Request.QueryString["select"] : "1", brandName = Request.QueryString["brandName"], brandNO = Request.QueryString["brandNO"] })
+<div class="greyBg" style="text-align: center; padding: 30px 0;">
+    <a class="sumit_btn" href="/Shangpin/Brand/GetProductList.html?navno=@Model.NavigationId&brandName=@(Request.QueryString["brandName"])&brandNO=@(Request.QueryString["brandNO"])">添加商品</a> <a class="sumit_btn" href="/Shangpin/Brand/ManagerNavRelationProduct.html?navno=@Model.NavigationId&brandName=@(Request.QueryString["brandName"])&brandNO=@(Request.QueryString["brandNO"])">管理商品</a>
+</div>
+

@@ -1,0 +1,241 @@
+/*首页主容器*/
+#alIndex_main{
+    width:960px;
+    margin:0 auto;
+    background:#fff;
+	overflow:hidden;
+}
+
+/*今日活动*/
+#alIndex_today , #alIndex_ending{
+    margin-top:20px;
+	overflow:hidden;
+}
+
+.alIndex_tt{
+    height:25px;
+    margin-bottom:13px; 
+}
+.alIndex_tt h2{
+    float: left;
+    font-size:20px;
+    color: #555;
+    font-weight:bold;
+    height:26px;
+    line-height:24px;
+    color: #fff;
+    padding:0 3px;
+    width:85px;
+    background:#000; 
+}
+.alIndex_tt h2.alEnding_tt{
+	width:105px;
+}
+
+
+#alIndex_today_list{
+    overflow: hidden;
+    width:960px;
+}
+
+#alIndex_today_list ul{
+    overflow: hidden;
+    width:975px;
+}
+
+
+#alIndex_today_list .alIndex_today_list_cell{
+    color: #666;
+    float:left;
+    width:312px;
+    height:302px;
+    margin:0 12px 12px 0;
+    padding-bottom:10px;
+    position: relative;
+}
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: move;
+}
+#alIndex_today_list li.sortable{
+	border: 2px dashed #CCC;
+	float:left;
+    width:308px;
+    height:298px;
+    margin:0 12px 12px 0;
+    padding-bottom:10px;
+}
+
+#alIndex_today_list .alIndex_today_list_cell .alIndex_list_info{
+    margin-top:5px;
+}
+
+
+
+#alIndex_today_list .alIndex_today_list_cell  a{
+    display: block;
+    width:310px;
+    border:1px solid #fff;
+    height:310px;
+    background-color:#e6e6e6;
+  	cursor: move;
+}
+
+#alIndex_today_list .alIndex_today_list_cell img{
+    padding: 0;
+    position: relative;
+    background: #fff;
+    width:310px;
+    height:230px;
+    vertical-align: top;
+}
+#alIndex_today_list #indexMobi{
+	height:312px;
+	padding-bottom:0;
+}
+#alIndex_today_list #indexMobi img{
+	height:310px;
+}
+
+#alIndex_today_list .alIndex_list_info p , #alIndex_today_list .alIndex_list_info span{
+    font-size:14px;
+    width:285px;
+    margin:2px 0 0 10px;
+    display: block;
+    color: #000;
+}
+#alIndex_today_list .alIndex_list_info p{
+    height:22px;
+    line-height:21px;
+    overflow: hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+#alIndex_today_list .alIndex_list_info span{
+    font-size:14px;
+    width:285px;
+    margin:-2px 0 0 0;
+    padding:0 0 0 10px;
+    color: #000;
+}
+#alIndex_today_list .alIndex_list_info span em{
+    font-size:38px;
+    color: #000;
+    padding:0;
+    margin-left:3px;
+    display: inline-block;
+    
+}
+
+#alIndex_ending .alIndex_list_info span em i{
+    font-size:16px;
+	margin-right:5px;
+}
+
+#alIndex_today_list .alIndex_list_info span.red , #alIndex_today_list .alIndex_list_info span.red em{
+    color: #b51111;
+    margin:0 5px 0 0;
+}
+
+#alIndex_today_list .alIndex_list_info span em i{
+    font-size:16px;
+	margin-right:5px;
+}
+
+#alIndex_today_list .alIndex_list_info i.alIndex_tags{
+    padding:1px 8px;
+    background:#b51111;
+    color: #fff;
+    height:18px;
+    line-height:18px;
+    position: absolute;
+    float:right;
+    margin:-20px 0 0 200px;
+}
+
+.alIndex_list_info a{
+    color: #000;
+}
+.alIndex_list_info a:hover{
+    text-decoration:underline;
+}
+
+
+
+#alIndex_ending ul{
+    margin-top:10px;
+    width:970px;
+}
+#alIndex_ending .alIndex_today_list_cell{
+    width:234px;
+    float: left;
+    color: #fff;
+    padding:0 8px 0 0;
+    margin-bottom:8px;
+}
+
+#alIndex_ending_list li.sortable{
+	border: 2px dashed #CCC;
+	float:left;
+    width:230px;
+    height:245px;
+    margin:0 8px 8px 0;
+}
+#alIndex_ending .alIndex_today_list_cell a{
+    display: block;
+    width:232px;
+    height:247px;
+    color:#fff;
+    background-color:#b51111;
+    border:1px solid #fff;
+	cursor:move;
+}
+#alIndex_ending .alIndex_today_list_cell a img{
+    width:232px;
+    height:172px;
+    font-size:0;
+    vertical-align: top;
+}
+
+#alIndex_ending .alIndex_list_info p{
+    width:222px;
+    font-size:13px;
+    margin:8px 0 0 0;
+    display: block;
+    padding:0 0 0 10px;
+}
+#alIndex_ending .alIndex_list_info p{
+    height:17px;
+    line-height:16px;
+    overflow: hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+#alIndex_ending .alIndex_list_info span {
+    width:222px;
+    font-size:13px;
+    margin:5px 0 0 0;
+    padding:0 0 0 10px;
+}
+
+#alIndex_ending .alIndex_list_info span em{
+    margin:0 3px;
+    font-size:38px;
+}
+
+
+
+/*奥莱首页活动 new*/
+.alIndex_new{
+    display: block;
+    width:43px;
+    height:43px;
+    position: absolute;
+    top:1px;
+    right:1px;
+    background:url(/images/page/index/al_index_new.png) right top no-repeat;
+    _background:url(/images/page/index/al_index.gif) -56px -192px no-repeat;
+}

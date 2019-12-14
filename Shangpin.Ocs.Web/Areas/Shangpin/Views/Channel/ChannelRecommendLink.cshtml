@@ -1,0 +1,144 @@
+﻿@model IList<Shangpin.Entity.Wfs.SWfsSpChannelRecommendLink> 
+@using Shangpin.Entity.Wfs
+@using Shangpin.Ocs.Service.Common
+@using Shangpin.Ocs.Service
+@{
+    ViewBag.Title = "频道推荐标题管理";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";    
+}
+@section HeadStyle{
+    <link href="/Areas/Shangpin/Content/css/page/rightcontent/brandcontent.css" rel="stylesheet" type="text/css" charset="utf-8" />
+}
+@section HeadScript{ 
+    <script src="/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+
+        <script type="text/javascript">
+            $(function () {
+                $("input").each(function () {
+                    if (this.id.indexOf("txtRecommendLinkID") >= 0) {
+                        //介绍判断
+                        $("#" + this.id).focus(function () {
+                            if (this.value == this.defaultValue && this.value == "最多5个汉字") this.value = '';
+                        });
+                        $("#" + this.id).blur(function () {
+                            if (this.value == '') {  this.value = "最多5个汉字"; } else {
+                                //判断字符个数是否超出限制 
+                                if (!CountChar(this.id, 10)) {
+                                    alert("此填写项最多为5汉字或者10字符");
+                                }
+                            };
+                        });
+                    }
+                });
+            })
+
+            function CountChar(id, len) {
+                var msg = $("#" + id).val()
+                var nums = msg.replace(/[^\x00-\xff]/g, "00").length;
+                if (nums > len) {
+                    return false;
+                }
+                return true;
+            }
+            //判断文本框是否为空
+            function FlagEmpty(Id,msgT) {
+                var msg = $("#" + Id).val()
+                if (msg == "" || msg == null || msg == undefined || msg == msgT) {
+                    return false;
+                }
+                return true;
+            }
+
+           function ButSaveChannelLink() {
+               if (!FlagEmpty("txtRecommendLinkID0", "最多5个汉字")) {
+                   alert("频道标题必填项，请填写");
+                   return;
+               } 
+            $("#formobj").submit();
+        }
+
+      </script>
+ 
+    
+}
+<h1>
+    OCS > 尚品 > <a href="/Shangpin/channel/ChannelList">频道页列表</a> > <a>推荐标题管理 </a></h1>
+
+<div class="mx-brandcontent-msgbox">
+    <form action="/Shangpin/Channel/ChannelRecommendLinkAddOrUpdate?channelno=@(Rq.GetStringQueryString("channelno"))" method="post" id="formobj">
+
+     <input id="txtchannelNo" name="txtchannelNo" type="hidden" value="@(Rq.GetStringQueryString("channelno"))" /> 
+       @{
+           int index=0;
+            
+                foreach (var item in Model)
+                { 
+                    <dl>
+                <dt>
+                    @if (index==0)
+                    {  <span style="color:Red;">标题:</span>
+                    }
+                    else
+                    {<span>推荐@(index):</span>} 
+                </dt>
+                <dd>
+                    <input id="txtRecommendLinkIDUpdate@(index)" name="txtRecommendLinkIDUpdate@(index)" type="hidden" value="@item.RecommendLinkID" /> 
+
+                    <input id="txtRecommendLinkID@(index)" name="txtRecommendLinkID@(index)" type="text" value="@(item.LinkName == "" ? "最多5个汉字" : item.LinkName)" maxlength="10"  style="width: 150px"  /> 
+                      &nbsp;  &nbsp;  &nbsp;
+                    <span>连接</span>
+                    <input id="txtLinkID@(index)" name="txtLinkID@(index)" type="text" value="@(item.LinkUrl == "" ? "http://" : item.LinkUrl)" maxlength="250"  style="width: 250px" /> 
+                        <span @(index == 0 ? "style=display:none;" : "")>
+                         排序：
+                        <input id="txtSortValue@(index)" name="txtSortValue@(index)" type="text" value="@(item.SortValue ==0 ? "" : item.SortValue.ToString())" maxlength="2"  style="width: 50px" /> 
+                         @(index)
+                        </span>
+                
+                    </dd>
+                </dl> 
+                    index = index + 1;
+                }
+
+                for (int i = index; i <= 6; i++)
+                { 
+                        <dl>
+                <dt>
+                    @if (index == 0)
+                    { 
+                       <span style="color:Red;">标题:</span>
+                    }
+                    else
+                    {<span>推荐@(index):</span>}
+                </dt>
+                <dd>
+                     <input id="txtRecommendLinkIDUpdate@(index)" name="txtRecommendLinkIDUpdate@(index)" type="hidden" value="0" /> 
+                    <input id="txtRecommendLinkID@(index)" name="txtRecommendLinkID@(index)" type="text" value="最多5个汉字" maxlength="10"  style="width: 150px" /> 
+                      &nbsp;  &nbsp;  &nbsp;
+                    <span>连接</span>
+                    <input id="txtLinkID@(index)" name="txtLinkID@(index)" type="text" value="http://" maxlength="250"  style="width: 250px" /> 
+                        <span @(index==0?"style=display:none;":"")> 
+                        排序：
+                        <input id="txtSortValue@(index)" name="txtSortValue@(index)" type="text" value="" maxlength="2"  style="width: 50px" /> 
+                         @(index)
+                        </span>
+                
+                    </dd>
+                </dl> 
+                        index = index + 1;
+                } 
+           
+           
+           
+      }
+        
+        <dl>
+            <dt>&nbsp;&nbsp;</dt>
+            <dd>
+                <input type="button" onclick="ButSaveChannelLink()" value="保存" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;"/>
+                <input type="button" value="取消" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;" onclick="window.location.href='/Shangpin/channel/ChannelList'"/>
+            </dd>
+        </dl>
+    </form>
+</div> 

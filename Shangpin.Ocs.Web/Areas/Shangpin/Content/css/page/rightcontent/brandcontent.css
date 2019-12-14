@@ -1,0 +1,414 @@
+
+/*表单数据层*/
+.mx-brandcontent-msgbox{
+	min-height:350px;
+}
+
+.mx-brandcontent-msgbox h1{
+	background:rgb(220,220,220);
+	border-bottom:1px solid #ccc;
+	line-height:35px;
+	padding:5px 10px;
+	color:#000;
+	position:relative;
+	*zoom:1;
+}
+.mx-brandcontent-msgbox h1 a.close{
+	background:#fff;
+	border:1px solid #999;
+	font:20px Helvetica,Arial,sans-serif;
+	position:absolute;
+	right:10px;
+	top:8px;
+	width:25px;
+	height:25px;
+	line-height:25px;
+	line-height:28px\0;
+	text-align:center;
+	color:#666;
+	-webkit-border-radius:13px;
+	-moz-border-radius:13px;
+	border-radius:13px;
+	-webkit-transition:border-color 0.218s ease 0s;
+	-moz-transition:border-color 0.218s ease 0s;
+	-o-transition:border-color 0.218s ease 0s;
+    transition:border-color 0.218s ease 0s;
+}
+.mx-brandcontent-msgbox h1 a:hover, .mx-brandcontent-msgbox h1 a:active{
+	-webkit-box-shadow:0 1px 2px rgba(0, 0, 0, 0.25);
+	-moz-box-shadow:0 1px 2px rgba(0, 0, 0, 0.25);
+    box-shadow:0 1px 2px rgba(0, 0, 0, 0.25);
+    color: #333;
+}
+.mx-brandcontent-msgbox dl{
+	padding:20px 0 0;
+}
+.mx-brandcontent-msgbox dl:after, .mx-brandcontent-msgbox dl:after{
+	content: "";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+	zoom:1;
+}
+.mx-brandcontent-msgbox dl dt, .mx-brandcontent-msgbox dl dd{
+	float:left;
+	vertical-align:text-top;
+	line-height:25px;
+}
+.mx-brandcontent-msgbox dl dt{
+	width:10%;
+	padding-right:10px;
+	text-align:right;
+	font-size:14px;
+}
+.mx-brandcontent-msgbox dl dd{
+	width:85%;
+}
+
+.mx-brandcontent-msgbox input:not([type="file"]), .mx-brandcontent-msgbox textarea, .mx-brandcontent-msgbox select{
+	border:1px solid #CCCCCC;
+	-webkit-border-radius:1px;
+	-moz-border-radius:1px;
+	border-radius:1px;
+    color:#646464;
+    font-size:12px;
+	padding:3px 5px 2px;
+    display:inline-block;
+    height:20px;
+    line-height:20px;
+	margin:0;
+    vertical-align:baseline;
+}
+.mx-brandcontent-msgbox input:not([type="file"]){
+	width:190px;
+}
+.mx-brandcontent-msgbox label{
+	cursor:pointer;
+	vertical-align:middle;
+	padding-right:30px;
+}
+.mx-brandcontent-msgbox input[type="checkbox"], .mx-brandcontent-msgbox input[type="radio"]{
+	width:auto;
+	margin:0 5px;
+	vertical-align:middle;
+}
+.mx-brandcontent-msgbox select{
+	height:25px;
+	line-height:25px;
+	padding:0;
+	width:200px;
+}
+.mx-brandcontent-msgbox textarea{
+	height:auto;
+}
+.mx-brandcontent-msgbox input:not([type="file"]), .mx-brandcontent-msgbox textarea{
+	-webkit-box-shadow:0 1px 2px rgba(0, 0, 0, 0.1) inset;
+	-moz-box-shadow:0 1px 2px rgba(0, 0, 0, 0.1) inset;
+	box-shadow:0 1px 2px rgba(0, 0, 0, 0.1) inset;
+	-webkit-transition:border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+	-moz-transition:border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+	-o-transition:border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+    transition:border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+}
+.mx-brandcontent-msgbox input:not([type="file"]):focus, .mx-brandcontent-msgbox textarea:focus, .mx-brandcontent-msgbox select:focus{
+    border-color:rgba(82, 168, 236, 0.8);
+	-webkit-box-shadow:0 1px 2px rgba(0, 0, 0, 0.1) inset, 0 0 8px rgba(82, 168, 236, 0.6);
+	-moz-box-shadow:0 1px 2px rgba(0, 0, 0, 0.1) inset, 0 0 8px rgba(82, 168, 236, 0.6);
+    box-shadow:0 1px 2px rgba(0, 0, 0, 0.1) inset, 0 0 8px rgba(82, 168, 236, 0.6);
+    outline:0 none;
+}
+
+.mx-brandcontent-msgbox button{
+	background:#fff;
+    border:1px solid #dcdcdc;
+	-webkit-border-radius:2px;
+	-moz-border-radius:2px;
+    border-radius:2px;
+    color:#646464;
+	font-size:14px;
+    display:inline-block;
+    padding:7px 17px;
+	*padding:1px 5px;
+    position:relative;
+    text-decoration:none;
+	-webkit-transition:border-color 0.218s ease 0s;
+	-moz-transition:border-color 0.218s ease 0s;
+	-o-transition:border-color 0.218s ease 0s;
+    transition:border-color 0.218s ease 0s;
+	cursor:pointer;
+	margin:0 15px 0 0;
+	*zoom:1;
+}
+.mx-brandcontent-msgbox button:hover {
+    border-color:#999;
+	-webkit-box-shadow:0 1px 2px rgba(0, 0, 0, 0.25);
+	-moz-box-shadow:0 1px 2px rgba(0, 0, 0, 0.25);
+    box-shadow:0 1px 2px rgba(0, 0, 0, 0.25);
+    color: #333;
+}
+.mx-brandcontent-msgbox button.secondary {
+    background-color:#4d90fe;
+    border:1px solid #3079ed;
+    color:#fff;
+}
+.mx-brandcontent-msgbox button.secondary:hover {
+    border-color:#1c8ede;
+    color:#fff;
+	-webkit-box-shadow:0 0 8px rgba(82, 168, 236, 0.6);
+	-moz-box-shadow:0 0 8px rgba(82, 168, 236, 0.6);
+	box-shadow:0 0 8px rgba(82, 168, 236, 0.6);
+}
+
+.mx-brandcontent-msgbox .delcontent{
+	margin:100px auto 0;
+	text-align:center;
+}
+.mx-brandcontent-msgbox .delcontent p{
+	line-height:300%;
+	font-size:16px;
+	padding:0 0 20px 0;
+}
+
+
+/* 树目录 */
+.tree_menu, .tree_menu ul{
+	width:100%;
+}
+.tree_menu ul li{
+	line-height:40px;
+	padding-left:20px;
+	position:relative;
+	background:url("/Areas/Shangpin/Images/layout/plus.png") no-repeat scroll left 13px transparent
+}
+.tree_menu ul li.curr{
+	background:url(/Areas/Shangpin/Images/layout/minus.png) no-repeat left 13px;
+}
+.tree_menu ul li.arrow{
+	background:url(/Areas/Shangpin/Images/layout/arrow.png) no-repeat left 13px;
+}
+.tree_menu ul li.head{
+	background:url(/Areas/Shangpin/Images/layout/imac.png) no-repeat left 13px;
+}
+
+.tree_menu ul li p.tree_link{
+	display:block;
+	padding:0 5px;
+	line-height:40px;
+	cursor:pointer;
+	z-index:1;
+}
+.tree_menu ul li p.tree_link:hover{
+	background-color:#f0f0f0;
+}
+.tree_menu ul li p.tree_link:hover ~ span.trer_button{
+	display:block;
+}
+.tree_menu ul li span{
+	display:none;
+	margin-left:30px;
+	position:absolute;
+	left:300px;
+	top:10px;
+	z-index:10;
+}
+.tree_menu ul li a.sumit_btn, .tree_menu ul li a.cancle_btn{
+	padding:2px 8px;
+	font-size:12px;
+	line-height:20px;
+}
+
+
+/*旗舰店编辑*/
+table.brandTab thead th, table.brandTab tbody td{
+	text-align:left;
+	vertical-align:top;
+}
+table.brandTab a:link, table.brandTab a:visited{
+	color:#fff;
+}
+table.brandTab thead th{
+	line-height:34px;
+	padding-left:10px;
+}
+table.brandTab input{
+	margin:0 5px 0 10px;
+	vertical-align:middle;
+}
+table.brandTab label{
+	cursor:pointer;
+	vertical-align:middle;
+	padding-right:30px;
+}
+.edit_block{
+	border:1px solid #ccc;
+	background-color:#f0f0f0;
+	position:relative;
+	cursor:pointer;
+}
+.edit_block p{
+	text-align:center;
+	font-size:14px;
+	line-height:410%;
+}
+.edit_block span{
+	display:block;
+	width:100%;
+	line-height:180%;
+	text-align:right;
+	font-size:14px;
+	position:absolute;
+	top:22%;
+	left:0;
+	display:none;
+}
+.edit_block:hover span{
+	display:block;
+}
+.edit_block span a.sumit_btn{
+	padding:2px 10px;
+}
+
+.topImg{
+	height:100px;
+}
+.topImg p{
+	line-height:100px;
+}
+
+.topNav{
+	height:30px;
+}
+.topNav p{
+	line-height:30px;
+}
+
+.carousel{
+	height:420px;
+	width:956px;
+	display:none;
+}
+.carousel p{
+	line-height:420px;
+}
+.carousel span{
+	top:90%;
+}
+
+.bgImg{
+	height:420px;
+	width:150px;
+	margin-top:46px;
+}
+.bgImg p{
+	line-height:57px;
+}
+.bgImg span{
+	top:80%;
+}
+.inner{
+	width:956px;
+	
+}
+.pordImg{
+	height:30px;
+	padding:10px 0;
+}
+.pordImg p{
+	line-height:30px;
+}
+.pordImg span{
+	top:25%;
+}
+
+
+/*系统关联*/
+.tabNav{
+	width:100%;
+	height:42px;
+	line-height:42px;
+	clear:both;
+}
+.tabNav a{
+	float:left;
+	border:1px solid #ccc;
+	border-bottom:none;
+	width:120px;
+	text-align:center;
+	font-size:14px;
+	margin:0 0 0 10px;
+}
+.tabNav a.curr{
+	border-top:3px solid #333;
+	background-color:#f5f5f5;
+	height:40px;
+	line-height:39px;
+}
+.greyBg{
+	background-color:#f5f5f5;
+	border:1px solid #ccc;
+}
+
+table.glTab{
+	margin-top:0;
+}
+table.glTab thead th{
+	border:1px solid #2293e2;
+}
+table.glTab tbody td{
+	border:1px solid #ccc;
+	text-align:left;
+	padding:0 10px;
+}
+table.glTab input{
+	margin:0 5px 0 0;
+	vertical-align:sub;
+}
+table.glTab label{
+	cursor:pointer;
+	vertical-align:middle;
+	padding-right:30px;
+	line-height:40px;
+	display:inline-block;
+}
+table.glTab a, table.glTab p{
+	line-height:40px;
+	display:inline-block;
+	padding:0 10px;
+}
+table.glTab p{
+	color:#00F;
+}
+table.glTab a.sumit_btn, table.glTab a.cancle_btn{
+	padding:2px 8px;
+	font-size:12px;
+	line-height:20px;
+	color:#fff;
+}
+
+table.glTab .innerTab{
+	padding:0;
+	vertical-align:top;
+	height:400px;
+}
+table.glTab .innerTab td{
+	border:none;
+	border-bottom:1px solid #ccc;
+	line-height:40px;
+}
+
+table.glTab .innerTab select{
+	border:1px solid #CCCCCC;
+	-webkit-border-radius:1px;
+	-moz-border-radius:1px;
+	border-radius:1px;
+    color:#646464;
+    font-size:12px;
+    display:inline-block;
+    height:25px;
+    line-height:25px;
+	width:100px;
+    vertical-align:baseline;
+}
+
+	

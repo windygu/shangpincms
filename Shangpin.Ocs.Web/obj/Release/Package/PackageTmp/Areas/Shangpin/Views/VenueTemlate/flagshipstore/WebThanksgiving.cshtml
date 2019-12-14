@@ -1,0 +1,62 @@
+﻿@{
+    Layout = null;
+    Shangpin.Entity.Wfs.SWfsBrandFlagShipStoreRegion obj = null;
+    string ShangpinActiveHrefUrlShow = "http://www.shangpin.com/women/subject/{0}?MeetingNO={1}&ClickRegionID={2}";
+    string AoLaiActiveHrefUrlShow = "http://www.aolai.com/subject/index/{0}/0?MeetingNO={1}&ClickRegionID={2}";
+    string AoLaiSpecialHrefUrlShow = "http://www.aolai.com/topic/index/{0}?MeetingNO={1}&ClickRegionID={2}";
+    string VenueHrefUrlShow = "http://www.shangpin.com/Venue/Index/{0}?MeetingNO={1}&ClickRegionID={2}";
+}
+@using Shangpin.Framework.WebMvc
+@model IEnumerable<Shangpin.Entity.Wfs.SWfsBrandFlagShipStoreRegion>
+<div class="main_box">
+<div class="boxWarp topBox_bg">
+<div class="box box_five topBg">
+<ul class="clr">
+    @for (int i = 1; i <= 5; i++)
+    {
+        if (Model.Count(p => p.RegionID == i) == 1)
+        {
+            obj = Model.Single(p => p.RegionID == i);
+                             
+        <li opratorRegion="@i" relationtype="@obj.RelationType">
+            @if (obj.RelationContent == "#")
+            {
+                <img width="175" height="330" lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 175, 330))" />
+            }
+            else
+            {
+                switch (obj.RelationType)
+                {
+                    case 1:
+                <a target="_blank" data-type="subject" data-subjectno="@obj.RelationContent" data-subjectname="@obj.Direction">
+                    <img width="175" height="330" lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 175, 330))" />
+                </a>
+                        break;
+                    case 2:
+                <a target="_blank" data-type="detail" data-productid="@obj.RelationContent">
+                    <img width="175" height="330" lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 175, 330))" />
+                </a>
+                        break;
+                   case 3:
+                <a target="_blank" data-type="navigation" data-brandno="@obj.BrandNO" data-brandname="@(Request.QueryString["brandname"])" data-navno="@obj.RelationContent" data-navname="@obj.Direction">
+                    <img width="175" height="330" lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 175, 330))" />
+                </a>
+                        break;
+                        case 4:
+                <a target="_blank" data-type="link" data-url="@obj.RelationContent">
+                    <img width="175" height="330" lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 175, 330))" />
+                </a>
+                        break;
+                }
+            }
+        </li>
+        }
+        else
+        {
+        <li opratorRegion="@i" relationtype="1"></li>
+        }
+    }
+</ul>
+</div>
+</div>
+</div>

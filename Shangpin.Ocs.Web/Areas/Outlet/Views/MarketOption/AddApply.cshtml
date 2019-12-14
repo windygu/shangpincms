@@ -1,0 +1,143 @@
+﻿@{
+    Layout = null;
+}
+@model Shangpin.Entity.Wfs.SWfsSubjectApplyPromotion
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AddApply</title>
+    <style type="text/css">
+      td{ padding:5px; margin:0;}
+        .jctr{background-color: #F0F0F0; font-weight:bold;}
+        body{ font-size:12px;}
+       .input{width:300px;}
+      .applybox  textarea{ height:100px; width:300px;}
+    .applybox h2{ border-bottom:1px solid #000; margin-bottom:10px;}
+    .applybox td{ vertical-align:top;}
+    .applybox .button
+    {
+        background-color:#4d90fe;
+    border:1px solid #3079ed;
+    color:#fff;
+	-webkit-border-radius:5px;
+	-moz-border-radius:5px;
+    border-radius:5px;
+	font-size:14px;
+    display:inline-block;
+    padding:5px 10px;
+	*padding:3px 0px 0;
+    position:relative;
+    text-decoration:none;
+	-webkit-transition:border-color 0.218s ease 0s;
+	-moz-transition:border-color 0.218s ease 0s;
+	-o-transition:border-color 0.218s ease 0s;
+    transition:border-color 0.218s ease 0s;
+	cursor:pointer;
+	margin:0 15px 0 0;
+	*zoom:1;
+        }
+    </style>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/lib/jquery.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/lib/jquery.form.js" charset="utf-8"></script>
+</head>
+<body>
+    <div class="applybox">
+        @if (Model != null)
+        { 
+            <div style="color: Red; text-align: center; padding: 5px 0;">
+                此活动已经提交推广申请</div>
+        }
+        <div>
+            <form enctype="multipart/form-data" id="submitForm" name="submitForm" action="/MarketOption/AddApply"
+            method="post">
+            <input type="hidden" value="@ViewBag.SubjectNo" name="SubjectNo" />
+            <input type="hidden" value="@ViewBag.Flag" name="flag" />
+            <table cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="30%" class="jctr">
+                        站内预热开始日期：
+                    </td>
+                    <td>@ViewBag.PreTime
+                    </td>
+                </tr>
+                <tr>
+                    <td class="jctr">
+                        推广强度：
+                    </td>
+                    <td>
+                        <input type="radio" name="Level" value="1" @(Model != null && Model.Level == 1 ? "checked=checked" : "")/>A级
+                        <input type="radio" name="Level" value="2" @(Model != null && Model.Level == 2 ? "checked=checked" : "")/>B级
+                        <input type="radio" name="Level" value="3" @(Model != null && Model.Level == 3 ? "checked=checked" : "")/>C级
+                        <input type="radio" name="Level" value="4" @(Model != null && Model.Level == 4 ? "checked=checked" : "")/>D级
+                    </td>
+                </tr>
+                <tr>
+                    <td class="jctr">
+                        图片素材地址：
+                    </td>
+                    <td>
+                        <input type="text" class="input" name="PicFileUrl" value="@(Model != null ? Model.PicFileUrl : @"\\ip\路径\文件夹名")" id="PicFileUrl"/><br />
+                        (例如 \\192.168.1.105\d$\文件夹名)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="jctr">
+                        活动卖点：
+                    </td>
+                    <td>
+                        <textarea name="SubjectSalesHot" id="SubjectSalesHot">@(Model != null ? Model.SubjectSalesHot : "")</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="jctr">
+                        货品信息：
+                    </td>
+                    <td>
+                        <textarea name="ProductInfo" id="ProductInfo">@(Model != null ? Model.ProductInfo : "")</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="jctr">
+                        其他说明：
+                    </td>
+                    <td>
+                        <textarea name="OtherDescription" id="OtherDescription">@(Model != null ? Model.OtherDescription : "")</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <input class="button" id="AddApply" type="button" value=" 提 交 " />
+                        <input id="CloseApply" class="button" type="button" value=" 取 消 " />
+                    </td>
+                </tr>
+            </table>
+            </form>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    $(function () {
+        $(".applybox").delegate('#AddApply', 'click', function () {
+            $("#submitForm").ajaxSubmit({
+                success: function (result) {
+                    if (result > 0) {
+                        alert("申请成功！");
+                        parent.window.TrueInfo();
+                    }
+                    else {
+                        alert(result);
+                    }
+                }
+            });
+        });
+
+        $(".applybox").delegate('#CloseApply', 'click', function () {
+            $(window.parent.document).find("#windown-close").trigger("click");
+        });
+    });
+
+</script>
+</html>

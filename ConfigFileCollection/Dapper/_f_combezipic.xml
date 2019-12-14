@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <statement id="ComBeziPic_ProductPictureFile_FetchEntityByIdentity"  primarykey="PictureFileNo">
+    SELECT *  FROM ProductPictureFile   WHERE PictureFileNo=@PictureFileNo
+  </statement>
+  <statement id="ComBeziPic_ProductVideoFile_FetchEntityByIdentity"  primarykey="VideoFileNo">
+    SELECT *  FROM ProductVideoFile   WHERE VideoFileNo=@VideoFileNo
+  </statement>
+  <statement id="ComBeziPic_SystemPictureFile_FetchEntityByIdentity"  primarykey="PictureFileNo">
+    SELECT *  FROM SystemPictureFile   WHERE PictureFileNo=@PictureFileNo
+  </statement>
+  <statement id="ComBeziPic_UserPictureFile_FetchEntityByIdentity"  primarykey="PictureFileNo">
+    SELECT *  FROM UserPictureFile   WHERE PictureFileNo=@PictureFileNo
+  </statement>
+</statements>

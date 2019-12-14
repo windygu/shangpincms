@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <!--获取热门商品信息-->
+  <statement id="ComBeziWfs_SWfsIndexHotProductListTemp_GetIndexHotProudecList">
+    SELECT x.ID ,
+    a.ProductNo ,
+    a.ProductModel AS GoodsNo ,
+    a.ProductName ,
+    e.ProductShowPic AS ProductPicFile ,
+    d.BrandCnName ,
+    d.BrandEnName ,
+    x.CategoryNo AS HotCategoryNo ,
+    x.Sortvalue ,
+    x.Status ,
+    ROW_NUMBER() OVER ( ORDER BY Sortvalue DESC ) AS row
+    FROM   SpProduct a
+    INNER JOIN SWfsIndexHotProductListTemp x ON a.productno = x.productno
+    LEFT JOIN SpfProductExtend AS e ( NOLOCK ) ON e.ProductNo = a.ProductNo
+    LEFT JOIN SpBrand AS d ( NOLOCK ) ON a.BrandNo = d.BrandNo
+    WHERE  e.TypeFlag=1 
+    AND x.DataState = 1
+    AND x.status = 1
+    AND x.CategoryNo = @CategoryNo
+  </statement>
+  <!--根据商品编号查询sku信息-->
+  <statement id="ComBeziWfs_SWfsIndexHotProductListTemp_GetIndexHotSkutListByProduct">
+    SELECT  sku.ProductNo,
+    sku.PcShowState AS IsShelf ,
+    sku.PcShelfDate as DateShelf ,
+    skuPri.GoldPrice AS SellPrice ,
+    skuPri.PlatinumPrice ,
+    skuPri.DiamondPrice ,
+    skuPri.StandardPrice AS LimitedPrice ,
+    skuPri.MarketPrice ,
+    skuPri.PromotionPrice
+    FROM      SpfSkuExtend AS sku ( NOLOCK )
+    INNER JOIN SpfSkuPrice AS skuPri ( NOLOCK ) ON skuPri.SkuNo = sku.SkuNo
+    WHERE     sku.PcShowState = 1
+    AND sku.PcSaleState = 2 
+    AND sku.DataState = 1 
+    AND sku.ProductNo = @ProductNo
+  </statement>
+  <!--删除热门商品信息-->
+  <statement id="ComBeziWfs_SWfsIndexHotProductListTemp_DelHotProductProduct">
+    update SWfsIndexHotProductListTemp set DataState=255 where ID=@ID
+  </statement>
+  <!--查询产品列表信息-->
+  <statement id="ComBeziWfs_SWfsProduct_SearchHotProductList">
+    <!-- temp as (select
+    ProductNo,
+    GoodsNo,
+    Status,
+    IsShelf,
+    DateShelf,
+    ProductName,
+    ProductPicFile,
+    SellPrice,
+    PlatinumPrice,
+    DiamondPrice,
+    LimitedPrice,
+    LimitedVipPrice,
+    MarketPrice,
+    PromotionPrice,
+    WfsProduct.BrandNo,
+    WfsBrand.BrandCnName,
+    WfsBrand.BrandEnName,row_number() over(order by DateShelf desc)as row
+    from WfsProduct with(nolock)
+    left join WfsBrand with(nolock) on WfsProduct.BrandNo = WfsBrand.BrandNo 
+    where [IsLimitedOutlet]=1 
+    #if($Keyword!='')
+    and (ProductName like '%'+@KeyWord+ '%' or ProductNo =@KeyWord or GoodsNo =@KeyWord)
+    #end
+    #if($CategoryNo !='')
+    and CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and GenderStyle=@Gender
+    #end
+    #if($BrandNO !='')
+    and WfsProduct.BrandNO=@BrandNO
+    #end
+    #if($StartDateShelf!='')
+    and DateShelf >= @StartDateShelf
+    #end
+    #if($EndDateShelf!='')
+    and DateShelf &lt;= @EndDateShelf
+    #end
+    )
+    select * from temp  where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize-->
+
+    with temp as (select
+    a.ProductNo,
+    a.ProductModel as GoodsNo,
+    e.Status,
+    a.ProductName,
+    e.ProductShowPic as ProductPicFile,
+    a.BrandNo,
+    c.BrandCnName,
+    c.BrandEnName,row_number() over(order by e.CreateDate desc) as row
+    from SpProduct as a with(nolock)
+    INNER join SpfProductExtend as e(nolock) on e.ProductNo=a.ProductNo
+    INNER JOIN (SELECT ProductNo FROM dbo.SpfSkuExtend skue (NOLOCK) WHERE skue.PcSaleState=2  GROUP BY ProductNo) AS t ON t.ProductNo=a.ProductNo
+    left join SpBrand as c with(nolock) on a.BrandNo = c.BrandNo
+    where e.TypeFlag=1 and a.DataState = 1 and e.ProductShowPic &lt;> ''
+    and e.Status=1 and e.DataState=1
+    #if($Keyword!='')
+    and (a.ProductName like '%'+@KeyWord+ '%' or a.ProductNo =@KeyWord or a.ProductModel =@KeyWord)
+    #end
+    #if($CategoryNo !='')
+    and a.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and a.ProductType=@Gender
+    #end
+    #if($BrandNO !='')
+    and a.BrandNO=@BrandNO
+    #end
+    )
+    select * from temp  where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!--获取某类别下热门商品的最大排序值-->
+  <statement id="ComBeziWfs_SWfsIndexHotProductListTemp_SelectMaxSort">
+    select sortvalue from SWfsIndexHotProductListTemp where Status=1 and DataState=1 and CategoryNo=@CategoryNo 
+  </statement>
+  <!--添加商品（多条数据）-->
+  <statement id="ComBeziWfs_SWfsIndexHotProductListTemp_InsertProducts">
+    $sqlstring
+  </statement>
+  <!--根据类别编号和商品编号获取热门商品信息-->
+  <statement id="ComBeziWfs_SWfsIndexHotProductListTemp_GetIndexHotProductByProductNo">
+    select CategoryNo,ProductNo from SWfsIndexHotProductListTemp where Status=1 and DataState=1 and CategoryNo=@CategoryNo and ProductNo=@ProductNo
+  </statement>
+</statements>

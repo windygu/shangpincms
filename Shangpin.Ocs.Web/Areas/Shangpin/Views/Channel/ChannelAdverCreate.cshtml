@@ -1,0 +1,101 @@
+﻿@model Shangpin.Entity.Wfs.SWfsSpChannelAdver
+@{
+    ViewBag.Title = "轮播图编辑";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+@section HeadScript{
+    <script type="text/javascript">
+        function CheckStr(id, len) {
+            var msg = $("#" + id).val();
+            var nums = msg.replace(/[^\x00-\xff]/g, "00").length;
+            if (nums > len) {
+                alert("名称只能在" + len / 2 + "个汉字" + len + "个字符");
+                return false;
+            }
+            return true;
+        }
+        function bao() {
+            var namelength = $("#AdverName").val().length;
+            if (namelength > 50) {
+                alert("广告名称不能大于50字符");
+                return false;
+            }
+            var link = $("#AdverLink").val();
+            if(link == "")
+            {
+                alert("公告链接不能为空");
+                return false;
+            }
+//            if ($("#imgfileUp").val() == "") {
+//                alert("图片不能为空");
+//                return false;
+//            }
+        }
+    </script>
+}
+<script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script src="/Areas/Shangpin/Scripts/plug/comm.js" type="text/javascript"></script>
+<h1> CMS > 尚品 > <a href="ChannelList.html">频道头图管理</a> > <a href="/Shangpin/Channel/ChannelAdverList.html?channelno=@Model.ChannelNO">频道头图列表</a> > 新建</h1>
+
+<form action="/Shangpin/Channel/ChannelAdverCreate.html" method="post" enctype="multipart/form-data" id="submitForm" name="submitForm">
+<div class="mx-brandcontent-msgbox">
+    <input type="hidden" id="channelno" name="channelno" value="@Model.ChannelNO" />
+    <input type="hidden" value="@Model.AdverID" name="AdverID" id="AdverID"/>
+    <table class="gernalTclass">
+            <tr style=" height:50px">
+                <td width="20%" style=" font-size:15px;">
+                    公告名称:
+                </td>
+                <td>
+                    <input type="text" id="AdverName" value="@(Model.AdverName)" name="AdverName" style=" width:200px;" />
+                </td>
+            </tr>
+            <tr style=" height:50px;">
+                <td width="13%" style=" font-size:15px; color:Red;">
+                    公告图片:
+                </td>
+                <td>
+                    <p><input type="file" id="imgfileUp" name="imgfile" value="@Model.ImgNO" />&nbsp;&nbsp;要求:714*50小于300K的JPG图片</p>
+                    @*@Html.HiddenFor(model=>model.ImgNO)*@
+                    <input type="hidden" id="imgno" name="imgno" value="@(Model.ImgNO)" />
+                    @if (Model!=null)
+                    {
+                        if (!string.IsNullOrEmpty(Model.ImgNO))
+                        {
+                            <img src="/ReadPic/GetPic.ashx?width=960&height=250&pictureFileNo=@(Model.ImgNO)&type=2" />
+                        }
+                    }
+                </td>
+            </tr>
+            <tr style=" height:50px;">
+                <td width="13%" style=" font-size:15px;">
+                    公告连接:
+                </td>
+                <td>
+                <input type="text" id="AdverLink" placeholder="必须加http://" name="AdverLink" value="@(Model.AdverLink)" />
+                </td>
+            </tr>
+            <tr style=" height:50px;">
+                <td width="13%" style=" font-size:15px;">
+                    公告状态:
+                </td>
+                <td>
+                    <input type="radio" id="Status0" value="0" @(Model.Status == 0 ? "checked" : "") name="Status" checked="checked" /><label>关闭</label>
+                    <input type="radio" id="Status1" value="1" @(Model.Status == 1 ? "checked" : "") name="Status" /><label>开启</label>
+                </td>
+            </tr>
+            <tr style=" height:50px;">
+                <td width="8%" style=" font-size:15px;">
+                </td>
+                <td>
+                    @Html.HiddenFor(model => model.AdverID)
+                    <input type="submit" value="保存" onclick="return bao();" style=" width:60px; height:30px;"/>
+                    <button type="button" onclick="window.location.href='/shangpin/Channel/ChannelAdverList.html?channelno=@Model.ChannelNO'" style=" width:60px; height:30px;">
+                取消</button>
+                    
+                </td>
+            </tr>
+    </table>
+    </div>
+</form>
+@ViewData["tip"]

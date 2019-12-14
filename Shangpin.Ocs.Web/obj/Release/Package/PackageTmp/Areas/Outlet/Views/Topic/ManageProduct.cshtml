@@ -1,0 +1,263 @@
+﻿@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Entity.Wfs;
+@model Shangpin.Entity.Common.RecordPage<Shangpin.Ocs.Entity.Extenstion.Outlet.ProductInfo>
+@{
+
+    ViewBag.Title = "商品管理|尚品OCS管理系统";
+    IList<WfsErpCategory> allfirstCategory = ViewBag.AllFirstCategory;
+    string brandName = ViewBag.BrandName;
+    string productNameOrNo = ViewBag.ProductNameOrNo;
+    int page = (int)Model.CurrentPage;
+    int pageSize = (int)Model.ItemsPerPage;
+    int totalCount = (int)Model.TotalItems; 
+    
+}
+@section HeadScript{
+<script type="text/javascript" src="/Areas/Outlet/Scripts/plug/ERPBrand.js"></script>
+<script type="text/javascript">
+    function checkAll(obj) {
+
+        if (obj.checked) {
+            $("[name='ProductNoCheckBox']").each(function () {
+                $(this).attr("checked", "true");
+            });
+        }
+        else { 
+            $("[name='ProductNoCheckBox']").each(function () {
+                $(this).removeAttr("checked");
+
+            });
+        }
+    }
+
+    //删除商品
+    function DelSelectedProduct() {
+        if (confirm("确认删除")) {
+
+            var pidStr = "";
+            $("[name='ProductNoCheckBox']").each(function () {
+                if (this.checked) {
+                    pidStr += $(this).val() + ",";
+                }
+            });
+            if (pidStr.length <= 0 || pidStr == "") {
+                alert("请选择要删除的商品!");
+                return false;
+            }
+            $("#ProductNoStr").val(pidStr);
+            RealEdit("del")
+        }
+        return false;
+    }
+    //保存排序值
+    function SaveProductSort() {
+        var qkeyStr = "";
+        $("input[name='ProductNoCheckBox']").each(function () {
+                qkeyStr += $(this).attr("qkey") + ",";
+            });
+        $("#OrderFlagStr").val(qkeyStr);
+        var orderFlag = "";
+        var Enum = 0;
+        $("input[name='OrderFlag']").each(function () {
+            if ($(this).val() == "") {
+                alert("请填写排序值");
+                Enum++;
+                return false;
+            }
+            orderFlag += $(this).val() + ",";
+        });
+        $("#OrderFlagValStr").val(orderFlag);
+        if (Enum == 0) {
+            RealEdit("update");
+        }
+    }
+
+
+    function RealEdit(act) {
+
+        var dataStr;
+        if(act=="del") //删除
+        {
+            dataStr = { productNoes: $("#ProductNoStr").val(), topicNo: $("#topicNo").val(), act: act }
+        }
+        if(act=="update") //保存排序值
+        {
+           dataStr={ topicProductNo: $("#OrderFlagStr").val(), orderFlagValStr: $("#OrderFlagValStr").val(), act: act }
+        }
+        $.ajax({
+            url: "/outlet/topic/EditProduct",
+            type: "post",
+            data: dataStr,
+            dataType: "json",
+            success: function (data) {
+                if (data.rs == "Success") {
+                    alert(data.msg);
+                    window.location.href = gettimestampurl(window.location.href);
+                    //window.location.reload(true);
+                }
+                else {
+                    alert(data.msg);
+                    return false;
+                }
+            }
+        });
+    }
+
+</script>
+
+
+}
+<h1>
+<a href="/outlet/topic/index">专题列表</a> > @ViewBag.TopicName > 商品管理</h1>
+<input type="hidden" name="ProductNoStr" id="ProductNoStr" />
+<input type="hidden" name="OrderFlagStr" id="OrderFlagStr" />
+<input type="hidden" name="OrderFlagValStr" id="OrderFlagValStr" />
+<form method="get" action="/outlet/topic/ManageProduct" id="SelectProductlist">
+<input type="hidden" id="topicNo"  name="topicNo"  value="@ViewBag.TopicNo"/>
+<div style=" padding:10px 5px; text-align:left;">
+<input name="ProductNameOrNo" id="ProductNameOrNo" value="@(!string.IsNullOrEmpty(productNameOrNo) ? productNameOrNo : "商品编号/商品名称")" style="width: 180px;
+                    color: #666; font-size: 12px;"@* onfocus="if(this.value == this.defaultValue) this.value = ''"
+                    onblur="if(this.value == '') this.value = this.defaultValue"*@ />
+
+            <select style="width: 100px;" id="CategoryNo" name="CategoryNo">
+                <option value="">一级品类-- </option>
+                @foreach (WfsErpCategory category in allfirstCategory)
+                {
+                    <option value="@category.CategoryNo" @((ViewBag.CategoryNo.ToLower() == category.CategoryNo.ToLower()) ? "selected=selected" : "") >@category.CategoryName
+                    </option>
+                }
+            </select>
+            @{ 
+
+                if (string.IsNullOrEmpty(brandName))
+                {
+                <input type="text" name="BrandName" id="BrandName" style="width: 120px; color: #666;
+                    font-size: 12px;" value="请选择品牌" onfocus="if(this.value == this.defaultValue) this.value = ''"
+                    onblur="if(this.value == '') this.value = this.defaultValue"></input>
+                }
+                else
+                {
+                <input type="text" name="BrandName" id="BrandName" style="width: 120px; color: #666;
+                    font-size: 12px;" value="@brandName" onfocus="if(this.value == this.defaultValue) this.value = ''"
+                    onblur="if(this.value == '') this.value = this.defaultValue"></input>
+                }
+            }
+            <input id="BrandNo" name="BrandNo" type="hidden" value="@ViewBag.BrandNo" />
+            <input type="hidden"  name="BrandNoo" id="BrandNoo" value="@ViewBag.BrandNo"/>
+            <script type="text/javascript" language="javascript">
+                $(document).ready(function () {
+                    $("#AddType").val("1");
+                    //品牌选择
+                    $("#BrandName").selectBrand('BrandNo', 'BrandName', false, '', '');
+
+                });
+                function setValue() {
+                    document.getElementById('BrandNoo').value = document.getElementById('BrandNo').value;
+                }
+            </script>
+            <input class="button"  type="submit" value="查询"></input>
+      </div>
+</form>
+<table class="mx-table" border="0">
+    <thead>
+        <tr>
+            <th width="5%">
+                <input type="checkbox" mx-op="mx-checkbox-all" onclick="checkAll(this)">
+            </th>
+            <th width="10%">
+                商品图片
+            </th>
+            <th width="30%">
+                商品信息
+            </th>
+            <th width="15%">
+                商品价格
+            </th>
+            <th width="10%">
+                商品库存
+            </th>
+            <th width="10%">
+                排序值
+            </th>
+            <th width="10%">
+                状态
+            </th>
+            <th width="10%">
+                商品类别
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Items != null && Model.Items.Count() > 0)
+        {
+            var flag = 0;
+            foreach (var product in Model.Items)
+            {
+                flag = flag + 1;  
+           
+            <tr border="1" class="@(flag % 2 == 0 ? "cross" : "")">
+                <td>
+                    <input type="checkbox" qvalue="@product.Quantity" qkey="@product.TopicProductNo"  name="ProductNoCheckBox" value="@product.ProductNo">
+                </td>
+                <td>
+                    <img width="70" height="107" src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@product.ProductPicFile&type=1">
+                </td>
+                <td style="text-align: left;">
+                    商品编号：@product.ProductNo<br>
+                    商品货号：@product.GoodsNo<br>
+                    商品名称：@product.ProductName<br>
+                    所属品牌：@product.BrandEnName (@product.BrandCnName)
+                </td>
+                <td align="left">
+                    市场价:@product.MarketPrice<br />
+                   @* 尚品价:@product.LimitedPrice<br />
+                    黄金价:@product.SellPrice
+                    <br />
+                    白金价:@product.PlatinumPrice
+                    <br />
+                    钻石价:@product.DiamondPrice<br /> <span style="color: Red;">促销价:</span>@product.PromotionPrice*@
+                    奥莱价:@product.LimitedVipPrice
+                </td>
+                <td align="left">
+                    可用库存:@product.Quantity<br />
+                    锁定库存:@product.LockQuantity
+                </td>
+                <td>
+                    <input name="OrderFlag" type="text" onfocus="if(this.value == this.defaultValue) this.value = ''" value="@product.OrderFlag" style="width:30px">
+                </td>
+                <td>
+                    @if (product.IsShelf == 0)
+                    {
+                        @Html.Raw("未上架");
+                    }
+                    else if (product.IsShelf == 1)
+                    {
+                        @Html.Raw("已上架");
+                    }
+                    else if (product.IsShelf == 2)
+                    {
+                        @Html.Raw("已下架");
+                    }
+                </td>
+                <td>
+                @(product.IsLimitedOutlet==2?"Outlet":"Listing")
+                </td>
+            </tr>
+            }
+        }
+    </tbody>
+</table>
+<div class="spPage">
+    @Html.Raw(@Html.PagerX("page", page, pageSize, totalCount))
+</div>
+<input type="checkbox" onclick="checkAll(this)" style="margin-left: 20px;">全选</input>
+<table cellpadding="0" cellspacing="0" border="0" class="mx-table">
+    <tr>
+        <td>
+            <a type="button" class="button" id="okButton" onclick="DelSelectedProduct()">删除所选</a> 
+            <a type="button" class="button" id="okButton" onclick="SaveProductSort()">保存排序值</a> 
+            @*<a type="button" class="button" href="javascript:history.back();">返回</a>  返回上一步操作页面*@
+            <a type="button" class="button" href="/outlet/topic/index">返回</a>
+        </td>
+    </tr>
+</table>

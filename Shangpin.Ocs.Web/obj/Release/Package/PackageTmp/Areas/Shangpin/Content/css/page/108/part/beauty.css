@@ -1,0 +1,16 @@
+.sp_ifc_bags {
+	background: url(/images/page/ifc/beauty/main_bg.jpg) no-repeat center top;
+}
+.sp_bagstitle_tab a {
+	width: 191px;
+}
+.sp_bagstitle_tab a.cur {
+	background: url(/images/page/ifc/beauty/title_tab_icon.png) no-repeat center top;
+	border-color: #789f0c;
+}
+.sp_ifc_bagscn li a span ins {
+	color: #7fbb1e;
+}
+.ifc_right_box h3 {
+	background-image:url(/images/page/ifc/beauty.png);
+}

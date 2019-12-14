@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <statement id="ComBeziCommon_SequenceCounter_Read">
+    select * from SequenceCounter(NoLock) where SequenceKey = @SequenceKey
+  </statement>
+  <statement id="ComBeziCommon_SequenceCounter_Create">
+    INSERT INTO SequenceCounter
+    (SequenceKey
+    ,CounterId)
+    VALUES
+    (@SequenceKey
+    ,@CounterId)
+  </statement>
+  <statement id="ComBeziCommon_SequenceCounter_Update">
+    UPDATE SequenceCounter SET  CounterId=@CounterId WHERE SequenceKey=@SequenceKey;
+  </statement>
+</statements>

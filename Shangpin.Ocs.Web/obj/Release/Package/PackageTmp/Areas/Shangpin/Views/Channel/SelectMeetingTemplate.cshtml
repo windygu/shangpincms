@@ -1,0 +1,128 @@
+﻿@model IEnumerable<Shangpin.Entity.Wfs.SWfsSpChannelTemplate>
+@using Shangpin.Ocs.Web.Infrastructure;
+@{
+    Layout = null;
+    int pageIndex = ViewBag.pageIndex;
+    int pageSize = ViewBag.pageSize;
+    int totalCount = ViewBag.totalCount;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>选择会场模板</title>
+    <link href="/Areas/Shangpin/Content/css/init.css" rel="stylesheet" type="text/css"
+        charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/core.css" rel="stylesheet" type="text/css"
+        charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/page/rightcontent/rightcontent.css" rel="stylesheet"
+        type="text/css" charset="utf-8" />
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/lib/jquery.js" charset="utf-8"></script>
+    <script language="javascript" type="text/javascript">
+        $(function () {
+            $(".clearBtn").bind("click", parent.window.TrueInfo);
+            $(".button").click(function () {
+                parent.window.ClickRowNew($(this).attr("mIdVal"));
+            });
+        });
+    </script>
+    <style type="text/css">
+        table.mx-table a.clearBtn{
+	        background-color:#4d90fe;
+            border:1px solid #3079ed;
+            color:#fff;
+	        -webkit-border-radius:5px;
+	        -moz-border-radius:5px;
+            border-radius:5px;
+	        font-size:14px;
+            display:inline-block;
+            padding:5px 10px;
+	        *padding:3px 0px 0;
+            position:relative;
+            text-decoration:none;
+	        -webkit-transition:border-color 0.218s ease 0s;
+	        -moz-transition:border-color 0.218s ease 0s;
+	        -o-transition:border-color 0.218s ease 0s;
+            transition:border-color 0.218s ease 0s;
+	        cursor:pointer;
+	        margin:0 15px 0 0;
+	        *zoom:1;
+        }
+        table.mx-table a.clearBtn:hover {
+	        border-color:#1c8ede;
+	        -webkit-box-shadow:0 0 8px rgba(82, 168, 236, 0.6);
+	        -moz-box-shadow:0 0 8px rgba(82, 168, 236, 0.6);
+	        box-shadow:0 0 8px rgba(82, 168, 236, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <form action="/shangpin/channel/SelectMeetingTemplate" method="get">
+            <input type="text" placeholder="模板编号" name="templateno" value="@Request.QueryString["templateno"]"/>  
+            <input type="hidden"  name="seltemplateno" value="@Request.QueryString["seltemplateno"]"/>  
+            <input type="text" placeholder="模板名称" name="templatename" value="@Request.QueryString["templatename"]"/>  
+            <input type="submit" value="查询"/>
+        </form>
+    </div>
+    <table class="mx-table" border="0">
+        <thead>
+            <tr>
+                <th>
+                    模板编号
+                </th>
+                <th>
+                    模板名称
+                </th>
+                <th>
+                    创建时间
+                </th>
+                <th>
+                    操作
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                <tr>
+                    <td>
+                        @Model.ElementAt(i).TemplateNO
+                    </td>
+                    <td>
+                        @Model.ElementAt(i).TemplateName
+                    </td>
+                    <td>
+                        @Model.ElementAt(i).CreateDate.ToString("yyyy-MM-dd HH:mm:ss")
+                    </td>
+                    <td>
+                        @if (Model.ElementAt(i).TemplateNO == Request.QueryString["seltemplateno"])
+                        {
+                            @Html.Raw("<span style='color:red;'>已选择</span>")
+                        }
+                        else 
+                        {
+                            <a class="button" href="#" style="margin: 0 0 0 0;" mIdVal="@Model.ElementAt(i).TemplateNO">
+                            选择</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="spPage">
+        <!--分页-->
+        @if (totalCount > 0)
+        {
+            @Html.Raw(Html.PagerX("page", pageIndex, pageSize, totalCount))
+        }
+    </div>
+    <table class="mx-table" border="0">
+        <tr>
+            <td>
+                <a class="clearBtn" href="javascript:void(0);" style="margin: 0 0 0 0;">清除选择</a>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

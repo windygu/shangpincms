@@ -1,0 +1,226 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Entity.Common;
+@using Shangpin.Entity.Wfs;
+@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "品牌首页管理";
+
+    SWfsBrandAdsInfo leftAd = ViewBag.LeftAd;
+    SWfsBrandAdsInfo rightAd = ViewBag.RightAd;
+}
+@{
+    int page = ViewBag.PageIndex != null ? (int)ViewBag.PageIndex : 1;
+    int pageSize = ViewBag.PageSize != null ? (int)ViewBag.PageSize : 32;
+    int totalCount = ViewBag.TotalCount != null ? (int)ViewBag.TotalCount : 0;
+    int pageCount = 0;
+    RecordPage<BrandIndexM> hotBrandList = ViewBag.HotBrandList;
+    RecordPage<BrandIndexM> flagList = ViewBag.FlagList;
+}
+<link href="/Areas/Shangpin/Content/css/brand.new.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+    .headMain {
+        border: 1px;
+        border-color: #ff0000;
+        padding: 8px;
+    }
+
+    .headStyle {
+        font-size: 14px;
+    }
+
+        .headStyle .blockfirst {
+            display: inline-block;
+            float: left;
+            height: 30px;
+            overflow: hidden;
+        }
+
+    .sp_brfs_inner {
+        background: none repeat scroll 0 0 #ddd;
+        text-align: center;
+        display: inline-block;
+    }
+
+    .sp_brfs_listnum {
+        background: none repeat scroll 0 0 #fff;
+        border-radius: 20px;
+        color: #ddd;
+        font-family: Verdana;
+        font-size: 32px;
+        padding: 0 10px;
+    }
+</style>
+@section HeadScript{
+    <script language="javascript" type="text/javascript">
+        function tabShow(cur, obj) {
+            $("#spIndex_imgroll_wrapper li").each(function (i) {
+                var id = $(this).attr("id");
+                if (cur == id) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+
+            $("#spIndex_imgroll_index li").each(function (i) {
+                $(this).removeClass();
+            });
+            $(obj).addClass("curr");
+        }
+    </script>
+}
+<h1>
+    OCS > 尚品 > 品牌管理 > 品牌首页管理
+</h1>
+<div class="spBrand_body">
+    <div class="bodymain">
+        <div class="headStyle">
+            <div class="blockfirst" style="width: 570px; font-weight: bolder; padding-left: 10px;
+                font-size: 16px; color: #666;">
+                运营广告位管理
+            </div>
+            <div class="blockfirst" style="width: 380px;">
+                <a class="sumit_btn" href="/shangpin/brandindex/AdIndex" style="float: right; margin: 0 5px 0 0;">
+                    广告图管理
+                </a> <span style="float: right; height: 30px; padding-top: 8px; padding-right: 10px;
+                        color: #999999">直接点击图片添加运营位广告图</span>
+            </div>
+        </div>
+        <div class="headStyle">
+            <div style="display: inline-block; float: left; height: 20px; overflow: hidden; width: 560px;
+                text-align: center;">
+                左侧运营位
+            </div>
+            <div style="display: inline-block; float: left; height: 20px; overflow: hidden; width: 380px;
+                text-align: center;">
+                右侧运营位
+            </div>
+        </div>
+        <div class="banner_top clr">
+            <span class="banner_left">
+                @*@{
+                        string atc = "add";
+                        if (null != leftAd)
+                        {
+                            atc = "edit&id=" + leftAd.ID;
+                        }
+                    }*@
+                <a href="/shangpin/brandindex/Manage?act=add&position=1">
+                    @if (null != leftAd)
+                    {
+                        <img title="@leftAd.AdName" width="570" height="200" src="/ReadPic/GetPic.ashx?width=570&height=200&pictureFileNo=@(leftAd.PicNo)&type=2" />
+                    }
+                    else
+                    {
+                        <span class="sp_brfs_inner" style="width: 570px; height: 200px; line-height: 200px;
+                            top: 0px; left: 0px;"><i class="sp_brfs_listnum">570 x 200</i></span>
+                    }
+                </a>
+            </span><span class="banner_right">
+                @*@{
+                        string atc1 = "add";
+                        if (null != rightAd)
+                        {
+                            atc1 = "edit&id=" + rightAd.ID;
+                        }
+
+                    }*@
+                <a href="/shangpin/brandindex/Manage?act=add&position=2">
+                    @if (null != rightAd)
+                    {
+                        <img title="@rightAd.AdName" width="380" height="200" src="/ReadPic/GetPic.ashx?width=380&height=200&pictureFileNo=@(rightAd.PicNo)&type=2" />
+                    }
+                    else
+                    {
+                        <span class="sp_brfs_inner" style="width: 380px; height: 200px; line-height: 200px;
+                                top: 0px; left: 0px;"><i class="sp_brfs_listnum">380 x 200</i></span>
+                    }
+                </a>
+            </span>
+        </div>
+    </div>
+    <div class="bodymain">
+        <div class="headStyle">
+            <div style="display: inline-block; float: left; height: 30px; overflow: hidden; width: 570px;
+                font-weight: bolder; padding-left: 10px; font-size: 16px; color: #666;">
+                热门品牌模块管理
+            </div>
+            <div style="display: inline-block; float: left; height: 30px; overflow: hidden; width: 380px;">
+                <a class="sumit_btn" href="/Shangpin/Brand/BrandsList?BrandView=2&TypeId=2" style="float: right; margin: 0 5px 0 0; ">管理热门品牌</a>
+            </div>
+        </div>
+        <div class="clr" style="clear: both;">
+            <h6>
+                <span class="right" style="visibility:hidden;"><a target="_blank" href="javascript:void(0);" onclick="javascript:return false;">全部品牌&gt;</a> </span><span class="left">
+                    热门品牌
+                </span>
+            </h6>
+            <div class="box relt" id="spIndex_imgroll">
+                <div class="loader" id="spIndex_imgroll_wrapper" style="position: relative; height: 228px;">
+                    <ul class="logo_list clr" style="position: absolute; ">
+                        @if (hotBrandList != null && hotBrandList.Items != null && hotBrandList.Items.Count() > 0)
+                        {
+                            IEnumerable<BrandIndexM> brandlist = hotBrandList.Items.ToList();
+                            List<BrandIndexM> blist = new List<BrandIndexM>();
+                            pageCount = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(brandlist.Count()) / Convert.ToDouble(pageSize)));
+
+                            for (int i = 0; i < pageCount; i++)
+                            {
+                                <li id="spi_@(i)" style="@(i > 0 ? "display:none" : "")">
+                                    @{
+                                int pagenum = i + 1;
+                                blist = brandlist.Take(pageSize * pagenum).Skip(pageSize * (pagenum - 1)).ToList();
+                                foreach (var item in blist)
+                                {
+                                    @Html.Raw("<span><a target='_blank' href='javascript:void(0);' onclick='javascript:return false;'><img width='120' title='" + item.BrandShowName + "' height='57' src='/ReadPic/GetPic.ashx?width=120&height=57&pictureFileNo=" + item.BrandLogo + "&type=2'></a></span>")
+                                }
+                                    }
+                                </li>
+                            }
+
+                        }
+                    </ul>
+                </div>
+                <div id="spIndex_imgroll_index">
+                    <!--请注意，这个内容区块中请不要带有换行符-->
+                    <ul>
+                        @for (int i = 0; i < pageCount; i++)
+                        {
+                            <li imgid="@(i)" class="@(i==0?"curr":"")" onclick="javascript:tabShow('spi_@(i)',this);"><a href="#"></a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bodymain">
+        <div class="headStyle">
+            <div class="blockfirst" style="width: 570px; font-weight: bolder; padding-left: 10px;
+                font-size: 16px; color: #666;">
+                官方旗舰店模块管理
+            </div>
+            <div class="blockfirst" style="width: 380px;">
+                <a class="sumit_btn" href="/Shangpin/Brand/BrandsList?BrandView=2&TypeId=1" style="float: right; margin: 0 5px 0 0;">管理官方旗舰店模块</a>
+            </div>
+        </div>
+        <div class="clr" style="clear: both;">
+            <h6>
+                <span class="left">官方旗舰店</span>
+            </h6>
+            <ul class="image_list clr">
+                @if (flagList != null && flagList.Items != null && flagList.Items.Count() > 0)
+                {
+                    foreach (var item in flagList.Items)
+                    {
+                        <li class="first">
+                            <a target="_blank" href="javascript:void(0);" onclick="javascript:return false;">
+                                <img width="235" height="140" src="/ReadPic/GetPic.ashx?width=235&height=140&pictureFileNo=@(item.BrandPic)&type=2">
+                            </a>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</div>

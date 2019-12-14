@@ -1,0 +1,165 @@
+﻿/*
+ * 公用底部
+ */
+#spFooter_userhelp {
+	border: 1px solid #ccc;
+}
+#spFooter_userhelp dl {
+	border-right: 1px solid #ccc;
+	float: left;
+	width:135px;
+	height:207px;
+	overflow:hidden;
+	text-align:center;
+}
+#spFooter_userhelp dt {
+	padding:25px 0 18px;
+}
+#spFooter_userhelp dt p {
+	font-weight:400;
+	font-size:13px;
+	_font-size:12px;
+	color:#303030;
+	text-shadow:1px 1px 1px #eee;
+	line-height:16px;
+}
+#spFooter_userhelp dd {
+	line-height: 20px;
+}
+#spFooter_userhelp dl#spFooter_userhelp_service {
+	border: 0;
+	width:278px;
+}
+#spFooter_userhelp_service dd {
+	height:48px;
+	overflow:hidden;
+	line-height:48px;
+}
+#t_msgIcon .t_msgtxt {
+	padding-top:10px;
+	color:#666;
+}
+.color_fa {
+	background-color:#fafafa;
+}
+#spFooter_userhelp_service .spFooter_service_app, #spFooter_userhelp_service .spFooter_service_kf {
+	width:167px;
+	height:46px;
+	display: inline-block;
+	background:url(/images/public/spFooter.gif) 0 -140px no-repeat;
+}
+#spFooter_userhelp_service .spFooter_service_kf {
+	width:208px;
+	background:url(/images/public/spFooter.gif) 0 -200px no-repeat;
+}
+dd#spFooter_userhelp_service_hotline {
+	padding:32px 0;
+	border-top:1px solid #ccc;
+	border-bottom:1px solid #ccc;
+	_padding:30px 0;
+}
+#spFooter_promise {
+	text-align:center;
+}
+#spFooter_promise a {
+	display:inline-block;
+    *display:inline;
+    *zoom:1;
+	margin:16px 15px;
+}
+#spFooter_promise a.spFooter_zp, #spFooter_promise a.spFooter_free, #spFooter_promise a.spFooter_tui {
+	width:136px;
+	height:30px;
+	background-image:url(/images/public/spFooter.gif);
+	background-position:0 0;
+	background-repeat: no-repeat;
+}
+#spFooter_promise a.spFooter_free {
+	background-position:15px -50px;
+}
+#spFooter_promise a.spFooter_tui {
+	background-position:0 -95px;
+}
+#spFooter_info {
+	background:#333;
+	height:44px;
+	line-height:18px;
+	color:#666;
+	text-align:center;
+	overflow:hidden;
+}
+#spFooter_info a:link, #spFooter_info a:visited {
+	color:#ccc;
+	float:left;
+	display:inline;
+	vertical-align:middle;
+	width:105px;
+	text-align:center;
+	border-right:1px solid #474747;
+	color:#fff;
+	padding:4px 0;
+	overflow:hidden;
+}
+#spFooter_info a:hover, #spFooter_info a:active {
+	color:#fff;
+	background:#494949;
+}
+#spFooter_info a span {
+	display:block;
+	color:#bababa;
+	font-family:Arial;
+}
+#spFooter_record {
+	padding:12px 0;
+	text-align:center;
+}
+#spFooter_record a {
+	padding:0 8px 0 0;
+}
+#spFooter_record a:hover {
+	text-decoration:underline;
+}
+#spFooter_auth {
+	padding:0 0 20px;
+	text-align:center;
+}
+#spFooter_auth a {
+	padding:0 4px;
+	font-size:0;
+	display: inline-block;
+	width:76px;
+	height:22px;
+}
+#spFooter_auth a.spFooter_auth_cx, .spFooter_auth_ty, .spFooter_auth_bz, .spFooter_auth_pj, .spFooter_auth_315 {
+	background-image:url(/images/public/spFooter.gif);
+	background-position:left -280px;
+	background-repeat:no-repeat;
+	width:70px;
+}
+#spFooter_auth a.spFooter_auth_ty {
+	background-position:left -332px;
+	width:66px;
+}
+#spFooter_auth a.spFooter_auth_bz {
+	background-position:left -306px;
+	width:68px;
+}
+#spFooter_auth a.spFooter_auth_pj {
+	background-position:left -254px;
+	width:67px;
+}
+#spFooter_auth a.spFooter_auth_315 {
+	background-position:-83px -255px;
+	width:68px;
+}
+#spFooter_info .spFooter_weibo {
+	width:70px;
+	text-align: left;
+	display:inline-block;
+	border-right:0 none !important;
+	padding-left:6px !important;
+	background:url(/images/public/sp.gif) 13px -1280px no-repeat;
+}
+#spFooter_info .spFooter_weibo:hover {
+	background:#494949 url(/images/public/sp.gif) 13px -1216px no-repeat;
+}

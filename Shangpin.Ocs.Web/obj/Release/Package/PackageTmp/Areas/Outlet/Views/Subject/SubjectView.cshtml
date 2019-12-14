@@ -1,0 +1,286 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.Outlet
+@{
+    //ViewBag.Title = (ViewBag.ChannelNo == 0 ? "女" : "男") + "士频道活动可视化编辑|尚品OCS管理系统";
+    ViewBag.Title = "首页活动可视化编辑|尚品OCS管理系统";
+    var notStartedList = ViewBag.NotStarted as IEnumerable<SubjectInfo>;
+    var toDayList = ViewBag.ToDaySubject as IEnumerable<SubjectInfo>;
+    var saleingList = ViewBag.SaleingSubject as IEnumerable<SubjectInfo>;
+    var aboutExpireList = ViewBag.AboutExpireSubject as IEnumerable<SubjectInfo>;
+    //var aboutBeginList = ViewBag.AboutBeginSubject as IEnumerable<SubjectInfo>;
+    var channelList = ViewBag.ChannelList as IEnumerable<Shangpin.Entity.Wfs.SWfsChannel>;
+    var channelSubjectList = ViewBag.ChannelSubjectList as IEnumerable<SubjectInfo>;
+    var channelNo = ViewBag.ChannelNo; //3首页
+    var showTypeNo = ViewBag.ShowTypeNo; //展示渠道
+    var showDateTime = ViewBag.ShowDateTime; //预期排序日期
+}
+@section HeadScript{
+    <script src="/Areas/Outlet/Scripts/plug/dragDrop.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/page/index/comm.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script src="/Areas/Outlet/Scripts/plug/DivWaitMsg.js" type="text/javascript"></script>
+}
+<link href="/areas/outlet/Content/css/page/rightcontent/sort.css" rel="stylesheet"
+      type="text/css" />
+<div class="handle" style="padding: 0; text-align: left;">
+    <a href="/outlet/subject/index" name="view" id="view" class="button" style="padding: 5px 10px;">列表模式</a>
+    <div style="margin: 0 auto; overflow: hidden; width: 960px; padding-bottom:10px;">
+        <form action="/outlet/subject/subjectview" method="get" id="frmOrder">
+            <select id="selChannelNo" name="channelNo" onchange="changeShowDT()">
+                <option value="">选择频道页面</option>
+                <option value="3" @(channelNo == "3" ? "selected='selected'" : "")>首页</option>
+                @if (channelList != null && channelList.Count() > 0)
+                {
+                    foreach (var item in channelList)
+                    {
+                        string cno = item.ChannelNo;
+                        <option value="@cno" @(cno == channelNo ? "selected='selected'" : "")>
+                            @item.ChannelName
+                        </option>
+                    }
+                }
+            </select> &nbsp;
+            <select id="Channel" name="showType">
+                <option value="">选择展示渠道</option>
+                <option value="1" @(showTypeNo == "1" ? "selected='selected'" : "")>网站</option>
+                <option value="2" @(showTypeNo == "2" ? "selected='selected'" : "")>移动端</option>
+            </select>
+            <span id="showTimeSpan" style="@(channelNo.Equals("3") ? "" : "display:none;")">&nbsp;&nbsp;展示日期：<input id="txtShowDateTime" name="ShowDateTime" class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" readonly="readonly" value="@(showDateTime)" /></span>&nbsp;&nbsp;
+            <input type="submit" value="切 换" id="btnReplace" onclick="return checkfrm();" style="cursor:pointer;" />&nbsp;&nbsp;<input type="button" id="btnReset" value="默 认" onclick="resetBtn()" style="cursor:pointer;" />&nbsp;&nbsp;<input type="button" id="saveData_btn1" value="保 存" style="cursor:pointer;" />
+        </form>
+    </div>
+</div>
+<div id="alIndex_main">
+    @if (channelNo.Equals("3"))
+    {
+        <!--alIndex_today-->
+        <div id="alIndex_today">
+            <div class="alIndex_tt clr">
+                <h2 class="msh">
+                    今日新开 <input type="hidden" value="@(notStartedList != null ? notStartedList.Count() : 0)" />
+                    <input type="hidden" value="@(toDayList != null ? toDayList.Count() : 0)" />
+                </h2>
+
+            </div>
+            <div id="alIndex_today_list">
+                <ul class="clr hoverEvent">
+                    @if (notStartedList != null)
+                    {
+
+                        foreach (var notStart in notStartedList)
+                        {
+
+                            <li class="alIndex_today_list_cell" pordid="@notStart.SubjectNo">
+                                <a href="#" title="@notStart.SubjectName"
+                                   class="loader">
+                                    <img width="310" height="230" src="/ReadPic/GetPic.ashx?width=310&height=230&pictureFileNo=@(notStart.SubjectTemplate==4?notStart.TitlePic1:notStart.BelongsSubjectPic)&type=2"
+                                         alt="" />
+                                    <div class="alIndex_list_info">
+                                        <p>@notStart.BrandEnName @notStart.SubjectName</p>
+                                        @if (notStart.DiscountType == 4 || notStart.DiscountType == 5)
+                                        {
+                                            <span class="red">
+                                                @if (notStart.DiscountType == 4)
+                                                {
+                                                    <text>全场</text>
+                                                }
+                                                <em><i>&yen;</i>@Math.Round(Convert.ToDecimal(notStart.DiscountTypeValue), 0)</em>
+                                                @if (notStart.DiscountType == 5)//最低这个价位
+                                                {
+                                                    <text>起</text>
+                                                }
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span>
+                                                @if (notStart.DiscountType == 1)
+                                                {
+                                                    <em>@Math.Round(Convert.ToDecimal(notStart.DiscountTypeValue), 1, MidpointRounding.AwayFromZero).ToString().Replace(".0", "")</em><text>折起</text>
+                                                }
+                                                @if (notStart.DiscountType == 3)
+                                                {
+                                                    <text>全场</text>
+                                                    <em>@Math.Round(Convert.ToDecimal(notStart.DiscountTypeValue), 1, MidpointRounding.AwayFromZero).ToString().Replace(".0", "")</em><text>折</text>
+                                                }
+                                            </span>
+                                        }
+                                    </div>
+                                </a>
+                            </li>
+
+                        }
+                    }
+                    @if (toDayList != null)
+                    {
+
+                        foreach (var toDay in toDayList)
+                        {
+
+                            <li class="alIndex_today_list_cell" pordid="@toDay.SubjectNo">
+                                <a href="#" title="@toDay.SubjectName"
+                                   class="loader">
+                                    <img width="310" height="230" src="/ReadPic/GetPic.ashx?width=310&height=230&pictureFileNo=@(toDay.SubjectTemplate==4?toDay.TitlePic1:toDay.BelongsSubjectPic)&type=2"
+                                         alt="" />
+                                    <div class="alIndex_list_info">
+                                        <p>@toDay.BrandEnName @toDay.SubjectName</p>
+                                        <span>
+                                            @Html.Raw(Shangpin.Ocs.Web.Infrastructure.HtmHelpers.SubjectDiscountInfo(null, toDay.DiscountType, toDay.DiscountTypeValue))
+                                        </span>
+                                    </div>
+                                </a>
+                            </li>
+
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+        <!--alIndex_today-->
+        <!--alIndex_doing-->
+        if (saleingList != null && saleingList.Count() > 0)
+        {
+            <div id="alIndex_doing" class="alIndex_ending">
+                <div class="alIndex_tt clr">
+                    <h2 class="msh">
+                        正在进行
+                    </h2>
+                </div>
+                <div id="alIndex_doing_list" class="alIndex_ending_list">
+                    <ul class="clr hoverEvent">
+                        @foreach (var item in saleingList)
+                        {
+                            <li class="alIndex_today_list_cell" pordid="@item.SubjectNo">
+                                <a href="#" title=""
+                                   class="loader">
+                                    <img width="310" height="230" src="/ReadPic/GetPic.ashx?width=310&height=230&pictureFileNo=@(item.SubjectTemplate==4?item.TitlePic1:item.BelongsSubjectPic)&type=2" alt="" />
+                                    <div class="alIndex_list_info">
+                                        <p>@item.BrandEnName @item.SubjectName</p>
+                                        <span>
+                                            @Html.Raw(Shangpin.Ocs.Web.Infrastructure.HtmHelpers.SubjectDiscountInfo(null, item.DiscountType, item.DiscountTypeValue))
+                                        </span>
+                                    </div>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+        <!--alIndex_doing-->
+        <!--alIndex_ending-->
+        if (aboutExpireList != null && aboutExpireList.Count() > 0)
+        {
+            <div id="alIndex_ending" class="alIndex_ending">
+                <div class="alIndex_tt clr">
+                    <h2 class="msh">
+                        即将结束
+                    </h2>
+                </div>
+                <div id="alIndex_ending_list" class="alIndex_ending_list">
+                    <ul class="clr hoverEvent">
+                        @foreach (var aboutExpire in aboutExpireList)
+                        {
+                            <li class="alIndex_today_list_cell" pordid="@aboutExpire.SubjectNo">
+                                <a href="#" title="@aboutExpire.SubjectName"
+                                   class="loader">
+                                    <img width="310" height="230" src="/ReadPic/GetPic.ashx?width=310&height=230&pictureFileNo=@(aboutExpire.SubjectTemplate==4?aboutExpire.TitlePic1:aboutExpire.BelongsSubjectPic)&type=2"
+                                         alt="" />
+                                    <div class="alIndex_list_info">
+                                        <p>@aboutExpire.BrandEnName @aboutExpire.SubjectName</p>
+                                        <span>
+                                            @Html.Raw(Shangpin.Ocs.Web.Infrastructure.HtmHelpers.SubjectDiscountInfo(null, aboutExpire.DiscountType, aboutExpire.DiscountTypeValue))
+                                        </span>
+                                    </div>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+        <!--alIndex_ending-->
+    }
+    else
+    {
+        <!--channel_start-->
+        if (channelSubjectList != null && channelSubjectList.Count() > 0)
+        {
+            <div id="alIndex_channel" class="alIndex_ending">
+                <div id="alIndex_channel_list" class="alIndex_ending_list">
+                    <ul class="clr hoverEvent">
+                        @if (channelSubjectList != null)
+                        {
+
+                            foreach (var subject in channelSubjectList)
+                            {
+
+                                <li class="alIndex_today_list_cell" pordid="@subject.SubjectNo">
+                                    <a href="#" title="@subject.SubjectName"
+                                       class="loader">
+                                        <img width="310" height="230" src="/ReadPic/GetPic.ashx?width=310&height=230&pictureFileNo=@(subject.SubjectTemplate == 4 ? subject.TitlePic1 : subject.BelongsSubjectPic)&type=2" alt="" />
+                                        <div class="alIndex_list_info">
+                                            <p>@subject.BrandEnName @subject.SubjectName</p>
+                                            <span>
+                                                @Html.Raw(Shangpin.Ocs.Web.Infrastructure.HtmHelpers.SubjectDiscountInfo(null, subject.DiscountType, subject.DiscountTypeValue))
+                                            </span>
+                                        </div>
+                                    </a>
+                                </li>
+
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+        <!--channel_end-->
+    }
+    <div class="handle">
+        <a href="#" class="button" id="saveData_btn">保 存</a>@*<a href="javascript:window.location.reload();"
+                                                               class="button" >取 消</a>*@
+        <a href="javascript:window.history.go(-1);" class="button">取 消</a>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("#selChannelNo").val();
+    });
+    function getSubject() {
+        var channelNo = $("#selChannelNo").val();
+        window.location.href = "/outlet/subject/subjectview?channelNo=" + channelNo;
+    }
+    function changeShowDT() {
+        var cNo = $("#selChannelNo").val();
+        var showType = $("#Channel").val();
+        showType = showType == '' ? 1 : showType;
+        if (cNo == "3") {
+            $("#showTimeSpan").show();
+        } else {
+            $("#showTimeSpan").hide();
+        }
+        window.location.href = "/outlet/subject/subjectview?channelNo=" + cNo + "&showType=" + showType;
+    }
+    function resetBtn() {
+        $("#selChannelNo").val("");
+        $("#Channel").val("");
+        $("#txtShowDateTime").val("");
+    }
+
+    function checkfrm() {
+        if ($("#selChannelNo").val() == "") {
+            alert("请选择频道页面！");
+            return false;
+        }
+        if ($("#Channel").val() == "") {
+            alert("请选择展示渠道！");
+            return false;
+        }
+        if ($("#selChannelNo").val() == "3") {
+            if ($("#txtShowDateTime").val() == "") {
+                alert("请设置预排序日期！");
+                return false;
+            }
+        }
+        return true;
+    }
+</script>

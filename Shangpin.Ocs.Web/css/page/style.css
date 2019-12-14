@@ -1,0 +1,102 @@
+h1, h1 i, h1 em,#spList_left h6{
+	font-size: 24px;
+	font-family:'微软雅黑','黑体',Hei,'宋体';
+	font-weight: 700;
+	padding:10px 0;
+	color:#666;
+	text-shadow: 1px 1px 2px #ddd;
+}
+
+h1 i{
+	padding:0 12px 0 0;
+}
+
+.hide{
+	display:none;
+}
+
+#spList_left h6{
+	font-size: 14px;
+	padding:12px;
+	border-bottom:1px solid #bbb;
+	border-top: 1px solid #bbb;
+	position: relative;
+}
+
+#spList_left h6.spec-title{
+	border-top: 0;
+	_zoom:1;
+}
+
+#spList_left{
+	width:960px;
+	position:relative;
+}
+
+.spStyleList{
+	width:198px;
+	border:1px solid #ccc;
+	margin-top:10px;
+}
+
+#spList_left ol li{
+	padding:1px 1px 0;
+	zoom:1;
+}
+
+#spList_left ol a:link, #spList_left ol a:visited{
+	display:block;
+	padding:5px 5px 5px 18px;
+	background-color:#fff;
+	zoom:1;
+}
+
+#spList_left ol a:hover, #spList_left ol a:active{
+	background-color:#666;
+	color:#fff;
+}
+
+
+
+
+#spList_left ol a.cur:link, #spList_left ol a.cur:visited{
+	background-color:#666;
+	background-position:22px -30px;
+	color:#fff;
+}
+
+#spList_left ol a.cur:hover, #spList_left ol a.cur:active{
+	background-color:#666;
+	background-position:22px -30px;
+	color:#fff;
+}
+
+
+#spStyle_right{
+	width:742px;
+	margin-bottom:20px;
+	overflow: hidden;
+	margin-top:10px;
+}
+
+#spStyle_right a{
+	display: block;
+	width:240px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-align: center;
+}
+#spStyle_right a:hover{
+	text-decoration:underline;
+	color: #333;
+}
+#spStyle_right ul {
+	width:750px;
+	position: relative;
+}
+#spStyle_right ul li{
+	width:240px;
+	float: left;
+	margin:0 9px 20px 0;
+}
+

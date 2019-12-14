@@ -1,0 +1,474 @@
+﻿@{
+    ViewBag.Title = "MeetingIndex";
+    Layout = "~/Areas/Shangpin/Views/Shared/_VenueLayout.cshtml";
+}
+@model Shangpin.Entity.Wfs.SWfsMeetingInfo
+<h1>
+    OCS >
+    @if (Model.ParentID == 0 && Model.MeetingID > 0)
+    {
+        <span>@ViewBag.TitleShow > <a href="/shangpin/venue/MeetListManage">@ViewBag.CurrentParentMeeting
+        </a></span>   
+    }
+    else if (ViewBag.ParentID > 0 && ViewBag.Type == 1 && Model.MeetingID > 0)
+    {
+        <span>@ViewBag.TitleShow > <a href="/shangpin/venue/ChildMeetListManage?parentId=@ViewBag.ParentID&type=@ViewBag.Type">
+            @ViewBag.CurrentParentMeeting </a></span>  
+     
+    }
+    else if (ViewBag.Type == 0 || Model.ParentID == 0 && ViewBag.Type == 1)
+    {
+        <span id="titleSpan">添加
+            @if (Model.ParentID == 0 && ViewBag.Type == 1)
+            {
+                                    
+                <span>> </span>  <a href="/shangpin/venue/ChildMeetListManage?parentId=@ViewBag.ParentID&type=@ViewBag.Type&MeetingName=@ViewBag.MeetingName">
+                    @ViewBag.CurrentParentMeeting </a> 
+            }
+        </span> 
+    }
+    else
+    {
+        <span><a href="/shangpin/venue/ChildMeetListManage">@ViewBag.CurrentParentMeeting </a>
+        </span>  
+    }
+    > @ViewBag.CurrentTitle
+</h1>
+<script src="/Areas/Shangpin/Scripts/lib/jquery.js" type="text/javascript"></script>
+<link href="/Areas/Shangpin/Content/css/tipswindown.css" rel="stylesheet" type="text/css" />
+<script src="/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+<script src="/Areas/Shangpin/Scripts/js/tipswindown.js" type="text/javascript" charset="UTF-8"></script>
+<script src="/Areas/Shangpin/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+<script src="/Areas/Shangpin/Scripts/js/DivWaitMsg.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var name = "";
+    var ctrl, hidCtrl;
+    $(function () {
+        $("#btnSave").click(function () {
+            if ($("#MeetingName").val() == "") {
+                alert("会场名称不能为空！");
+                $("#MeetingName").focus();
+                return false;
+            }
+            if (!/[a-zA-Z0-9]{1,15}/.test($("#MeetingDomain").val())) {
+                alert("会场域名不能为空且域名只能为数字或字母!");
+                $("#MeetingDomain").focus();
+                return false;
+            }
+            if (!$("#SourceFrom_SP").prop("checked") && !$("#SourceFrom_OL").prop("checked")) {
+                alert("会场所属网站尚未设置！");
+                return false;
+            }
+            if (!$("#Web").prop("checked") && !$("#Mobile").prop("checked")) {
+                alert("会场展示渠道尚未设置！");
+                return false;
+            }
+            if ($("#PreViewTime").val() == "") {
+                alert("会场预热开始日期不能为空！");
+                $("#PreViewTime").focus();
+                return false;
+            }
+            if ($("#StartTime").val() == "") {
+                alert("会场展期开始日期不能为空！");
+                $("#StartTime").focus();
+                return false;
+            }
+            if ($("#EndTime").val() == "") {
+                alert("会场展期结束日期不能为空！");
+                $("#EndTime").focus();
+                return false;
+            }
+            if ($("#Keywords").val().length>150) {
+                alert("会场关键字不能超过150！");
+                $("#Keywords").focus();
+                return false;
+            }
+             if ($("#Description").val().length>200) {
+                alert("会场描述信息不能超过200个字！");
+                $("#Description").focus();
+                return false;
+            }
+            var meetingId = $("#meetingId").val();
+            OptionMeeting(meetingId, @ViewBag.Type);
+        });
+
+        $(".selectMeetingTemp").click(function () {
+            var obj = $(this);
+            var flag = $(obj).attr("flag");
+            var status = $(obj).attr("status");
+            if (flag == "1" && status == "1") {
+                ctrl = $(obj).parent().find("input[id='WebStartNOName']");
+                hidCtrl = $(obj).parent().find("input[id='WebStartNO']");
+            } else if (flag == "0" && status == "1") {
+                ctrl = $(obj).parent().find("input[id='WebPreViewNOName']");
+                hidCtrl = $(obj).parent().find("input[id='WebPreViewNO']");
+            } else if (flag == "1" && status == "0") {
+                ctrl = $(obj).parent().find("input[id='MobileStartNOName']");
+                hidCtrl = $(obj).parent().find("input[id='MobileStartNO']");
+            } else if (flag == "0" && status == "0") {
+                ctrl = $(obj).parent().find("input[id='MobilePreViewNOName']");
+                hidCtrl = $(obj).parent().find("input[id='MobilePreViewNO']");
+            }
+            tipsWindown("选择会场模板", "iframe:/shangpin/venue/SelectMeetingTemplate?flag=" + flag + "&status=" + status, "600", "350", "true", "", "true", "text");
+        });
+    });
+    //更新操作
+    function OptionMeeting(mId, type) {
+        $('#formAddMeeting').ajaxSubmit({
+            success: function (html, status) {
+                //alert(html);
+                if (typeof (html) == "string") {
+                    var rs = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+                    data = eval("(" + rs + ")");
+                }
+                else {
+                    data = html;
+                }
+                if (data.result == "1") {
+                    alert(data.message);
+                    if(type==0)
+                    {
+                        window.location.href = "/Shangpin/Venue/MeetListManage";
+                    }else if(type==1)
+                    {
+                        window.location.href = "/Shangpin/Venue/ChildMeetListManage?meetingId=@ViewBag.ParentID&type=1";
+                    }
+                    return true;
+                } else {
+                    alert(data.message);
+                    LoadMsgEnd();
+                    return false;
+                }
+                LoadMsgEnd();
+            },beforeSubmit: function(){
+                LoadMsgBegin("保存中...");
+            }, 
+            error: function(XmlHttpRequest, textStatus, errorThrown){  
+               alert( "error");  
+               return false;
+            } 
+        });
+    }
+    //选所有展示渠道操作
+    function chkValue(obj) {
+        var num = $(obj).val();
+        var val = $("#webOrMobileType").val();
+        var count = 0;
+        if ($(obj).prop("checked")) {
+            count = parseInt(val) + parseInt(num);
+            $("#webOrMobileType").val(count);
+        } else {
+            count = parseInt(val) - parseInt(num);
+            $("#webOrMobileType").val(count);
+        }
+
+        Display();
+    }
+
+    //弹出层选择行 返回数据
+    function ClickRowNew(id, value) {
+        $(ctrl).val(value);
+        $(hidCtrl).val(id);
+        var o = $(ctrl).parent().find("span");
+        $(o).html("已选择"+'&nbsp;&nbsp;<span style="color:black">'+value+'</span>');
+        $(o).css({ color: "green" });
+        $("#windown-close").trigger("click");
+    }
+    //清除模板选择
+    function TrueInfo()
+    {
+        $(ctrl).val("");
+        $(hidCtrl).val("");
+        var o = $(ctrl).parent().find("span");
+        $(o).html("未选择");
+        $(o).css({ color: "red" });
+        $(o).attr("status","0");
+        $("#windown-close").trigger("click");
+    }
+    function returnUrl(type)
+    {
+        if(type==0)
+        {
+            window.location.href = "/Shangpin/Venue/MeetListManage";
+        }else if(type==1)
+        {
+            window.location.href = "/Shangpin/Venue/ChildMeetListManage?meetingId=@ViewBag.ParentID&type=1";
+        }
+    }
+    
+    function getEvent()
+      {
+        if(document.all)
+        {
+
+                return window.event;//如果是ie
+        }
+        func=getEvent.caller;
+        while(func!=null)
+        {
+                var arg0=func.arguments[0];
+                if(arg0)
+                {
+                        if((arg0.constructor==Event || arg0.constructor ==MouseEvent)||(typeof(arg0)=="object" && arg0.preventDefault && arg0.stopPropagation))
+                        {
+                                return arg0;
+                        }
+                }
+                func=func.caller;
+        }
+        return null;
+     }
+    function Webxuan()
+    {
+         var evt=getEvent();
+        var e = evt.srcElement || evt.target;
+        if(e.type=="radio"  &&  e.name=="SourceFrom") 
+         switch(e.value)
+                {
+                 case "1":
+               $("#hidMainDomainName").val("@ViewBag.SWebUrl");
+                   $("#spanId").html( $("#hidMainDomainName").val());
+                   $("#span2").html("");
+                   $("#titleSpan").html("尚品");                
+                   break;
+                   case "2":
+                    $("#hidMainDomainName").val("@ViewBag.WebUrl");
+                    $("#spanId").html( $("#hidMainDomainName").val());
+                    $("#span2").html("");
+                    $("#titleSpan").html("奥莱");
+                    break;
+                 
+                }
+    }
+    //渠道帅选
+function Display(){    
+  var Dobj=document.getElementsByName('WebOrMobile');     
+  //取到对象数组后，我们来循环检测它是不是被选中    
+  var s='';    
+  for(var i=0; i<Dobj.length; i++){    
+    if(Dobj[i].checked) s+=Dobj[i].value+',';  //如果选中，将value添加到变量s中    
+  }    
+ if(s.replace(",","")==1)
+ {
+   $("#WebOrMobileID").slideToggle();
+ }else if(s.replace(",","")==2)
+ {
+   $("#WebTempleId").slideToggle();
+ }else
+   {
+   $("#WebOrMobileID").show();
+   $("#WebTempleId").show();
+   } 
+}  
+
+</script>
+<div id="mx-rightcontent-addbox" class="mx-rightcontent-msgbox">
+    <form id="formAddMeeting" action="@ViewBag.FormAction" method="post"
+    enctype="multipart/form-data">
+    <input type="hidden" name="meetingId" id="meetingId" value="@ViewBag.MeetingID" />
+    <input type="hidden" name="MeetingNO" id="MeetingNO" value="@ViewBag.MeetingNO" />
+    <input type="hidden" name="ParentID" id="ParentID" value="@ViewBag.ParentID" />
+    <dl>
+        <dt style="color: Red">会场名称：</dt>
+        <dd>
+            <input id="MeetingName" type="text" name="MeetingName" value="@Model.MeetingName" maxlength="50" /></dd>
+    </dl>
+    <dl onclick="Webxuan()">
+        <dt style="color: Red">所属网站：</dt>
+        <dd>
+            <label>
+                <input id="SourceFrom_SP" type="radio"  name="SourceFrom" value="1"  @(Model.SourceFrom == 1 ? "checked='checked'" : "") @(ViewBag.SpDisabled) />尚品</label>
+            <label>
+                <input id="SourceFrom_OL" type="radio" name="SourceFrom" value="2" @(Model.SourceFrom == 2 ? "checked='checked'" : "")  @(ViewBag.AlDisabled) />奥莱</label>
+        </dd>
+    </dl>
+    <dl>
+        <dt style="color: Red">会场域名：</dt>
+        <dd>
+            <input  type="hidden" name="hidMainDomainName" id="hidMainDomainName"  value="@ViewBag.MainDomain" />
+            @if (Model.MeetingID > 0)
+            {
+                <span id="span2">@Model.MeetingDomain</span>
+                
+            }
+            <span id="spanId"></span>
+            @(ViewBag.MainDomain)<span>@ViewBag.Show</span><input id="MeetingDomain" type="text" name="MeetingDomain" value="@ViewBag.ParentMeetingDomin"/>
+            提示:会场域名由字母或数字组成
+        </dd>
+    </dl>
+    <dl>
+        <dt style="color: Red">展示渠道：</dt>
+        <dd>
+            <input id="Web" type="checkbox" name="WebOrMobile" value="1" @(Model.WebOrMobile == 1 || Model.WebOrMobile == 3 ? "checked='checked'" : "") onclick="chkValue(this)" />网站
+            <input id="Mobile" type="checkbox" name="WebOrMobile" value="2" @(Model.WebOrMobile == 2 || Model.WebOrMobile == 3 ? "checked='checked'" : "") onclick="chkValue(this)"  />移动端
+            <input type="hidden" value="@Model.WebOrMobile" id="webOrMobileType" name="webOrMobileType"/>
+        </dd>
+    </dl>
+    <dl>
+        <dt style="color: Red">会场状态：</dt>
+        <dd>
+            <label>
+                <input id="StatusOpen" type="radio" name="Status" value="1" @(Model.Status == 1 ? "checked='checked'" : "")/>开启</label>
+            <label>
+                <input id="StatusClose" type="radio" name="Status" value="0" @(Model.Status == 0 ? "checked='checked'" : "")/>关闭</label>
+        </dd>
+    </dl>
+    <dl>
+        <dt style="color: Red">预热开始日期：</dt>
+        <dd>
+            @{
+                string preViewDT = Model.PreViewTime <= new DateTime(0001, 1, 1, 0, 0, 0) ? "" : Model.PreViewTime.ToString("yyyy-MM-dd HH:mm");
+                string startDT = Model.StartTime <= new DateTime(0001, 1, 1, 0, 0, 0) ? "" : Model.StartTime.ToString("yyyy-MM-dd HH:mm");
+                string endDT = Model.EndTime <= new DateTime(0001, 1, 1, 0, 0, 0) ? "" : Model.EndTime.ToString("yyyy-MM-dd HH:mm");
+            }
+            <input id="PreViewTime" type="text" name="PreViewTime" value="@preViewDT" class="Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',skin:'whyGreen',lang:'zh-cn',isShowClear:true,alwaysUseStartDate:true,readOnly:true})"/>
+        </dd>
+    </dl>
+    <dl>
+        <dt style="color: Red">会场展期：</dt>
+        <dd>
+            <input id="StartTime" type="text" name="StartTime" value="@startDT"  class="Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',skin:'whyGreen',lang:'zh-cn',isShowClear:true,alwaysUseStartDate:true,readOnly:true,maxDate:'#F{$dp.$D(\'EndTime\',{d:0});}'})"/>
+            至
+            <input id="EndTime" type="text" name="EndTime" value="@endDT"  class="Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',skin:'whyGreen',lang:'zh-cn',isShowClear:true,alwaysUseStartDate:true,readOnly:true,minDate:'#F{$dp.$D(\'StartTime\',{d:0});}'})"/>
+        </dd>
+    </dl>
+    <div  id="WebTempleId" style="display:@ViewBag.WebChk" >
+        <dl>
+            <dt style="color: Red">会场网页模板：</dt>
+            <dd>
+                <table border="0" style="width: 75%">
+                    <tr>
+                        <td style="width: 30%">
+                            <input type="hidden" id="WebStartNOName" name="WebStartNOName" value="" />
+                            <input type="hidden" id="WebStartNO" name="WebStartNO" value="@Model.WebStartNO"/>
+                            <input type="hidden" id="oldWebStartNO" name="oldWebStartNO" value="@Model.WebStartNO"/>
+                            <input type="button" id="btnTempletWeb1" class="selectMeetingTemp" value="选择进行模板"
+                                style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                                color: #FFFFFF; cursor: pointer;" flag="1" status="1" />
+                            @if (!string.IsNullOrEmpty(Model.WebStartNO) && (Model.WebOrMobile == 1 || Model.WebOrMobile == 3))
+                            {
+                                <span style="padding-left: 10px; color: Green;" status="1" id="tip">已选择 &nbsp;&nbsp;<span
+                                    style="color: Black">@ViewBag.WebStartNO </span></span>
+                            }
+                            else
+                            {
+                                <span style="padding-left: 10px; color: red;" status="0" id="tip">未选择</span>
+                            }
+                        </td>
+                        <td style="width: 30%">
+                            <input type="hidden" id="WebPreViewNOName" name="WebPreViewNOName" value="" />
+                            <input type="hidden" id="WebPreViewNO" name="WebPreViewNO" value="@Model.WebPreViewNO"/>
+                            <input type="hidden" id="oldWebPreViewNO" name="oldWebPreViewNO" value="@Model.WebPreViewNO"/>
+                            <input type="button" id="btnTempletWeb2" class="selectMeetingTemp" value="选择预热模板"
+                                style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                                color: #FFFFFF; cursor: pointer;" flag="0" status="1" />
+                            @if (!string.IsNullOrEmpty(Model.WebPreViewNO) && (Model.WebOrMobile == 1 || Model.WebOrMobile == 3))
+                            {
+                                <span style="padding-left: 10px; color: Green;" status="1" id="tip">已选择&nbsp;&nbsp;<span
+                                    style="color: Black">@ViewBag.WebPreViewNO</span></span>
+                            }
+                            else
+                            {
+                                <span style="padding-left: 10px; color: red;" status="0" id="tip">未选择</span>
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </dd>
+        </dl>
+    </div>
+    <div id="WebOrMobileID" style="display:@ViewBag.MobileChk">
+        <dl>
+            <dt style="color: Red">会场移动模板：</dt>
+            <dd>
+                <table border="0" style="width: 75%">
+                    <tr>
+                        <td style="width: 30%">
+                            <input type="hidden" id="MobileStartNOName" name="MobileStartNOName" value="" />
+                            <input type="hidden" id="MobileStartNO" name="MobileStartNO" value="@Model.MobileStartNO"/>
+                            <input type="hidden" id="oldMobileStartNO" name="oldMobileStartNO" value="@Model.MobileStartNO"/>
+                            <input type="button" id="btnTempletM1" class="selectMeetingTemp" value="选择进行模板" style="width: 90px;
+                                height: 27px; background-color: #4D90FE; border: 1px solid #3079ED; color: #FFFFFF;
+                                cursor: pointer;" flag="1" status="0" />
+                            @if (!string.IsNullOrEmpty(Model.MobileStartNO) && (Model.WebOrMobile == 2 || Model.WebOrMobile == 3))
+                            {
+                                <span style="padding-left: 10px; color: Green;" status="1" id="tip">已选择&nbsp;&nbsp;<span
+                                    style="color: Black">@ViewBag.MobileStartNO</span></span>
+                            }
+                            else
+                            {
+                                <span style="padding-left: 10px; color: red;" status="0" id="tip">未选择</span>
+                            }
+                        </td>
+                        <td style="width: 30%">
+                            <input type="hidden" id="MobilePreViewNOName" name="MobilePreViewNOName" value="" />
+                            <input type="hidden" id="MobilePreViewNO" name="MobilePreViewNO" value="@Model.MobilePreViewNO"/>
+                            <input type="hidden" id="oldMobilePreViewNO" name="oldMobilePreViewNO" value="@Model.MobilePreViewNO"/>
+                            <input type="button" id="btnTempletM2" class="selectMeetingTemp" value="选择预热模板" style="width: 90px;
+                                height: 27px; background-color: #4D90FE; border: 1px solid #3079ED; color: #FFFFFF;
+                                cursor: pointer;" flag="0" status="0" />
+                            @if (!string.IsNullOrEmpty(Model.MobilePreViewNO)&&(Model.WebOrMobile==2||Model.WebOrMobile==3))
+                            {
+                                <span style="padding-left: 10px; color: Green;" status="1" id="tip">已选择&nbsp;&nbsp;<span
+                                    style="color: Black">@ViewBag.MobilePreViewNO</span></span>
+                            }
+                            else
+                            {
+                                <span style="padding-left: 10px; color: red;" status="0" id="tip">未选择</span>
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </dd>
+        </dl>
+        <dl>
+            <dt style="color: Red">移动端入口图：</dt>
+            <dd>
+                <input id="MobileShowImg" type="file" name="MobileShowImg" value="" />
+                提示：上传尺寸640*200，图片大小150K以内 <span id="spanFlapPicUp" style="color: Red" />
+                <br />
+                @if (!string.IsNullOrEmpty(Model.MobileShowImg) && Model.MeetingID > 0)
+                {
+                    <img alt="" src="/ReadPic/GetPic.ashx?width=300&height=93&pictureFileNo=@Model.MobileShowImg&type=2" />
+                }
+                <input id="hidMobileShowImg" type="hidden" name="hidMobileShowImg" value="@Model.MobileShowImg" />
+            </dd>
+        </dl>
+    </div>
+    <dl>
+        <dt>会场关键词:</dt>
+        <dd>
+            <input type="text" name="Keywords" id="Keywords" value="@ViewBag.Keyworks" />
+        </dd>
+    </dl>
+    <dl>
+        <dt>会场描述：</dt>
+        <dd>
+            <textarea id="Description" name="Description" cols="50" rows="3">@ViewBag.Description</textarea>
+        </dd>
+    </dl>
+    <dl>
+        <dt>&nbsp;</dt>
+        <dd>
+            <button type="button" id="btnSave" name="btnSave" value="" class="secondary">
+                保 存</button>
+            <button type="button" id="btnCancle" value="" onclick="javascript:returnUrl(@ViewBag.Type)">
+                返 回</button></dd>
+    </dl>
+    </form>
+</div>
+<div id="detail" style="display: none;">
+</div>
+<div class="clr" id="mx-rightcontent-fixbar">
+    @if (ViewBag.ParentID > 0 && ViewBag.Type == 1)
+    {
+        <a id="mx-btn-add" href="/Shangpin/Venue/MeetingIndex?parentId=@ViewBag.ParentID&type=@ViewBag.Type" title="添加分会场">
+        </a>
+    }
+    else
+    { 
+        <a id="mx-btn-add" href="/Shangpin/Venue/MeetingIndex?type=@ViewBag.Type" title="添加会场">
+        </a>
+
+    }
+</div>

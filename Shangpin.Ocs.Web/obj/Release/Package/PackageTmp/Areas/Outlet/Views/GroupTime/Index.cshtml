@@ -1,0 +1,62 @@
+﻿@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Ocs.Entity.Extenstion.Outlet;
+@{
+    int totalCount = (int)ViewBag.Count;
+    int currentPage = (int)ViewBag.CurPage;
+    int pageSize = (int)ViewBag.PageSize;
+
+    ViewBag.Title = "奥莱活动分组时间管理|尚品OCS管理系统";
+    IList<Shangpin.Entity.Wfs.SWfsSubjectTimeGroup> list = (IList<Shangpin.Entity.Wfs.SWfsSubjectTimeGroup>)ViewBag.List;
+}
+
+<h1>
+    <a href="/outlet/GroupTime/index">奥莱活动分组管理</a> > 奥莱活动分组列表</h1>
+<form action="/outlet/GroupTime/index" method="get" id="frmIndexAdSearch" name="frmIndexAdSearch">
+<div style="padding: 5px;">
+    分组名称
+    <input type="text" value="@ViewBag.Name" style="" name="name">
+    <button type="submit">查询</button>
+</div>
+</form>
+<input type="hidden" id="CurSordName" name="CurSordName" />
+<table class="mx-table">
+    <thead>
+        <tr>
+        <th width="30%">
+                分组图片
+            </th>
+            <th width="20%">
+                分组名称
+            </th>
+            <th width="30%">
+                时间
+            </th>
+            <th width="20%">
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var flag = 0;
+            foreach (var item in list)
+            {
+                flag = flag + 1;
+                                 
+            <tr class="@(flag % 2 == 0 ? "cross" : "")" id="GID_@item.GID">
+                <td><img src="/ReadPic/GetPic.ashx?width=32&height=32&pictureFileNo=@item.GroupPicNo&type=2"/></td>
+                <td>@item.GroupName</td>
+                <td>@item.DateBegin.ToShortTimeString()--@item.DateEnd.ToShortTimeString()</td>
+                <td>
+                    <a href="/outlet/GroupTime/Manage?act=edit&gid=@item.GID">编辑</a>
+                    <a onclick="return confirm('确定删除?')" href="/outlet/GroupTime/Manage?act=del&gid=@item.GID">删除</a> 
+                </td>
+            </tr>          
+            }
+        }
+    </tbody>
+</table>
+<div class="spPage">@Html.Raw(Html.PagerX("page", currentPage, pageSize, totalCount))</div>
+<div class="clr" id="mx-rightcontent-fixbar">
+    <a id="mx-btn-add" href="/outlet/GroupTime/Manage?act=create&gid=0"></a>
+</div>

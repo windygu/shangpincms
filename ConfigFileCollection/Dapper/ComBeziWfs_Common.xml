@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <!--以下代码是测试数据数环境使用begin-->
+  <statement id="ComBeziWfs_TestDB_LiveTesting">
+    select 1 as result
+  </statement>
+  <statement id="ComBeziWfsSub_TestDB_LiveTesting">
+    select 1 as result
+  </statement>
+  <statement id="ComBeziCommon_TestDB_LiveTesting">
+    select 1 as result
+  </statement>
+  <statement id="ComBeziWfsExport_TestDB_LiveTesting">
+    select 1 as result
+  </statement>
+  <statement id="ComBeziPic_TestDB_LiveTesting">
+    select 1 as result
+  </statement>
+  <statement id="ComShangPinMarketingAnalytics_TestDB_LiveTesting">
+    select 1 as result
+  </statement>
+  <statement id="ShangPinDWPlatform_TestDB_LiveTesting">
+    select 1 as result
+  </statement>
+  <!--以下代码是测试数据数环境使用end-->
+</statements>

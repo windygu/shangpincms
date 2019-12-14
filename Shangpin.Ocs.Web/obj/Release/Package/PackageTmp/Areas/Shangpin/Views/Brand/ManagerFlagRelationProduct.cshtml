@@ -1,0 +1,292 @@
+﻿@model IEnumerable<Shangpin.Ocs.Entity.Extenstion.Outlet.ProductInfo>
+@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@using Shangpin.Entity.Wfs
+@{
+    int pageIndex = Request.QueryString["pageindex"] != null ? int.Parse(Request.QueryString["pageindex"]) : 1;
+    int pageSize = 100;
+    int totalCount = ViewBag.totalCount;
+    ViewBag.Title = "管理关联商品";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    Shangpin.Ocs.Service.Shangpin.SWfsBrandService dal = new Shangpin.Ocs.Service.Shangpin.SWfsBrandService();
+    IList<ErpCategory> allfirstCategory = dal.SelectErpCategoryByParentNo("ROOT");
+    IList<ErpCategory> secondCategoryList = null;
+    IList<ErpCategory> thirdCategoryList = null;
+    IList<ErpCategory> fourCategoryList = null;
+    string requestCategoryNo = Request.QueryString["CategoryNo"] != null ? Request.QueryString["CategoryNo"].ToUpper() : null;
+    if (requestCategoryNo != null)
+    {
+        if (requestCategoryNo.Length == 3)
+        {
+            allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo).ParentNo = "0";
+        }
+        if (requestCategoryNo.Length == 6)
+        {
+            if (allfirstCategory.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)) > 0)
+            {
+                allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)).ParentNo = "0";
+            }
+            secondCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 3));
+            if (secondCategoryList.Count(p => p.CategoryNo == requestCategoryNo) > 0)
+            {
+                secondCategoryList.Single(p => p.CategoryNo == requestCategoryNo).ParentNo = "0";
+            }
+        }
+        if (requestCategoryNo.Length == 9)
+        {
+            if (allfirstCategory.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)) > 0)
+            {
+                allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)).ParentNo = "0";
+            }
+            secondCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 3));
+            if (secondCategoryList.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 6)) > 0)
+            {
+                secondCategoryList.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 6)).ParentNo = "0";
+            }
+            thirdCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 6));
+            if (thirdCategoryList.Count(p => p.CategoryNo == requestCategoryNo) > 0)
+            {
+                thirdCategoryList.Single(p => p.CategoryNo == requestCategoryNo).ParentNo = "0";
+            }
+        }
+        if (requestCategoryNo.Length == 12)
+        {
+            if (allfirstCategory.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)) > 0)
+            {
+                allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)).ParentNo = "0";
+            }
+            secondCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 3));
+            if (secondCategoryList.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 6)) > 0)
+            {
+                secondCategoryList.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 6)).ParentNo = "0";
+            }
+            thirdCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 6));
+            if (thirdCategoryList.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 9)) > 0)
+            {
+                thirdCategoryList.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 9)).ParentNo = "0";
+            }
+            fourCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 9));
+            if (fourCategoryList.Count(p => p.CategoryNo == requestCategoryNo) > 0)
+            {
+                fourCategoryList.Single(p => p.CategoryNo == requestCategoryNo).ParentNo = "0";
+            }
+        }
+    }
+}
+<script src="/Areas/Shangpin/Scripts/plug/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var oneChange = function (objvalue) {
+        if (objvalue == 0) {
+            $("#CategoryNo").val("");
+            return;
+        }
+        $("#select2").html("<option value='0'>二级品类-- </option>");
+        $("#select3").html("<option value='0'>三级品类-- </option>");
+        $("#select4").html("<option value='0'>四级品类-- </option>");
+        $("#CategoryNo").val(objvalue);
+        $.post("/Shangpin/Brand/GetErpCategoryChildList.html", { 'pNo': objvalue }, function (data) {
+            $("#select2").append(data);
+        });
+    }
+    var twoChange = function (objvalue) {
+        if (objvalue == 0) {
+            $("#CategoryNo").val($("#CategoryNo").val().substr(0, 3));
+            return;
+        }
+        $("#select3").html("<option value='0'>三级品类-- </option>");
+        $("#select4").html("<option value='0'>四级品类-- </option>");
+        $("#CategoryNo").val(objvalue);
+        $.post("/Shangpin/Brand/GetErpCategoryChildList.html", { 'pNo': objvalue }, function (data) {
+            $("#select3").append(data);
+        });
+    }
+    var threeChange = function (objvalue) {
+        if (objvalue == 0) {
+            $("#CategoryNo").val($("#CategoryNo").val().substr(0, 6));
+            return;
+        }
+        $("#select4").html("<option value='0'>四级品类-- </option>");
+        $("#CategoryNo").val(objvalue);
+        $.post("/Shangpin/Brand/GetErpCategoryChildList.html", { 'pNo': objvalue }, function (data) {
+            $("#select4").append(data);
+        });
+    }
+    var fourChange = function (objvalue) {
+        if (objvalue == 0) {
+            $("#CategoryNo").val($("#CategoryNo").val().substr(0, 9));
+            return;
+        }
+        $("#CategoryNo").val(objvalue);
+    }
+    var checkAll = function (obj) {
+        $("tbody input:checkbox[name='productNO']").attr("checked", obj.checked);
+    }
+    var removeProduct = function () {
+        if ($("input:checkbox[name='productNO'][checked='checked']").length > 0) {
+            $('#idlist').submit();
+        } else {
+            alert("请选择产品");
+        }
+
+    }
+</script>
+<h1>
+    OCS > 尚品 > <a href="/Shangpin/Brand/FlagShipStore.html?brandNO=@ViewBag.brandNO">旗舰店</a> > 管理关联商品</h1>
+<form action="/Shangpin/Brand/ManagerFlagRelationProduct.html" method="get">
+<div style="padding: 5px;">
+    <input type="hidden" value="@ViewBag.navNO" name="navNO"/>
+    <input type="hidden" value="@requestCategoryNo" name="CategoryNo" id="CategoryNo"/>
+    <input type="hidden" value="@ViewBag.region" name="region" id="region" />
+    品类:
+    <select style="width: 100px;" id="select1"  onchange="oneChange(this.value);">
+                <option value="0">一级品类-- </option>
+                @foreach (ErpCategory category in allfirstCategory)
+                {
+                    <option value="@category.CategoryNo" @(category.ParentNo == "0" ? "selected=selected" : null) >@category.CategoryName
+                    </option>
+                }
+     </select>
+     <select style="width: 100px;" id="select2"  onchange="twoChange(this.value);">
+        <option value="0">二级品类-- </option>
+        @if (secondCategoryList != null)
+        {
+            foreach (ErpCategory category in secondCategoryList)
+            {
+            <option value="@category.CategoryNo" @(category.ParentNo == "0" ? "selected=selected" : null) >@category.CategoryName
+            </option>
+            }
+        }
+     </select>
+     <select style="width: 100px;" id="select3"  onchange="threeChange(this.value);">
+        <option value="0">三级品类-- </option>
+        @if (thirdCategoryList != null)
+        {
+            foreach (ErpCategory category in thirdCategoryList)
+            {
+            <option value="@category.CategoryNo" @(category.ParentNo == "0" ? "selected=selected" : null) >@category.CategoryName
+            </option>
+            }
+        }
+     </select>
+     <select style="width: 100px;" id="select4" onchange="fourChange(this.value)">
+        <option value="0">四级品类-- </option>
+        @if (fourCategoryList != null)
+        {
+            foreach (ErpCategory category in fourCategoryList)
+            {
+            <option value="@category.CategoryNo" @(category.ParentNo == "0" ? "selected=selected" : null) >@category.CategoryName
+            </option>
+            }
+        }
+     </select>
+     &nbsp;
+     <select id="Gender" style="width: 100px" name="Gender">
+        <option value="">男女款</option>
+        <option value="0" @(Request.QueryString["Gender"] == "0" ? "selected=selected" : null)>女士</option>
+        <option value="1" @(Request.QueryString["Gender"] == "1" ? "selected=selected" : null)>男士</option>
+        <option value="2" @(Request.QueryString["Gender"] == "2" ? "selected=selected" : null)>中性</option>
+     </select>
+     &nbsp;
+    货号/名称/编号
+    <input type="text" value="@ViewBag.keyWord" style="" name="keyWord"/>
+    <button type="submit">
+        提交查询</button>
+</div>
+</form>
+<form method="post" id="idlist" action="/Shangpin/Brand/RemoveFlagRalationProduct.html?navno=@ViewBag.navNO&pnolist=@ViewBag.pNOList&region=@ViewBag.region">
+<table class="mx-table" border="0" id="sortable">
+    <thead>
+        <tr>
+            <th width="5%">
+                <input type="checkbox" mx-op="mx-checkbox-all" onclick="checkAll(this)">
+            </th>
+            <th width="10%">
+                商品图片
+            </th>
+            <th class="lt">
+                商品信息
+            </th>
+            <th class="lt">库存状况</th>
+            <th class="lt">
+                商品价格
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    @if (Model != null && Model.Count() > 0)
+    {
+        //var flag = 0;
+        Shangpin.Ocs.Service.Outlet.SWfsProductService service = new Shangpin.Ocs.Service.Outlet.SWfsProductService();
+        foreach (var product in Model)
+        {
+            Shangpin.Ocs.Entity.Extenstion.Outlet.ProductInventory inventory = service.GetInventoryByProductNo(product.ProductNo);
+            
+        <tbody>
+            <tr border="1">
+                <th rowspan="2">
+                    <input type="checkbox" name="productNO" value="@product.ProductNo">
+                </th>
+                <td rowspan="2">
+                    <img width="70" height="107" src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@product.ProductPicFile&type=1">
+                </td>
+                <td class="lt">
+                    商品编号：@product.ProductNo<br/>
+                    商品货号：@product.GoodsNo<br/>
+                    商品名称：@product.ProductName<br/>
+                    所属品牌：@product.BrandEnName (@product.BrandCnName)<br />
+                </td>
+                <td class="lt">
+                    可用库存：@inventory.SumQuantity<br />
+                    锁定库存：@inventory.SumLockQuantity
+                </td>
+                <td class="lt">
+                    市场价:@product.MarketPriceRegion<br/>
+                    尚品价:@product.StandardPriceRegion<br />
+                    黄金价:@product.GoldPriceRegion<br />
+                    白金价:@product.PlatinumPriceRegion<br/>
+                    钻石价:@product.DiamondPriceRegion<br/>
+                    <span style="color:Red;">促销价:@product.PromotionPriceRegion </span>
+                </td>
+            </tr>
+        </tbody>
+        }
+    }
+</table>
+<div class="spPage">
+    @Html.Raw(@Html.PagerX("page", pageIndex, pageSize, totalCount))
+</div>
+</form>
+<table cellpadding="0" cellspacing="0" border="0" class="mx-table">
+    <tr>
+        <td>
+            <a type="button" class="button" id="okButton" href="javascript:removeProduct();">删除所选</a>
+            <a type="button" class="button" href="/Shangpin/Brand/FlagShipStore.html?brandNO=@ViewBag.brandNO">返回 </a>
+            <a type="button" class="button" href="javascript:saveOrder();">保存排序</a>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#sortable").sortable();
+        $("#sortable").disableSelection();
+    });
+    var saveOrder = function () {
+        var pNoList = ""
+        if ($("input:checkbox[name='productNO']").length > 0) {
+            $("input:checkbox[name='productNO']").each(function () {
+                pNoList += $(this).val() + ",";
+            });
+            pNoList = pNoList.substr(0, pNoList.length - 1);
+            $.post("/Shangpin/Brand/UpdateRelationProductOrder.html", { 'flagId': '@ViewBag.navNO', 'pNoList': pNoList, 'region': '@ViewBag.region' }, function (data) {
+                if (data > 0) {
+                    alert("更新排序成功");
+                } else {
+                    alert("操作失败");
+                }
+            });
+        } else {
+            alert("没有产品");
+        }
+    }
+</script>

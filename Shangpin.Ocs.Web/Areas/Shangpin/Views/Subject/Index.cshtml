@@ -1,0 +1,502 @@
+﻿@using Shangpin.Entity.Item
+@using Shangpin.Entity.User
+@using Shangpin.Entity.Wfs
+@using Shangpin.Framework.Common
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@using Shangpin.Ocs.Service.Shangpin;
+@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    PaginationInfoModel pageinfoSingle = new PaginationInfoModel();
+    try
+    {
+        pageinfoSingle = (PaginationInfoModel)ViewBag.PaginationInfoSingel;
+    }
+    catch { }
+    List<SWfsNewSubject> subjectList = (List<SWfsNewSubject>)ViewBag.SWfsNewSubjectList;
+    var activeHrefUrlShow = ViewBag.ActiveHrefUrlShow;
+    IList<ErpCategory> erpCategory = (IList<ErpCategory>)ViewBag.ErpCategoryList;
+    Dictionary<String, String> genderDic = (Dictionary<String, String>)ViewBag.SubjectGenderList;
+
+    ViewBag.Title = "活动管理";
+    
+}
+@using Shangpin.Ocs.Web.Infrastructure;
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/page/index/popDiv.js"></script>
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/page/index/comm.js" charset="utf-8"></script>
+    <script src="/Areas/Shangpin/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+     
+    <script type="text/javascript">
+        function gettimestampurl(url) {
+            var s = url.split('?');
+
+            if (s.length > 1) {
+
+                if (s[1].indexOf('timestamp=') >= 0) {
+                    var ss = s[1].split('&');
+                    var newurl = s[0];
+                    for (i = 0; i < ss.length; i++) {
+                        if (ss[i].indexOf('timestamp=') >= 0) {
+                            ss[i] = gettimestamp();
+                        }
+                        if (newurl == s[0]) {
+                            newurl = newurl + "?" + ss[i];
+                        }
+                        else {
+                            newurl = newurl + "&" + ss[i];
+                        }
+                    }
+                    return newurl;
+                }
+                else {
+                    return url + "&" + gettimestamp();
+                }
+            }
+            else {
+                return url + "?" + gettimestamp();
+            }
+        }
+        function onmousemoveImageShow(id, src) {
+            $("#" + id).empty(); 
+            $("#" + id).addClass("divShowClass") ;
+            $("#" + id).html("<img  src='" + src + "'></img>");
+        }
+
+        function onmouseoutImageShow(id, src) {
+            $("#" + id).removeClass("divShowClass");
+            $("#" + id).empty(); 
+        }
+    </script> 
+    <style type="text/css">
+    .divShowClass{position: absolute; top: 0px; height: 250px; left: 135px; z-index: 100; width: 960px;}
+    </style>
+}
+<h1>
+    <a href="/shangpin/subject/index.html">活动管理</a> > 活动列表<span style="color:Red;">（注意：网站关于活动列表页缓存时间为：10 分钟,列表底部有清除缓存按钮）</span>
+    <a type="button"  id="okButtonTs" style="display:none;">清除搜索</a> <a type="button" style="display:none;"  id="okButton" onclick="subjectListRedisCache(0,1)">清除全部</a> </h1>
+@*<div class="handle" style="padding: 0; text-align: left;">
+    <a href="/shangpin/subject/subjectview.html" name="view" id="view" class="button" style="padding: 5px 10px;
+        5px 10px;">视图模式</a></div>*@
+<form method="get" action="/shangpin/subject/index.html" id="SelectNewSubjectList">
+<table width="auto" border="0" class="mx-table">
+    <tr>
+        <td>
+            <span>活动关键字:</span>
+            <br />
+            <input name="KeyWord"  value="@(!string.IsNullOrEmpty(ViewBag.KeyWord) ? ViewBag.KeyWord : "活动名称/活动编号")"  style="width: 120px; color: #666; font-size: 12px;"
+               onfocus="if(this.value == '活动名称/活动编号') this.value = ''" onblur="if(this.value == '') this.value = '活动名称/活动编号'"  />
+        </td>
+        <td>
+            <span>商品编号:</span>    <br />
+            <input name="productNo"  value="@(!string.IsNullOrEmpty(ViewBag.ProductNo) ? ViewBag.ProductNo : "商品编号")"  style="width: 120px; color: #666; font-size: 12px;"
+                onfocus="if(this.value == '商品编号') this.value = ''" onblur="if(this.value == '') this.value = '商品编号'"  />
+        </td>
+            <td>
+            <span>创建人:</span>    <br />
+            <input name="createUserId"  value="@(!string.IsNullOrEmpty(ViewBag.CreateUserId) ? ViewBag.CreateUserId : "创建人")"  style="width: 120px; color: #666; font-size: 12px;"
+                onfocus="if(this.value == '创建人') this.value = ''" onblur="if(this.value == '') this.value = '创建人'"  />
+        </td>
+        <td align="left">
+         <span>活动状态:</span>    <br />
+            <select style="width: 80px;" name="Status">
+                <option value="">活动状态 </option>
+                <option value="0" @(ViewBag.Status == "0" ? "selected=selected" : "")>已关闭 </option>
+                <option value="1" @(ViewBag.Status == "1" ? "selected=selected" : "")>已开启 </option>
+            </select>
+        </td>
+         <td align="left">
+            <span>活动分类:</span>    <br />
+            <select style="width: 80px;" id="ChannelSord" name="ChannelSord">
+                <option value="">活动分类 </option>
+                 @foreach (var item in erpCategory)
+                 {
+                    <option value="@item.CategoryNo" @(ViewBag.ChannelSord == item.CategoryNo ? "selected=selected" : "")>@item.CategoryName
+                    </option>
+                 }
+            </select>
+        </td>
+        <td align="left">
+            <span>渠道:</span>    <br />
+            <select name="ChannelNo" id="ChannelNo" style="width: 60px">
+                <option value="">渠道</option>
+                <option  value="1" @(ViewBag.ChannelNo == "1" ? "selected=selected" : "")>网站</option>
+                <option  value="2" @(ViewBag.ChannelNo == "2" ? "selected=selected" : "")>移动端</option>
+            </select>
+        </td> 
+      <td align="left">
+            <span>性别:</span>    <br />
+            <select name="Gender" id="Gender" style="width: 60px">
+                <option value="">性别</option>
+                <option  value="0" @(ViewBag.Gender == "0" ? "selected=selected" : "")>女士</option>
+                <option  value="1" @(ViewBag.Gender == "1" ? "selected=selected" : "")>男士</option>
+                <option  value="2" @(ViewBag.Gender == "2" ? "selected=selected" : "")>中性</option>
+            </select>
+        </td>
+        <td width="350px" align="left" style="padding-left: 15px;">
+            <span>活动时间</span>    <br />
+            <input id="StartTime" name="StartTime" value="@ViewBag.StartTime" maxlength="30"  class="Wdate" type="text" onclick="WdatePicker()" readonly="readonly"  />
+            <span>至</span>
+            <input id="EndTime" name="EndTime" value="@ViewBag.EndTime" maxlength="30" class="Wdate" type="text" onclick="WdatePicker()" readonly="readonly" />
+        </td> 
+        <td>
+            <input class="button" href="#" type="submit"></input>
+        </td>
+    </tr>
+    
+</table>
+</form>
+<table class="mx-table">
+    <thead>
+        <tr>
+            <th width="5%">
+                <input type="checkbox" mx-op="mx-checkbox-all" onclick="checkAll(this)">
+            </th>
+            <th width="10%">
+                活动图片
+            </th>
+            <th width="20%" >
+                活动信息
+            </th>
+           <th width="20%">
+                活动品类
+            </th>
+            <th width="40%">
+                操作
+            </th>
+        </tr>
+    </thead>
+    @if (subjectList != null && subjectList.Count() > 0)
+    {
+        int flag = 0;
+        foreach (SWfsNewSubject subject in subjectList)
+        {
+            string categoryNo = string.Empty;
+            flag = flag + 1;    
+            
+        <tbody>
+            <tr class="@(flag % 2 == 0 ? "cross" : "")">
+                <th>
+                    <input type="checkbox" name="SubjectNoCheckBox" value="@subject.SubjectNo" />
+                </th>
+                <td>
+                <div style="position:relative"> 
+                @if (string.IsNullOrEmpty(subject.SubjectTemplateTopPicNo))
+                {
+                  <a class="preview" onmousemove="onmousemoveImageShow('preview@(subject.SubjectNo)','@Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", subject.SubjectPreStartBackgroundPic, 0, 0)')" onmouseout="onmouseoutImageShow('preview@(subject.SubjectNo)','@Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", subject.SubjectPreStartBackgroundPic, 0, 0)')"  title="@subject.SubjectNo" href="@Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", subject.SubjectPreStartBackgroundPic, 0, 0)" target="_blank">
+                 <img width="130" alt="@subject.SubjectName" height="100" src="/ReadPic/GetPic.ashx?width=130&height=100&pictureFileNo=@subject.SubjectPreStartBackgroundPic&type=2"/>
+                 </a>
+                }
+                else
+                {
+                <a class="preview" onmousemove="onmousemoveImageShow('preview@(subject.SubjectNo)','@Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", subject.SubjectTemplateTopPicNo, 0, 0)')" onmouseout="onmouseoutImageShow('preview@(subject.SubjectNo)','@Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", subject.SubjectTemplateTopPicNo, 0, 0)')"  title="@subject.SubjectNo" href="@Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", subject.SubjectTemplateTopPicNo, 0, 0)" target="_blank">
+                 <img width="130" alt="@subject.SubjectName" height="100" src="/ReadPic/GetPic.ashx?width=130&height=100&pictureFileNo=@subject.SubjectTemplateTopPicNo&type=2"/>
+                 </a> 
+                } 
+                 <div id="preview@(subject.SubjectNo)">
+                   
+                 </div>
+                </div>  
+                </td>
+                <td class="lt">
+                    活动名称：    <a   href="@(string.Format(activeHrefUrlShow, subject.SubjectNo))" target="_blank" >@subject.SubjectName</a>
+                               
+                   <br />
+                    活动编号：@subject.SubjectNo<br />
+                    展示渠道：@(SWfsNewSubjectService.GetNewSubjectChannelTypeName(subject.ChannelType))
+                    <br />
+                    @if(subject.DatePre.Year!= 9999)
+                    {
+                        @("活动预热："+(subject.SubjectPreTemplateType == 1 ? "错落模板" : (subject.SubjectPreTemplateType == 2 ? "楼层模板" : "标准模板")))
+                         <br />
+                    }
+                    活动进行：@(subject.SubjectTemplateType == 1 ? "错落模板" : (subject.SubjectTemplateType == 2 ? "楼层模板" : "标准模板"))
+                    <br />
+                    当前活动状态： @(subject.Status == 1 ? "开启" : "关闭")
+                    设置：<a href="#" onclick="updateStatus('@subject.SubjectNo','@subject.ChannelType',@subject.Status == 1?'0':'1')">@(@subject.Status == 1 ? "关闭" : "开启")</a>
+                    
+                </td>
+                      
+                    <td style="text-align: left">
+                    商品数量：@subject.ProductCount
+                    <br />
+                    所属性别：
+                    @if (subject.SubjectGender.IsEmpty() == false)
+                    {
+                        string[] genderList = subject.SubjectGender.Split(',');
+                        foreach (string item in genderList)
+                        {
+                            string itemSingle = genderDic[item]; 
+                           <span>@itemSingle</span>  @Html.Raw("、") 
+                        }
+                    }
+                    <br />
+                    所属品类： 
+                    @{
+                    if (subject.SubjectCategoryNo.IsEmpty() == false)
+                    {
+                        string[] channelList = subject.SubjectCategoryNo.Split(',');
+                        if (null != channelList && channelList.Length > 0)
+                        {
+                            foreach (var item in channelList)
+                            {
+                                ErpCategory erpSingle = erpCategory.SingleOrDefault(p => p.CategoryNo == item);
+                               <span>@erpSingle.CategoryName</span>  @Html.Raw("、")
+                            }
+                        }
+                    }
+                   
+                    } 
+                    <br />
+                    创建人：@(subject.CreateUserId)
+                </td>
+                <td>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td class="lt">
+                                    @(subject.DatePre.ToString().Contains("9999") == true ? "" : "预热时间：" + subject.DatePre.ToString())
+                                    <br />
+                                    时间：@subject.DateBegin 至 @subject.DateEnd （@SWfsNewSubjectService.GetNewSubjectShowHours(subject.DateBegin, subject.DateEnd) 小时）
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    &nbsp;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="rt">
+                                     
+                                     <a id="@subject.SubjectNo" name="edit" class="button" href="#" >编 辑</a> 
+                                    @if (subject.SubjectTemplateType == 2)
+                                    { 
+                                        <a id="@subject.SubjectNo" name="child" class="button" href="/Shangpin/Subject/grouplist.html?subjectNo=@subject.SubjectNo&upCount=1" >
+                                            分组管理</a>  
+                                    }
+                                    else
+                                    {
+                                        SWfsNewSubjectCategory categorySingle = new SWfsNewSubjectService().GetSWfsNewSubjectCategorySingle(subject.SubjectNo);
+                                        if (categorySingle != null)
+                                        { categoryNo = categorySingle.CategoryNo; }
+                                        <a class="button" href="/shangpin/subject/SubjectProductRef.html?subjectNo=@subject.SubjectNo&scategoryNo=@categoryNo&upCount=1">
+                                            管理商品</a> 
+                                    }
+                                    <a class="button" href="/shangpin/subject/DataStatistics.html?subjectNo=@subject.SubjectNo">
+                                        数据统计</a>   
+                                        <a  class="button" href="javascript:void(0)"  onclick="deleteProductByQuantity('@subject.SubjectNo');">清除无库存商品</a> 
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+        }
+    }
+</table>
+<div class="spPage">
+    @Html.Raw(@Html.PagerX("page", pageinfoSingle.CurrentPage, pageinfoSingle.PageSize, pageinfoSingle.TotalCount))
+</div>
+<input type="checkbox" onclick="checkAll(this)" style="margin-left: 20px;">全选</input>&#12288;&#12288;
+<input type="button" class="button" value='关闭' onclick="closeStatue()" />
+<input type="button" class="button" value='清除所选缓存' onclick="subjectListRedisCacheS()" />
+<div id="mx-rightcontent-fixbarbg">
+    <div class="fixbarcontent">
+    </div>
+</div>
+<div class="clr" id="mx-rightcontent-fixbar">
+    <a id="mx-btn-add" href="#"></a>@*<a id="mx-btn-del" href="#"></a><a id="mx-btn-search"
+        href="#"></a>
+        <a id="mx-btn-folder" href="#"></a>
+        <a id="mx-btn-edit" href="#">
+    </a>*@
+</div>
+@using (Html.BeginForm("SubjectStatusModify", "Subject", FormMethod.Post, new { id = "SubjectUpdate" }))
+{
+    <input type="hidden" name="SubjectNo" id="SubjectNo" value="" />
+    <input type="hidden" name="Status" id="Status" value="" />
+    <input type="hidden" name="ScategoryNo" id="ScategoryNo" value="" />
+    
+}
+@using (Html.BeginForm("CloseSubject", "Subject", FormMethod.Post, new { id = "formCloseSubject" }))
+{
+    <input type="hidden" name="subjectNos" id="SubjectNoStr" value=""/>
+    <input type="hidden" name="Status" id="Status" value="0"/>
+}
+
+@using (Html.BeginForm("AddSubjectListRedisCache", "Subject", FormMethod.Post, new { id = "formSubjectCache" }))
+{
+    <input type="hidden" name="subjectNos" id="SubjectNoStrV" value=""/>
+    <input type="hidden" name="Status" id="Status" value="2"/>
+}
+
+@using (Html.BeginForm("SubjectDeleteProductByQuantity", "Subject", FormMethod.Post, new { id = "formSubjectDelProduct" }))
+{
+    <input type="hidden" name="subjectNoD" id="subjectNoD" value=""/> 
+}
+<script type="text/javascript">
+
+    function subjectListRedisCache(subjectNo,type) {
+        $.ajax({
+            url: "/Shangpin/subject/AddSubjectListRedisCache.html",
+            type: "post",
+            async: false,
+            timeout: 60000,
+            data: { SubjectNo: subjectNo, type: type, ran: Math.random() },
+            dataType: "json",
+            success: function (data) {
+                if (data.Ok == "1") {
+                    alert("缓存清除成功" + data.Msg + "条");
+                } else {
+                    alert("缓存清除失败!");
+                }
+            }
+        });
+
+    }
+
+    function subjectListRedisCacheS() {
+        //var postStruct = { "structName": $("#structName").val(), "childStructList": childStructList, "productNo": $("#productNo").val(), "structId": $("#ParentProductRefTemplateID").val() };
+        var subjectNoList = "0";
+        $("input:checkbox[name='SubjectNoCheckBox'][checked='checked']").each(function (i, item) {
+            subjectNoList += ","+item.value;
+        });
+        $.ajax({
+            type: "get",
+            url: "/shangpin/subject/ClearSubjectCache",
+            data: { "subjectNos": subjectNoList },
+            success: function (data) {
+                alert("清除成功");
+                //window.location.reload();
+            }
+        });
+    }
+
+//    function subjectListRedisCacheS() {
+//        $("#formSubjectCache").ajaxSubmit({
+//            success: function (html, status) {
+//                if (typeof (html) == "string") {
+//                    var rs = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+//                    data = eval("(" + rs + ")");
+//                }
+//                else {
+//                    data = html;
+//                }
+//                if (data.Ok == "1") {
+//                    alert("缓存清除成功" + data.Msg + "条");
+//                    window.location.href = gettimestampurl(window.location.href); 
+//                    return true;
+//                }
+//            }
+//        });
+//    }
+
+
+    function closeStatue() {
+        $("#formCloseSubject").ajaxSubmit({
+            success: function (html, status) {
+                if (typeof (html) == "string") {
+                    var rs = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+                    data = eval("(" + rs + ")");
+                }
+                else {
+                    data = html;
+                }
+                if (data.result == "1") {
+                    //alert(data.message);
+                    window.location.href = gettimestampurl(window.location.href);                    
+                    //window.location.reload();
+                    return true;
+                }
+            }
+        });
+    }
+
+    function updateStatus(subjectNo, scategoryNo, status) {
+        $("#SubjectNo").val(subjectNo);
+        $("#Status").val(status);
+        //$("#ScategoryNo").val(scategoryNo);
+
+        $("#SubjectUpdate").ajaxSubmit({
+            success: function (html, status) {
+                if (typeof (html) == "string") {
+                    var rs = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+                    data = eval("(" + rs + ")");
+                }
+                else {
+                    data = html;
+                }
+                if (data.result == "1") {
+                    alert(data.message);
+                    window.location.href = gettimestampurl(window.location.href);                    
+                    //window.location.reload();
+                    return true;
+                } else {
+                    alert(data.message);
+                    return false;
+                }
+            }
+        });
+    }
+
+
+    function deleteProductByQuantity(subjectNo) {
+        $("#subjectNoD").val(subjectNo);
+        $("#formSubjectDelProduct").ajaxSubmit({
+            success: function (html, status) {
+                if (typeof (html) == "string") {
+                    var rs = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+                    data = eval("(" + rs + ")");
+                }
+                else {
+                    data = html;
+                }
+                if (data.result == "1") {
+                    alert(data.message);
+                    window.location.href = gettimestampurl(window.location.href); 
+                    return true;
+                } else {
+                    alert(data.message);
+                    return false;
+                }
+            }
+        });
+    }
+
+
+    function checkAll(obj) {
+        var pidStr = "";
+        if (obj.checked) {
+            $("[name='SubjectNoCheckBox']").each(function () {
+                $(this).attr("checked", "true");
+                pidStr += $(this).val() + ",";
+            });
+        }
+        else {
+            $("[name='SubjectNoCheckBox']").each(function () {
+                $(this).removeAttr("checked");
+                pidStr = "";
+            });
+        }
+        $("#SubjectNoStr").val(pidStr);
+        $("#SubjectNoStrV").val(pidStr);
+        //alert(pidStr);
+    }
+
+
+
+    $("[name='SubjectNoCheckBox']").click(function () {
+        var pidStr = "";
+        $("[name='SubjectNoCheckBox']").each(function () {
+            if (this.checked)
+                pidStr += $(this).val() + ",";
+        });
+        $("#SubjectNoStr").val(pidStr);
+        $("#SubjectNoStrV").val(pidStr);
+        //alert(pidStr);
+    });
+    function alertWindowShow() {
+        alert('活动进行中');
+    }
+</script>

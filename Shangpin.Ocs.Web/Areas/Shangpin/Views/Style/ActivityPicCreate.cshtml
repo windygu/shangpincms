@@ -1,0 +1,116 @@
+﻿@{
+    ViewBag.Title = "增加活动图";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script src="/Areas/Shangpin/Scripts/plug/comm.js" type="text/javascript"></script>
+<h1> CMS > 尚品 > <a href="/Shangpin/newchannel/newChannelList">频道列表页</a> > Style > <a href="/Shangpin/Style/ActivityPicManage">活动图管理</a> > 添加</h1>
+<script src="/Areas/Shangpin/Scripts/lib/jquery.js" type="text/javascript"></script>
+<script src="/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+<script src="/Areas/Shangpin/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+<script src="/Areas/Shangpin/Scripts/js/DivWaitMsg.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#btnSave").click(function () {
+            if ($("#ActivityName").val() == "") {
+                alert("图片名称不能为空！");
+                $("#ActivityName").focus();
+                return false;
+            } else if ($("#ActivityName").val().length > 20) {
+                alert("图片名称不能多于20个汉字！");
+                $("#ActivityName").focus();
+                return false;
+            }
+            if ($("#PicUrl").val() != "") {
+                var url = $("#PicUrl").val();
+                if (url.indexOf("http://") == -1) {
+                    alert("链接地址格式错误!");
+                    $("#PicUrl").focus();
+                    return false;
+                }
+            }
+            if ($("#StartTime").val() == "") {
+                alert("开始时间不能为空！");
+                $("#StartTime").focus();
+                return false;
+            }
+
+            $('#formAddPic').ajaxSubmit({
+                beforeSubmit: function () {
+                    $("#btnSave").html("正在处理中...");
+                    LoadMsgBegin("保存中...");
+                },
+                error: function () {
+                    LoadMsgEnd();
+                    $("#btnSave").html("确定");
+                },
+                success: function (html, status) {
+                    if (typeof (html) == "string") {
+                        var rs = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+                        data = eval("(" + rs + ")");
+                    }
+                    else {
+                        data = html;
+                    }
+                    LoadMsgEnd();
+                    if (data.result != "1" && data.result != "0") {
+                        $("#btnSave").html("确定");
+                        alert(data.message);
+                        return false;
+                    }
+                    else if (data.result == "1") {
+                        $("#btnSave").html("确定");
+                        alert(data.message);
+                        window.location.href = "/Shangpin/Style/ActivityPicManage";
+                        return true;
+                    } else {
+                        $("#btnSave").html("确定");
+                        alert(data.message);
+                        return false;
+                    }
+                }
+            });
+        });
+
+    });
+</script>
+<div id="mx-rightcontent-addbox" class="mx-rightcontent-msgbox">
+    <form id="formAddPic" action="/Shangpin/Style/ActivityPicCreateSave" method="post" enctype="multipart/form-data">
+        <dl>
+            <dt style="color: Red">图片名称*：</dt>
+            <dd>
+                <input id="ActivityName" type="text" name="ActivityName" value="" maxlength="20" /><span id="spanFlapPicUp" style="color: Red">&nbsp;名称不能多于20个汉字</span>
+            </dd>
+        </dl>
+        <dl>
+            <dt style="color: Red">图片上传*：</dt>
+            <dd>
+                <input id="PicNo" type="file" name="PicNo" value="" /><span id="spanFlapPicUp" style="color: Red">*尺寸：180*350；格式：JPG；大小：200K以下</span>
+            </dd>
+        </dl>
+        <dl>
+            <dt>链接地址：</dt>
+            <dd>
+                <input id="PicUrl" type="text" name="PicUrl" value="" maxlength="200" />
+                <span id="spanFlapPicUp" style="color: Red">&nbsp;*格式：http://www.shangpin.com，开头："http://"</span>
+            </dd>
+        </dl>
+        <dl>
+            <dt style="color: Red">开始时间*：</dt>
+            <dd>
+                <input id="StartTime" type="text" name="StartTime" class="Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',skin:'whyGreen',lang:'zh-cn',isShowClear:true,alwaysUseStartDate:true,readOnly:true})" />
+            </dd>
+        </dl>
+        <dl>
+            <dt>&nbsp;</dt>
+            <dd>
+                <button type="button" id="btnSave" name="btnSave" value="" class="secondary">
+                    确 定
+                </button>
+                <button type="button" id="btnCancle" value="" onclick="javascript: window.location.href = '/Shangpin/Style/ActivityPicManage';">
+                    取 消
+                </button>
+            </dd>
+        </dl>
+    </form>
+</div>

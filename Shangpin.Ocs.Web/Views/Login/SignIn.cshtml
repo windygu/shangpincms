@@ -1,0 +1,39 @@
+﻿@{
+    Layout = null;
+    string flag = ViewBag.Flag;
+    string msg = ViewBag.Msg;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <script type="text/javascript" src="/Contents/scripts/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="/Contents/scripts/SignIn.js"></script>
+    <link rel="stylesheet" href="/Contents/css/login.css" type="text/css">
+    <title>CMS 登录|尚品百姿</title>
+  </head>
+  <body>
+      <h1>尚品CMS V2.0系统</h1>
+      <form action="/Login/SignInPost" method="post" id="formSignIn" style="margin:0px">
+      <div class="lgcontenbar">
+          <table>
+          <tr><td class="greyWord">用户名/USERNAME:</td></tr>
+          <tr><td><input class="input" name="UserName" id="formSignIn_UserName" value="@ViewBag.UserName" type="text"/></td></tr>
+          <tr><td><span id="formSignIn_UserName_msg" class="errorMsg">@(flag.Equals("1")? msg:"")</span></td></tr>
+          <tr><td class="greyWord">密码/PASSWORD:</td></tr>
+          <tr><td><input class="input" name="Password" id="formSignIn_Password" type="password"/></td></tr>
+          <tr><td><span id="formSignIn_Password_msg" class="errorMsg">@(flag.Equals("2")? msg:"")</span></td></tr>
+          <tr><td class="greyWord"><input type="checkbox" @(ViewBag.Checked=="1"?"checked":"") value="0" name="RemberOCSUser" id="RemberOCSUser"/><label for="RemberOCSUser">记住用户名</label></td></tr>
+          <tr><td class="greyWord" align="center"><input id="LoginBtn" value="登陆" type="submit">
+          <input value="重置" type="button" onclick="javascript:document.getElementById('formSignIn_UserName').value='';document.getElementById('formSignIn_Password').value='';return false;">
+          @*<a href="" title="帮助" target="_blank">[HELP]</a>*@
+          </td></tr>
+          </table>
+       </div>
+       <input type="hidden"  value="0" id="RememberMe" name="RememberMe"/>
+      </form>
+  </body>
+</html>

@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <!--显示SWfsBrandIndex和SWfsBrandModule的联合查询-->
+  <statement id="ComBeziWfs_Brand_get">
+    select * from table
+  </statement>
+  <statement id="ComBeziWfs_SWfsAppShopCategory_GetAppShopCategoryList">
+    SELECT AppShopCategoryId, Sort, CategoryNo, PicNo, CreateDate from SWfsAppShopCategory WITH(NOLOCK)
+    order by Sort
+  </statement>
+  <statement id="ComBeziWfs_SWfsAppShopCategory_Update">
+    IF NOT EXISTS(SELECT 1 FROM SWfsAppShopCategory WITH(NOLOCK) WHERE Sort=@Sort)
+    begin
+    INSERT INTO SWfsAppShopCategory(Sort, CategoryNo, PicNo, CreateDate) VALUES(@Sort, @CategoryNo, @PicNo, @CreateDate)
+    end
+    else
+    begin
+    UPDATE SWfsAppShopCategory set CategoryNo=@CategoryNo, PicNo=@PicNo, CreateDate=@CreateDate WHERE Sort=@Sort
+    end
+  </statement>
+  <statement id="ComBeziWfs_SWfsAppOperatingPosition_GetOperatingPositionBySort">
+    SELECT OperatingPositionId, Sort, LinkUrl, PicNo, CreateDate from SWfsAppOperatingPosition WITH(NOLOCK) where Sort=@Sort
+  </statement>
+  <statement id="ComBeziWfs_SWfsAppOperatingPosition_GetOneOperatingPosition">
+    SELECT top 1 OperatingPositionId, Sort, LinkUrl, PicNo, CreateDate from SWfsAppOperatingPosition WITH(NOLOCK)
+    order by Sort
+  </statement>
+  <statement id="ComBeziWfs_SWfsAppOperatingPosition_GetList">
+    WITH temp AS
+    (
+    SELECT OperatingPositionId, Sort, LinkUrl, PicNo, CreateDate,
+    ROW_NUMBER() OVER ( ORDER BY Sort ) AS row
+    from SWfsAppOperatingPosition WITH(NOLOCK)
+    )
+    SELECT OperatingPositionId, Sort, LinkUrl, PicNo, CreateDate
+    FROM temp
+    where row between (@pageIndex-1) * @pageSize + 1 and @pageIndex * @pageSize
+  </statement>
+  <statement id="ComBeziWfs_SWfsAppOperatingPosition_GetCount">
+    SELECT count(0) from SWfsAppOperatingPosition WITH(NOLOCK)
+  </statement>
+  <statement id="ComBeziWfs_SWfsAppOperatingPosition_GetMaxSort">
+    SELECT max(Sort) from SWfsAppOperatingPosition WITH(NOLOCK)
+  </statement>
+  <statement id="ComBeziWfs_SWfsAppShopCategory_DeleteBySorts">
+    delete from SWfsAppShopCategory where Sort in @Sorts
+  </statement>
+  <statement id="ComBeziWfs_SWfsAppOperatingPosition_DeleteBySorts">
+    delete from SWfsAppOperatingPosition where OperatingPositionId in @Sorts
+  </statement>
+  <statement id="ComBeziWfs_SWfsCategory_GetCategoryListByParentNo">
+    SELECT CategoryNo, CategoryCName as CategoryName, ParentCategoryNo as ParentNo, [Status] as VisibleState, SortId as Sort FROM dbo.SpfShopCategory WITH(NOLOCK) WHERE ParentCategoryNo=@ParentNo AND [Status]=1 ORDER BY SortId
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewSubject_GetSWfsNewSubjectById">
+    SELECT TOP 1 * FROM dbo.SWfsNewSubject(nolock) WHERE SubjectNo=@SubjectNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsAppAlterPic_GetSWfsAppAlterPicById">
+    SELECT [AppSlterPicId]
+    ,[Name]
+    ,[Sort]
+    ,[StartTime]
+    ,[RefType]
+    ,[RefContent]
+    ,[PicNo]
+    ,[AlterType]
+    ,[CreateDate]
+    FROM [SWfsAppAlterPic](nolock) WHERE AppSlterPicId = @AppSlterPicId
+  </statement>
+  <statement id="ComBeziWfs_SWfsAppAlterPic_DelSWfsAppAlterPicById">
+    DELETE SWfsAppAlterPic WHERE AppSlterPicId = @AppSlterPicId
+  </statement>
+  <statement id="ComBeziWfs_SWfsAppAlterPic_GetSWfsAppAlterPicCount">
+    SELECT  COUNT(0)
+    FROM   [SWfsAppAlterPic](nolock)
+    WHERE    1 = 1 AND AlterType = @AlterType
+    #if($Name != '')
+    and Name = @Name
+    #end
+    #if($RefType != -1)
+    and RefType = @RefType
+    #end
+    #if($Sort != -1)
+    and Sort = @Sort
+    #end
+    #if($beginTime != '')
+    AND  @beginTime > StartTime
+    #end
+    #if($endTime != '')
+    AND StartTime > @endTime
+    #end
+  </statement>
+  <statement id="ComBeziWfs_SWfsAppAlterPic_GetSWfsAppAlterPicList">
+    WITH    temp
+    AS ( SELECT [AppSlterPicId]
+    ,[Name]
+    ,[Sort]
+    ,[StartTime]
+    ,[RefType]
+    ,[RefContent]
+    ,[PicNo]
+    ,[AlterType]
+    ,[CreateDate]
+    ,row_number() over(order by Sort asc , CreateDate desc) as row
+    FROM [SWfsAppAlterPic](nolock)
+    WHERE    1 = 1 AND AlterType = @AlterType
+    #if($Name != '')
+    and Name = @Name
+    #end
+    #if($RefType != -1)
+    and RefType = @RefType
+    #end
+    #if($Sort != -1)
+    and Sort = @Sort
+    #end
+    #if($beginTime != '')
+    AND  StartTime >= @beginTime
+    #end
+    #if($endTime != '')
+    AND @endTime  >= StartTime
+    #end
+    )
+    SELECT  *
+    FROM    temp
+    where row between (@pageIndex-1) * @pageSize + 1 and @pageIndex * @pageSize
+  </statement>
+  <!--查询首页轮播-->
+  <statement id="ComBeziWfs_SWfsAppAlterPic_GetSWfsAppHomeAlterPic1">
+    select top 1 PicNo from SWfsAppAlterPic where AlterType=0 and getdate() >= starttime  order by Sort asc ,starttime desc
+  </statement>
+  <statement id="ComBeziWfs_SWfsAppAlterPic_GetSWfsAppHomeAlterPic2">
+    select top 1 PicNo from SWfsAppAlterPic where AlterType=1 and getdate() >= starttime  order by  Sort asc, starttime desc
+  </statement>
+  <!--查询品牌名称-->
+  <statement id="ComBeziWfs_SWfsBrand_GetAppBrandNameByBrandNo">
+    <!--select BrandCnName from wfsBrand where BrandNo=@BrandNo-->
+    select BrandCnName from SpBrand where BrandNo=@BrandNo
+  </statement>
+  <!--获取活动-->
+  <statement id="ComBeziWfs_SWfsAppAlterPic_GetAppSubjectByNo">
+    select SubjectTemplateTopPicNo,SubjectPreTopPicNo,SubjectName,[Status],DatePre,DateBegin,DateEnd from SWfsNewSubject(nolock)
+    where SubjectNo=@SubjectNo
+  </statement>
+  <!--查询轮播是否存在相同的时间-->
+  <statement id="ComBeziWfs_SWfsAppAlterPic_IsExistsSameTimeAlterPic">
+    select AppSlterPicId from SWfsAppAlterPic(nolock) where StartTime=@StartTime and Sort=@Sort
+  </statement>
+  <!--修改排序值-->
+  <statement id="ComBeziWfs_SWfsAppOperatingPosition_EditePositionSort">
+    update SWfsAppOperatingPosition set Sort=@Sort where OperatingPositionId=@OperatingPositionId
+  </statement>
+</statements>

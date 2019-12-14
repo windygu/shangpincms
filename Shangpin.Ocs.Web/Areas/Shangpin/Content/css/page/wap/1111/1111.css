@@ -1,0 +1,52 @@
+@charset "utf-8";
+/* CSS Document */
+
+header{background-color:#fff;}
+
+.clr:after, .clearfix:after {
+	content: "";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden
+}
+
+.topFix{
+	position:fixed;
+	left:50%;
+	top:0px;
+	z-index:10;
+	margin-left:-160px;
+	width:320px;
+}
+.topFix section{
+	display:block;
+	font-size:0;
+	position:absolute;
+}
+
+.sp11TopNav{height:43px; line-height:43px; width:100%; background:url(/images/1111/topNavBg.png) repeat-x 0 0; border-bottom:1px solid #8d0522; font-size:12px;}
+.sp11TopNav li{float:left; width:64px; text-align:center; color:#fff;}
+.sp11TopNav li.curr{height:41px; border-bottom:2px solid #fff;}
+.sp11TopNav li a{color:#fff; display:block;}
+.sp11TopNav li.more{position:relative; background:url(/images/1111/topNavMoreBg.png) no-repeat 45px center;}
+.moreMenu{width:85px; position:absolute; top:33px; right:0; z-index:100; padding:5px 0; display:none;}
+.moreMenu i{display:block; height:4px; font-size:0; background:url(/images/1111/topNavMoreDot.png) no-repeat center top; overflow:hidden;}
+.moreMenu li{width:100%; height:30px; line-height:30px; background-color:#a10b41;}
+
+.spTop{width:320px;height:217px;margin:0 auto;overflow:hidden;}
+
+.alContent{margin-top:94px;}
+
+.sp11Box{width:320px; margin:0 auto;}
+.sp11Box h2{height:40px; width:100%;}
+.sp11Box h3{padding:0 10px; height:45px; line-height:45px; color:#c01179; font-size:20px;}
+.sp11Box h3 em{font-size:30px;}
+
+.sp11Tag{width:320px; margin:10px auto 0; letter-spacing:-4px;}
+.sp11Tag a{margin:0 0 10px 10px; width:88px; height:28px; line-height:28px; text-align:center; color:#000; display:inline-block; overflow:hidden; letter-spacing:normal; background-color:#f4f4f4; border:1px solid #e2e2e2;}
+
+.sp11List{width:100%;}
+.sp11List li{width:145px;height:210px;vertical-align:top;margin:0 0 10px 10px;float:left;overflow:hidden; background-color:#ccc;}
+.sp11List li a{display:block;}
+.sp11List li img{width:145px; height:210px;}

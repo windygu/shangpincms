@@ -1,0 +1,18 @@
+﻿@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_VenueLayout.cshtml";    
+}
+<h1>
+    OCS > 尚品 >
+    @if (Model.ParentID == 0)
+    {
+        <a href="/Shangpin/Venue/MeetListManage">会场列表</a>
+    }
+    else
+    {
+        <a href="/Shangpin/Venue/childmeetlistmanage?meetingId=@Model.ParentID&type=1">分会场管理</a>
+    }
+    > <a href="/Shangpin/Venue/MeetListManage?meetingNameOrDomain=@Model.MeetingName">@Model.MeetingName</a>
+    > 模板编辑
+</h1>
+<iframe id="iframeVeunue" name="iframeVeunue" src="/Shangpin/Venue/VenueTemplateiframe?venueID=@(Model.MeetingID)&currentTemplateNO=@(Model.WebPreViewNO)" style="width:1180px; height:610px;" scrolling="auto" frameborder="0" >
+</iframe>

@@ -1,0 +1,291 @@
+﻿@model IEnumerable<Shangpin.Ocs.Entity.Extenstion.Outlet.ProductInfo>
+@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@using Shangpin.Entity.Wfs
+@{
+    int pageIndex = !string.IsNullOrEmpty(Request.QueryString["pageindex"])? int.Parse(Request.QueryString["pageindex"]) : 1;
+    int pageSize = 10;
+    int totalCount = ViewBag.totalCount;
+    ViewBag.Title = "添加秒杀商品";
+    Layout = "~/Areas/Shangpin/Views/Shared/_VenueLayout.cshtml";
+    Shangpin.Ocs.Service.Shangpin.SWfsBrandService dal = new Shangpin.Ocs.Service.Shangpin.SWfsBrandService();
+    IList<ErpCategory> allfirstCategory = dal.SelectErpCategoryByParentNo("ROOT");
+    IList<ErpCategory> secondCategoryList = null;
+    IList<ErpCategory> thirdCategoryList = null;
+    IList<ErpCategory> fourCategoryList = null;
+    string requestCategoryNo = Request.QueryString["CategoryNo"]!=null?Request.QueryString["CategoryNo"].ToUpper():null;
+    string skillgroupid = Request.QueryString["skillgroupid"];
+    if (requestCategoryNo != null)
+    {
+        if (requestCategoryNo.Length == 3)
+        {
+            allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo).ParentNo = "0";
+        }
+        if (requestCategoryNo.Length == 6)
+        {
+            if (allfirstCategory.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 3))>0)
+            {
+                allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)).ParentNo = "0";
+            }
+            secondCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 3));
+            if (secondCategoryList.Count(p => p.CategoryNo == requestCategoryNo)>0)
+            {
+                secondCategoryList.Single(p => p.CategoryNo == requestCategoryNo).ParentNo = "0";
+            }
+        }
+        if (requestCategoryNo.Length == 9)
+        {
+            if (allfirstCategory.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)) > 0)
+            {
+                allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)).ParentNo = "0";
+            }
+            secondCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 3));
+            if (secondCategoryList.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 6)) > 0)
+            {
+                secondCategoryList.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 6)).ParentNo = "0";
+            }
+            thirdCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 6));
+            if (thirdCategoryList.Count(p => p.CategoryNo == requestCategoryNo) > 0)
+            {
+                thirdCategoryList.Single(p => p.CategoryNo == requestCategoryNo).ParentNo = "0";
+            }
+        }
+        if (requestCategoryNo.Length == 12)
+        {
+            if (allfirstCategory.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)) > 0)
+            {
+                allfirstCategory.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 3)).ParentNo = "0";
+            }
+            secondCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 3));
+            if (secondCategoryList.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 6)) > 0)
+            {
+                secondCategoryList.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 6)).ParentNo = "0";
+            }
+            thirdCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 6));
+            if (thirdCategoryList.Count(p => p.CategoryNo == requestCategoryNo.Substring(0, 9)) > 0)
+            {
+                thirdCategoryList.Single(p => p.CategoryNo == requestCategoryNo.Substring(0, 9)).ParentNo = "0";
+            }
+            fourCategoryList = dal.SelectErpCategoryByParentNo(requestCategoryNo.Substring(0, 9));
+            if (fourCategoryList.Count(p => p.CategoryNo == requestCategoryNo) > 0)
+            {
+                fourCategoryList.Single(p => p.CategoryNo == requestCategoryNo).ParentNo = "0";
+            }
+        }
+    }
+}
+<script type="text/javascript">
+    var oneChange = function (objvalue) {
+        if (objvalue == 0) {
+            $("#CategoryNo").val("");
+            return;
+        }
+        $("#select2").html("<option value='0'>二级品类-- </option>");
+        $("#select3").html("<option value='0'>三级品类-- </option>");
+        $("#select4").html("<option value='0'>四级品类-- </option>");
+        $("#CategoryNo").val(objvalue);
+        $.post("/Shangpin/Brand/GetErpCategoryChildList.html", { 'pNo': objvalue }, function (data) {
+            $("#select2").append(data);
+        });
+    }
+    var twoChange = function (objvalue) {
+        if (objvalue == 0) {
+            $("#CategoryNo").val($("#CategoryNo").val().substr(0, 3));
+            return;
+        }
+        $("#select3").html("<option value='0'>三级品类-- </option>");
+        $("#select4").html("<option value='0'>四级品类-- </option>");
+        $("#CategoryNo").val(objvalue);
+        $.post("/Shangpin/Brand/GetErpCategoryChildList.html", { 'pNo': objvalue }, function (data) {
+            $("#select3").append(data);
+        });
+    }
+    var threeChange = function (objvalue) {
+        if (objvalue == 0) {
+            $("#CategoryNo").val($("#CategoryNo").val().substr(0, 6));
+            return;
+        }
+        $("#select4").html("<option value='0'>四级品类-- </option>");
+        $("#CategoryNo").val(objvalue);
+        $.post("/Shangpin/Brand/GetErpCategoryChildList.html", { 'pNo': objvalue }, function (data) {
+            $("#select4").append(data);
+        });
+    }
+    var fourChange = function (objvalue) {
+        if (objvalue == 0) {
+            $("#CategoryNo").val($("#CategoryNo").val().substr(0, 9));
+            return;
+        }
+        $("#CategoryNo").val(objvalue);
+    }
+    //全选
+    var checkAll = function (obj) {
+        $("tbody input:checkbox[name='productNO']").attr("checked", obj.checked);
+    }
+    //未选中提示
+    var addProduct = function () {
+        if ($("input:checkbox[name='productNO'][checked='checked']").length > 0) {
+            $('#idlist').submit();
+        } else {
+            alert("请选择产品");
+        }
+    }
+    //添加商品编号
+    var addProductNoList = function () {
+        if (document.getElementById("addProductListText").value.trim().length <= 0) {
+            alert("请输入产品编号");
+            return;
+        }
+        $.post("/Shangpin/venue/AddSkillProductNOList", { 'groupid': '@skillgroupid', 'productNO': document.getElementById("addProductListText").value }, function (data) {
+            if (data > 0) {
+                alert("添加成功");
+                document.getElementById("addProductListText").value = "";
+                //window.location.href = gettimestampurl(window.location.href);
+                window.location.reload();
+            } else {
+                alert("添加失败");
+            }
+        });
+    }
+</script>
+<h1>
+    OCS > 尚品 > <a href="/shangpin/venue/SkillManager?meetingId=@(Request.QueryString["meetingId"])">促销商品组管理</a> > 添加关联商品</h1>
+<form action="/Shangpin/venue/AboutSkillProductList" method="get">
+<div style="padding: 5px;">
+    <input type="hidden" value="@requestCategoryNo" name="CategoryNo" id="CategoryNo"/>
+    <input type="hidden" value="@(Request.QueryString["skillgroupid"])" name="skillgroupid" id="skillgroupid"/>
+    <input type="hidden" value="@(Request.QueryString["meetingId"])" name="meetingId" id="meetingId"/>
+    品类:
+    <select style="width: 100px;" id="select1"  onchange="oneChange(this.value);">
+                <option value="0">一级品类-- </option>
+                @foreach (ErpCategory category in allfirstCategory)
+                {
+                    <option value="@category.CategoryNo" @(category.ParentNo == "0" ? "selected=selected" : null) >@category.CategoryName
+                    </option>
+                }
+     </select>
+     <select style="width: 100px;" id="select2"  onchange="twoChange(this.value);">
+        <option value="0">二级品类-- </option>
+        @if (secondCategoryList != null)
+        {
+            foreach (ErpCategory category in secondCategoryList)
+            {
+            <option value="@category.CategoryNo" @(category.ParentNo == "0" ? "selected=selected" : null) >@category.CategoryName
+            </option>
+            }
+        }
+     </select>
+     <select style="width: 100px;" id="select3"  onchange="threeChange(this.value);">
+        <option value="0">三级品类-- </option>
+        @if (thirdCategoryList != null)
+        {
+            foreach (ErpCategory category in thirdCategoryList)
+            {
+            <option value="@category.CategoryNo" @(category.ParentNo == "0" ? "selected=selected" : null) >@category.CategoryName
+            </option>
+            }
+        }
+     </select>
+     <select style="width: 100px;" id="select4" onchange="fourChange(this.value)">
+        <option value="0">四级品类-- </option>
+        @if (fourCategoryList != null)
+        {
+            foreach (ErpCategory category in fourCategoryList)
+            {
+            <option value="@category.CategoryNo" @(category.ParentNo == "0" ? "selected=selected" : null) >@category.CategoryName
+            </option>
+            }
+        }
+     </select>
+     &nbsp;
+     <select id="Gender" style="width: 100px" name="Gender">
+        <option value="">男女款</option>
+        <option value="0" @(Request.QueryString["Gender"] == "0" ? "selected=selected" : null)>女士</option>
+        <option value="1" @(Request.QueryString["Gender"] == "1" ? "selected=selected" : null)>男士</option>
+        <option value="2" @(Request.QueryString["Gender"] == "2" ? "selected=selected" : null)>中性</option>
+     </select>
+     &nbsp;
+    货号/名称/编号
+    <input type="text" value="@ViewBag.keyWord" style="" name="keyWord"/>
+    <button type="submit">
+        提交查询</button>
+        &nbsp;&nbsp;<input type="button" value="批量添加" onclick="$('#addProductListAreas').show('slow')"/>
+</div>
+</form>
+<div id="addProductListAreas" style="display:none;">
+    <textarea id="addProductListText" cols="95" rows="5" ></textarea>注:多个产品编号用逗号隔开(逗号用英文输入法)
+    <div>
+        <input type="button" value="确定" onclick="addProductNoList()"/>
+        <input type="button" value="取消" onclick="$('#addProductListAreas').hide('slow')"/>
+    </div>
+</div>
+<form action="/Shangpin/venue/AddSkilProduct?skillgroupid=@(Request.QueryString["skillgroupid"])&pageindex=@(Request.QueryString["pageindex"])&meetingId=@(Request.QueryString["meetingId"])" id="idlist" method="post">
+<table class="mx-table" border="0">
+    <thead>
+        <tr>
+            <th width="5%">
+                <input type="checkbox" mx-op="mx-checkbox-all" onclick="checkAll(this)" />
+            </th>
+            <th width="10%">
+                商品图片
+            </th>
+            <th class="lt">
+                商品信息
+            </th>
+            <th class="lt">
+                商品价格
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    @if (Model != null && Model.Count() > 0)
+    {
+        Shangpin.Ocs.Service.Outlet.SWfsProductService service = new Shangpin.Ocs.Service.Outlet.SWfsProductService();
+        //var flag = 0;
+        //Shangpin.Ocs.Service.Outlet.SWfsProductService service = new Shangpin.Ocs.Service.Outlet.SWfsProductService();
+        foreach (var product in Model)
+        {
+            
+        <tbody>
+            <tr border="1" >
+                <th rowspan="2">
+                    <input type="checkbox" name="@(product.Status == -2 ? null : "productNO")"  value="@(product.Status == -2 ? null : product.ProductNo)" @(product.Status == -2 ? "disabled='disabled'" : null) />
+                </th>
+                <td rowspan="2">
+                    <img width="70" height="107" src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@product.ProductPicFile&type=1" />
+                </td>
+                <td class="lt">
+                    商品编号：@product.ProductNo<br/>
+                    商品货号：@product.GoodsNo<br/>
+                    商品名称：@product.ProductName<br/>
+                </td>
+                <td class="lt">
+                    市场价:@product.MarketPriceRegion<br/>
+                    尚品价:@product.StandardPriceRegion<br />
+                    黄金价:@product.GoldPriceRegion<br />
+                    白金价:@product.PlatinumPriceRegion<br/>
+                    钻石价:@product.DiamondPriceRegion<br/>
+                    <span style="color:Red;">促销价:@product.PromotionPriceRegion </span>
+                </td>
+            </tr>
+        </tbody>
+        }
+    }
+</table>
+<div class="spPage">
+    @Html.Raw(@Html.PagerX("page", pageIndex, pageSize, totalCount))
+</div>
+</form>
+<table cellpadding="0" cellspacing="0" border="0" class="mx-table">
+    <tr>
+        <td>
+            <a type="button" class="button" id="okButton" href="javascript:addProduct();">添加所选 </a>
+            <a type="button" class="button" href="javascript:history.back();">返回 </a>
+        </td>
+    </tr>
+</table>
+
+<script type="text/javascript">
+   
+</script>

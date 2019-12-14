@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <statement id="ComBeziWfs_SWfsSearchPriceInterval_Delete"  primarykey="CategoryNo">
+    delete SWfsSearchPriceInterval where CategoryNo=@CategoryNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSearchPriceInterval_Add"  primarykey="CategoryNo">
+    insert into SWfsSearchPriceInterval(CategoryNo, MinPrice, MaxPrice, Status, OperatorUserId) values(@CategoryNo, @MinPrice, @MaxPrice, @Status,@OperatorUserId)
+  </statement>
+  <statement id="ComBeziWfs_SWfsSearchPriceInterval_GetListByCategoryNo"  primarykey="CategoryNo">
+    select IntervalId,CategoryNo,MinPrice,MaxPrice,[Status],CreateDate from SWfsSearchPriceInterval where CategoryNo=@CategoryNo
+  </statement>
+</statements>

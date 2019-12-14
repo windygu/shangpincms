@@ -1,0 +1,1152 @@
+﻿@using Shangpin.Ocs.Service.Shangpin.ProductSort;
+@{
+    ViewBag.Title = "尚品排序";
+    Layout = "~/Areas/ProductFlat/Views/Shared/ProductSortLayout.cshtml";
+    SearchProductInfo list = Model;
+    string ProductCount = list.ProductList.Count + "";
+    string dOneRuleStr = "";
+    string dTwoRuleStr = "";
+    string AllCount = ViewBag.AllCount + "";
+    string OcsCategoryNo = ViewBag.CategoryNo + "";
+    string OneTypeSave = "";
+    string OneRuleS = "";
+    if (list.SaveRule.Count > 0)
+    {
+        OneTypeSave = list.SaveRule[0].RuleType + "";
+    }
+    if (list.SaveRule.Count() > 0)
+    {
+        dOneRuleStr = "<div id='OneAllP' class='sortTitle' pname='OneAll' values='OneAll' onclick='ShowOneProduct(this)' ><span >全部</span>(<span id='spanOneAllCount'>" + ProductCount + "</span>)</div>";
+    }
+
+    for (int i = 0; i < list.SaveRule.Count(); i++)
+    {
+        if (list.SaveRule[i].ParentId == 0)
+        {
+            string pname = list.SaveRule[i].RuleObjectName;
+            if (list.SaveRule[i].RuleType == 6)
+            {
+                pname = "OneOther";
+            }
+            if (list.SaveRule[i].RuleObjectName != "全部" && list.SaveRule[i].RuleObjectName != "其他")
+            {
+
+                OneRuleS = OneRuleS + "<div class=\"sortTitleCurrent\" values=" + list.SaveRule[i].RuleObjectNo + " pname=" + pname + " onclick=\"ShowOneProduct(this)\" ><span pname='oneRuleName' >" + list.SaveRule[i].RuleObjectName + "</span>(<span>" + list.SaveRule[i].ProductCount + "</span>)<font onclick=\"delRule(this,'One')\" style='color:#001cf6;margin-left:5px;'>X</font></div>"; ;
+
+            }
+
+            dOneRuleStr = dOneRuleStr + "<div class=\"sortTitleCurrent\" values=" + list.SaveRule[i].RuleObjectNo + " pname=" + pname + " onclick=\"ShowOneProduct(this)\" ><span pname='oneRuleName' >" + list.SaveRule[i].RuleObjectName + "</span>(<span>" + list.SaveRule[i].ProductCount + "</span>)</div>";
+
+            string TwoRole = "";
+            int m = 1;
+            for (int k = 0; k < list.SaveRule.Count(); k++)
+            {
+                if (list.SaveRule[i].RuleId == list.SaveRule[k].ParentId)
+                {
+                    if (m == 1)
+                    {
+                        TwoRole = TwoRole + "<dd twotype='" + list.SaveRule[k].RuleType + "' onerule='dd" + list.SaveRule[i].RuleObjectNo + "' style='display:none'>";
+                    }
+                    TwoRole = TwoRole + "<div class='sortTitle' pname='" + list.SaveRule[k].RuleObjectName + "' values='" + list.SaveRule[k].RuleObjectNo + "' onclick='ShowTwoRuleInTwoRule(this)'  ><span  pname='oneRuleName' >" + list.SaveRule[k].RuleObjectName + "</span>(<span>" + list.SaveRule[k].ProductCount + "</span>)<font style='color:#001cf6;margin-left:5px;' onclick=\"delRule(this,'two')\">X</font></div>";
+                    m = m + 1;
+                }
+            }
+            if (m > 1)
+            {
+                TwoRole = TwoRole + "</dd>";
+            }
+            dTwoRuleStr = dTwoRuleStr + TwoRole;
+        }
+    }
+
+}
+
+@*
+    <script src="/Areas/shangpin/Scripts/plug/dragDrop.js" type="text/javascript"></script>*@
+<script src="/Areas/Shangpin/Scripts/plug/comm.js" charset="utf-8" type="text/javascript"></script>
+<script type="text/javascript" src="/Areas/shangpin/Scripts/page/index/comm.js" charset="utf-8"></script>
+@*<link href="/areas/shangpin/Content/css/page/rightcontent/list.css" rel="stylesheet" type="text/css" />*@
+<link href="~/Areas/ProductFlat/Content/CSS/list.css" rel="stylesheet" />
+@*
+    <script src="~/Areas/ProductFlat/Scripts/jquery.js"></script>*@
+<link href="~/Areas/ProductFlat/Content/jquery-ui.min.css" rel="stylesheet" />
+<link type="text/css" rel="stylesheet" href="~/Areas/ProductFlat/Content/CSS/ProductIndex.css" />
+<script src="~/Areas/ProductFlat/Scripts/jquery-ui.min.js"></script>
+<script src="~/Areas/ProductFlat/Content/Js/json2.js"></script>
+<style type="text/css">
+    .sortTitleCurrent {
+        float: left;
+        width: 150px;
+        height: 21px;
+        font-size: 11px;
+        text-align: center;
+        background-color: #e8e2e2;
+        align-self: center;
+        border-color: #2f2d2d;
+        border-style: solid solid solid solid;
+        border-width: 1px;
+        cursor: pointer;
+        align-content: center;
+        margin-right: 2px;
+        margin-left: 1px;
+    }
+
+    .sortTitle {
+        float: left;
+        width: 150px;
+        height: 21px;
+        text-align: center;
+        font-size: 11px;
+        background-color: #ffffff;
+        align-self: center;
+        border-color: #2f2d2d;
+        border-style: solid solid solid solid;
+        border-width: 1px;
+        cursor: pointer;
+        margin-right: 2px;
+        margin-left: 1px;
+    }
+
+    .divSortLine {
+        float: left;
+        width: 100%;
+        margin-top: 0.5px;
+        height: 2px;
+        background-color: #3e3b3b;
+    }
+
+    .sortPath {
+        font-size: 18px;
+    }
+
+    .divSortMain {
+        margin-top: 2px;
+        width: 100%;
+        height: auto;
+        float: left;
+    }
+
+    .sortTableTitle {
+        font-size: 15px;
+    }
+
+    .divHb {
+        width: 100%;
+        background-color: #9b9090;
+        height: 26px;
+        font-size: 17px;
+    }
+</style>
+<script type="text/javascript" language="javascript">
+    //定义页面属性
+    function PageDate(categoryNo, isRule, ruleList, productList, isLast) {
+        this.CategoryNo = categoryNo;
+        this.IsRule = isRule;
+        this.RuleList = ruleList;
+        this.ProductList = productList;
+        this.IsLast = isLast;
+    }
+
+    function RuleDate(ruleNo, ruleName, sort, parentId, ruleType, productList, ruleList) {
+        this.RuleNo = ruleNo;
+        this.RuleName = ruleName;
+        this.Sort = sort;
+        this.ParentId = parentId;
+        this.RuleType = ruleType;
+        this.ProductList = productList;
+        this.RuleList = ruleList;
+    }
+    function ProductDate(productNo, ruleId, sortId) {
+        this.ProductNo = productNo;
+        this.RuleId = ruleId;
+        this.SortId = sortId;
+    }
+    function ProductView(brandName, productName, productMarketPrice, productPirce, productImage) {
+        this.BrandName = brandName;
+        this.ProductName = productName;
+        this.ProductMarketPrice = productMarketPrice;
+        this.ProductPirce = productPirce;
+        this.ProductImage = productImage;
+    }
+    //定义全局变量
+    var OneRule = ""; //保存当前显示的基础规则
+    var OneRuleType = "@OneTypeSave"; //保存当前基础规则的类型
+    var TwoRule = ""; //保存当前显示的子规则
+    var TwoRuleType = ""; //保存当前子规则的类型
+    var OneOtherCount = "@ProductCount";  //保存全部分类下的其他数量
+    var TwoOtherCount = 0;  //保存二级规则里面其他数量
+    var OneRuleDefutHtml = "@dOneRuleStr";  //默认基础规则
+    var TwoRuleDefutHtml = "@dTwoRuleStr";  //默认子规则
+    var tempObj;                            //存放临时对象
+</script>
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        $("#btnSave").removeAttr("disabled");
+        $("#btnSave").attr("value", "发布");
+        $("#windownBG").remove();
+        $("#selectOneRule").val("-1");
+        $("#divChrildRule").hide();
+        $("#TsFont").hide();
+        //关闭窗体扩展事件，关闭背后弹出层
+        $("button[title=Close]").click(function () {
+            $("#windownBG").remove();
+        })
+        if (OneRuleType != "") {
+            $("#selectOneRule").val(OneRuleType);
+            $("select[sname=one]").hide().attr("isshow", "0");
+            $("select[sname=one][dbtype=" + OneRuleType + "]").show().attr("isshow", "1");
+            $("#selectTwoRule").find("option[value=" + OneRuleType + "]").hide();
+            HidSelectedOption("one");
+        }
+
+    })
+
+    //删除基础规则排序
+    function delRule(obj, isOne) {
+        $(obj).parent().remove();
+        HidSelectedOption(isOne);
+    }
+
+    function ShowOneRule() {
+        if ($("#selectOneRule").val() == "-1") {
+            alert("请选择分类")
+        } else {
+            ShowBigDiv();
+            $("#divOneRuleWindow").dialog("open");
+        }
+    }
+
+    //弹出选择二级规则表
+    function ShowTwoRule() {
+        if ($("#divBaseRule").find("div").size() < 1) {
+            alert("请先选择基础规则")
+        } else {
+            if ($("#selectTwoRule").val() == "-1") {
+                alert("请选择分类")
+            } else {
+                if (OneRuleType == $("#selectTwoRule").val()) {
+                    alert("该分类已经在基础数据,系统不允许重复排序！");
+                } else {
+                    ShowBigDiv();
+                    $("#divTwoRuleWindow").dialog("open");
+                }
+            }
+        }
+    }
+
+    //显示div弹出层
+    function ShowBigDiv() {
+        $("body").append('<div id="windownBG" style="height:' + $(document).height() + 'px;opacity:0.5;z-index: 99;display:block;left:0px;top:0px;position:absolute;width:100%;background: none repeat scroll 0 0 #000000;"></div>');
+    }
+
+    //执行基础规则
+    function ImplementOneRule() {
+        if ($("#selectOneRule").val() == "-1") {
+            alert("请选择具体排序项");
+        } else {
+            if ($("#divOneRules").find("select[isshow=1]").size() > 0) {
+                alert("您还有基础规则为选取，系统拒绝执行");
+            } else {
+                //alert(OneRuleType);
+                $("#tempDate").html($("#divOneRules").html());
+                $("#tempDate").find("font").remove();
+
+                $("#tempDate").find("div").each(function (index, obj) {
+                    OneOtherCount = OneOtherCount - parseInt($(obj).find("span").last().html());
+                });
+
+                var OneRuleHtml = "<div class='sortTitle' id='OneAllP' values='OneAll' pname='OneAll' onclick=\"ShowOneProduct(this)\" ><span  >全部</span>(<span id='spanOneAllCount'>@ProductCount</span>)</div>" + $("#tempDate").html() + "<div class=\"sortTitleCurrent\" values='OneOther' pname='OneOther' onclick=\"ShowOneProduct(this)\" ><span >其他</span>(<span id='spanOtherCount'>" + OneOtherCount + "</span>)</div>";
+                OneRuleType = $("#selectOneRule").val();
+                $("#divBaseRule").html(OneRuleHtml);
+                $("#tempDate").html("");
+                OneRule = "OneAll";
+                $("#divChrildRule").hide();
+                $("#TsFont").hide();
+                CompRuleOne();
+                $("#divTwoRule").html("");
+                $("#selectTwoRule").find("option").show();
+                $("#selectTwoRule").find("option[value=" + $("#selectOneRule").val() + "]").hide();
+                OneOtherCount = "@ProductCount";
+                $("#Ts_NotSaveRule").show();
+            }
+        }
+    }
+
+    //执行子规则
+    function ImplementTwoRule() {
+        ComRuleTwo();
+
+    }
+
+    //获取基础规则下子规则的数量
+    function GetProductCountByRules(tworulevalues) {
+        var tworulecountp = 0;
+        if (OneRule == "OneAll") {
+            tworulecountp = $("#ulplist").find("li[" + GetStrByTypeInt($("#selectTwoRule").val()) + "=" + tworulevalues + "]").size();
+        }
+        else if (OneRule != "OneOther") {
+            var tworulecountp = 0;
+            $("#ulplist").find("li[isshow=1]").each(function (indexop, objop) {
+                if ($(objop).attr(GetStrByTypeInt($("#selectTwoRule").val())) == tworulevalues) {
+                    tworulecountp = tworulecountp + 1;
+                }
+            })
+            return tworulecountp;
+        }
+        else {
+            var TwoSlelctedCount = 0;
+
+            $("#ulplist").find("li[isshow=1]").each(function (indexop, objop) {
+                if ($(objop).attr(GetStrByTypeInt($("#selectTwoRule").val())) == tworulevalues) {
+                    tworulecountp = tworulecountp + 1;
+                }
+            })
+        }
+        return tworulecountp;
+    }
+
+    //判断该元素是否存在
+    function CheckedIsExit(divId, selectVal, isOne) {
+        var IsExit = true;
+        if (isOne == "one") {
+            $("#" + divId).find("div").each(function (index, obj) {
+                if ($(obj).attr("values") == selectVal) {
+                    IsExit = false;
+                }
+            })
+        }
+        else {
+
+            $("#" + divId).find("dd[onerule=dd" + OneRule + "]").first().find("div").each(function (index, obj) {
+                if ($(obj).attr("values") == selectVal) {
+                    IsExit = false;
+                }
+            })
+        }
+        return IsExit;
+    }
+
+    //显示对应的分类
+    function ShowOpintion(obj, IsOneRule) {
+        if (IsOneRule == "One") {
+            $("select[sname=one]").hide().attr("isshow", "0");
+
+            if ($(obj).val() != "-1") {
+                $("select[sname=one][dbtype=" + $(obj).val() + "]").show().attr("isshow", "1");
+            }
+            else {
+                $("select[sname=one][dbtype=" + $(obj).val() + "]").hide().attr("isshow", "1");
+            }
+            $("#divOneRules").html("");
+            HidSelectedOption('one');
+        }
+        else {
+            $("#divTwoRule").find("dd[onerule=dd" + OneRule + "]").remove();
+            $("select[sname=two]").hide().attr("isshow", "0");
+            if ($(obj).val() == OneRuleType) {
+                alert("该系列已经在基础执行排序")
+                $(obj).val("-1");
+            } else {
+                if ($(obj).val() != "-1") {
+                    $("select[sname=two][dbtype=" + $(obj).val() + "]").show().attr("isshow", "1");
+                }
+                else {
+                    $("select[sname=two][dbtype=" + $(obj).val() + "]").show().attr("isshow", "1");
+                }
+            }
+
+            HidSelectedOption('two');
+
+        }
+    }
+
+    //隐藏基础规则产品
+    function ShowOneProduct(obj) {
+        $("#Ts_NotSaveRule").hide();
+        if ($(obj).parent().attr("id") != "divOneRules") {
+            $("#divTwoRule").find("dd").find("select[isshow=1]").parent().remove();  //当表情签换
+            $("#divTwoRule").find("dd").hide();
+            $("#ulplist").find("li").show().attr("isshow", "1");
+            $(obj).parent().find("div").removeClass("sortTitle").addClass("sortTitleCurrent");
+            $(obj).addClass("sortTitle").removeClass("sortTitleCurrent");
+
+            if ($.trim($(obj).find("span").first().html()) == "全部") {
+                $("#Ts_NotSaveRule").show();
+                OneRule = "OneAll";
+                $("#ulplist").find("li").show().attr("isshow", "1");
+                $("#divChrildRule").hide();
+                $("#TsFont").hide();
+                $("#divTwoRule").find("dd[onerule=dd" + OneRule + "]").show();
+
+            }
+            if ($(obj).find("span").first().html() == "其他") {
+                OneRule = "OneOther";
+                $("#ulplist").find("li").each(function (indexp, objp) {
+                    $("#divBaseRule").find("div").each(function (indexbr, objbr) {
+                        if (indexbr != 0 && indexbr != ($("#divBaseRule").find("div").size() - 1)) {
+                            if ($(objp).attr(GetStrByTypeInt(OneRuleType)) == $(objbr).attr("values")) {
+                                $(objp).hide().attr("isshow", "0");
+                            }
+                        }
+                    })
+                })
+                $("#divChrildRule").show();
+                $("#TsFont").show();
+                $("#divTwoRule").find("dd[onerule=dd" + OneRule + "]").show();
+
+
+            }
+            if ($(obj).find("span").first().html() != "其他" && $(obj).find("span").first().html() != "全部") {
+                OneRule = $(obj).attr("values");
+                $("#ulplist").find("li").show().attr("isshow", "1");
+                $("#ulplist").find("li").each(function (indexp, objp) {
+                    if ($(objp).attr(GetStrByTypeInt(OneRuleType)) != $(obj).attr("values")) {
+                        $(objp).hide().attr("isshow", "0");
+                    }
+                })
+                $("#divChrildRule").show();
+                $("#TsFont").show();
+                $("#divTwoRule").find("dd[onerule=dd" + OneRule + "]").show();
+
+            }
+
+            //---------------------为张成志添加的交互js---------------------------//
+
+
+            $("select[sname=two]").hide().attr("isshow", "0");
+            var tworuletemptype = $("#divTwoRule").find("dd[onerule=dd" + OneRule + "]").attr("twotype");
+            $("select[sname=two][dbtype=" + tworuletemptype + "]").show().attr("isshow", "1");
+            $("#selectTwoRule").val(tworuletemptype);
+            HidSelectedOption("two");
+
+        }
+        else {
+            tempObj = obj;
+            ShowOneRuleInOneRule($(obj).find("span").first());
+        }
+
+    }
+
+    //隐藏子规则产品
+    function ShowTwoProduct(obj) {
+        if ($("#divBaseRule").find("div").size() < 1) {
+            alert("请先选择基础规则")
+        } else {
+            tempObj = obj;
+            ShowTwoRule();
+        }
+    }
+
+    //根据类型得到产品
+    function GetStrByTypeInt(RuleTypes) {
+        if (RuleTypes == "1") {
+            return "pcategory";
+        }
+        else if (RuleTypes == "2") {
+            return "pbrand";
+        }
+        else if (RuleTypes == "3") {
+            return "pcolor";
+        }
+        else if (RuleTypes == "4") {
+            return "pprice";
+        }
+    }
+</script>
+<script type="text/javascript" language="javascript">
+    //页面元素的操作
+    function GotoTop(obj) {
+        var pObj = $(obj).parent().parent().parent().parent();
+        var nobj = $(FindTopProductObject(obj));
+        if ($(nobj).attr("productno") == $(pObj).attr("productno")) {
+            alert("已经是第一，系统不允许操作");
+        }
+        else {
+            $(nobj).before(pObj);
+        }
+    }
+
+    //右移
+    function GoToLeft(obj) {
+        var pObj = $(obj).parent().parent().parent().parent();
+        var BObj = FindSideProductObject("-1", obj);
+        if (BObj == "-1") {
+            alert("已经是第一，再移就出屏幕了");
+        }
+        else {
+
+            $(BObj).before(pObj);
+        }
+
+    }
+
+    //左移
+    function GoToRight(obj) {
+        var pObj = $(obj).parent().parent().parent().parent();
+        var NObj = FindSideProductObject("1", obj);
+        if (NObj == "-1") {
+            alert("已经是最后一个，再移就出屏幕了");
+        }
+        else {
+            $(NObj).after(pObj);
+        }
+
+    }
+
+    //删除产品
+    function RemoveProduct(obj) {
+        var isDel = confirm("确定删除吗？");
+        if (isDel) {
+            $(obj).parent().parent().remove();
+        }
+    }
+
+    //查找旁边的元素
+    function FindSideProductObject(isNext, obj) {
+        var pobj = $(obj).parent().parent().parent().parent();
+        var productNo = $(pobj).attr("productNo");
+        var sideObj; //返回结果
+        var indexc = 0;  //记录当前索引
+        var oneListHtml = "";
+        $("#ulplist").find("li[isshow=1]").each(function (indexOne, objOne) {
+            if ($(objOne).attr("productNo") == productNo) {
+                indexc = indexOne;
+            }
+        })
+        if (isNext == 1) {
+            if (productNo == $("#ulplist").find("li[isshow=1]").last().attr("productNo")) {
+                return "-1"
+            } else {
+                indexc = indexc + 1;
+            }
+        }
+        else {
+            if (productNo == $("#ulplist").find("li[isshow=1]").first().attr("productNo")) {
+                return "-1"
+            } else {
+                indexc = indexc - 1;
+            }
+        }
+
+        $("#ulplist").find("li[isshow=1]").each(function (indexOneE, objOneE) {
+            if (indexOneE == indexc) {
+                sideObj = $(objOneE);
+
+            }
+        })
+        return sideObj;
+    }
+
+    //查找第一级
+    function FindTopProductObject(obj) {
+        topObj = $("#ulplist").find("li[isshow=1]").first();
+        return topObj;
+    }
+
+    //重置规则
+    function RestRule(IsOne) {
+        if (IsOne == "One") {
+            $("#divBaseRule").html($("#hidOneRule").html());
+            $("#divOneRules").html($("#hidOneToImRule").html());
+            OneRuleType = "@OneTypeSave";
+            CompRuleOne();
+            $("#selectOneRule").val("-1");
+        }
+        else {
+            $("#divTwoRule").html($("#hidTwoRule").html());
+            ComRuleTwo();
+            $("#selectTwoRule").val("-1");
+        }
+    }
+    //可视化排序
+    function GetViewPage(obj) {
+        //name="notview"
+        if ($(obj).val() == "可视化排序") {
+            $("span[name=notview]").hide();
+            $(obj).val("经典模式");
+        }
+        else {
+            $("span[name=notview]").show();
+            $(obj).val("可视化排序");
+        }
+    }
+    //清空所有产品
+    function ClearAllProduct() {
+        //ClearProductListByCategory
+        var Istrue = confirm("清空会清除该分类下所有产品和规则，请慎重操作");
+        if (Istrue) {
+            ShowBgFont("正在清空，请稍候·····");
+            $.ajax({
+                type: "GET",
+                url: "/ProductFlat/Product/ClearProductListByCategory",
+                data: { CategoryNo: $("#OcsCategory").val() },
+                dataType: "html",
+                success: function (data) {
+
+                    window.location.reload();
+                }
+            });
+        }
+    }
+
+    //预览产品
+    function ViewProduct() {
+
+        var ProductListView = new Array();
+        $("#ulplist").find("li").each(function (index, obj) {
+            var pViewDto = new ProductView($(obj).attr("pbrandname"), $(obj).attr("pproductname"), $(obj).attr("pmarkprice"), $(obj).attr("plimtprice"), $(obj).attr("ppicfile"));
+            ProductListView.push(pViewDto);
+
+        })
+
+        $.ajax({
+            type: "POST",
+            url: "/ProductFlat/Product/SaveProductView",
+            data: JSON.stringify(ProductListView),
+            contentType: "application/json;charset=utf-8",
+            dataType: "html",
+            success: function (data) {
+                //window.open("/ProductFlat/Product/ViewPageInfo");  这样老被浏览器拦截
+                var f = document.createElement("form");
+                f.setAttribute("action", "/ProductFlat/Product/ViewPageInfo");
+                f.setAttribute("method", 'get');
+                f.setAttribute("target", '_black');
+                document.body.appendChild(f)
+                f.submit();
+            }
+        });
+
+    }
+</script>
+<script type="text/javascript" language="javascript">
+    //保存排序产品
+    function SaveSortProduct(obj) {
+        if ($("#divTwoRule").find("select[isshow=1]").size() > 0) {
+            alert("您还有子规则未确定，系统不允许执行");
+        } else {
+            $("#btnSave").attr("disabled", "true");
+            $("#btnSave").attr("value", "正常保存，请稍候····");
+            ShowBgFont("正在保存，请稍候·····");
+            $.ajax({
+                type: "POST",
+                url: "/ProductFlat/Product/SaveProductSort",
+                data: JSON.stringify(GetPageDate()),
+                contentType: "application/json;charset=utf-8",
+                dataType: "html",
+                success: function (data) {
+
+                    window.location.reload();
+                }
+            });
+        }
+
+    }
+
+    //显示带着字的弹出层
+    function ShowBgFont(message) {
+        $("body").append('<div id="windownBG" style="height:' + $(document).height() + 'px;opacity:0.5;z-index: 99;display:block;left:0px;top:0px;position:absolute;width:100%;background: none repeat scroll 0 0 #000000;"><div  style="margin-top:400px;color:#fefafa;margin-left:800px;font-size:18px;">' + message + '</div></div>');
+    }
+
+    //保存数据
+    function GetPageDate() {
+        var PageDateList = new Array();  //记录页面数据
+        if (OneRule == "OneAll" || OneRule == "") {   //基础规则里面全部时执行
+            var ProductListOneAll = new Array();
+            $("#ulplist").find("li").each(function (indexoneall, objoneall) {
+                var producOneAlltDto = new ProductDate($(objoneall).attr("productno"), "-1", "0");
+                ProductListOneAll.push(producOneAlltDto);
+                $(objoneall).remove();
+            })
+
+            var Islast = "0";
+            if ($("#islast").attr("checked") == "checked") {
+                Islast = "1";
+            }
+
+            PageDateList = new PageDate($("#OcsCategory").val(), '0', null, ProductListOneAll, Islast);
+        }
+        else { //基础规则里面不在全部里面执行
+            var RuleOneNotAllList = new Array();
+            $("#divBaseRule").find("div").each(function (indexOneNotAllRule, objOneNotAllRule) {
+                if (indexOneNotAllRule != 0) {
+                    if (indexOneNotAllRule != ($("#divBaseRule").find("div").size() - 1)) {   //基础规则不是其他执行
+                        var RuleOneNotAllTwoList = new Array();
+                        var RuleOneNotAllOneDto = new RuleDate($(objOneNotAllRule).attr("values"), $(objOneNotAllRule).attr("pname"), '0', '0', OneRuleType, null, null);
+
+                        $("#divTwoRule").find("dd[onerule=dd" + $(objOneNotAllRule).attr("values") + "]").first().find("div").each(function (indexOneNotAllTwoRule, objOneNotAllTwoRule) {   //存在基础规则进行循环
+
+                            var RuleOneNotAllTwoDto = new RuleDate($(objOneNotAllTwoRule).attr("values"), $(objOneNotAllTwoRule).attr("pname"), '0', '0', $(objOneNotAllTwoRule).parent().attr("twotype"), null, null)
+                            var ProductOneNotAllListTwo = new Array();
+
+                            $("#ulplist").find("li[" + GetStrByTypeInt(OneRuleType) + "=" + $(objOneNotAllRule).attr("values") + "]").each(function (indexOneNotAllProduct, objOneNotAllProduct) {
+
+                                var v = $(objOneNotAllProduct).attr(GetStrByTypeInt($(objOneNotAllTwoRule).parent().attr("twotype"))) + "";
+                                var vv = $(objOneNotAllTwoRule).attr("values") + "";
+
+                                if ($(objOneNotAllProduct).attr(GetStrByTypeInt($(objOneNotAllTwoRule).parent().attr("twotype"))) + "" == $(objOneNotAllTwoRule).attr("values") + "") {
+
+                                    var productDto = new ProductDate($(objOneNotAllProduct).attr("productno"), "-1", "0");
+                                    ProductOneNotAllListTwo.push(productDto);
+                                    $(objOneNotAllProduct).remove();
+                                }
+                            })
+
+                            RuleOneNotAllTwoDto.ProductList = ProductOneNotAllListTwo;
+                            RuleOneNotAllTwoList.push(RuleOneNotAllTwoDto);
+
+                        });
+                        //没有规则 获取规则里面的其他
+
+                        var ProductListOneNotAllOther = new Array();
+                        $("#ulplist").find("li[" + GetStrByTypeInt(OneRuleType) + "=" + $(objOneNotAllRule).attr("values") + "]").each(function (indexOneNotAllOtherProduct, objOneNotAllOtherProduct) {
+                            var productDto = new ProductDate($(objOneNotAllOtherProduct).attr("productno"), "-1", "0");
+                            ProductListOneNotAllOther.push(productDto);
+                            $(objOneNotAllOtherProduct).remove();
+
+                        })
+                        RuleOneNotAllOneDto.ProductList = ProductListOneNotAllOther;
+                        RuleOneNotAllOneDto.RuleList = RuleOneNotAllTwoList;
+                        RuleOneNotAllList.push(RuleOneNotAllOneDto);
+                    }
+                    else {
+                        var RuleOneNotAllOtherTwo = new Array();
+                        var RuleOneNotAllOtherOneDto = new RuleDate("OneOther", '其他', '0', '0', '6', null, null);
+                        $("#divTwoRule").find("dd[onerule=ddOneOther]").find("div").each(function (indexOneNotAllTwoOtherRule, objOneNotAllTwoOtherRule) {   //其他下面有规则
+                            var RuleOneNotAllTwoOtherDto = new RuleDate($(objOneNotAllTwoOtherRule).attr("values"), $(objOneNotAllTwoOtherRule).attr("pname"), '0', '0', $(objOneNotAllTwoOtherRule).parent().attr("twotype"), null, null)
+                            var ProductOneNotAllOtherProductList = new Array();
+                            $("#ulplist").find("li").each(function (indexOneNotAllOtherProduct, objOneNotAllOtherProduct) {
+
+                                if ($(objOneNotAllOtherProduct).attr(GetStrByTypeInt($(objOneNotAllTwoOtherRule).parent().attr("twotype"))) + "" == $(objOneNotAllTwoOtherRule).attr("values") + "") {
+
+                                    var productDto = new ProductDate($(objOneNotAllOtherProduct).attr("productno"), "-1", "0");
+                                    ProductOneNotAllOtherProductList.push(productDto);
+                                    $(objOneNotAllOtherProduct).remove();
+                                }
+                            })
+
+                            RuleOneNotAllTwoOtherDto.ProductList = ProductOneNotAllOtherProductList;
+                            RuleOneNotAllOtherTwo.push(RuleOneNotAllTwoOtherDto);
+
+                        });
+                        //其他下面有规则
+                        var ProductList = new Array();
+                        $("#ulplist").find("li").each(function (indexOneOtherProduct, objOneOtherProduct) {
+                            var productDto = new ProductDate($(objOneOtherProduct).attr("productno"), "-1", "0");
+                            ProductList.push(productDto);
+                            $(objOneOtherProduct).remove();
+                        })
+                        RuleOneNotAllOtherOneDto.RuleList = RuleOneNotAllOtherTwo;
+                        RuleOneNotAllOtherOneDto.ProductList = ProductList;
+                        RuleOneNotAllList.push(RuleOneNotAllOtherOneDto);
+                    }
+                }
+            })
+
+            var ProductListLast = new Array();
+            $("#ulplist").find("li").each(function (indexp, objP) {
+                var productDto = new ProductDate($(objP).attr("productno"), "-1", "0");
+                ProductListLast.push(productDto);
+                $(objP).remove();
+            })
+
+            var Islast = "0";
+            if ($("#islast").attr("checked") == "checked") {
+                Islast = "1";
+            }
+
+            PageDateList = new PageDate($("#OcsCategory").val(), '1', RuleOneNotAllList, ProductListLast, Islast);
+        }
+        return PageDateList;
+    }
+</script>
+<script type="text/javascript" language="javascript">
+    //------------------------改掉原来页面排序的js---------------------------//
+    //用基础规则对页面进行排序
+    function CompRuleOne() {
+        for (var i = 0; i < $("#divOneRules").find("div").size() ; i++) {
+            if (i == 0) {
+                if ($("#ulplist").find("li").first().attr(GetStrByTypeInt(OneRuleType)) != $($("#divOneRules").find("div")[i]).attr("values")) {  //判断第一个是否相同
+                    $("#ulplist").find("li").first().before($("#ulplist").find("li[" + GetStrByTypeInt(OneRuleType) + "=" + $($("#divOneRules").find("div")[i]).attr("values") + "]"));
+                }
+                else {
+                    if ($("#ulplist").find("li[" + GetStrByTypeInt(OneRuleType) + "=" + $($("#divOneRules").find("div")[i]).attr("values") + "]").size() > 1) {
+                        $("#ulplist").find("li").first().after($("#ulplist").find("li[" + GetStrByTypeInt(OneRuleType) + "=" + $($("#divOneRules").find("div")[i]).attr("values") + "]:gt(0)"));
+                    }
+                }
+            }
+            else {
+                $("#ulplist").find("li[" + GetStrByTypeInt(OneRuleType) + "=" + $($("#divOneRules").find("div")[i - 1]).attr("values") + "]").last().after($("#ulplist").find("li[" + GetStrByTypeInt(OneRuleType) + "=" + $($("#divOneRules").find("div")[i]).attr("values") + "]"));
+            }
+        }
+
+    }
+
+    //用子规则对页面元素排序
+    function ComRuleTwo() {
+        if ($("#divTwoRule").find("dd[onerule=dd" + OneRule + "]").find("select[isshow=1]").size() > 0) {
+            alert("您还有子规则为选取，系统拒绝执行");
+        } else {
+            var TwoRuleList = $("#divTwoRule").find("dd[onerule=dd" + OneRule + "]").find("div");
+            for (var i = 0; i < $(TwoRuleList).size() ; i++) {
+                if (i == 0) {
+                    // debugger
+                    //alert($("#ulplist").find("li[isshow=1]").first().html());
+                    var v = $("#ulplist").find("li[isshow=1]").first().attr(GetStrByTypeInt($(TwoRuleList).parent().attr("twotype")));
+                    var vv = $($(TwoRuleList)[i]).attr("values");
+                    if ($("#ulplist").find("li[isshow=1]").first().attr(GetStrByTypeInt($(TwoRuleList).parent().attr("twotype"))) != $($(TwoRuleList)[i]).attr("values")) {
+                        $("#ulplist").find("li[isshow=1]").first().before($("#ulplist").find("li[isshow=1][" + GetStrByTypeInt($(TwoRuleList).parent().attr("twotype")) + "=" + $($(TwoRuleList)[i]).attr("values") + "]"));
+                    }
+                    else {
+                        if ($("#ulplist").find("li[isshow=1][" + GetStrByTypeInt($(TwoRuleList).parent().attr("twotype")) + "=" + $($(TwoRuleList)[i]).attr("values") + "]").size() > 1) {
+                            $("#ulplist").find("li[isshow=1]").first().after($("#ulplist").find("li[isshow=1][" + GetStrByTypeInt($(TwoRuleList).parent().attr("twotype")) + "=" + $($(TwoRuleList)[i]).attr("values") + "]:gt(0)"));
+                        }
+                    }
+                }
+                else {
+
+                    $("#ulplist").find("li[isshow=1][" + GetStrByTypeInt($(TwoRuleList).parent().attr("twotype")) + "=" + $($(TwoRuleList)[i - 1]).attr("values") + "]").last().after($("#ulplist").find("li[isshow=1][" + GetStrByTypeInt($(TwoRuleList).parent().attr("twotype")) + "=" + $($(TwoRuleList)[i]).attr("values") + "]"));
+                }
+
+            }
+        }
+
+    }
+</script>
+<script type="text/javascript" language="javascript">
+    //----------------------为张承志改的交互js 基础规则-------------------------------------//
+    function GetOneRuleNotIm(obj) {
+        if ($("#OneRuleSelect").find("select[isshow=1]").val() != "-1") {
+            if (CheckedIsExit('divOneRules', $("#OneRuleSelect").find("select[isshow=1]").val(), 'one')) {
+                var RuleName = $("#OneRuleSelect").find("select[isshow=1]").find("option:selected").text();
+                var RuleCount = $("#OneRuleSelect").find("select[isshow=1]").find("option:selected").attr("pcount");
+                var val = $("#OneRuleSelect").find("select[isshow=1]").find("option:selected").attr("value");
+                var getC = "<div class=\"sortTitleCurrent\" values=" + val + " pname=" + RuleName + " onclick=\"ShowOneProduct(this)\"><span pname='oneRuleName' >" + RuleName + "</span>(<span >" + RuleCount + "</span>)<font onclick=\"delRule(this,'one')\" style='color:#001cf6;margin-left:5px;'>X</font></div>";
+                $("#divOneRules").append(getC).attr("pcount", "");
+                HidSelectedOption('one');
+                $("#OneRuleSelect").find("select[isshow=1]").val("-1")
+            } else {
+                alert("该项已存在！不允许重复选取");
+                $(obj).val("-1")
+            }
+        }
+        else {
+            alert("请选择具体项");
+        }
+    }
+
+    function ShowOneRuleInOneRule(obj) {
+        //alert($("#OneRuleTemp").html());
+        //alert($(obj).parent().html());
+        $(obj).parent().html($("#OneRuleTemp").html()).attr("pcount", "").attr("values", "").attr("pname", "");
+        HidSelectedOption('one');
+    }
+
+    function GetOneRuleInOneRule(obj) {
+        if ($(obj).parent().find("select[isshow=1]").val() != "-1") {
+            if (CheckedIsExit('divOneRules', $(obj).parent().find("select[isshow=1]").val(), 'one')) {
+                var RuleName = $(obj).parent().find("select[isshow=1]").find("option:selected").text();
+                var RuleCount = $(obj).parent().find("select[isshow=1]").find("option:selected").attr("pcount");
+                var val = $(obj).parent().find("select[isshow=1]").find("option:selected").attr("value");
+                var getC = "<span pname='oneRuleName' >" + RuleName + "</span>(<span >" + RuleCount + "</span>)<font onclick=\"delRule(this,'one')\" style='color:#001cf6;margin-left:5px;'>X</font>";
+
+                $(obj).parent().html(getC).attr("pcount", "").attr("values", val).attr("pname", RuleName);
+
+                HidSelectedOption('one');
+            } else {
+                alert("该项已存在！不允许重复选取");
+                $(obj).val("-1")
+            }
+        }
+        else {
+            alert("请选择具体项");
+        }
+    }
+
+    //----------------------为张承志改的交互js 子规则-------------------------------------//
+    function GetTwoRuleNotIm(obj) {
+
+        if ($("#TwoRuleSelect").find("select[isshow=1]").val() != "-1") {
+            if (CheckedIsExit('divTwoRule', $("#TwoRuleSelect").find("select[isshow=1]").val(), 'two')) {
+                var RuleName = $("#TwoRuleSelect").find("select[isshow=1]").find("option:selected").text();
+                var val = $("#TwoRuleSelect").find("select[isshow=1]").find("option:selected").attr("value");
+
+                if ($("#divTwoRule").find("dd[onerule=dd" + OneRule + "]").size() > 0) {
+                    var TwoRulehtml = "<div class=\"sortTitle\" values=" + val + " pname=" + RuleName + " onclick=\"ShowTwoRuleInTwoRule(this)\"  ><span pname='oneRuleName' >" + RuleName + "</span>(<span>" + GetProductCountByRules(val) + "</span>)<font onclick=\"delRule(this,'two')\" style='color:#001cf6;margin-left:5px;'>X</font></div>";
+                    $("#divTwoRule").find("dd[Onerule=dd" + OneRule + "]").append(TwoRulehtml);
+                }
+                else {
+                    var TwoRulehtml = "<dd onerule='dd" + OneRule + "' twotype='" + $("#selectTwoRule").val() + "' ><div class=\"sortTitle\" values=" + val + " pname=" + RuleName + " onclick=\"ShowTwoRuleInTwoRule(this)\"  ><span pname='oneRuleName' >" + RuleName + "</span>(<span>" + GetProductCountByRules(val) + "</span>)<font onclick=\"delRule(this,'two')\" style='color:#001cf6;margin-left:5px;'>X</font></div></dd>";
+                    $("#divTwoRule").append(TwoRulehtml);
+                }
+
+                HidSelectedOption('two');
+                $(obj).val("-1")
+
+            } else {
+                alert("该项已存在！不允许重复选取");
+
+            }
+        }
+    }
+
+    function ShowTwoRuleInTwoRule(obj) {
+        if ($(obj).find("select").size() == 0) {
+            $(obj).html($("#TwoRuleTemp").html()).attr("values", "").attr("pname", "");
+            HidSelectedOption('two');
+        }
+    }
+
+    function GetTwoRuleInTwoRule(obj) {
+
+        if ($(obj).parent().find("select[isshow=1]").val() != "-1") {
+            if (CheckedIsExit('divTwoRule', $(obj).parent().find("select[isshow=1]").val(), 'two')) {
+                var RuleName = $(obj).parent().find("select[isshow=1]").find("option:selected").text();
+                var RuleCount = $(obj).parent().find("select[isshow=1]").find("option:selected").attr("pcount");
+                var val = $(obj).parent().find("select[isshow=1]").find("option:selected").attr("value");
+
+                var getC = "<span pname='oneRuleName' >" + RuleName + "</span>(<span >" + GetProductCountByRules(val) + "</span>)<font onclick=\"delRule(this,'one')\" style='color:#001cf6;margin-left:5px;'>X</font>";
+                $(obj).parent().html(getC).attr("pcount", "").attr("values", val).attr("pname", RuleName);
+                HidSelectedOption('two');
+                $(obj).val("-1")
+            } else {
+                alert("该项已存在！不允许重复选取");
+
+            }
+        }
+        else {
+            alert("请选择具体项");
+        }
+
+    }
+
+
+    //-------------------------------为张成志改的交互：去掉已选的选项,哎，又是他-------------------------------//
+    function HidSelectedOption(IsOne) {
+        if (IsOne == "one") {
+            $("select[sname=one]").find("option").show();
+            $("#divOneRules").find("div").each(function (index, obj) {
+                $("select[sname=one][isshow=1]").find("option[value=" + $(obj).attr("values") + "]").hide()
+            })
+        }
+        else {
+            $("select[sname=two]").find("option").show();
+            $("#divTwoRule").find("dd[onerule=dd" + OneRule + "]").find("div").each(function (index, obj) {
+                $(obj).parent().find("select[sname=two][isshow=1]").find("option[value=" + $(obj).attr("values") + "]").hide();
+                $("#TwoRuleSelect").find("select[sname=two][isshow=1]").find("option[value=" + $(obj).attr("values") + "]").hide();
+            })
+        }
+    }
+</script>
+@{
+    string colorStr = "<option value='-1' pcount='' selected='selected'>请选颜色</option>";
+    string CategpryStr = "<option value='-1' pcount='' selected='selected'>请选分类</option>"; ;
+    string BrandStr = "<option value='-1' pcount='' selected='selected'>请选品牌</option>"; ;
+    string PriceStr = "<option value='-1' pcount='' selected='selected'>请选价格</option>"; ;
+    foreach (SortRule item in list.RefRule)
+    {
+        switch (item.RuleType)
+        {
+            case 3:
+                colorStr = colorStr + "<option value='" + item.RuleObjectNo + "' pcount='" + item.ProductCount + "'>" + item.RuleObjectName + "</option>";
+                break;
+            case 2:
+                BrandStr = BrandStr + "<option value='" + item.RuleObjectNo + "' pcount='" + item.ProductCount + "'>" + item.RuleObjectName + "</option>";
+                break;
+            case 1:
+                CategpryStr = CategpryStr + "<option value='" + item.RuleObjectNo + "' pcount='" + item.ProductCount + "'>" + item.RuleObjectName + "</option>";
+                break;
+            case 4:
+                PriceStr = PriceStr + "<option value='" + item.RuleObjectNo + "' pcount='" + item.ProductCount + "'>" + item.RuleObjectName + "</option>";
+                break;
+        }
+    }
+}
+<div id="windownBG" style="height:2000px;opacity:0.5;z-index: 99;display:block;left:0px;top:0px;position:absolute;width:100%;background: none repeat scroll 0 0 #000000;"><div style="margin-top:400px;color:#fefafa;margin-left:800px;font-size:18px;">正在加载请稍候</div></div>
+<div id="divBody">
+    <input type="hidden" id="OcsCategory" value="@OcsCategoryNo" />
+    <div id="ProductIndexTitle">
+        <a href="/ProductFlat/Product/productlist?categoryNO=@Request.QueryString["categoryno"]&islast=@Request.QueryString["isLast"]&categoryType=@Request.QueryString["categoryType"]@(Request.QueryString["categoryType"]!="1"?"&BrandNo="+Request.QueryString["BrandNO"]:null)&CategoryPath=@Request.QueryString["CategoryPath"]">全部商品(<font id="fontAllCount">@AllCount</font>)</a>
+        <a class="CurTitle" href="/ProductFlat/Product/SortProductIndex?allCount=@AllCount&categoryNO=@Request.QueryString["categoryno"]&islast=@Request.QueryString["isLast"]&categoryType=@Request.QueryString["categoryType"]@(Request.QueryString["categoryType"] != "1" ? "&BrandNo=" + Request.QueryString["BrandNO"] : null)&CategoryPath =@Request.QueryString["CategoryPath"]">排序(<font id="fontSortCount">@list.ProductList.Count()</font>)</a>
+        <input id="btnSave" type="button" style="float:right;width:60px" onclick="SaveSortProduct(this)" value="发布" />
+        <input id="btnSave" type="button" style="float:right;width:60px;" onclick="ViewProduct()" value="预览" />
+    </div>
+
+    <div id="divMain" class="divSortMain">
+        <div class="MoudleTitle">规则设置</div>
+        <table width="100%">
+            <tr style="height:25px;">
+                <td width="7%;" class="sortTableTitle">基础规则：</td>
+                <td width="93%;" class="sortTableTitle">
+                    <select style="float:left" id="selectOneRule" onchange="ShowOpintion(this, 'One')">
+                        <option value="-1">请选择</option>
+                        <option value="2">按品牌</option>
+                        <option value="3">按颜色</option>
+                        <option value="1">按品类</option>
+                        <option value="4">按价格</option>
+                    </select>
+                    <div id="divOneRules" style="float:left;" pcount="">
+                        @Html.Raw(OneRuleS)
+                    </div>
+                    <div id="OneRuleSelect" style="float:left;margin-left:3px;">
+                        <select id="sNColor" otype="OneColor" dbtype="3" isshow="0" style="display: none" sname="one" onchange="GetOneRuleNotIm(this)">@Html.Raw(colorStr)</select>
+                        <select id="sNCategory" otype="OneCategory" isshow="0" dbtype="1" style="display: none" sname="one" onchange="GetOneRuleNotIm(this)">@Html.Raw(CategpryStr)</select>
+                        <select id="sNColor" otype="OneBrand" isshow="0" isshow="0" dbtype="2" style="display: none" sname="one" onchange="GetOneRuleNotIm(this)">@Html.Raw(BrandStr)</select>
+                        <select id="sNColor" otype="OnePrice" isshow="0" dbtype="4" style="display: none" sname="one" onchange="GetOneRuleNotIm(this)">@Html.Raw(PriceStr)</select>
+                    </div>
+
+
+                    @if (Request.QueryString["isLast"] == "0")
+                    {
+                    <h9>
+                        <input type="checkbox" id="islast" style="float:left;margin-left:3px;" value="添加规则" />售罄商品自动沉底
+                    </h9>
+                    }
+                    else
+                    {
+                    <h9>
+                        <input type="checkbox" id="islast" checked="checked" style="float:left;margin-left:3px;" value="添加规则" />售罄商品自动沉底
+                    </h9>
+                    }
+
+                    <input type="button" style="float:right;margin-left:4px;margin-right:5px;" onclick="RestRule('One')" value="重置规则" />
+                    <input type="button" style="float: right; margin-left: 4px; margin-right: 5px;" onclick="ImplementOneRule()" value="执行规则" />
+                </td>
+            </tr>
+
+
+        </table>
+        <div class="MoudleTitle">商品列表</div>
+        <table width="100%" style="width:100%;margin-top:1.5px;">
+            <tr width="100%">
+                <td width="100%">
+                    <div id="divBaseRule" style="width:95%">
+                        @Html.Raw(dOneRuleStr)
+                    </div>
+
+                    <input id="btnClearProduct" type="button" style="float:right;margin-right:4px;" onclick="ClearAllProduct()" value="清空商品" /><br />
+                </td>
+            </tr>
+            <tr><td><div id="Ts_NotSaveRule" style="float:left;margin-top:0px;margin-left:0px; color:#fe0404">*这样点击"发布"系统将不会保存规则</div></td></tr>
+        </table>
+        @*<input type="button" value="可视化排序" style="float: right; margin-right: 4px;" onclick="GetViewPage(this)" />*@
+        <div id="divChrildRule" style="width:100%" class="divSortMain">
+            <table class="sortTableTitle" width="100%">
+                <tr>
+                    <td width="8%;">
+                        子规则：
+                        <select id="selectTwoRule" onchange="ShowOpintion(this, 'Two')">
+                            <option value="-1">请选择</option>
+                            <option value="2">按品牌</option>
+                            <option value="3">按颜色</option>
+                            <option value="1">按品类</option>
+                            <option value="4">按价格</option>
+                        </select>
+                    </td>
+                    <td width="92%;">
+                        <div id="divTwoRule" style="float:left">@Html.Raw(dTwoRuleStr)</div>
+                        <div id="TwoRuleSelect" style="float:left;margin-left:3px;">
+                            <select id="sNColor" otype="OneColor" dbtype="3" isshow="0" style="display: none" sname="two" onchange="GetTwoRuleNotIm(this)">@Html.Raw(colorStr)</select>
+                            <select id="sNCategory" otype="OneCategory" isshow="0" dbtype="1" style="display: none" sname="two" onchange="GetTwoRuleNotIm(this)">@Html.Raw(CategpryStr)</select>
+                            <select id="sNColor" otype="OneBrand" isshow="0" isshow="0" dbtype="2" style="display: none" sname="two" onchange="GetTwoRuleNotIm(this)">@Html.Raw(BrandStr)</select>
+                            <select id="sNColor" otype="OnePrice" isshow="0" dbtype="4" style="display: none" sname="two" onchange="GetTwoRuleNotIm(this)">@Html.Raw(PriceStr)</select>
+                        </div>
+
+                        <input type="button" style="float:right;margin-left:4px;margin-right:5px;" onclick="RestRule('Two')" value="重置子规则" />
+                        <input type="button" style="float:right;margin-left:4px;margin-right:5px;" onclick="ImplementTwoRule()" value="执行子规则" />
+                    </td>
+                </tr>
+
+            </table>
+        </div><br />
+        <div style="width:100%;text-align:center">
+
+            <div id="alActive_list" style="width: 960px; margin: 0 auto;">
+                <ul class="clr hoverEvent" style="width: 100%; " id="ulplist">
+                    @for (int i = 0; i < list.ProductList.Count; i++)
+                    {
+                    <li class="alActive_list_cell" pordid="" style="width:24%;display:block" productno="@list.ProductList[i].ProductNo" pcolor="@list.ProductList[i].ProductPrimaryColorNO" pbrand="@list.ProductList[i].BrandNo" pcategory="@list.ProductList[i].CategoryNo" pprice="@list.ProductList[i].PriceNo" isshow="1" ppicfile="@list.ProductList[i].ProductPicFile" pbrandname="@list.ProductList[i].BrandEnName" pproductname="@list.ProductList[i].ProductName" pmarkprice="@list.ProductList[i].MarketPrice" plimtprice="@list.ProductList[i].LimitedPrice">
+                        <a title="标题" class="loader" style="width:100%;">
+                            <font style="float: right; cursor: pointer" onclick="RemoveProduct(this)">删除</font>
+                            <div class="imgFocus" style="width: 100%; ">
+                                <img alt="" width="100%" height="100%" src="/ReadPic/GetPic.ashx?width=210&height=280&pictureFileNo=@list.ProductList[i].ProductPicFile&type=1" class="loader">
+                            </div>
+                            <div style="width:100%;text-align:left;margin-left:9px;">
+                                <div style="color:#0c0000;margin-top:3px;padding-left:0px;">
+                                    @if (list.ProductList[i].BrandEnName.Length > 27)
+                                        {
+                                    @list.ProductList[i].BrandEnName.Substring(0, 27) ; @Html.Raw("....");
+                                        }
+                                        else
+                                        {
+                                    @list.ProductList[i].BrandEnName.Trim()
+                                        }
+                                </div>
+                                <div style="color: #0c0000;margin-top: 3px; padding-left: 0px; ">
+                                    @if (list.ProductList[i].ProductName.Length > 20)
+                                        {
+                                    @list.ProductList[i].ProductName.Substring(0, 20) ; @Html.Raw("....");
+                                        }
+                                        else
+                                        {
+                                    @list.ProductList[i].ProductName.Trim()
+                                        }
+
+                                </div>
+
+                                <span style="color:#9b9090;padding-top:10px;">市场参考价：￥@list.ProductList[i].MarketPrice</span><br />
+                                @if (list.ProductList[i].LimitedPrice + "" == "")
+                                    {
+                                <span style="color:red;padding-top:10px;">￥0</span>
+                                @*<span style="color:#0c0000;padding-top:10px;">剩余 @list.ProductList[i].Stock 件 </span>*@
+                                    }
+                                    else
+                                    {
+                                <span style=" padding-top: 10px; color: red">￥@list.ProductList[i].LimitedPrice </span>
+                                <span style="color:#0c0000;padding-top:10px;">剩余 @list.ProductList[i].Stock 件 </span>
+                                    }
+                                <br />
+                                <span name="notview" style="width:100%;height:30px;margin-top:7px;">
+                                    <em style="font-size: 12px; color: Black; width: 20%; cursor: pointer" onclick="GotoTop(this)">置顶</em>&nbsp; &nbsp;<em style="font-size: 12px; color: Black; width: 20%; cursor: pointer;" onclick="    GoToLeft(this)">左移</em>&nbsp; &nbsp;<em style="font-size: 12px; color: Black; width: 20%; cursor: pointer;" onclick="GoToRight(this)">右移</em>
+                                </span>
+                            </div>
+                        </a>
+                    </li>
+                    }
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="divSortLine">
+    </div>
+    <input id="btnSave" type="button" style="float:right;width:60px" onclick="SaveSortProduct(this)" value="发布" />
+    <input id="btnSave" type="button" style="float:right;width:60px;" onclick="ViewProduct()" value="预览" />
+
+</div>
+
+<div id="OneRuleTemp" style="display: none; ">
+    <select id="sNColor" otype="OneColor" dbtype="3" isshow="0" style="display:none;" sname="one" onchange="GetOneRuleInOneRule(this)">@Html.Raw(colorStr)</select>
+    <select id="sNCategory" otype="OneCategory" isshow="0" dbtype="1" style="display: none" sname="one" onchange="GetOneRuleInOneRule(this)">@Html.Raw(CategpryStr)</select>
+    <select id="sNColor" otype="OneBrand" isshow="0" isshow="0" dbtype="2" style="display: none" sname="one" onchange="GetOneRuleInOneRule(this)">@Html.Raw(BrandStr)</select>
+    <select id="sNColor" otype="OnePrice" isshow="0" dbtype="4" style="display: none" sname="one" onchange="GetOneRuleInOneRule(this)">@Html.Raw(PriceStr)</select>
+</div>
+<div id="TwoRuleTemp" style="display: none; ">
+    <select id="sTColor" otype="TwoColor" isshow="0" dbtype="3" style="display: none" onchange="GetTwoRuleInTwoRule(this)" sname="two">@Html.Raw(colorStr)</select>
+    <select id="sTCategory" otype="TwoCategory" isshow="0" dbtype="1" style="display: none" onchange="GetTwoRuleInTwoRule(this)" sname="two">@Html.Raw(CategpryStr)</select>
+    <select id="sTColor" otype="TwoBrand" isshow="0" dbtype="2" style="display: none" onchange="GetTwoRuleInTwoRule(this)" sname="two">@Html.Raw(BrandStr)</select>
+    <select id="sTColor" otype="TwoPrice" isshow="0" dbtype="4" style="display: none" onchange="GetTwoRuleInTwoRule(this)" sname="two">@Html.Raw(PriceStr)</select>
+</div>
+<div id="tempDate" style="display:none">
+</div>
+
+<div id="hidOneRule" style="display:none">
+    @Html.Raw(dOneRuleStr)
+</div>
+<div id="hidTwoRule" style="display:none">
+    @Html.Raw(dTwoRuleStr)
+</div>
+<div id="hidOneToImRule" style="display:none">
+    @Html.Raw(OneRuleS)
+</div>
+

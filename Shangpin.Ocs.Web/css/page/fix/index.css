@@ -1,0 +1,10 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td, address, caption, cite, code, dfn, em, strong, th, var {
+    font: 400 12px '宋体' , 'Tahoma';
+}
+#spIndex_imgroll_prev, #spIndex_imgroll_next{
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=80);
+}
+/*新增兼容头部导航菜单*/
+#spMenu_main li {
+    padding: 0 18px 0 0;
+}

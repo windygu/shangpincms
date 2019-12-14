@@ -1,0 +1,592 @@
+﻿@model Shangpin.Entity.Wfs.SWfsMeetingInfo
+
+@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_VenueLayout.cshtml";
+    //加载品类ROOT
+    IList<Shangpin.Ocs.Entity.Extenstion.ShangPin.ErpCategory> erpList = new Shangpin.Ocs.Service.Shangpin.SWfsBrandService().SelectErpCategoryByParentNo("ROOT");
+    string[] csslist = null;
+    string[] jslist = null;
+}
+
+
+@{
+    Shangpin.Entity.Wfs.SWfsMeetingTemplateInfo templateInfo = null;
+    string MainVenueNO = "0";
+    Shangpin.Ocs.Service.Shangpin.SwfsVenueService venueService = new Shangpin.Ocs.Service.Shangpin.SwfsVenueService();
+    if (Model != null)
+    {
+        if (Model.ParentID != 0)
+        {
+            MainVenueNO = new Shangpin.Ocs.Service.Shangpin.SwfsVenueService().GetVenueByID(Model.ParentID + "").MeetingNO;
+        }
+        else
+        {
+            MainVenueNO = Model.MeetingNO;
+        }
+    }
+    if (Model != null)
+    {
+        if (Model.MeetingID != 0)
+        {
+            //按会场ID查询对应的模板路径
+            templateInfo = venueService.GetTemplateInfoByNO(Request.QueryString["currentTemplateNO"]);
+            if (templateInfo != null)
+            {
+                if (!string.IsNullOrEmpty(templateInfo.CssFileName))
+                {
+                    csslist = templateInfo.CssFileName.Split(',');
+                }
+                if (!string.IsNullOrEmpty(templateInfo.jsFileName))
+                {
+                    jslist = templateInfo.CssFileName.Split(',');
+
+                }
+            }
+        }
+    }
+}
+
+@section HeadStyle{
+    @if (csslist != null)
+    {
+        for (int i = 0; i < csslist.Length; i++)
+        {
+            <link href="@csslist[i]" rel="stylesheet" type="text/css" charset="utf-8" />
+        }
+    }
+
+    <style type="text/css">
+        .mx-table {
+            font-size: 12px;
+        }
+
+        .dispalayRegion {
+            display: none;
+            position: absolute;
+            width: 960px;
+            background-color: White;
+            height: auto;
+            top: 0px;
+            left: 0px;
+            font-size: 12px;
+        }
+
+            .dispalayRegion td {
+                padding: 10px;
+            }
+
+        .page {
+            height: 20px;
+            line-height: 20px;
+            padding: 10px 5px;
+        }
+
+            .page a {
+                padding: 0 7px;
+                border: solid 1px #DDDDDD;
+                line-height: 20px;
+                background: #fff;
+                height: 20px;
+                display: block;
+                float: left;
+                margin-right: 2px;
+                color: #88AF42;
+            }
+
+                .page a.page_click {
+                    color: #fff;
+                    background: #B2DF5E;
+                    border: none;
+                    padding: 1px 8px;
+                }
+
+                .page a.pre {
+                    border: solid 1px #F3F3F3;
+                }
+
+        .go {
+            width: 30px;
+            height: 20px;
+            background: url("/Areas/Shangpin/Images/layout/go.jpg") no-repeat;
+            border: none;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        .hrefbutton {
+            background-color: #4D90FE;
+            border: 1px solid #3079ED;
+            border-radius: 5px;
+            color: #FFFFFF;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 14px;
+            margin: 0 15px 0 0;
+            padding: 5px 10px;
+            position: relative;
+            text-decoration: none;
+            transition: border-color 0.218s ease 0s;
+        }
+    </style>
+
+}
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/Venue/jquery.utils.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/Areas/Shangpin/Scripts/Venue/jquery.pagers.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/Areas/Shangpin/Scripts/Venue/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/Areas/Shangpin/Scripts/Venue/newtemplaterender.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript" charset="utf-8"></script>
+
+    @if (jslist != null)
+    {
+        for (int i = 0; i < jslist.Length; i++)
+        {
+            <script src="@jslist[i]" type="text/javascript"></script>
+        }
+    }
+}
+<!---<link href="/Areas/Shangpin/Content/css/page/rightcontent/rightcontent.css" rel="stylesheet" type="text/css" charset="utf-8" />--->
+
+<h1>
+    OCS > 尚品 >
+
+    @if (Model.ParentID == 0)
+    {
+        <a href="/Shangpin/Venue/TemplateVersionList">会场管理</a>
+    }
+    else
+    {
+        <a href="/Shangpin/Venue/childmeetlistmanage?meetingId=@Model.ParentID&type=1">分会场管理</a>
+    }
+
+    > <a href="/Shangpin/Venue/MeetListManage?meetingNameOrDomain=@Model.MeetingName">@Model.MeetingName</a> > 模板编辑
+</h1>
+<br />
+<div>
+    @if (Model.ParentID == 0)
+    {
+        <a class="hrefbutton" href="javascript:publishVenue(); ClearVenueCache(@Model.MeetingID);">发布</a><a class="hrefbutton" href="/Shangpin/Venue/MeetListManage">返回</a>
+    }
+    else
+    {
+        <a class="hrefbutton" href="javascript:publishVenue();ClearVenueCache(@Model.MeetingID);">发布</a><a class="hrefbutton" href="/Shangpin/Venue/childmeetlistmanage?meetingId=@Model.ParentID&type=1">返回</a>
+
+    }
+
+</div>
+<div style="margin:0px auto;width:824px;text-align:left;">
+    @*会场管理:<input type="hidden" value="" name="currentTemplateNO" id="currentTemplateNO"/>
+        <select id="isPreView" name="isPreView">
+            <option value="0"  @(Request.QueryString["isPreView"] == "0" ? "selected=selected" : "")>预热会场</option>
+            <option value="1" @(Request.QueryString["isPreView"] == "1" ? "selected=selected" : "")>进行中会场</option>
+        </select>&nbsp;
+        <select id="isMobile" name="isMobile">
+            <option value="1" @(Request.QueryString["isMobile"] == "1" ? "selected=selected" : "")>web端</option>
+            <option value="0" @(Request.QueryString["isMobile"] == "0" ? "selected=selected" : "")>移动端</option>
+        </select>&nbsp;*@
+    <input type="radio" id="rad1" name="MeetingPlace" /><a class="hrefbutton" href="/Shangpin/Venue/VenueTemplateEditeByID?venueID=@Model.MeetingID&currentTemplateNO=@Model.MobilePreViewNO&isPreView=0&isMobile=0&isChecked=rad1">mobile预热会场</a> @*最后一个参数为判断是否选中*@
+    <input type="radio" id="rad2" name="MeetingPlace" /><a class="hrefbutton" href="/Shangpin/Venue/VenueTemplateEditeByID?venueID=@Model.MeetingID&currentTemplateNO=@Model.MobileStartNO&isPreView=1&isMobile=0&isChecked=rad2">mobile开始会场</a>
+    <input type="radio" id="rad3" name="MeetingPlace" /><a class="hrefbutton" href="/Shangpin/Venue/VenueTemplateEditeByID?venueID=@Model.MeetingID&currentTemplateNO=@Model.WebPreViewNO&isPreView=0&isMobile=1&isChecked=rad3">web预热会场</a>
+    <input type="radio" id="rad4" name="MeetingPlace" /><a class="hrefbutton" href="/Shangpin/Venue/VenueTemplateEditeByID?venueID=@Model.MeetingID&currentTemplateNO=@Model.WebStartNO&isPreView=1&isMobile=1&isChecked=rad4">web开始会场</a>
+    <!---当前会场状态-->
+    <input type="hidden" value="@Request.QueryString["isPreView"]" id="isPreView" name="isPreView" />
+    <input type="hidden" value="@Request.QueryString["isMobile"]" id="isMobile" name="isMobile" />
+    <!--关联会场的4种模板编号-->
+    <input type="hidden" id="MeetingID" value="@Model.MeetingID" />
+    <input type="hidden" id="MeetingNO" value="@Model.MeetingNO" />
+    <input type="hidden" id="MainMeetingNO" value="@MainVenueNO" />
+    <input type="hidden" id="yureyidong" value="@Model.MobilePreViewNO" />
+    <input type="hidden" id="yureweb" value="@Model.WebPreViewNO" />
+    <input type="hidden" id="jinxingyidong" value="@Model.MobileStartNO" />
+    <input type="hidden" id="jinxingweb" value="@Model.WebStartNO" />
+    <input type="hidden" id="ShangpinActiveHrefUrlShow" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["ShangpinActiveHrefUrlShow"])" />
+    <input type="hidden" id="AoLaiActiveHrefUrlShow" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["AoLaiActiveHrefUrlShow"])" />
+    <input type="hidden" id="AoLaiSpecialHrefUrlShow" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["AoLaiSpecialHrefUrlShow"])" />
+    <input type="hidden" id="VenueHrefUrlShow" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["VenueHrefUrlShow"])" />
+</div><!--联动查询-->
+<div id="loadTemplate">
+    @{
+        if (Model.MeetingID != 0)
+        {
+            if (templateInfo != null)
+            {
+                if (!string.IsNullOrEmpty(templateInfo.TemplateCode))//默认加载--预热移动--模板路径
+                {
+                    if (File.Exists(Server.MapPath(templateInfo.TemplateCode)))
+                    {
+                        if (Model != null)
+                        {
+                            //查询填充模板的数据列表
+                            //查询填充模板的数据列表
+                            IEnumerable<Shangpin.Ocs.Entity.Extenstion.ShangPin.SWfsMeetingRelationRegionContent> Opratorlist = venueService.GetRegionRelationInfoByCondition("", Model.MeetingNO, "", "", Request.QueryString["currentTemplateNO"]);
+                            if (Opratorlist != null)
+                            {
+                                Html.RenderPartial(templateInfo.TemplateCode, Opratorlist);
+                            }
+                        }
+                    }
+                }
+            }
+            templateInfo = null;
+            venueService = null;
+        }
+    }
+</div><!--模板区块-->
+@section hiddendiv{
+    <div id="type1" class="dispalayRegion">
+        <form action="/Shangpin/Venue/SaveRegionRelationContent" method="post" enctype="multipart/form-data" id="type1form" accept-charset="utf-8">
+            <table border="0">
+                <tr>
+                    <td>内容类型:</td>
+                    <td>
+                        @if (Model.ParentID == 0)
+                        {
+                            <input type="radio" value="1" name="RelationType" checked="checked" /><text>分会场</text>
+                        }
+                        <input type="radio" value="2" name="RelationType" />专题/活动
+                        <input type="radio" value="3" name="RelationType" />自定义链接
+                        <input type="radio" value="4" name="RelationType" />功能模块
+                    </td>
+                </tr>
+                <tr>
+                    <td>图片上传:</td>
+                    <td>
+                        <img src="" alt="" title="yulan" />
+                        <input type="file" name="imgfile" />
+                        <input type="hidden" value="ImgNO" name="ImgNO" /> <!--图片-->
+                        <input type="hidden" value="0" name="MeetingRelationID" />
+                        <input type="hidden" value="0" name="oldRelationType" />
+                        <input type="hidden" value="@MainVenueNO" name="MainMeetingNO" /><!--主会场编号-->
+                        <input type="hidden" value="@Model.MeetingNO" name="MettingNO" /><!--分会场编号-->
+                        <input type="hidden" value="" name="RegionID" /><!--操作区块ID-->
+                        <input type="hidden" value="" name="RelationContent" /><!--关联内容-->
+                        <input type="hidden" value="" name="OldRelationContent" /><!--旧关联内容-->
+                        <input type="hidden" value="@(Request.QueryString["currentTemplateNO"])" name="TemplateNO" /><!--当前正在编辑的模板编号-->
+                    </td>
+                </tr>
+                <tr>
+                    <td>文字描述:</td>
+                    <td>
+                        <input type="text" name="Direction" style="width:300px;" maxlength="70" />
+                    </td>
+                </tr>
+            </table>
+            <div style="margin:15px 0px;">
+                <input type="text" placeholder="会场名称/域名" id="nameAndDomain" value="" />
+                <input type="text" placeholder="活动编号" id="activeNO" value="" />
+                <select id="status">
+                    <option value="">会场状态</option>
+                    <option value="1">开启</option>
+                    <option value="0">关闭</option>
+                </select>
+                会场时间:
+                <input id="StartDate" class="Wdate" type="text" style=" width:150px;" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'EndDate\')||\'2020-10-01\'}'})" readonly="readonly" onclick="WdatePicker()" value="" />&nbsp;至&nbsp;
+                <input id="EndDate" class="Wdate" type="text" style=" width:150px;" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'StartDate\')}',maxDate:'2020-10-01'})" readonly="readonly" onclick="WdatePicker()" value="" />
+                <input type="button" value="查询" onclick="getVenueList(1)" />
+            </div>
+            <table class="mx-table" border="0">
+                <thead>
+                    <tr>
+                        <th>
+                            &nbsp;
+                        </th>
+                        <th>会场域名</th>
+                        <th>会场名称</th>
+                        <th>当前状态</th>
+                        <th>会展日期</th>
+                    </tr>
+                </thead>
+                <tbody id="venueList"></tbody>
+            </table>
+            <div class="page">
+                <div class="setpage" id="setpage1"></div>
+                <span class="l pad_left gray">跳转到 <input type="text" style="width:29px;height:20px;border:solid 1px #E3E3E3;line-height:20px" id="goIndex" /><input type="button" class="go" value=" " onclick="getVenueList($('#goIndex').val())" /></span>
+            </div>
+            <div>
+                <input type="button" value="确定" onclick="SaveRelationContent('type1form')" />
+                <input type="button" value="返回" onclick="$('.dispalayRegion').hide();$('#windownBG').remove();" />
+            </div>
+        </form>
+    </div><!--分会场-->
+    <div id="type2" class="dispalayRegion">
+        <form action="/Shangpin/Venue/SaveRegionRelationContent" method="post" enctype="multipart/form-data" id="type2form" accept-charset="utf-8">
+            <table border="0">
+                <tr>
+                    <td>内容类型:</td>
+                    <td>
+                        @if (Model.ParentID == 0)
+                        {
+                            <input type="radio" value="1" name="RelationType" checked="checked" /><text>分会场</text>
+                        }
+                        <input type="radio" value="2" name="RelationType" checked="checked" />专题/活动
+                        <input type="radio" value="3" name="RelationType" />自定义链接
+                        <input type="radio" value="4" name="RelationType" />功能模块
+                    </td>
+                </tr>
+                <tr>
+                    <td>图片上传:</td>
+                    <td>
+                        <img src="" alt="" title="yulan" />
+                        <input type="file" name="imgfile" />
+                        <input type="hidden" value="ImgNO" name="ImgNO" /> <!--图片-->
+                        <input type="hidden" value="0" name="MeetingRelationID" />
+                        <input type="hidden" value="0" name="oldRelationType" />
+                        <input type="hidden" value="@MainVenueNO" name="MainMeetingNO" /><!--主会场编号-->
+                        <input type="hidden" value="@Model.MeetingNO" name="MettingNO" /><!--分会场编号-->
+                        <input type="hidden" value="" name="RegionID" /><!--操作区块ID-->
+                        <input type="hidden" value="" name="RelationContent" /><!--关联内容-->
+                        <input type="hidden" value="" name="OldRelationContent" /><!--旧关联内容-->
+                        <input type="hidden" value="@(Request.QueryString["currentTemplateNO"])" name="TemplateNO" /><!--当前正在编辑的模板编号-->
+                    </td>
+                </tr>
+                <tr>
+                    <td>文字描述:</td>
+                    <td>
+                        <input type="text" name="Direction" style="width:300px;" maxlength="70" />
+                    </td>
+                </tr>
+            </table>
+            <div style="margin:15px 0px;">
+                <input type="text" placeholder="活动/专题名称/编号" id="activeNameAndNO" value="" />
+                <select id="webSource">
+                    <option value="">所属网站</option>
+                    <option value="1">尚品</option>
+                    <option value="2">奥莱</option>
+                </select>
+                <select id="activeType">
+                    <option value="">类型</option>
+                    <option value="1">活动</option>
+                    <option value="0">专题</option>
+                </select>
+                <select id="activeStatus">
+                    <option value="">状态</option>
+                    <option value="1">开启</option>
+                    <option value="0">关闭</option>
+                </select>
+                专题活动时间:
+                <input id="activeStartDate" class="Wdate" type="text" style=" width:150px;" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'activeEndDate\')||\'2020-10-01\'}'})" readonly="readonly" onclick="WdatePicker()" value="" />&nbsp;至&nbsp;
+                <input id="activeEndDate" class="Wdate" type="text" style=" width:150px;" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'activeStartDate\')}',maxDate:'2020-10-01'})" readonly="readonly" onclick="WdatePicker()" value="" />
+                <input type="button" value="查询" onclick="getActiveList(1)" />
+            </div>
+            <table class="mx-table" border="0">
+                <thead>
+                    <tr>
+                        <th>
+                            &nbsp;
+                        </th>
+                        <th>活动/专题名称</th>
+                        <th>类型</th>
+                        <th>网站</th>
+                        <th>编号</th>
+                        <th>当前状态</th>
+                        <th>活动时间</th>
+                    </tr>
+                </thead>
+                <tbody id="activeList"></tbody>
+            </table>
+            <div class="page">
+                <div class="setpage" id="setpage2"></div>
+                <span class="l pad_left gray">跳转到 <input type="text" style="width:29px;height:20px;border:solid 1px #E3E3E3;line-height:20px" id="activeIndex" /><input type="button" class="go" value=" " onclick="getActiveList($('#activeIndex').val())" /></span>
+            </div>
+            <div>
+                <input type="button" value="确定" onclick="SaveRelationContent('type2form')" />
+                <input type="button" value="返回" onclick="$('.dispalayRegion').hide();$('#windownBG').remove();" />
+            </div>
+        </form>
+    </div><!--活动-->
+    <div id="type3" class="dispalayRegion">
+        <form action="/Shangpin/Venue/SaveRegionRelationContent" method="post" enctype="multipart/form-data" id="type3form" accept-charset="utf-8">
+            <table border="0">
+                <tr>
+                    <td>内容类型:</td>
+                    <td>
+                        @if (Model.ParentID == 0)
+                        {
+                            <input type="radio" value="1" name="RelationType" checked="checked" /><text>分会场</text>
+                        }
+                        <input type="radio" value="2" name="RelationType" />专题/活动
+                        <input type="radio" value="3" name="RelationType" checked="checked" />自定义链接
+                        <input type="radio" value="4" name="RelationType" />功能模块
+                    </td>
+                </tr>
+                <tr>
+                    <td>图片上传:</td>
+                    <td>
+                        <img src="" alt="" title="yulan" />
+                        <input type="file" name="imgfile" />
+                        <input type="hidden" value="ImgNO" name="ImgNO" /> <!--图片-->
+                        <input type="hidden" value="0" name="MeetingRelationID" />
+                        <input type="hidden" value="0" name="oldRelationType" />
+                        <input type="hidden" value="@MainVenueNO" name="MainMeetingNO" /><!--主会场编号-->
+                        <input type="hidden" value="@Model.MeetingNO" name="MettingNO" /><!--分会场编号-->
+                        <input type="hidden" value="" name="RegionID" /><!--操作区块ID-->
+                        <input type="hidden" value="@(Request.QueryString["currentTemplateNO"])" name="TemplateNO" /><!--当前正在编辑的模板编号-->
+                        <input type="hidden" value="" name="OldRelationContent" /><!--旧关联内容-->
+                    </td>
+                </tr>
+                <tr>
+                    <td>链接地址:</td>
+                    <td>
+                        <input type="text" value="" name="RelationContent" style="width:300px;" maxlength="1000" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>文字描述:</td>
+                    <td>
+                        <input type="text" name="Direction" style="width:300px;" maxlength="70" />
+                    </td>
+                </tr>
+            </table>
+            <div>
+                <input type="button" value="确定" onclick="SaveRelationContent('type3form')" />
+                <input type="button" value="返回" onclick="$('.dispalayRegion').hide();$('#windownBG').remove();" />
+            </div>
+        </form>
+    </div><!--自定义链接-->
+    <div id="type4" class="dispalayRegion">
+        <form action="/Shangpin/Venue/SaveRegionRelationContent" method="post" enctype="multipart/form-data" id="type4form" accept-charset="utf-8">
+            <table border="0">
+                <tr>
+                    <td>内容类型:</td>
+                    <td>
+                        @if (Model.ParentID == 0)
+                        {
+                            <input type="radio" value="1" name="RelationType" checked="checked" /><text>分会场</text>
+                        }
+                        <input type="radio" value="2" name="RelationType" />专题/活动
+                        <input type="radio" value="3" name="RelationType" />自定义链接
+                        <input type="radio" value="4" name="RelationType" checked="checked" />功能模块
+
+                        <input type="hidden" value="0" name="MeetingRelationID" />
+                        <input type="hidden" value="0" name="oldRelationType" />
+                        <input type="hidden" value="@MainVenueNO" name="MainMeetingNO" /><!--主会场编号-->
+                        <input type="hidden" value="@Model.MeetingNO" name="MettingNO" /><!--分会场编号-->
+                        <input type="hidden" value="" name="RegionID" /><!--操作区块ID-->
+                        <input type="hidden" value="@(Request.QueryString["currentTemplateNO"])" name="TemplateNO" /><!--当前正在编辑的模板编号-->
+                        <input type="hidden" value="" name="OldRelationContent" /><!--旧关联内容-->
+                    </td>
+                </tr>
+                <tr>
+                    <td>模块选择:</td>
+                    <td>
+                        <input type="radio" value="0" name="moduletype" checked="checked" />活动列表
+                    </td>
+                </tr>
+                <tr>
+                    <td>显示规则:</td>
+                    <td>
+                        <input type="checkbox" checked="checked" name="timeby" value="0" />按时间<br /><br />
+                        <select name="startorend">
+                            <option value="0">开始时间</option>
+                            <option value="1">结束时间</option>
+                        </select>
+                        <select name="startorendregion">
+                            <option value="0">等于</option>
+                            <option value="1">早于</option>
+                            <option value="2">晚于</option>
+                        </select>
+                        <select name="startorendregionday" onchange="this.value=='3'?$('#startorendregiondate').show():$('#startorendregiondate').hide()">
+                            <option value="0">今日</option>
+                            <option value="1">前一日</option>
+                            <option value="2">后一日</option>
+                            <option value="3">自定义日期</option>
+                        </select>
+                        <input type="text" style="display:none;" id="startorendregiondate" name="startorendregiondate" class="Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',lang:'zh-cn',isShowClear:true,alwaysUseStartDate:true,readOnly:true})" /><br /><br />
+                        <input type="checkbox" checked="checked" name="activeorspecialby" value="0" />按类型<br /><br />
+                        <select name="activeorspecial">
+                            <option value="1">活动</option>
+                            <option value="0">专题</option>
+                        </select><br /><br />
+                        <input type="checkbox" value="0" name="closeoropentby" />按状态<br /><br />
+                        <select name="closeoropent">
+                            <option value="1">开启</option>
+                            <option value="0">关闭</option>
+                        </select><br /><br />
+                        <input type="checkbox" name="brandby" value="0" />按品牌<br /><br />
+                        <select name="brandregion">
+                            <option value="0">包含</option>
+                            <option value="1">指定</option>
+                            <option value="2">不包含</option>
+                        </select>
+                        <select name="brandNo">
+                            <option value="0">请选择品牌</option>
+                        </select><br /><br />
+                        <input type="checkbox" name="erpcategoryby" value="0" />按品类<br /><br />
+                        <select name="erpcategoryregion">
+                            <option value="0">包含</option>
+                            <option value="1">指定</option>
+                            <option value="2">不包含</option>
+                        </select>
+                        <select name="erpcategoryNO">
+                            <option value="0">请选择品类</option>
+                            @for (int i = 0; i < erpList.Count; i++)
+                            {
+                                <option value="@erpList[i].CategoryNo">@erpList[i].CategoryName</option>
+                            }
+                        </select><br /><br />
+                        <input type="checkbox" name="genderby" />按性别<br /><br />
+                        <select name="gender">
+                            <option value="0">男士</option>
+                            <option value="1">女士</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>显示样式:</td>
+                    <td>
+                        <select name="columcount">
+                            <option value="0">单排3列</option>
+                            <option value="1">单排4列</option>
+                        </select>&nbsp;<input type="text" placeholder="输入显示数量" name="showcount" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>显示限制:</td>
+                    <td><input type="checkbox" name="isselect" value="0" />已被展示活动不显示</td>
+                </tr>
+            </table>
+            <div>
+                <input type="button" value="确定" onclick="SaveRelationContent('type4form')" />
+                <input type="button" value="返回" onclick="$('.dispalayRegion').hide();$('#windownBG').remove();" />
+            </div>
+        </form>
+    </div><!--功能模块-->
+}
+
+
+<script type="text/javascript">
+    window.onload = function () {
+        var Request = new Object();
+        Request = GetRequest();
+        var urlPara = Request['isChecked'];
+        if (urlPara != null && urlPara != "") {
+            if (urlPara.indexOf("rad") > -1) {
+                SelectRadio(urlPara);
+            }
+        }
+    }
+    function SelectRadio(id) {
+        //debugger;
+        document.getElementById(id).checked = true;
+
+    }
+    //获取url参数
+    function GetRequest() {
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+    //清除会场缓存
+    function ClearVenueCache(venueid) {
+        $.get("/shangpin/venue/ClearVenueCach/" + venueid, function (data) {
+            //alert(data);
+        });
+    }
+</script>

@@ -1,0 +1,1386 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <statement id="ComBeziWfs_WfsSaleDeviceApp_FetchEntityByIdentity_NoLock" primarykey="SaleDeviceAppNo">
+    SELECT SaleDeviceAppNo,SaleDeviceNo,SubjectNo,DateBegin,DateEnd,DateCreate,CreateUserId,CreateMemo,AuditStatus,DateOperationAudit,OperationAuditUserId,OperationAuditMemo,DateFinanceAudit,FinanceAuditUserId,FinanceAuditMemo,DateStop,StopUserId,StopMemo  FROM WfsSaleDeviceApp  WITH(NOLOCK)  WHERE SaleDeviceAppNo=@SaleDeviceAppNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsProductPromotionTipRef_FetchEntityByIdentity_NoLock" primarykey="ProductPromotionRefID">
+    SELECT ProductPromotionRefID,PromotionInfoId,ProductNo  FROM SWfsProductPromotionTipRef  WITH(NOLOCK)  WHERE ProductPromotionRefID=@ProductPromotionRefID
+  </statement>
+  <statement id="ComBeziWfs_SWfsOrderVouchersRef_FetchEntityByIdentity_NoLock" primarykey="OrderVouchersRefId">
+    SELECT OrderVouchersRefId,OrderNo,OrderDetailNo,CashTicketNo  FROM SWfsOrderVouchersRef  WITH(NOLOCK)  WHERE OrderVouchersRefId=@OrderVouchersRefId
+  </statement>
+  <statement id="ComBeziWfs_SWfsTopicLabelRef_FetchEntityByIdentity_NoLock" primarykey="TopicLabelRefId">
+    SELECT TopicLabelRefId,TopicNo,TopicLabelNo  FROM SWfsTopicLabelRef  WITH(NOLOCK)  WHERE TopicLabelRefId=@TopicLabelRefId
+  </statement>
+  <statement id="ComBeziWfs_SWfsBOCMCCreditCardPay_FetchEntityByIdentity_NoLock" primarykey="PingAnPayNo">
+    SELECT PingAnPayNo,OrderNo,PayAmount,PospOrderId,TransDataType,ReturnCode,ReturnMessage,AuthCode,TraceNo,BatchNo,HostTransTime,InvoiceNo,DateCreate  FROM SWfsBOCMCCreditCardPay  WITH(NOLOCK)  WHERE PingAnPayNo=@PingAnPayNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsGeneralRelationProductRef_FetchEntityByIdentity_NoLock" primarykey="RelationId">
+    SELECT RelationId,RelationNo,RelationName,ProductNo,ProductExtend,Sort,DateCreate,OperatorId  FROM SWfsGeneralRelationProductRef  WITH(NOLOCK)  WHERE RelationId=@RelationId
+  </statement>
+  <statement id="ComBeziWfs_SWfsAddShopCartCounter_FetchEntityByIdentity_NoLock" primarykey="CounterNo">
+    SELECT CounterNo,ProductNo,DateCreate,IsLimitedOutlet  FROM SWfsAddShopCartCounter  WITH(NOLOCK)  WHERE CounterNo=@CounterNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectVProductRef_FetchEntityByIdentity_NoLock" primarykey="SubjectVProductRefId">
+    SELECT SubjectVProductRefId,SubjectNo,ProductNo,CreateUserId,DateCreate  FROM SWfsSubjectVProductRef  WITH(NOLOCK)  WHERE SubjectVProductRefId=@SubjectVProductRefId
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderExtend_FetchEntityByIdentity_NoLock" primarykey="OrderNo">
+    SELECT OrderNo,ConditionStyle,PromotionType,PromotionDeviceNo,PromotionCodeNo,PromotionContentType,PromotionContent  FROM WfsOrderExtend  WITH(NOLOCK)  WHERE OrderNo=@OrderNo
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderAssist_FetchEntityByIdentity_NoLock" primarykey="OrderNo">
+    SELECT OrderNo,SaleUserName  FROM WfsOrderAssist  WITH(NOLOCK)  WHERE OrderNo=@OrderNo
+  </statement>
+  <statement id="ComBeziWfs_WfsCashTicket_FetchEntityByIdentity_NoLock" primarykey="CashTicketNo">
+    SELECT CashTicketNo,PromotionTicketNo,IsActivtion,IsUsed,TicketAmount,IsBound,ActiveCount,DateExpires,DeliverFrom,DateDeliver,DateUseBegin,DateUseEnd,DateUsed  FROM WfsCashTicket  WITH(NOLOCK)  WHERE CashTicketNo=@CashTicketNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsIndexNewArrivalProductList_FetchEntityByIdentity_NoLock" primarykey="NewArrivalProductListId">
+    SELECT NewArrivalProductListId,ProductNo,NewArrivalId,SortValue,CreateDate,Status,DataState,OperateUserId,UpdateOperateUserId,UpdateDate  FROM SWfsIndexNewArrivalProductList  WITH(NOLOCK)  WHERE NewArrivalProductListId=@NewArrivalProductListId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectImageLibrary_FetchEntityByIdentity_NoLock" primarykey="ImgId">
+    SELECT ImgId,SubjectNo,ImageURL,Type  FROM SWfsSubjectImageLibrary  WITH(NOLOCK)  WHERE ImgId=@ImgId
+  </statement>
+  <statement id="ComBeziWfs_SWfsBocChinaPay_FetchEntityByIdentity_NoLock" primarykey="BocChinaPayId">
+    SELECT BocChinaPayId,MerChantNo,OrderNo,OrderSeq,CardType,PayTime,OrderStatus,PayAmount,OrderIp,OrderRefer,BankTranSeq,ReturnActFlag,SignData,DateCreate,OrderAmount  FROM SWfsBocChinaPay  WITH(NOLOCK)  WHERE BocChinaPayId=@BocChinaPayId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectFocusArea_FetchEntityByIdentity_NoLock" primarykey="ID">
+    SELECT ID,SubjectNo,Sort,ShowDate,DateUpdate,UpdateUserId,DateCreate,CreateUserId,Status,Type,WebUrl,WebPic,MobileUrl,MobilePic  FROM SWfsSubjectFocusArea  WITH(NOLOCK)  WHERE ID=@ID
+  </statement>
+  <statement id="ComBeziWfs_WfsCmbcPayGate_FetchEntityByIdentity_NoLock" primarykey="CmbcPayInfoNo">
+    SELECT CmbcPayInfoNo,InfoType,PayNo,SupplierNo,PayAmount,PayDate,PayTime,OrderStatus,Comment1,Comment2,OrderPointAmount,OrderIntallTimes,Fees,OrderNo,DateCreate  FROM WfsCmbcPayGate  WITH(NOLOCK)  WHERE CmbcPayInfoNo=@CmbcPayInfoNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsUserEmailRss_FetchEntityByIdentity_NoLock" primarykey="EmailRssId">
+    SELECT EmailRssId,UserId,RssType,Frequency,IsRss,Status  FROM SWfsUserEmailRss  WITH(NOLOCK)  WHERE EmailRssId=@EmailRssId
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandHallBrandTop_FetchEntityByIdentity_NoLock" primarykey="BrandHallBrandTopId">
+    SELECT BrandHallBrandTopId,CategoryNo,BrandTopName,BrandTopSort,Status,Gender,DateCreate,TopType  FROM SWfsBrandHallBrandTop  WITH(NOLOCK)  WHERE BrandHallBrandTopId=@BrandHallBrandTopId
+  </statement>
+  <statement id="ComBeziWfs_SWfsVActivityCodesRef_FetchEntityByIdentity_NoLock" primarykey="ActivityCodesId">
+    SELECT ActivityCodesId,ActivityId,VCode,OperatorId,DateCreate,Source  FROM SWfsVActivityCodesRef  WITH(NOLOCK)  WHERE ActivityCodesId=@ActivityCodesId
+  </statement>
+  <statement id="ComBeziWfs_SWfsTrendProductRef_FetchEntityByIdentity_NoLock" primarykey="TrendProductId">
+    SELECT TrendProductId,TrendId,ProductNo,Sort,DateCreate  FROM SWfsTrendProductRef  WITH(NOLOCK)  WHERE TrendProductId=@TrendProductId
+  </statement>
+  <statement id="ComBeziWfs_GcOperatorResourceRef_FetchEntityByIdentity_NoLock" primarykey="OperatorResourceRefId">
+    SELECT OperatorResourceRefId,UserName,ResourceId,DateOperate,OperateUserId  FROM GcOperatorResourceRef  WITH(NOLOCK)  WHERE OperatorResourceRefId=@OperatorResourceRefId
+  </statement>
+  <statement id="ComBeziWfs_SWfsCateTempPicPosition_FetchEntityByIdentity_NoLock" primarykey="PositionNo">
+    SELECT PositionNo,Title,OperatorUserId,DateCreate,DateUpdate  FROM SWfsCateTempPicPosition  WITH(NOLOCK)  WHERE PositionNo=@PositionNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSmsSerialno_FetchEntityByIdentity_NoLock" primarykey="ID">
+    SELECT ID,AppType,Serialno,IsValid,MobileNo,UserId  FROM SWfsSmsSerialno  WITH(NOLOCK)  WHERE ID=@ID
+  </statement>
+  <statement id="ComBeziWfs_SWfsCMBCPay_FetchEntityByIdentity_NoLock" primarykey="CmbcPayInfoNo">
+    SELECT CmbcPayInfoNo,OrderNo,PayNo,SupplierNo,PayAmount,PayDate,PayTime,OrderStatus,Comment1,Comment2,DateCreate  FROM SWfsCMBCPay  WITH(NOLOCK)  WHERE CmbcPayInfoNo=@CmbcPayInfoNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsCiticPay_FetchEntityByIdentity_NoLock" primarykey="CiticPayNo">
+    SELECT CiticPayNo,OrderDate,OrderId,Amount,PostData,ResultData,Success,SuccessDate,DateCreate  FROM SWfsCiticPay  WITH(NOLOCK)  WHERE CiticPayNo=@CiticPayNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsVirtualProductRecomm_FetchEntityByIdentity_NoLock" primarykey="KeyID">
+    SELECT KeyID,VirtualProductID,ObjectType,ObjectNo,ObjectTitle,ObjectLevel,OperatorUserId,DateCreate  FROM SWfsVirtualProductRecomm  WITH(NOLOCK)  WHERE KeyID=@KeyID
+  </statement>
+  <statement id="ComBeziWfs_WfsTopTrade_FetchEntityByIdentity_NoLock" primarykey="Tid">
+    SELECT Tid,PostFee,TotalFee,ShippingType,Status,AdjustFee,DiscountFee,CodFee,Payment  FROM WfsTopTrade  WITH(NOLOCK)  WHERE Tid=@Tid
+  </statement>
+  <statement id="ComBeziWfs_SWfsAlterPic_FetchEntityByIdentity_NoLock" primarykey="AlterPicId">
+    SELECT AlterPicId,AlterPicName,AlterPicNo,AlterPicAddr,Status,StartDate,EndDate,CreateDate,AlterPicView,AlterPicPosition  FROM SWfsAlterPic  WITH(NOLOCK)  WHERE AlterPicId=@AlterPicId
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandHallHot_FetchEntityByIdentity_NoLock" primarykey="BrandHallHotId">
+    SELECT BrandHallHotId,CategoryNo,CategoryName,Sort,Status,Gender,DateCreate  FROM SWfsBrandHallHot  WITH(NOLOCK)  WHERE BrandHallHotId=@BrandHallHotId
+  </statement>
+  <statement id="ComBeziWfs_SWfsProductTemplate_FetchEntityByIdentity_NoLock" primarykey="TemplateID">
+    SELECT TemplateID,TemplateNO,TemplateName,TemplateDirection,CreateDate,TemplateCode,TemplateCodeMobile  FROM SWfsProductTemplate  WITH(NOLOCK)  WHERE TemplateID=@TemplateID
+  </statement>
+  <statement id="ComBeziWfs_SWfsSpChannelProductGroup_FetchEntityByIdentity_NoLock" primarykey="GroupID">
+    SELECT GroupID,ChannelNO,GroupName,Status,StartTime,EndTime,CreateDate  FROM SWfsSpChannelProductGroup  WITH(NOLOCK)  WHERE GroupID=@GroupID
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectAd_FetchEntityByIdentity_NoLock" primarykey="SubjectAdNo">
+    SELECT SubjectAdNo,SubjectNo,AdPic,CreateUserId,Status,DateCreate,AdLink,SubjectProductRefId  FROM SWfsSubjectAd  WITH(NOLOCK)  WHERE SubjectAdNo=@SubjectAdNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsOutStockRegisterLog_FetchEntityByIdentity_NoLock" primarykey="OutStockRegisterLogId">
+    SELECT OutStockRegisterLogId,OutStockRegisterId,OperateUserId,Status,DateOperate,Memo  FROM SWfsOutStockRegisterLog  WITH(NOLOCK)  WHERE OutStockRegisterLogId=@OutStockRegisterLogId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectTopExpand_FetchEntityByIdentity_NoLock" primarykey="SubjectNo">
+    SELECT SubjectNo,TopCreateTime,StExpand,PreheatTime  FROM SWfsSubjectTopExpand  WITH(NOLOCK)  WHERE SubjectNo=@SubjectNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSandPayInfo_FetchEntityByIdentity_NoLock" primarykey="SandPayInfoId">
+    SELECT SandPayInfoId,Version,MerId,UserName,OrderId,PayType,PayResult,BackOrderId,BackOrderTime,Remark,BackUp,SignType,Sign,DateCreate,VerifyStatus,SynchroStatus  FROM SWfsSandPayInfo  WITH(NOLOCK)  WHERE SandPayInfoId=@SandPayInfoId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectBrandRef_FetchEntityByIdentity_NoLock" primarykey="SubjectBrandRefId">
+    SELECT SubjectBrandRefId,SubjectNo,BrandNo  FROM SWfsSubjectBrandRef  WITH(NOLOCK)  WHERE SubjectBrandRefId=@SubjectBrandRefId
+  </statement>
+  <statement id="ComBeziWfs_WfsPhoneShoppingDetail_FetchEntityByIdentity_NoLock" primarykey="PhoneShoppingDetailNo">
+    SELECT PhoneShoppingDetailNo,ProductNo,SkuNo,ItemXmlText,Quantity,OperatorId,DateCreate  FROM WfsPhoneShoppingDetail  WITH(NOLOCK)  WHERE PhoneShoppingDetailNo=@PhoneShoppingDetailNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsProductCommentItem_FetchEntityByIdentity_NoLock" primarykey="CommentItemId">
+    SELECT CommentItemId,CommentId,ObjectName,ObjectValue,CreateDate,ItemType  FROM SWfsProductCommentItem  WITH(NOLOCK)  WHERE CommentItemId=@CommentItemId
+  </statement>
+  <statement id="ComBeziWfs_SWfsUserLevelHistory_FetchEntityByIdentity_NoLock" primarykey="LevelHistoryId">
+    SELECT LevelHistoryId,UserId,LevelNo,BeginDate,EndDate,IsCurrentLevel,SerialNumber,Status,TotalAmount,YearAmount,NewAmount,Remark  FROM SWfsUserLevelHistory  WITH(NOLOCK)  WHERE LevelHistoryId=@LevelHistoryId
+  </statement>
+  <statement id="ComBeziWfs_SWfsFavoriteBrand_FetchEntityByIdentity_NoLock" primarykey="FavoriteBrandId">
+    SELECT FavoriteBrandId,BrandNo,UserId,ActiveNotice,RepleNotice,DateCreate,IsVoid,Ex01  FROM SWfsFavoriteBrand  WITH(NOLOCK)  WHERE FavoriteBrandId=@FavoriteBrandId
+  </statement>
+  <statement id="ComBeziWfs_SWfsOnsiteAuthorize_FetchEntityByIdentity_NoLock" primarykey="AuthorizeId">
+    SELECT AuthorizeId,AuthorizeCode,SubjectNo,Authorizee,AuthorizeType,OcsAccountRef,Discount,OperatorId  FROM SWfsOnsiteAuthorize  WITH(NOLOCK)  WHERE AuthorizeId=@AuthorizeId
+  </statement>
+  <statement id="ComBeziWfs_SWfsIndexNewArrival_FetchEntityByIdentity_NoLock" primarykey="NewArrivalId">
+    SELECT NewArrivalId,NewArrivalTitle,SortValue,WebSiteNo,PagePositionNo,PagePositionName,PageNo,CreateDate,StartDate,EndDate,Status,DataState,OperateUserId,UpdateOperateUserId,UpdateDate  FROM SWfsIndexNewArrival  WITH(NOLOCK)  WHERE NewArrivalId=@NewArrivalId
+  </statement>
+  <statement id="ComBeziWfs_SWfsBDSubjectShang_FetchEntityByIdentity_NoLock" primarykey="SubjectNo">
+    SELECT SubjectNo,SubjectTitle,InvitationCode,ShortAddress,IsForceRegister,Belong,BannerPicNo,RecommendPicNo,DescriptionPicNo,DateBegin,DateEnd,CDKBathNo,PayPathID,DefaultPayTypeNo,DefaultPayTypeTitle,IsOnlyPayType,Status,Sort,OperatorUserId,DateCreate,ProductNoList,DateUpdate,BannerLink,WeekLimit  FROM SWfsBDSubjectShang  WITH(NOLOCK)  WHERE SubjectNo=@SubjectNo
+  </statement>
+  <statement id="ComBeziWfs_WfsMaterial_FetchEntityByIdentity_NoLock" primarykey="MaterialNo">
+    SELECT MaterialNo,MaterialCategoryId,PictureName,PicturePath,OperateUserId,AddTime  FROM WfsMaterial  WITH(NOLOCK)  WHERE MaterialNo=@MaterialNo
+  </statement>
+  <statement id="ComBeziWfs_GcOperateLog_FetchEntityByIdentity_NoLock" primarykey="OperateLogId">
+    SELECT OperateLogId,LogType,LogContent,Memo,DateOperate,OperateUserId  FROM GcOperateLog  WITH(NOLOCK)  WHERE OperateLogId=@OperateLogId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSortRule_FetchEntityByIdentity_NoLock" primarykey="RuleId">
+    SELECT RuleId,OcsCategoryNo,ParentId,RuleObjectNo,RuleObjectName,Sort,RuleType,DateCreate,OperatorUserId  FROM SWfsSortRule  WITH(NOLOCK)  WHERE RuleId=@RuleId
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderFinancialRef_FetchEntityByIdentity_NoLock" primarykey="OrderFinancialRefNo">
+    SELECT OrderFinancialRefNo,OrderNo,OperatorFinancial  FROM WfsOrderFinancialRef  WITH(NOLOCK)  WHERE OrderFinancialRefNo=@OrderFinancialRefNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsAdPromotion_FetchEntityByIdentity_NoLock" primarykey="PromotionId">
+    SELECT PromotionId,RequestSrc,PromotionCid,PromotionWi,TargetUrl,RequestTime,OrderNo,OrderQuantity,OrderAmount,OrderCreatTime,ParPromotionId,RequestType,SkuStr,ProductPriceStr,ProductQuantityStr,ProductCategoryStr,OrderStatus  FROM SWfsAdPromotion  WITH(NOLOCK)  WHERE PromotionId=@PromotionId
+  </statement>
+  <statement id="ComBeziWfs_SWfsUserLevel_FetchEntityByIdentity_NoLock" primarykey="LevelNo">
+    SELECT LevelNo,LevelName,AmountLevel,Multiples,InviteCount  FROM SWfsUserLevel  WITH(NOLOCK)  WHERE LevelNo=@LevelNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsNotice_FetchEntityByIdentity_NoLock" primarykey="NoticeId">
+    SELECT NoticeId,Title,NContent,DateCreate,NoticeType,IsUserNotice,UserId,Url,ObjectType,ObjectId  FROM SWfsNotice  WITH(NOLOCK)  WHERE NoticeId=@NoticeId
+  </statement>
+  <statement id="ComBeziWfs_SWfsLaKaLaLog_old_FetchEntityByIdentity_NoLock" primarykey="Logid">
+    SELECT Logid,IsOrderNo,EsOrderNo,EsPaySeq,EsTerminalNo,EsPayNum,PayVersion,PayAmount,PayStatus,PayTime,Sign,UrlParams,LogTime  FROM SWfsLaKaLaLog_old  WITH(NOLOCK)  WHERE Logid=@Logid
+  </statement>
+  <statement id="ComBeziWfs_WfsForgetPassword_FetchEntityByIdentity_NoLock" primarykey="ForgetPasswordId">
+    SELECT ForgetPasswordId,UserId,DateCreate  FROM WfsForgetPassword  WITH(NOLOCK)  WHERE ForgetPasswordId=@ForgetPasswordId
+  </statement>
+  <statement id="ComBeziWfs_SWfsUser_FetchEntityByIdentity_NoLock" primarykey="UserId">
+    SELECT UserId,NickName,TrueName,Corporation,Mobile,Position,Gender,MailAddress,Birthday,ProvinceId,CityId,AreaId,Address,Telephone,Postcode,MemberCardNo,UserFrom,CreditcardNo,ContributionValue,Profession,FavoriteBrand,ApplyReason,AboutMe,TrueMailAddress,IntroducerLevelNo,RegisterSource,WeiboAddress,Industry,SalaryIncome  FROM SWfsUser  WITH(NOLOCK)  WHERE UserId=@UserId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSemRecord_FetchEntityByIdentity_NoLock" primarykey="Id">
+    SELECT Id,Provider,OrderNo,PayAmount,RegisterUserId,KeyWord,PlanId,ChildCat,SourceDate,SourceTime,SourceUrl,DateCreate  FROM SWfsSemRecord  WITH(NOLOCK)  WHERE Id=@Id
+  </statement>
+  <statement id="ComBeziWfs_SWfsPlanDaliyStatistics_FetchEntityByIdentity_NoLock" primarykey="HistoryId">
+    SELECT HistoryId,PlanId,PlanName,PlanCategory,RegisterCount,OrderCount,OrderAmount,DateCrate  FROM SWfsPlanDaliyStatistics  WITH(NOLOCK)  WHERE HistoryId=@HistoryId
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewAlterPicture_FetchEntityByIdentity_NoLock" primarykey="PictureId">
+    SELECT PictureId,PictureName,PcPictureLinkUrl,MobilePictureLinkUrl,BrandNo,Position,PcPictureNo,MobilePictureNo,MobilePictureType,Status,DataStatus,BeginDate,OperatorUserId,DateCreate  FROM SWfsNewAlterPicture  WITH(NOLOCK)  WHERE PictureId=@PictureId
+  </statement>
+  <statement id="ComBeziWfs_SWfsCateTempPic_FetchEntityByIdentity_NoLock" primarykey="KeyID">
+    SELECT KeyID,CateTempID,PositionNo,PictureFileNo,LinkAddress,Sort,OperatorUserId,DateCreate,DateUpdate,ObjectNo,PictureTitle  FROM SWfsCateTempPic  WITH(NOLOCK)  WHERE KeyID=@KeyID
+  </statement>
+  <statement id="ComBeziWfs_SWfsMeetingActiveSpecial_FetchEntityByIdentity_NoLock" primarykey="ActiveID">
+    SELECT ActiveID,ActiveNO,MainMeetingNO,MeetingNO,BrandNO,ActiveName,ImgNo,BrandLink,ActiveLink,CreateTime,IsActive,IsSelect,WebSite  FROM SWfsMeetingActiveSpecial  WITH(NOLOCK)  WHERE ActiveID=@ActiveID
+  </statement>
+  <statement id="ComBeziWfs_SWfsMeetingTemplatePicInfo_FetchEntityByIdentity_NoLock" primarykey="ID">
+    SELECT ID,TemplateID,Type,FileName,PicNo  FROM SWfsMeetingTemplatePicInfo  WITH(NOLOCK)  WHERE ID=@ID
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandTerminal_FetchEntityByIdentity_NoLock" primarykey="BrandTerminalNo">
+    SELECT BrandTerminalNo,BrandNo,HompageLogoPicNo,HeadLogoPicNo,ConcernLogoPicNo,ConcernNumber,BrandIntroduce,Status,Sort,DateCreate,GenderFlag,IsShowAllGender  FROM SWfsBrandTerminal  WITH(NOLOCK)  WHERE BrandTerminalNo=@BrandTerminalNo
+  </statement>
+  <statement id="ComBeziWfs_SwfsPromotionTicketMobile_FetchEntityByIdentity_NoLock" primarykey="PromotionTicketMobileId">
+    SELECT PromotionTicketMobileId,UserId,Mobile,CreateDtae,PromotionChargeCodeNo  FROM SwfsPromotionTicketMobile  WITH(NOLOCK)  WHERE PromotionTicketMobileId=@PromotionTicketMobileId
+  </statement>
+  <statement id="ComBeziWfs_SWfsEEPlant_FetchEntityByIdentity_NoLock" primarykey="PlantId">
+    SELECT PlantId,PlantName,DateStart,DateEnd,InviteCode,InviteUserName,InviteCount,Costs,ReChargePlant,TemplateContent,VisitUrl,PV,UV,IP,DateCreate,PlanCategory,TargetUrl,Param,InfoLevel,InfoCount,PId  FROM SWfsEEPlant  WITH(NOLOCK)  WHERE PlantId=@PlantId
+  </statement>
+  <statement id="ComBeziWfs_SWfsThirdPartyUser_FetchEntityByIdentity_NoLock" primarykey="ID">
+    SELECT ID,UserID,RealName,Email,Mobile,ThirdPartyUserID,DateCreate,UserFrom,Remark  FROM SWfsThirdPartyUser  WITH(NOLOCK)  WHERE ID=@ID
+  </statement>
+  <statement id="ComBeziWfs_SWfsMeetingOperationDiary_FetchEntityByIdentity_NoLock" primarykey="DiaryID">
+    SELECT DiaryID,OpratePeople,ActionType,OprateInfo,CreateTime,IsDelete,DiaryType,MeetingNO,MeetingType  FROM SWfsMeetingOperationDiary  WITH(NOLOCK)  WHERE DiaryID=@DiaryID
+  </statement>
+  <statement id="ComBeziWfs_SWfsAppShopCategory_FetchEntityByIdentity_NoLock" primarykey="AppShopCategoryId">
+    SELECT AppShopCategoryId,Sort,CategoryNo,PicNo,CreateDate  FROM SWfsAppShopCategory  WITH(NOLOCK)  WHERE AppShopCategoryId=@AppShopCategoryId
+  </statement>
+  <statement id="ComBeziWfs_WfsSaleDeviceSkuRef_FetchEntityByIdentity_NoLock" primarykey="SaleDeviceProductRefNo">
+    SELECT SaleDeviceProductRefNo,SaleDeviceNo,SkuNo,ProductNo,BuyPrice,SellPrice,CategoryNo,BrandNo,Quantity,UsableQuantity  FROM WfsSaleDeviceSkuRef  WITH(NOLOCK)  WHERE SaleDeviceProductRefNo=@SaleDeviceProductRefNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsCategoryLabelRef_FetchEntityByIdentity_NoLock" primarykey="CategoryLabelRefId">
+    SELECT CategoryLabelRefId,CategoryNo,LabelNo,Sort,RelationType,LabelDetailNo  FROM SWfsCategoryLabelRef  WITH(NOLOCK)  WHERE CategoryLabelRefId=@CategoryLabelRefId
+  </statement>
+  <statement id="ComBeziWfs_SWfsPromotionShoppingCart_FetchEntityByIdentity_NoLock" primarykey="UserId">
+    SELECT UserId,ItemXmlText,DateAdd  FROM SWfsPromotionShoppingCart  WITH(NOLOCK)  WHERE UserId=@UserId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectSort_FetchEntityByIdentity_NoLock" primarykey="SubjectSortId">
+    SELECT SubjectSortId,SubjectNo,ChannelNo,Sort,Type,ShowType,ShowDateTime  FROM SWfsSubjectSort  WITH(NOLOCK)  WHERE SubjectSortId=@SubjectSortId
+  </statement>
+  <statement id="ComBeziWfs_WfsInvoiceOrderRef_FetchEntityByIdentity_NoLock" primarykey="InvoiceOrderRefNo">
+    SELECT InvoiceOrderRefNo,OrderNo,UserId,ConsigneeName,ConsigneeAddress,ConsigneePostCode,ConsigneePhone,ConsigneeMobile,ConsigneeProvinceId,ConsigneeCityId,ConsigneeAreaId,InvoiceType,InvoiceTitle,InvoiceContent,InvoiceStatus,SupplierOrderNo,ConsigneeTownId  FROM WfsInvoiceOrderRef  WITH(NOLOCK)  WHERE InvoiceOrderRefNo=@InvoiceOrderRefNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewBrand_FetchEntityByIdentity_NoLock" primarykey="KeyID">
+    SELECT KeyID,BrandNo,Sort,DateBegin,DateEnd,Gender,OperatorUserId,DateCreate,DateUpdate  FROM SWfsNewBrand  WITH(NOLOCK)  WHERE KeyID=@KeyID
+  </statement>
+  <statement id="ComBeziWfs_SWfsPdbcBankPay_FetchEntityByIdentity_NoLock" primarykey="PdbcBankInfoNo">
+    SELECT PdbcBankInfoNo,TranAbbr,AcqSsn,MercDtTm,TermSsn,RespCode,TermCode,MercCode,TranAmt,SettDate,UrlData,ResultCode,DateCreate  FROM SWfsPdbcBankPay  WITH(NOLOCK)  WHERE PdbcBankInfoNo=@PdbcBankInfoNo
+  </statement>
+  <statement id="ComBeziWfs_WfsMaterialCategory_FetchEntityByIdentity_NoLock" primarykey="MaterialCategoryId">
+    SELECT MaterialCategoryId,MaterialCategoryName,OperateUserId,CreateTime  FROM WfsMaterialCategory  WITH(NOLOCK)  WHERE MaterialCategoryId=@MaterialCategoryId
+  </statement>
+  <statement id="ComBeziWfs_SWfsChargeCodeTicketRef_FetchEntityByIdentity_NoLock" primarykey="ChargeCodeTicketRefId">
+    SELECT ChargeCodeTicketRefId,CashTicketNo,ChargeCodeNo  FROM SWfsChargeCodeTicketRef  WITH(NOLOCK)  WHERE ChargeCodeTicketRefId=@ChargeCodeTicketRefId
+  </statement>
+  <statement id="ComBeziWfs_SWfsChannelSord_FetchEntityByIdentity_NoLock" primarykey="SordNo">
+    SELECT SordNo,SordName,DateCreate,CreateUserId,DateUpdate,Status,SortNo,SiteNo  FROM SWfsChannelSord  WITH(NOLOCK)  WHERE SordNo=@SordNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsFriendNews_FetchEntityByIdentity_NoLock" primarykey="FriendNewsId">
+    SELECT FriendNewsId,UserId,ReceiveUserId,HtmlContent,DateSend  FROM SWfsFriendNews  WITH(NOLOCK)  WHERE FriendNewsId=@FriendNewsId
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderDetail_FetchEntityByIdentity_NoLock" primarykey="OrderDetailNo">
+    SELECT OrderDetailNo,OrderNo,SupplierOrderNo,ProductNo,SkuNo,ProductName,UnitPrice,Quantity,Freight,RebateMethod,Rebate,RebateCash,SettlementType,DeliverQuantity,CancelQuantity,DeliverStatus,PromotionNo,PromotionName,DateCreate,ChannelXmlText,OrderArtNo,OrderBrandNo,BuyPrice,CategoryNo,DiscountPrice,PurchaseOrderFlag,PromotionProductType,PromotionType,RelationSkuNo,DetailTicketAmount,TicketFlag,TopicSubjectFlag,OriginalPrice,ReturnChangeFlag,PurchaseTraceId,MemberPrice,OutletPrice,InvoiceNo,PromotionPrice,ShowPrice  FROM WfsOrderDetail  WITH(NOLOCK)  WHERE OrderDetailNo=@OrderDetailNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsGDBPay_FetchEntityByIdentity_NoLock" primarykey="DGBPayNo">
+    SELECT OrderNo,OrderStatus,Amount,CreateDate,ResponseDate,MerchId,OrderSequence,DGBPayNo  FROM SWfsGDBPay  WITH(NOLOCK)  WHERE DGBPayNo=@DGBPayNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsICBCPay_FetchEntityByIdentity_NoLock" primarykey="ICBCPayNo">
+    SELECT ICBCPayNo,InterfaceName,InterfaceVersion,OrderDate,OrderId,Amount,InstallmentTimes,MerAcct,TranSerialNo,CurType,MerID,VerifyJoinFlag,JoinFlag,UserNum,TranBatchNo,NotifyDate,TranStat,Comment,MerVar,NotifyData,SignMsg,UrlData,DateCreate  FROM SWfsICBCPay  WITH(NOLOCK)  WHERE ICBCPayNo=@ICBCPayNo
+  </statement>
+  <statement id="ComBeziWfs_WfsTopTradeDetail_FetchEntityByIdentity_NoLock" primarykey="Tid">
+    SELECT Tid,Ptid,Num,OuterSkuId,Title,Payment,Status  FROM WfsTopTradeDetail  WITH(NOLOCK)  WHERE Tid=@Tid
+  </statement>
+  <statement id="ComBeziWfs_WfsShoppingCartDetail_FetchEntityByIdentity_NoLock" primarykey="ShoppingCartDetailId">
+    SELECT ShoppingCartDetailId,ShoppingCartId,ProductNo,SkuNo,Quantity,DeleteFlag,DateAdd,CategoryNo,BuyType,PromotionNo,PromotionName,PromotionProductType,PromotionType,RelationSkuNo,TopicSubjectFlag  FROM WfsShoppingCartDetail  WITH(NOLOCK)  WHERE ShoppingCartDetailId=@ShoppingCartDetailId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectPromotionChannel_FetchEntityByIdentity_NoLock" primarykey="PCID">
+    SELECT PCID,ChannelName,CreateUserId,CreateDateTime  FROM SWfsSubjectPromotionChannel  WITH(NOLOCK)  WHERE PCID=@PCID
+  </statement>
+  <statement id="ComBeziWfs_SWfsLotteryNo_FetchEntityByIdentity_NoLock" primarykey="LotteryId">
+    SELECT LotteryId,LotteryNo,LotteryEventNo,UserId,NumberType,SourceNo,Status,DateCreate,SendMobile  FROM SWfsLotteryNo  WITH(NOLOCK)  WHERE LotteryId=@LotteryId
+  </statement>
+  <statement id="ComBeziWfs_SWfsEWallet_FetchEntityByIdentity_NoLock" primarykey="EWalletId">
+    SELECT EWalletId,UserId,Password,DateCreate,ErrorCount,DateError,Status  FROM SWfsEWallet  WITH(NOLOCK)  WHERE EWalletId=@EWalletId
+  </statement>
+  <statement id="ComBeziWfs_WfsMarketResource_FetchEntityByIdentity_NoLock" primarykey="ResourceNo">
+    SELECT ResourceNo,ResourceName,Domain,UrlAddress,Module,Menu  FROM WfsMarketResource  WITH(NOLOCK)  WHERE ResourceNo=@ResourceNo
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderCancelReason_FetchEntityByIdentity_NoLock" primarykey="OrderNo">
+    SELECT OrderNo,ReasonIds,Memo,OperatorUserId,DateOperator  FROM WfsOrderCancelReason  WITH(NOLOCK)  WHERE OrderNo=@OrderNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsEWalletTradeHistory_FetchEntityByIdentity_NoLock" primarykey="Id">
+    SELECT Id,EWalletId,TradeNo,TradeAmount,TradeType,CanWithdraw,Status,Comment,DateTrade,DateUpdate  FROM SWfsEWalletTradeHistory  WITH(NOLOCK)  WHERE Id=@Id
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewArrivalProduct_FetchEntityByIdentity_NoLock" primarykey="NewArrivalProductNo">
+    SELECT NewArrivalProductNo,BrandNewArrivalNo,ProductNo,OrderFlag  FROM SWfsNewArrivalProduct  WITH(NOLOCK)  WHERE NewArrivalProductNo=@NewArrivalProductNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectChannelRef_FetchEntityByIdentity_NoLock" primarykey="SubjectChannelRefId">
+    SELECT SubjectChannelRefId,SubjectNo,ChannelNo  FROM SWfsSubjectChannelRef  WITH(NOLOCK)  WHERE SubjectChannelRefId=@SubjectChannelRefId
+  </statement>
+  <statement id="ComBeziWfs_WfsRoleResourceRef_FetchEntityByIdentity_NoLock" primarykey="RoleResourceRefNo">
+    SELECT RoleResourceRefNo,ResourceNo,RoleNo  FROM WfsRoleResourceRef  WITH(NOLOCK)  WHERE RoleResourceRefNo=@RoleResourceRefNo
+  </statement>
+  <statement id="ComBeziWfs_WfsVerifyCode_FetchEntityByIdentity_NoLock" primarykey="VerifyCodeId">
+    SELECT VerifyCodeId,VerifyCode,CreateTime  FROM WfsVerifyCode  WITH(NOLOCK)  WHERE VerifyCodeId=@VerifyCodeId
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderEGiftCard_FetchEntityByIdentity_NoLock" primarykey="OrderEGiftCardId">
+    SELECT OrderEGiftCardId,OrderNo,ReciveName,FromName,PresentInfo,ReciveMobileNo,EGiftCardKey,EGiftCardNo,UserId,EGiftCardKeySendCount,DateCreate,EGiftCardAmount  FROM WfsOrderEGiftCard  WITH(NOLOCK)  WHERE OrderEGiftCardId=@OrderEGiftCardId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectUVFluxForm_FetchEntityByIdentity_NoLock" primarykey="UVID">
+    SELECT UVID,SubjectNo,PCID,DataCount,CreateDateTime  FROM SWfsSubjectUVFluxForm  WITH(NOLOCK)  WHERE UVID=@UVID
+  </statement>
+  <statement id="ComBeziWfs_SWfsLaKaLaLog_FetchEntityByIdentity_NoLock" primarykey="Logid">
+    SELECT Logid,IsOrderNo,EsOrderNo,EsPaySeq,EsTerminalNo,EsPayNum,PayVersion,PayAmount,PayStatus,PayTime,Sign,UrlParams,LogTime  FROM SWfsLaKaLaLog  WITH(NOLOCK)  WHERE Logid=@Logid
+  </statement>
+  <statement id="ComBeziWfs_SWfsOperationPicture_FetchEntityByIdentity_NoLock" primarykey="PictureManageId">
+    SELECT PictureManageId,PictureFileNo,PictureName,LinkAddress,Status,SortId,OperatorUserId,DateCreate,WebSiteNo,PageNo,PagePositionNo,PictureIndex,PagePositionName,DateBegin,DateEnd,DataState  FROM SWfsOperationPicture  WITH(NOLOCK)  WHERE PictureManageId=@PictureManageId
+  </statement>
+  <statement id="ComBeziWfs_WfsColumnDetail_FetchEntityByIdentity_NoLock" primarykey="ColumnDetailId">
+    SELECT ColumnDetailId,ColumnId,ProductNo,CategoryNo,BrandNo,PictureFileNo,RecommendTitle,RecommendDescription,IndexValue,IsShow,AddUser,DateCreate  FROM WfsColumnDetail  WITH(NOLOCK)  WHERE ColumnDetailId=@ColumnDetailId
+  </statement>
+  <statement id="ComBeziWfs_WfsNavErpCategoryRef_FetchEntityByIdentity_NoLock" primarykey="NavErpCategoryRefId">
+    SELECT NavErpCategoryRefId,ErpCategoryNo,NavCategoryNo  FROM WfsNavErpCategoryRef  WITH(NOLOCK)  WHERE NavErpCategoryRefId=@NavErpCategoryRefId
+  </statement>
+  <statement id="ComBeziWfs_SWfsLottery_FetchEntityByIdentity_NoLock" primarykey="UserId">
+    SELECT UserId,LotteryDate,Mobile,LotteryType,FromArea  FROM SWfsLottery  WITH(NOLOCK)  WHERE UserId=@UserId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSpChannelProduct_FetchEntityByIdentity_NoLock" primarykey="ProductID">
+    SELECT ProductID,GroupID,ProductNO,ProductImgNO,SortValue,CreateDate  FROM SWfsSpChannelProduct  WITH(NOLOCK)  WHERE ProductID=@ProductID
+  </statement>
+  <statement id="ComBeziWfs_SWfsShoppingCartNew_FetchEntityByIdentity_NoLock" primarykey="ShoppingCartId">
+    SELECT ShoppingCartId,UserId,DeliverId,PayTypeId,PayTypeChildId,DeliverName,Freight,InvoiceFlag,InvoiceTitle,TimeRequest,SpecialRequest,InvoiceType  FROM SWfsShoppingCartNew  WITH(NOLOCK)  WHERE ShoppingCartId=@ShoppingCartId
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandIframes_FetchEntityByIdentity_NoLock" primarykey="BrandIframeNo">
+    SELECT BrandIframeNo,BrandNo,DirectoryName,Creater,Position,Url,Status,DateCreate,BrandTerminalNo  FROM SWfsBrandIframes  WITH(NOLOCK)  WHERE BrandIframeNo=@BrandIframeNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsUserWeixin_FetchEntityByIdentity_NoLock" primarykey="UserId">
+    SELECT UserId,OpenId,NickName,Gender,Province,City,Country,HeadImgUrl,Privilege  FROM SWfsUserWeixin  WITH(NOLOCK)  WHERE UserId=@UserId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectDataStatistics_FetchEntityByIdentity_NoLock" primarykey="DSID">
+    SELECT DSID,SubjectNo,PV,UV,SkipRate,ConvertRate,SalesCount,SoldOutRate,CompareBeforeDayRate,SaleFinish,UVFlux,CreateDateTime  FROM SWfsSubjectDataStatistics  WITH(NOLOCK)  WHERE DSID=@DSID
+  </statement>
+  <statement id="ComBeziWfs_SWfsProductCommentPicRef_FetchEntityByIdentity_NoLock" primarykey="CommentPicId">
+    SELECT CommentPicId,PictureFileNo,CommentId,CreateDate,SortId  FROM SWfsProductCommentPicRef  WITH(NOLOCK)  WHERE CommentPicId=@CommentPicId
+  </statement>
+  <statement id="ComBeziWfs_SWfsMeetingMetaInfo_FetchEntityByIdentity_NoLock" primarykey="ID">
+    SELECT ID,MeetingID,Title,KeyWords,Description  FROM SWfsMeetingMetaInfo  WITH(NOLOCK)  WHERE ID=@ID
+  </statement>
+  <statement id="ComBeziWfs_WfsUserTicketRef_FetchEntityByIdentity_NoLock" primarykey="UserTicketRef">
+    SELECT UserTicketRef,UserId,CashTicketNo  FROM WfsUserTicketRef  WITH(NOLOCK)  WHERE UserTicketRef=@UserTicketRef
+  </statement>
+  <statement id="ComBeziWfs_Product_FetchEntityByIdentity_NoLock" primarykey="$Table.PK">
+    SELECT ProductNo,CategoryNo,ProductTemplateNo,BrandNo,BarCode,GoodsNo,MarketPrice,SellPrice,ProductTitle,ProductName,IsShelf,IsCheck,WarnCount,ProductWeight,ProductPicFile,ProductXmlText,ProductCreate,DateMarket,SeasonMarket,Knowledges,Description,ProductContent,ProductInfoXml,DateCreate,PromotionNo,IsPromotion,CmbcSellPrice,HxSellPrice,TopSellPrice,IsExtend,PlatinumPrice,DiamondPrice,LimitedPrice,LimitedVipPrice,Video,EditText,DepartmentNo,UserGroupNo,AddUserId,SupplierNo,ProductSizeNo,ProductStyle,ProductUnitNo,VisibleState,ProductType,SizeStandard,DateShelf,ProductShowFlag,DiscountRate,FirstDateShelf,IsTopFlag,DateTop,ProductFrom,GenderStyle,SpecialDesc,IsSupportCod,IsSupportGift,LastLimitedPrice,LastPlatinumPrice,LastDiamondPrice,ProductPicFlag,PublishFlag,IsLimitedOutlet,ProductMaterial,IsSupportReturn,IsSupportChange,AttributeFlag,ProductSizeXmlText,BuyingAdvice,LastSellPrice,ProductFlag,Prefix,Suffix,PromotionPrice,LastPromotionPrice,IsVCode,PreShowFlag,DateShowFlagBegin,DateShowFlagEnd,ProductPicFileTwo,ProductLong,ProductWidth,ProductHeight,ShelfLife,AvailablePeriod,TransportFlag,BrokenFlag  FROM Product  WITH(NOLOCK)  WHERE $Table.PK=@$Table.PK
+  </statement>
+  <statement id="ComBeziWfs_SWfsReceiveSMS_FetchEntityByIdentity_NoLock" primarykey="ReceiveSMSId">
+    SELECT ReceiveSMSId,UserId,MailAddress,SoursePhoneNum,ReceiveContent,ReceiveDate,SourseStateNum,ReplayContent,OperateType,Status,OperateDate,Operator  FROM SWfsReceiveSMS  WITH(NOLOCK)  WHERE ReceiveSMSId=@ReceiveSMSId
+  </statement>
+  <statement id="ComBeziWfs_SWfsStyle_FetchEntityByIdentity_NoLock" primarykey="StyleNo">
+    SELECT StyleNo,StyleName,Status,Sort,DateCreate  FROM SWfsStyle  WITH(NOLOCK)  WHERE StyleNo=@StyleNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsVipSubject_FetchEntityByIdentity_NoLock" primarykey="VipSubjectNo">
+    SELECT VipSubjectNo,VipSubjectName,VipSubjectSubtitle,VipSubjectType,VipSubjectStatus,VipSubjectBigPicNo,VipSubjectSmallPicNo,VipSubjectAdPicNo,VipSubjectTopPicNo,VipsubjectContent,VipSubjectRestrictedType,VipSubjectBeginTime,VipSubjectEndTime,VipSubjectSendDate,VipSubjectIsTop,VipSubjectHref,OperatorUserId,DateCreate,DateUpdate,InviteCode  FROM SWfsVipSubject  WITH(NOLOCK)  WHERE VipSubjectNo=@VipSubjectNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSkillProduct_FetchEntityByIdentity_NoLock" primarykey="Id">
+    SELECT Id,SkillGroupId,ProductNo,ProductFileNo,SortValue,CreateTime,CreateUser,ModifyTime,ModifyUser,IsVoid  FROM SWfsSkillProduct  WITH(NOLOCK)  WHERE Id=@Id
+  </statement>
+  <statement id="ComBeziWfs_SWfsIndexModule_FetchEntityByIdentity_NoLock" primarykey="ModuleId">
+    SELECT ModuleId,ModuleName,ADShowType,ADShowTypeChangeDate,Sort,DateCreate,OperateUserId,UpdateDate,UpdateOperateUserId,Stutas,DataState,PageNo,WebSiteNo  FROM SWfsIndexModule  WITH(NOLOCK)  WHERE ModuleId=@ModuleId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSpChannelRecommendCategory_FetchEntityByIdentity_NoLock" primarykey="RecommendCategoryID">
+    SELECT RecommendCategoryID,ChannelNO,CategoryNO,Status,SortValue,CreateDate  FROM SWfsSpChannelRecommendCategory  WITH(NOLOCK)  WHERE RecommendCategoryID=@RecommendCategoryID
+  </statement>
+  <statement id="ComBeziWfs_SWfsPromotionStrategyTicket_FetchEntityByIdentity_NoLock" primarykey="RelationNo">
+    SELECT RelationNo,StrategyNo,PromotionTicketNo,DateCreate,CreateUserId  FROM SWfsPromotionStrategyTicket  WITH(NOLOCK)  WHERE RelationNo=@RelationNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsGlobalConfig_FetchEntityByIdentity_NoLock" primarykey="FunctionNo">
+    SELECT FunctionNo,ConfigIntro,ConfigtName,ConfigValue,CreateDate  FROM SWfsGlobalConfig  WITH(NOLOCK)  WHERE FunctionNo=@FunctionNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewSubjectPriceType_FetchEntityByIdentity_NoLock" primarykey="PriceTypeId">
+    SELECT PriceTypeId,PriceTag,PriceType,IsDelete  FROM SWfsNewSubjectPriceType  WITH(NOLOCK)  WHERE PriceTypeId=@PriceTypeId
+  </statement>
+  <statement id="ComBeziWfs_SWfsProductRecommend_FetchEntityByIdentity_NoLock" primarykey="RecommendID">
+    SELECT RecommendID,ProductNo,Gender,WebSite,Status,DateCreate,Creater  FROM SWfsProductRecommend  WITH(NOLOCK)  WHERE RecommendID=@RecommendID
+  </statement>
+  <statement id="ComBeziWfs_SWfsCmbCreditCardInfo_FetchEntityByIdentity_NoLock" primarykey="OrderNo">
+    SELECT OrderNo,CreditCardNo,ValidDate,Cvv2,AuthorizationCode,Status,LockStatus,DateOperate  FROM SWfsCmbCreditCardInfo  WITH(NOLOCK)  WHERE OrderNo=@OrderNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsPromotionStrategy_FetchEntityByIdentity_NoLock" primarykey="StrategyNo">
+    SELECT StrategyNo,StrategyName,DateType,DurationDays,DateCreate,CreateUserId,Status,DateBegin,DateEnd  FROM SWfsPromotionStrategy  WITH(NOLOCK)  WHERE StrategyNo=@StrategyNo
+  </statement>
+  <statement id="ComBeziWfs_WfsColumn_FetchEntityByIdentity_NoLock" primarykey="ColumnId">
+    SELECT ColumnId,ColumnName,ColumnShowName,LinkAddress,ColumnType,IsShow,AddUser,DateCreate,Memo  FROM WfsColumn  WITH(NOLOCK)  WHERE ColumnId=@ColumnId
+  </statement>
+  <statement id="ComBeziWfs_SWfsGiftCardOrderCouponRef_FetchEntityByIdentity_NoLock" primarykey="RefId">
+    SELECT RefId,OrderNo,CashTicketNo,UserId,DateCreate  FROM SWfsGiftCardOrderCouponRef  WITH(NOLOCK)  WHERE RefId=@RefId
+  </statement>
+  <statement id="ComBeziWfs_WfsProductbei_FetchEntityByIdentity_NoLock" primarykey="$Table.PK">
+    SELECT ProductNo,CategoryNo,ProductTemplateNo,BrandNo,BarCode,GoodsNo,MarketPrice,SellPrice,ProductTitle,ProductName,IsShelf,IsCheck,WarnCount,ProductWeight,ProductPicFile,ProductXmlText,ProductCreate,DateMarket,SeasonMarket,Knowledges,Description,ProductContent,ProductInfoXml,DateCreate,PromotionNo,IsPromotion,CmbcSellPrice,HxSellPrice,TopSellPrice,IsExtend,PlatinumPrice,DiamondPrice,LimitedPrice,LimitedVipPrice,Video,EditText,DepartmentNo,UserGroupNo,AddUserId,SupplierNo,ProductSizeNo,ProductStyle,ProductUnitNo,VisibleState,ProductType,SizeStandard,DateShelf,ProductShowFlag,DiscountRate,FirstDateShelf,IsTopFlag,DateTop,ProductFrom,GenderStyle,SpecialDesc,IsSupportCod,IsSupportGift,LastLimitedPrice,LastPlatinumPrice,LastDiamondPrice,ProductPicFlag,PublishFlag,IsLimitedOutlet,ProductMaterial,IsSupportReturn,IsSupportChange,AttributeFlag  FROM WfsProductbei  WITH(NOLOCK)  WHERE $Table.PK=@$Table.PK
+  </statement>
+  <statement id="ComBeziWfs_SWfsHotProduct_FetchEntityByIdentity_NoLock" primarykey="HotProductId">
+    SELECT HotProductId,ProductNo,Status,PicFileNo,Description,StartDate,EndDate,CreateDate,Type  FROM SWfsHotProduct  WITH(NOLOCK)  WHERE HotProductId=@HotProductId
+  </statement>
+  <statement id="ComBeziWfs_SWfsCategoryLabelPicture_FetchEntityByIdentity_NoLock" primarykey="CategoryLabelPictureId">
+    SELECT CategoryLabelPictureId,CategoryNo,LabelNo,PictureType,CategoryPicFile,RelationProductNo,UploadUser,DateCreate,DateBegin,Status,IsUsed  FROM SWfsCategoryLabelPicture  WITH(NOLOCK)  WHERE CategoryLabelPictureId=@CategoryLabelPictureId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectLableType_FetchEntityByIdentity_NoLock" primarykey="Id">
+    SELECT Id,SubjectNo,Type,ChannelNo  FROM SWfsSubjectLableType  WITH(NOLOCK)  WHERE Id=@Id
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandHallAd_FetchEntityByIdentity_NoLock" primarykey="BrandHallAdId">
+    SELECT BrandHallAdId,PictureName,PictureSite,PictureFileNo,LinkAddress,Status,Gender,DateCreate,DateBegin,DateEnd  FROM SWfsBrandHallAd  WITH(NOLOCK)  WHERE BrandHallAdId=@BrandHallAdId
+  </statement>
+  <statement id="ComBeziWfs_SWfsChannel_FetchEntityByIdentity_NoLock" primarykey="ChannelNo">
+    SELECT ChannelNo,ChannelName,Status,DateCreate,CreateUserId,Description,BackgroundPic,HtmlContent,HolidayMode,SiteNo,SortNo,DeleteFlag  FROM SWfsChannel  WITH(NOLOCK)  WHERE ChannelNo=@ChannelNo
+  </statement>
+  <statement id="ComBeziWfs_WfsSaleDeviceDiscount_FetchEntityByIdentity_NoLock" primarykey="SaleDeviceDetailNo">
+    SELECT SaleDeviceDetailNo,SaleDeviceNo,DiscountRate,IsUseTicket,MerberType,ConditionType,ConditionNo,BeginAmount,EndAmount,OperateUserId,DateCreate  FROM WfsSaleDeviceDiscount  WITH(NOLOCK)  WHERE SaleDeviceDetailNo=@SaleDeviceDetailNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSpChannelBrandGroup_FetchEntityByIdentity_NoLock" primarykey="GroupID">
+    SELECT GroupID,ChannelNO,GroupName,Status,CreateDate  FROM SWfsSpChannelBrandGroup  WITH(NOLOCK)  WHERE GroupID=@GroupID
+  </statement>
+  <statement id="ComBeziWfs_SwfsFlagShipNewArrivalProductList_FetchEntityByIdentity_NoLock" primarykey="ProductListId">
+    SELECT ProductListId,NewArrivalId,ProductNo,ProductFirstPicNo,ProductSecondPicNo,IsOneRow,SortValue,CreateDate,Status,DataState,OperateUserId,UpdateOperateUserId,UpdateDate  FROM SwfsFlagShipNewArrivalProductList  WITH(NOLOCK)  WHERE ProductListId=@ProductListId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSortHistory_FetchEntityByIdentity_NoLock" primarykey="Id">
+    SELECT Id,SearchUrl,Direction,CreateDate,UserId  FROM SWfsSortHistory  WITH(NOLOCK)  WHERE Id=@Id
+  </statement>
+  <statement id="ComBeziWfs_Wfsproduct_FetchEntityByIdentity_NoLock" primarykey="$Table.PK">
+    SELECT   FROM Wfsproduct  WITH(NOLOCK)  WHERE $Table.PK=@$Table.PK
+  </statement>
+  <statement id="ComBeziWfs_SWfsProductComment_FetchEntityByIdentity_NoLock" primarykey="CommentId">
+    SELECT CommentId,CommentContent,ProductNo,UserId,OrderNo,DateCreate,IsAnon,Status,StarLevel,OperateUserId,CommentRContent,CommentRDate,ResultCode,ResultDate,ResultNo,CommentType,CommentSource,SkuNo,UserLevel,NickName  FROM SWfsProductComment  WITH(NOLOCK)  WHERE CommentId=@CommentId
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderCancelRecord_FetchEntityByIdentity_NoLock" primarykey="OrderCancelRecordId">
+    SELECT OrderCancelRecordId,OrderNo,IsCancelSuccess,IsReleaseInventory,Operater,DateCreate,MESSAGE,IsReleaseGiftCard  FROM WfsOrderCancelRecord  WITH(NOLOCK)  WHERE OrderCancelRecordId=@OrderCancelRecordId
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandPics_FetchEntityByIdentity_NoLock" primarykey="BrandPicNo">
+    SELECT BrandPicNo,BrandNo,PicName,PicNo,Style,Url,Status,Sort,DateCreate,BrandTerminalNo,PicIntroduce,PicSizeType,ColorValue,VideoAddress,VideoDesc,PictureDesc  FROM SWfsBrandPics  WITH(NOLOCK)  WHERE BrandPicNo=@BrandPicNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandModule_FetchEntityByIdentity_NoLock" primarykey="ModuleId">
+    SELECT ModuleId,ModuleName,DateCreate,ModuleNo,ModuleType,BrandView  FROM SWfsBrandModule  WITH(NOLOCK)  WHERE ModuleId=@ModuleId
+  </statement>
+  <statement id="ComBeziWfs_SWfsVUserCodesRef_FetchEntityByIdentity_NoLock" primarykey="UserCodesId">
+    SELECT UserCodesId,UserId,VCode,UseCodeStatus,OperatorId,DateUpdate,DateCreate  FROM SWfsVUserCodesRef  WITH(NOLOCK)  WHERE UserCodesId=@UserCodesId
+  </statement>
+  <statement id="ComBeziWfs_SWfsPromotionChargeTicketRef_FetchEntityByIdentity_NoLock" primarykey="PromotionChargeTicketRefId">
+    SELECT PromotionChargeTicketRefId,PromotionChargeCodeNo,PromotionTicketNo,TicketRefCount,Status  FROM SWfsPromotionChargeTicketRef  WITH(NOLOCK)  WHERE PromotionChargeTicketRefId=@PromotionChargeTicketRefId
+  </statement>
+  <statement id="ComBeziWfs_WfsOperator_FetchEntityByIdentity_NoLock" primarykey="UserName">
+    SELECT UserName,Password,TrueName,Mobile,Telephone,Email,IsValid,CreateDate,LoginFlag  FROM WfsOperator  WITH(NOLOCK)  WHERE UserName=@UserName
+  </statement>
+  <statement id="ComBeziWfs_SWfsNavigationManage_FetchEntityByIdentity_NoLock" primarykey="NavigationId">
+    SELECT NavigationId,NavigationTitle,NavigationLink,SortId,CreateDate,Status,DataState,OperateUserId,UpdateOperateUserId,UpdateDate  FROM SWfsNavigationManage  WITH(NOLOCK)  WHERE NavigationId=@NavigationId
+  </statement>
+  <statement id="ComBeziWfs_SWfsAolaiAdvancePage_FetchEntityByIdentity_NoLock" primarykey="SWfsAolaiNoticePageId">
+    SELECT SWfsAolaiNoticePageId,PageName,PageDes,PageStaticContent,PageDesKey,DateCreate,DateBegin,DateEnd,OperatorUserId,BackUpField,IsLimitedOutlet  FROM SWfsAolaiAdvancePage  WITH(NOLOCK)  WHERE SWfsAolaiNoticePageId=@SWfsAolaiNoticePageId
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandAdsInfo_FetchEntityByIdentity_NoLock" primarykey="ID">
+    SELECT ID,AdName,Position,PicUrl,PicNo,StartTime,Status,CreateUserId,CreateDate,UpdateUserId,UpdateDate  FROM SWfsBrandAdsInfo  WITH(NOLOCK)  WHERE ID=@ID
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewBrandProductManage_FetchEntityByIdentity_NoLock" primarykey="Id">
+    SELECT Id,BrandNo,NewShelfAmount,DateShelf  FROM SWfsNewBrandProductManage  WITH(NOLOCK)  WHERE Id=@Id
+  </statement>
+  <statement id="ComBeziWfs_WfsPromotionShoppingCart_FetchEntityByIdentity_NoLock" primarykey="GId">
+    SELECT GId,UserId,ShoppingCartDetailId,GroupId,ProductNo,SkuNo,Quantity,CategoryNo,Price,GroupPrice,PromotionGroupNo,DateAdd,TopicSubjectFlag  FROM WfsPromotionShoppingCart  WITH(NOLOCK)  WHERE GId=@GId
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandExtend_FetchEntityByIdentity_NoLock" primarykey="ExtendId">
+    SELECT ExtendId,BrandNo,BrandTypeId,NaviTypeId,DateCreate  FROM SWfsBrandExtend  WITH(NOLOCK)  WHERE ExtendId=@ExtendId
+  </statement>
+  <statement id="ComBeziWfs_WfsCmsContent_FetchEntityByIdentity_NoLock" primarykey="CmsContentNo">
+    SELECT CmsContentNo,CmsContentCategoryId,PublishTime,Title,ContentText,OperateUserId,ShowStatus,ContentType,Href,DateBegin,DateEnd,SiteNo,PositionId,PositionParentId,CountdownTime  FROM WfsCmsContent  WITH(NOLOCK)  WHERE CmsContentNo=@CmsContentNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsMeetingNavigationPublish_FetchEntityByIdentity_NoLock" primarykey="NavPublishID">
+    SELECT NavPublishID,MeetingID,NavHtml,DateCreate  FROM SWfsMeetingNavigationPublish  WITH(NOLOCK)  WHERE NavPublishID=@NavPublishID
+  </statement>
+  <statement id="ComBeziWfs_SWfsInviteCode_FetchEntityByIdentity_NoLock" primarykey="SerialNo">
+    SELECT SerialNo,UserId,DateCreate,SerialNoGuid,InviteCount,UserType  FROM SWfsInviteCode  WITH(NOLOCK)  WHERE SerialNo=@SerialNo
+  </statement>
+  <statement id="ComBeziWfs_WfsBankPayInfo_FetchEntityByIdentity_NoLock" primarykey="BankPayInfoNo">
+    SELECT BankPayInfoNo,OrderNo,Paymentway,PaymentDate,DealNo,DealType,BankName,PaymentPrice,RemittanceMem  FROM WfsBankPayInfo  WITH(NOLOCK)  WHERE BankPayInfoNo=@BankPayInfoNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsInviteAccountExchange_FetchEntityByIdentity_NoLock" primarykey="InviteAccountExchangeId">
+    SELECT InviteAccountExchangeId,UserId,ExchangeAmount,DateCreate,CashTicketNo  FROM SWfsInviteAccountExchange  WITH(NOLOCK)  WHERE InviteAccountExchangeId=@InviteAccountExchangeId
+  </statement>
+  <statement id="ComBeziWfs_SWfsOnsiteAuthorizeRecord_FetchEntityByIdentity_NoLock" primarykey="AuthorizeRecordId">
+    SELECT AuthorizeRecordId,OrderNo,AuthorizeId,AuthorizedDate  FROM SWfsOnsiteAuthorizeRecord  WITH(NOLOCK)  WHERE AuthorizeRecordId=@AuthorizeRecordId
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewSubject_FetchEntityByIdentity_NoLock" primarykey="SubjectNo">
+    SELECT SubjectNo,SubjectName,ChannelType,Status,DateBegin,DateEnd,SubjectTemplateType,SubjectTemplateTopPicType,ShowColumn,SubjectTemplateTopPicNo,SubjectTemplateBackgroundPicNO,SubjectContent,IphoneContent,DateCreate,CreateUserId,Ip,DatePre,PriceType,SubjectPreStartTemplateType,SubjectPreStartTemplatePicNoOne,PrivilegeValueOrUrl,SubjectPreStartTemplatePicNoTwo,SubjectPreStartTemplatePicUrlTwo,SubjectPreStartBackgroundPic,SubjectPreName,SubjectPreChildtName,SubjectPreTopPicNo,SubjectPreTopPicUrl,SubjectPara,SubjectIPhonePicNo,SubjectInletPicNo,SubjectIphoneInletPicNo,PrivilegeValuePicNo,PriceName,SubjectIphoneTopPicNo,SubjectWapInletPicNo,SubjectPriceType,SubjectBrandName,SubjectBrandUrl,SubjectPv,SubjectPvBase,SubjectCategoryNo,ProductCount,SubjectGender,SubjectBU,ForecastSalesAmount,ChannelNo,SubjectTemplateTopIphoneMemo1,SubjectTemplateTopMemo1,SubjectPreTemplateType,SubjectPreRemind,SubjectCouponShowType,SubjectTemplatePicNoOne,SubjectTemplatePicNoTwo,SubjectTemplatePicNoOneUrl,SubjectTemplatePicNoTwoUrl,SubjectStartTemplateType,SubjectTemplateIphonePicNoOne,SubjectCoupon,PageTitle,IsFreightFree  FROM SWfsNewSubject  WITH(NOLOCK)  WHERE SubjectNo=@SubjectNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsMemberApply_FetchEntityByIdentity_NoLock" primarykey="MemberApplyNo">
+    SELECT MemberApplyNo,SerialNo,MailAddress,Mobile,DateApply,TrueName,ApplyStatus,CheckUserId,DateCheck,Corporation,Position,Gender,ProvinceId,CityId,ApplyReason,Leaveword,Profession,CheckMemo  FROM SWfsMemberApply  WITH(NOLOCK)  WHERE MemberApplyNo=@MemberApplyNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsChargeCode1_FetchEntityByIdentity_NoLock" primarykey="ChargeCodeNo">
+    SELECT ChargeCodeNo,PromotionChargeCodeNo,UserId,Status,DateUsed,IsSend  FROM SWfsChargeCode1  WITH(NOLOCK)  WHERE ChargeCodeNo=@ChargeCodeNo
+  </statement>
+  <statement id="ComBeziWfs_WfsDeliveryArea_FetchEntityByIdentity_NoLock" primarykey="DeliveryAreaId">
+    SELECT DeliveryAreaId,DeliveryTypeId,AreaId,AreaName,BasePrice,BaseWeight,ReWeightPrice,Description,IsCod  FROM WfsDeliveryArea  WITH(NOLOCK)  WHERE DeliveryAreaId=@DeliveryAreaId
+  </statement>
+  <statement id="ComBeziWfs_SWfsCateTempHotLabel_FetchEntityByIdentity_NoLock" primarykey="HotLabelID">
+    SELECT HotLabelID,CateTempID,ObjectNo,ShowType,LabelType,Sort  FROM SWfsCateTempHotLabel  WITH(NOLOCK)  WHERE HotLabelID=@HotLabelID
+  </statement>
+  <statement id="ComBeziWfs_SWfsInviteCodeUserGroupRef_FetchEntityByIdentity_NoLock" primarykey="InviteCodeUserGroupId">
+    SELECT InviteCodeUserGroupId,SerialNo,GroupNo,OperateUserId,DateOperate  FROM SWfsInviteCodeUserGroupRef  WITH(NOLOCK)  WHERE InviteCodeUserGroupId=@InviteCodeUserGroupId
+  </statement>
+  <statement id="ComBeziWfs_SWfsCCBPay_FetchEntityByIdentity_NoLock" primarykey="CCBInfoNo">
+    SELECT CCBInfoNo,PostId,BranchId,OrderId,Payment,CurCode,Remark1,Remark2,AccType,Success,Sign,UrlData,ResultCode,DateCreate  FROM SWfsCCBPay  WITH(NOLOCK)  WHERE CCBInfoNo=@CCBInfoNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsAccount_FetchEntityByIdentity_NoLock" primarykey="UserId">
+    SELECT UserId,LevelNo,MailAddress,LoginName,MemberCardNo,Password,DateCreate,Status,ErrorCount,DateLogin,IntroducerId,ReceiveNews,SendNews,MemberType,SendVouchers,profession,LoginCount,LoginIP,LoginProvinceId,LoginCityId,IsEmailVerified,IsMobileVerified,IsExchanged,BaseConsumedAmount,ConsumedAmount,IsLevelActived,BeActivedLevelNo,SecuritySalt  FROM SWfsAccount  WITH(NOLOCK)  WHERE UserId=@UserId
+  </statement>
+  <statement id="ComBeziWfs_SWfsNoticeRecord_FetchEntityByIdentity_NoLock" primarykey="NoticeRecordId">
+    SELECT NoticeRecordId,ObjectId,ObjectType,NoticeXmlData,DateCreate  FROM SWfsNoticeRecord  WITH(NOLOCK)  WHERE NoticeRecordId=@NoticeRecordId
+  </statement>
+  <statement id="ComBeziWfs_WfsDeliveryCompany_FetchEntityByIdentity_NoLock" primarykey="DeliveryCompanyNo">
+    SELECT DeliveryCompanyNo,SupplierNo,DeliveryCompanyName,CompanyAddress,ConnectUser,ConnectPhone,PayType,DateCreate  FROM WfsDeliveryCompany  WITH(NOLOCK)  WHERE DeliveryCompanyNo=@DeliveryCompanyNo
+  </statement>
+  <statement id="ComBeziWfs_WfsInventory_FetchEntityByIdentity_NoLock" primarykey="InventoryNo">
+    SELECT InventoryNo,SkuNo,WarehouseNo,InventoryQuantity,NewQuantity  FROM WfsInventory  WITH(NOLOCK)  WHERE InventoryNo=@InventoryNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsMeetingInfoHtml_FetchEntityByIdentity_NoLock" primarykey="ID">
+    SELECT ID,MettingId,IsPublish,TemplateType,WebPreViewCode,WebStartCode,MobilePreViewCode,MobileStartCode,CreateDate,CreateUserId,UpdateDate,UpdateUserId  FROM SWfsMeetingInfoHtml  WITH(NOLOCK)  WHERE ID=@ID
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderSynchroRecord_FetchEntityByIdentity_NoLock" primarykey="OrderSynchroRecordId">
+    SELECT OrderSynchroRecordId,OrderNo,Type,DateCreate  FROM WfsOrderSynchroRecord  WITH(NOLOCK)  WHERE OrderSynchroRecordId=@OrderSynchroRecordId
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandFlagShipStore_FetchEntityByIdentity_NoLock" primarykey="FlagShipStoreId">
+    SELECT FlagShipStoreId,BrandNo,LogoPicNo,LogoBgPic,IsNaviBg,TemplateCode,AlterPicNo1,AlterPicAddr1,AlterPicNo2,AlterPicAddr2,AlterPicNo3,AlterPicAddr3,DateCreate,ProductTitlePicNo1,ProductTitleAddr1,ProductNos1,ProductTitlePicNo2,ProductTitleAddr2,ProductNos2,StoreBgPic,HtmlCode,ProductPicShowType  FROM SWfsBrandFlagShipStore  WITH(NOLOCK)  WHERE FlagShipStoreId=@FlagShipStoreId
+  </statement>
+  <statement id="ComBeziWfs_SWfsNoticeSet_FetchEntityByIdentity_NoLock" primarykey="NoticeSetId">
+    SELECT NoticeSetId,ObjectId,ObjectType,ObjectAttribute,IsEnable,UserId,DateCreate  FROM SWfsNoticeSet  WITH(NOLOCK)  WHERE NoticeSetId=@NoticeSetId
+  </statement>
+  <statement id="ComBeziWfs_SWfsPopElements_FetchEntityByIdentity_NoLock" primarykey="ElementsId">
+    SELECT ElementsId,CategoryNo,LabelNo,Status,SortId,OperatorUserId,DateCreate  FROM SWfsPopElements  WITH(NOLOCK)  WHERE ElementsId=@ElementsId
+  </statement>
+  <statement id="ComBeziWfs_SWfsPictureManager_FetchEntityByIdentity_NoLock" primarykey="PictureManageId">
+    SELECT PictureManageId,PictureFileNo,PictureName,LinkAddress,WebSite,Status,Position,OperatorUserId,DateCreate,PagePosition,Keyword,BrandContent,DateBegin,DateEnd,Gender,InvitationCode,BankName,ExpandPicFile,SubTitle  FROM SWfsPictureManager  WITH(NOLOCK)  WHERE PictureManageId=@PictureManageId
+  </statement>
+  <statement id="ComBeziWfs_WfsAccount_FetchEntityByIdentity_NoLock" primarykey="MailAddress">
+    SELECT MailAddress,Password,UserId,Status,ErrorCount,DateLogin  FROM WfsAccount  WITH(NOLOCK)  WHERE MailAddress=@MailAddress
+  </statement>
+  <statement id="ComBeziWfs_SWfsP1Events_FetchEntityByIdentity_NoLock" primarykey="P1EventId">
+    SELECT P1EventId,EventName,EventId,Link,Discount,ImageFileNo,BeginTime,EndTime,Category,IsSendToP1,SubCategory,DateCreate,IsTeMai  FROM SWfsP1Events  WITH(NOLOCK)  WHERE P1EventId=@P1EventId
+  </statement>
+  <statement id="ComBeziWfs_SWfsCDKUserRef_FetchEntityByIdentity_NoLock" primarykey="CDKUserId">
+    SELECT CDKUserId,CDKNo,UserId,DateCreate  FROM SWfsCDKUserRef  WITH(NOLOCK)  WHERE CDKUserId=@CDKUserId
+  </statement>
+  <statement id="ComBeziWfs_SWfsChargeCode_FetchEntityByIdentity_NoLock" primarykey="ChargeCodeNo">
+    SELECT ChargeCodeNo,PromotionChargeCodeNo,UserId,Status,DateUsed,IsSend  FROM SWfsChargeCode  WITH(NOLOCK)  WHERE ChargeCodeNo=@ChargeCodeNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsCategoryAdPicture_FetchEntityByIdentity_NoLock" primarykey="AdPictureId">
+    SELECT AdPictureId,CategoryNo,ColumnId,PictureFileNo,PictureName,Position,PictureUrl,BeginTime,EndTime,Status,DateCreate,OperatorId  FROM SWfsCategoryAdPicture  WITH(NOLOCK)  WHERE AdPictureId=@AdPictureId
+  </statement>
+  <statement id="ComBeziWfs_SWfsAccountLog_FetchEntityByIdentity_NoLock" primarykey="AccountLogId">
+    SELECT AccountLogId,UserId,LoginIP,LoginDate,LoginFrom,LoginFromSub  FROM SWfsAccountLog  WITH(NOLOCK)  WHERE AccountLogId=@AccountLogId
+  </statement>
+  <statement id="ComBeziWfs_SWfsUserInfo_FetchEntityByIdentity_NoLock" primarykey="UserInfoId">
+    SELECT UserInfoId,UserId,Height,Weight,Bust,Waistline,Hips,Footlength,FootWidth,CalfSize,FootType,ShoeSize,BodyType,Avatar,AuditStatus,AvatarCreateDate,IsDelete,FootSize,PicType,BindStatus,SyncStatus,WeiBoUserId,ShoulderWidth  FROM SWfsUserInfo  WITH(NOLOCK)  WHERE UserInfoId=@UserInfoId
+  </statement>
+  <statement id="ComBeziWfs_WfsCmsContentCategory_FetchEntityByIdentity_NoLock" primarykey="CmsContentCategoryId">
+    SELECT CmsContentCategoryId,CmsContentCategoryName  FROM WfsCmsContentCategory  WITH(NOLOCK)  WHERE CmsContentCategoryId=@CmsContentCategoryId
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewArrivalProductRef_FetchEntityByIdentity_NoLock" primarykey="KeyID">
+    SELECT KeyID,ArrivalID,ProductNo,Sort,OperatorUserId,DateCreate,DateUpdate  FROM SWfsNewArrivalProductRef  WITH(NOLOCK)  WHERE KeyID=@KeyID
+  </statement>
+  <statement id="ComBeziWfs_SWfsLotteryUserInfo_FetchEntityByIdentity_NoLock" primarykey="UserID">
+    SELECT UserID,TodayCount,UserEmail,EditeDate,CreateDate  FROM SWfsLotteryUserInfo  WITH(NOLOCK)  WHERE UserID=@UserID
+  </statement>
+  <statement id="ComBeziWfs_PicLabPictureFile_FetchEntityByIdentity_NoLock" primarykey="PictureFileNo">
+    SELECT PictureFileNo,OperatorId,FileName,Extension,FileContent  FROM PicLabPictureFile  WITH(NOLOCK)  WHERE PictureFileNo=@PictureFileNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectApply_FetchEntityByIdentity_NoLock" primarykey="SubjectApplyNo">
+    SELECT SubjectApplyNo,SubjectNo,UserId,MailAddress,Mobile,DateApply  FROM SWfsSubjectApply  WITH(NOLOCK)  WHERE SubjectApplyNo=@SubjectApplyNo
+  </statement>
+  <statement id="ComBeziWfs_WfsPayTypeChild_FetchEntityByIdentity_NoLock" primarykey="PayTypeChildId">
+    SELECT PayTypeChildId,PayTypeId,PayTypeChidLogo,PayTypeChildName,PayTypeChildValue,PayTypeChildUrl  FROM WfsPayTypeChild  WITH(NOLOCK)  WHERE PayTypeChildId=@PayTypeChildId
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandFlagShipStoreRegion_FetchEntityByIdentity_NoLock" primarykey="FlagReigionID">
+    SELECT FlagReigionID,BrandNO,RegionID,ImgNO,RelationType,RelationContent,TemplateNo,CreateDate,Direction  FROM SWfsBrandFlagShipStoreRegion  WITH(NOLOCK)  WHERE FlagReigionID=@FlagReigionID
+  </statement>
+  <statement id="ComBeziWfs_SWfsStyleFavorite_FetchEntityByIdentity_NoLock" primarykey="SFID">
+    SELECT SFID,UserNo,LookOutFitNo,OptionType,IsFavorite,Count,ShareWebNo,CreateDate  FROM SWfsStyleFavorite  WITH(NOLOCK)  WHERE SFID=@SFID
+  </statement>
+  <statement id="ComBeziWfs_WfsResource_FetchEntityByIdentity_NoLock" primarykey="ResourceNo">
+    SELECT ResourceNo,ResourceName,Domain,UrlAddress,Module,Menu  FROM WfsResource  WITH(NOLOCK)  WHERE ResourceNo=@ResourceNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsOrderDiscountTicketRef_FetchEntityByIdentity_NoLock" primarykey="OrderTicketNo">
+    SELECT OrderTicketNo,OrderNo,TicketNo  FROM SWfsOrderDiscountTicketRef  WITH(NOLOCK)  WHERE OrderTicketNo=@OrderTicketNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsVActivityTopicsRef_FetchEntityByIdentity_NoLock" primarykey="ActivityTopicsId">
+    SELECT ActivityTopicsId,ActivityId,TopicNo,OperatorId,DateCreate  FROM SWfsVActivityTopicsRef  WITH(NOLOCK)  WHERE ActivityTopicsId=@ActivityTopicsId
+  </statement>
+  <statement id="ComBeziWfs_SWfsInviteAccount_FetchEntityByIdentity_NoLock" primarykey="InviteAccountId">
+    SELECT InviteAccountId,RegCount,FirstOrderCount,TotalCount,RegAmount,FirstOrderAmount,TotalAmount,Status,EnableExchangeAmount,AlreadyExchangeAmount,OperaterId,OperateDate  FROM SWfsInviteAccount  WITH(NOLOCK)  WHERE InviteAccountId=@InviteAccountId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectFeaturedEvents_FetchEntityByIdentity_NoLock" primarykey="ID">
+    SELECT ID,SubjectNo,ChannelNo,Type,DateShow,Location,SpreadPicture,DateCreate,CreateUserId  FROM SWfsSubjectFeaturedEvents  WITH(NOLOCK)  WHERE ID=@ID
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewSubjectProductRef_FetchEntityByIdentity_NoLock" primarykey="SubjectProductRefId">
+    SELECT SubjectProductRefId,ProductNo,CategoryNo,PropertyValue,TopFlag,SortNo,BuyType,ProductFlag,IsShow,ShowTime,DateCreate  FROM SWfsNewSubjectProductRef  WITH(NOLOCK)  WHERE SubjectProductRefId=@SubjectProductRefId
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandAttention_FetchEntityByIdentity_NoLock" primarykey="AttentionNo">
+    SELECT AttentionNo,BrandNo,NewArrival,Promotion,UserId,DateCreate  FROM SWfsBrandAttention  WITH(NOLOCK)  WHERE AttentionNo=@AttentionNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsProductPromotionTip_FetchEntityByIdentity_NoLock" primarykey="PromotionInfoId">
+    SELECT PromotionInfoId,PromotionInfoName,MemberSet,StartDate,EndDate,Status,CreateDate,CreateUsterId,IsAllProduct,TipContent  FROM SWfsProductPromotionTip  WITH(NOLOCK)  WHERE PromotionInfoId=@PromotionInfoId
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandDetailModule_FetchEntityByIdentity_NoLock" primarykey="BrandModuleId">
+    SELECT BrandModuleId,ModuleTitle,BrandNo,CategoryNo,DisplayCount,Status,Sort,Gender,OperatorUserId,DateCreate,DateUpdate  FROM SWfsBrandDetailModule  WITH(NOLOCK)  WHERE BrandModuleId=@BrandModuleId
+  </statement>
+  <statement id="ComBeziWfs_SWfsDiscountTicket_FetchEntityByIdentity_NoLock" primarykey="DiscountTicketNo">
+    SELECT DiscountTicketNo,TicketNo,TicketAmount,ProductNo,SubjectNo,Status,UserId,Mobile,OrderNo,DateCreate  FROM SWfsDiscountTicket  WITH(NOLOCK)  WHERE DiscountTicketNo=@DiscountTicketNo
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderTicket_FetchEntityByIdentity_NoLock" primarykey="OrderTicketNo">
+    SELECT OrderTicketNo,OrderNo,CashTicketNo  FROM WfsOrderTicket  WITH(NOLOCK)  WHERE OrderTicketNo=@OrderTicketNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectProductSort_FetchEntityByIdentity_NoLock" primarykey="ProductSortId">
+    SELECT ProductSortId,SubjectNo,ProductNo,Sort,ShowChannelType  FROM SWfsSubjectProductSort  WITH(NOLOCK)  WHERE ProductSortId=@ProductSortId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectConsultationsBack_FetchEntityByIdentity_NoLock" primarykey="ConsultationsBackId">
+    SELECT ConsultationsBackId,ConsultationsId,OperatorId,ReConsultationsContent,Status,DateReturn  FROM SWfsSubjectConsultationsBack  WITH(NOLOCK)  WHERE ConsultationsBackId=@ConsultationsBackId
+  </statement>
+  <statement id="ComBeziWfs_SWfsCDK_FetchEntityByIdentity_NoLock" primarykey="CDKNo">
+    SELECT CDKNo,CDKBathNo,TotalActivationTimes,EnableActivationTimes,DateCreate,Creater,Status,GrantTimes,GrantStatus  FROM SWfsCDK  WITH(NOLOCK)  WHERE CDKNo=@CDKNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandSpecialityStore_FetchEntityByIdentity_NoLock" primarykey="SpecialityStoreId">
+    SELECT SpecialityStoreId,TemplateId,SpecialityStoreType,SpecialityStorePic,BrandIntroduce,DateCreate,BrandNo  FROM SWfsBrandSpecialityStore  WITH(NOLOCK)  WHERE SpecialityStoreId=@SpecialityStoreId
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderCardPayDetail_FetchEntityByIdentity_NoLock" primarykey="CardPayDetailId">
+    SELECT CardPayDetailId,UserId,OrderNo,PayType,GiftCardNo,PayAmount,DateCreate  FROM WfsOrderCardPayDetail  WITH(NOLOCK)  WHERE CardPayDetailId=@CardPayDetailId
+  </statement>
+  <statement id="ComBeziWfs_WfsInvestigation_FetchEntityByIdentity_NoLock" primarykey="InvestigationNo">
+    SELECT InvestigationNo,InvestigationTitle,ShowPosition,DateCreate,IsShow,VoteType,SelectCount,DateStart,DateEnd  FROM WfsInvestigation  WITH(NOLOCK)  WHERE InvestigationNo=@InvestigationNo
+  </statement>
+  <statement id="ComBeziWfs_WfsCommentaryBack_FetchEntityByIdentity_NoLock" primarykey="CommentaryBackId">
+    SELECT CommentaryBackId,CommentaryId,OperatorId,ReContent,DateReBack,SatisfiedCount,NoSatisfiedCount,IsShow  FROM WfsCommentaryBack  WITH(NOLOCK)  WHERE CommentaryBackId=@CommentaryBackId
+  </statement>
+  <statement id="ComBeziWfs_WfsComplaints_FetchEntityByIdentity_NoLock" primarykey="ComplaintsNo">
+    SELECT ComplaintsNo,UserId,OrderNo,CertificateNo,PID,ComplaintsTitleValue,ComplaintsTitle,ComplaintsObjectValue,ComplaintsObject,ComplaintsStyleValue,ComplaintsStyle,ComplaintsContent,DateCreate,Status,IsAllowReturn,IsLockOrder,ComplaintsReason,ComplaintsSolution,ReUserContent,ConnectComplaintsNo,Telephone,TrueName,ComplaintsType,DateAccept,AcceptUser  FROM WfsComplaints  WITH(NOLOCK)  WHERE ComplaintsNo=@ComplaintsNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsFavoriteProduct_FetchEntityByIdentity_NoLock" primarykey="FavoriteProductId">
+    SELECT FavoriteProductId,SkuNo,ProductNo,Price,UserId,PriceNotice,ArrivalNotice,SCategoryNo,Attributes,DateCreate,IsVoid,Ex01  FROM SWfsFavoriteProduct  WITH(NOLOCK)  WHERE FavoriteProductId=@FavoriteProductId
+  </statement>
+  <statement id="ComBeziWfs_SWfsBobPay_FetchEntityByIdentity_NoLock" primarykey="BobPayId">
+    SELECT BobPayId,MerchantID,OrderNum,OrderAmt,ActionType,GoodsType,NotifyType,NotifyUrl,ResponseUrl,MerRemarks,RetCode,ErrMsg,OrderStatus,AccDate  FROM SWfsBobPay  WITH(NOLOCK)  WHERE BobPayId=@BobPayId
+  </statement>
+  <statement id="ComBeziWfs_SWfsShopCart_FetchEntityByIdentity_NoLock" primarykey="ShopCartId">
+    SELECT ShopCartId,UserId,DateCreate,PayTypeId,PayTypeChildId,TimeRequest,InvoiceType,InvoiceFlag,InvoiceTitle,ConsigneeID,InvoiceConsigneeID  FROM SWfsShopCart  WITH(NOLOCK)  WHERE ShopCartId=@ShopCartId
+  </statement>
+  <statement id="ComBeziWfs_SWfsIPhoneNews_FetchEntityByIdentity_NoLock" primarykey="Id">
+    SELECT Id,Title,ShortDescription,Description,HiddenFlag,Sort,DateCreate  FROM SWfsIPhoneNews  WITH(NOLOCK)  WHERE Id=@Id
+  </statement>
+  <statement id="ComBeziWfs_SWfsHomeWindow_FetchEntityByIdentity_NoLock" primarykey="WindowId">
+    SELECT WindowId,WindowType,SubType,PositionNo,PicFileNo,Address,FileName,ProductNo,DateCreate,Gender  FROM SWfsHomeWindow  WITH(NOLOCK)  WHERE WindowId=@WindowId
+  </statement>
+  <statement id="ComBeziWfs_SWfsCreditCardInfo_FetchEntityByIdentity_NoLock" primarykey="OrderNo">
+    SELECT OrderNo,CreditCardNo,ValidDate,Cvv2,DataKey,DataIv,AuthorizationCode,Status  FROM SWfsCreditCardInfo  WITH(NOLOCK)  WHERE OrderNo=@OrderNo
+  </statement>
+  <statement id="ComBeziWfs_WfsInvestigationDetail_FetchEntityByIdentity_NoLock" primarykey="InvestigationDetailId">
+    SELECT InvestigationDetailId,InvestigationNo,InvestigationOption,Grades,SortValue,ShowInput  FROM WfsInvestigationDetail  WITH(NOLOCK)  WHERE InvestigationDetailId=@InvestigationDetailId
+  </statement>
+  <statement id="ComBeziWfs_WfsRole_FetchEntityByIdentity_NoLock" primarykey="RoleNo">
+    SELECT RoleNo,RoleName,RoleDescription,Status  FROM WfsRole  WITH(NOLOCK)  WHERE RoleNo=@RoleNo
+  </statement>
+  <statement id="ComBeziWfs_WfsBrandRecommendProduct_FetchEntityByIdentity_NoLock" primarykey="BrandRecommendProductNo">
+    SELECT BrandRecommendProductNo,BrandNo,ProductNo,OperateUserId,DateCreate  FROM WfsBrandRecommendProduct  WITH(NOLOCK)  WHERE BrandRecommendProductNo=@BrandRecommendProductNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsCDKBatch_FetchEntityByIdentity_NoLock" primarykey="CDKBathNo">
+    SELECT CDKBathNo,CDKBathName,CDKQuantity,ActivationTimes,CDKBatchDescription,MagazinePromotionCode,DateBegin,DateEnd,Status,GenerateStatus,DateCreate,DateUpdate,Creater  FROM SWfsCDKBatch  WITH(NOLOCK)  WHERE CDKBathNo=@CDKBathNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsAolaiAdvancePagePic_FetchEntityByIdentity_NoLock" primarykey="SWfsAolaiNoticePagPicId">
+    SELECT SWfsAolaiNoticePagPicId,SwfsAolaiNoticePageId,PictureFileNo,Sort,PictureLink,PictureName,DateCreate,BackUpField  FROM SWfsAolaiAdvancePagePic  WITH(NOLOCK)  WHERE SWfsAolaiNoticePagPicId=@SWfsAolaiNoticePagPicId
+  </statement>
+  <statement id="ComBeziWfs_SWfsExperienceReportPic_FetchEntityByIdentity_NoLock" primarykey="Id">
+    SELECT Id,ReportId,PictureFileNo,DateCreate,IsEnabled  FROM SWfsExperienceReportPic  WITH(NOLOCK)  WHERE Id=@Id
+  </statement>
+  <statement id="ComBeziWfs_SWfsLotteryLog_FetchEntityByIdentity_NoLock" primarykey="LogId">
+    SELECT LogId,Userid,IsPrize,LotteryType,ActiveType,CreateDate  FROM SWfsLotteryLog  WITH(NOLOCK)  WHERE LogId=@LogId
+  </statement>
+  <statement id="ComBeziWfs_SWfsCategoryTemplate_FetchEntityByIdentity_NoLock" primarykey="CateTempID">
+    SELECT CateTempID,TemplateType,TypeNo,IsDefault,StartTime,ShowType,UpdateInterval,BrandUrl,Gender,OperatorUserId,DateCreate,DateUpdate  FROM SWfsCategoryTemplate  WITH(NOLOCK)  WHERE CateTempID=@CateTempID
+  </statement>
+  <statement id="ComBeziWfs_SWfsCategoryBrandAlias_FetchEntityByIdentity_NoLock" primarykey="KeyID">
+    SELECT KeyID,TypeID,ObjectNo,ObjectAlias,Gender  FROM SWfsCategoryBrandAlias  WITH(NOLOCK)  WHERE KeyID=@KeyID
+  </statement>
+  <statement id="ComBeziWfs_SWfsSpHomeRecommendBrand_FetchEntityByIdentity_NoLock" primarykey="RecommendBrandID">
+    SELECT RecommendBrandID,BrandNO,SortId,CreateDate,PictureFileNo,WebSiteNo,PageNo,PagePositionNo,PagePositionName,OperateUserId,UpdateOperateUserId,UpdateDate,Status,DataState,IsRecommendBrand,PictureFileTitle,DateBegin,PictureIndex  FROM SWfsSpHomeRecommendBrand  WITH(NOLOCK)  WHERE RecommendBrandID=@RecommendBrandID
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectCategoryRef_FetchEntityByIdentity_NoLock" primarykey="SubjectCategoryRefId">
+    SELECT SubjectCategoryRefId,SubjectNo,Category  FROM SWfsSubjectCategoryRef  WITH(NOLOCK)  WHERE SubjectCategoryRefId=@SubjectCategoryRefId
+  </statement>
+  <statement id="ComBeziWfs_SWfsVProductVouchersRef_FetchEntityByIdentity_NoLock" primarykey="VProductVouchersRefId">
+    SELECT VProductVouchersRefId,SubjectNo,ProductNo,PromotionTicketNo,CreateUserId,DateCreate  FROM SWfsVProductVouchersRef  WITH(NOLOCK)  WHERE VProductVouchersRefId=@VProductVouchersRefId
+  </statement>
+  <statement id="ComBeziWfs_SWfsProductRefTemplate_FetchEntityByIdentity_NoLock" primarykey="ProductRefTemplateID">
+    SELECT ProductRefTemplateID,ParentId,ModuleName,ModuleStatus,TemplateNo,ProductNo,Sort,TemplateHtmlCode,TemplateHtmlCodeMobile  FROM SWfsProductRefTemplate  WITH(NOLOCK)  WHERE ProductRefTemplateID=@ProductRefTemplateID
+  </statement>
+  <statement id="ComBeziWfs_SwfsUser_01_FetchEntityByIdentity_NoLock" primarykey="$Table.PK">
+    SELECT UserId,NickName,TrueName,Corporation,Mobile,Position,Gender,MailAddress,Birthday,ProvinceId,CityId,AreaId,Address,Telephone,Postcode,MemberCardNo,UserFrom,CreditcardNo,ContributionValue,Profession,FavoriteBrand,ApplyReason,AboutMe,TrueMailAddress,IntroducerLevelNo,RegisterSource  FROM SwfsUser_01  WITH(NOLOCK)  WHERE $Table.PK=@$Table.PK
+  </statement>
+  <statement id="ComBeziWfs_SWfsUserCredits_FetchEntityByIdentity_NoLock" primarykey="UserId">
+    SELECT UserId,Credits,TotalCredits  FROM SWfsUserCredits  WITH(NOLOCK)  WHERE UserId=@UserId
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewArrivalNotice_FetchEntityByIdentity_NoLock" primarykey="NewArrivalNoticeId">
+    SELECT NewArrivalNoticeId,NewArrivalNoticName,NewArrivalNoticDate,WebSiteNo,PageNo,PagePositionNo,PagePositonName,Status,DataState,OperateUserId,CreateDate,UpdateDate,UpdateOperateUserId  FROM SWfsNewArrivalNotice  WITH(NOLOCK)  WHERE NewArrivalNoticeId=@NewArrivalNoticeId
+  </statement>
+  <statement id="ComBeziWfs_WfsPromotionCondition_FetchEntityByIdentity_NoLock" primarykey="PromotionTicketNo">
+    SELECT PromotionTicketNo,ConditionType,CategoryNos,BrandNos,OrderAmount,SpecialProductNos,UsedType,ProductNos,SubjectNos,BrandType,ListingMinDiscount,ListingMinPrice,OutletMinDiscount,OutletMinPrice,AfterDeviceFlag,CategoryType  FROM WfsPromotionCondition  WITH(NOLOCK)  WHERE PromotionTicketNo=@PromotionTicketNo
+  </statement>
+  <statement id="ComBeziWfs_wfsorderdetail_bak_FetchEntityByIdentity_NoLock" primarykey="$Table.PK">
+    SELECT OrderDetailNo,OrderNo,SupplierOrderNo,ProductNo,SkuNo,ProductName,UnitPrice,Quantity,Freight,RebateMethod,Rebate,RebateCash,SettlementType,DeliverQuantity,CancelQuantity,DeliverStatus,PromotionNo,PromotionName,DateCreate,ChannelXmlText,OrderArtNo,OrderBrandNo,BuyPrice,CategoryNo,DiscountPrice,PurchaseOrderFlag  FROM wfsorderdetail_bak  WITH(NOLOCK)  WHERE $Table.PK=@$Table.PK
+  </statement>
+  <statement id="ComBeziWfs_SWfsSortOcsCategory_FetchEntityByIdentity_NoLock" primarykey="PkId">
+    SELECT PkId,CategoryNo,CategoryName,DateUpdate,DateCreate,OperatorUserId,IsApplyRule,AutoLastFlag,CategoryType  FROM SWfsSortOcsCategory  WITH(NOLOCK)  WHERE PkId=@PkId
+  </statement>
+  <statement id="ComBeziWfs_SWfsProductLabelSearchHistory_FetchEntityByIdentity_NoLock" primarykey="Id">
+    SELECT Id,SearchName,SearchUrl,SearchUser,CreateDate  FROM SWfsProductLabelSearchHistory  WITH(NOLOCK)  WHERE Id=@Id
+  </statement>
+  <statement id="ComBeziWfs_SWfsCurtain_FetchEntityByIdentity_NoLock" primarykey="CurtainId">
+    SELECT CurtainId,CurtainTitle,CurtainStatus,StartShowTime,EndShowTime,CurtainLinkAddress,CurtainImage,CreateTime  FROM SWfsCurtain  WITH(NOLOCK)  WHERE CurtainId=@CurtainId
+  </statement>
+  <statement id="ComBeziWfs_SWfsMeetingInfo_FetchEntityByIdentity_NoLock" primarykey="MeetingID">
+    SELECT MeetingID,MeetingNO,MeetingName,MeetingDomain,WebOrMobile,SourceFrom,Status,PreViewTime,StartTime,EndTime,ParentID,IsSelect,WebPreViewNO,WebStartNO,WebPreViewCode,WebStartCode,MobilePreViewNO,MobileStartNO,MobilePreViewCode,MobileStartCode,MobileShowImg,CreateTime  FROM SWfsMeetingInfo  WITH(NOLOCK)  WHERE MeetingID=@MeetingID
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandHallSpecialBrand_FetchEntityByIdentity_NoLock" primarykey="BrandHallSpecialBrandId">
+    SELECT BrandHallSpecialBrandId,BrandHallHotId,PictureSite,PictureName,PictureFileNo,LinkAddress,Status,Gender,DateCreate,DateBegin,DateEnd,BrandEnName,BrandDesc,BrandNo,Sort  FROM SWfsBrandHallSpecialBrand  WITH(NOLOCK)  WHERE BrandHallSpecialBrandId=@BrandHallSpecialBrandId
+  </statement>
+  <statement id="ComBeziWfs_SWfsUserNotice_FetchEntityByIdentity_NoLock" primarykey="UserId">
+    SELECT UserId,EmailEvent,SmsEvent,EmailFriend,SmsFriend,EmailSurvey,SmsSurvey,EmailNews,SmsNews,NoticePeriod  FROM SWfsUserNotice  WITH(NOLOCK)  WHERE UserId=@UserId
+  </statement>
+  <statement id="ComBeziWfs_WfsAlipayInfodd_FetchEntityByIdentity_NoLock" primarykey="$Table.PK">
+    SELECT AlipayInfoNo,NotifyId,NotifyType,NotifyTime,Sign,SignType,TradeNo,OutTradeNo,PaymentType,Subject,Body,TotalFee,TradeStatus,SellerEmail,SellerId,BuyerEmail,BuyerId,RawUrl,DateCreate,VerifyStatus  FROM WfsAlipayInfodd  WITH(NOLOCK)  WHERE $Table.PK=@$Table.PK
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectChannelSordRef_FetchEntityByIdentity_NoLock" primarykey="Id">
+    SELECT Id,SubjectNo,SordNo  FROM SWfsSubjectChannelSordRef  WITH(NOLOCK)  WHERE Id=@Id
+  </statement>
+  <statement id="ComBeziWfs_WfsMarketOperatorRoleRef_FetchEntityByIdentity_NoLock" primarykey="OperatorRoleRefNo">
+    SELECT OperatorRoleRefNo,UserName,RoleNo  FROM WfsMarketOperatorRoleRef  WITH(NOLOCK)  WHERE OperatorRoleRefNo=@OperatorRoleRefNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsQiHuEvents_FetchEntityByIdentity_NoLock" primarykey="TypeId">
+    SELECT TypeId,ProductNo,SubjectNo,CategoryNo,DateBegin,DateEnd,IsDelect,IsSend,DateCreate,Url,BusinessType  FROM SWfsQiHuEvents  WITH(NOLOCK)  WHERE TypeId=@TypeId
+  </statement>
+  <statement id="ComBeziWfs_WfsTradeProduct_FetchEntityByIdentity_NoLock" primarykey="TradeProductNo">
+    SELECT TradeProductNo,TradeProductXmtText  FROM WfsTradeProduct  WITH(NOLOCK)  WHERE TradeProductNo=@TradeProductNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubject_FetchEntityByIdentity_NoLock" primarykey="SubjectNo">
+    SELECT SubjectNo,ChannelNo,SubjectName,SubjectEnName,Status,DateCreate,DateBegin,DateEnd,CreateUserId,Description,LogoPic,TitlePic1,TitlePic2,BackgroundPic,AdPic,BrandContent,BookFlag,SubjectType,TopFlag,VideoLink,VisitCount,MaxApply,ShowType,FlapPic,SubjectTitle,SubjectContent,BrandSign,SubjectFlag,FlapPic2,IPhonePic,IPhoneTitle,IPhoneText,EstimateSale,BelongsSubjectType,Gender,Discount,SubjectBeginProductEnd,SubjectEndProductBegin,SubjectIntroduction,EditWord,SubjectLightspot,WillBeginPic,DetailsPageheadPic,BelongsSubjectPic,PromotionType,BrandUrl,DiscountType,DiscountTypeValue,ContentIntorType,ContentIntroduction,ContentRecommType,ContentRecommended,SubjectTemplate,IsRelated,SpreadPicture,SpreadStatus,ContentTitleOne,ContentTitleTwo,SubjectPreStartTemplateType,PrivilegeValue,BU,SalesForecast,IsPreheat,IsAudited,AuditedUserId,AuditedDateTime,BrandLogoType,SalesInfo,HeadShowType,HeadWebHtml,HeadMobileHtml  FROM SWfsSubject  WITH(NOLOCK)  WHERE SubjectNo=@SubjectNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsHomeSecKill_FetchEntityByIdentity_NoLock" primarykey="SecKillId">
+    SELECT SecKillId,ChannelNo,SecKillTitle,SecKillType,Status,ProductNo,ShowTime,StartTime,LinkAddress,CreateTime  FROM SWfsHomeSecKill  WITH(NOLOCK)  WHERE SecKillId=@SecKillId
+  </statement>
+  <statement id="ComBeziWfs_SWfsHotSaleProduct_FetchEntityByIdentity_NoLock" primarykey="KeyID">
+    SELECT KeyID,TypeNo,ProductNo,ICONType,Sort,Gender,OperatorUserId,DateCreate,DateUpdate  FROM SWfsHotSaleProduct  WITH(NOLOCK)  WHERE KeyID=@KeyID
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectStatisticsDataTemp_FetchEntityByIdentity_NoLock" primarykey="SDTID">
+    SELECT SDTID,SubjectNo,StatisticsDataXML,DateCreate  FROM SWfsSubjectStatisticsDataTemp  WITH(NOLOCK)  WHERE SDTID=@SDTID
+  </statement>
+  <statement id="ComBeziWfs_WfsTenpayInfo_FetchEntityByIdentity_NoLock" primarykey="TenpayInfoNo">
+    SELECT TenpayInfoNo,CmdNo,PayResult,PayInfo,PayDate,BargainorId,TransactionId,SpBillNo,TotalFee,FeeType,Attach,Sign,DataCreate,RawUrl,VerifyStatus  FROM WfsTenpayInfo  WITH(NOLOCK)  WHERE TenpayInfoNo=@TenpayInfoNo
+  </statement>
+  <statement id="ComBeziWfs_swfsAccountTest_FetchEntityByIdentity_NoLock" primarykey="UserId">
+    SELECT UserId,LevelNo,MailAddress,LoginName,MemberCardNo,Password,DateCreate,Status,ErrorCount,DateLogin,IntroducerId,ReceiveNews,SendNews,MemberType,SendVouchers,profession,LoginCount,LoginIP,LoginProvinceId,LoginCityId,IsEmailVerified,IsMobileVerified,IsExchanged,BaseConsumedAmount,ConsumedAmount,IsLevelActived,BeActivedLevelNo,SecuritySalt  FROM swfsAccountTest  WITH(NOLOCK)  WHERE UserId=@UserId
+  </statement>
+  <statement id="ComBeziWfs_GcResource_FetchEntityByIdentity_NoLock" primarykey="ResourceId">
+    SELECT ResourceId,ResourceName,UrlAddress,DateOperate,OperateUserId  FROM GcResource  WITH(NOLOCK)  WHERE ResourceId=@ResourceId
+  </statement>
+  <statement id="ComBeziWfs_SWfsMemberCardType_FetchEntityByIdentity_NoLock" primarykey="MemberCardTypeId">
+    SELECT MemberCardTypeId,CardTypeName,CardPrefix,PromotionTicketNo,CachTicketCount  FROM SWfsMemberCardType  WITH(NOLOCK)  WHERE MemberCardTypeId=@MemberCardTypeId
+  </statement>
+  <statement id="ComBeziWfs_Blacklist_FetchEntityByIdentity_NoLock" primarykey="PK">
+    SELECT PK,UserId,InsertTime  FROM Blacklist  WITH(NOLOCK)  WHERE PK=@PK
+  </statement>
+  <statement id="ComBeziWfs_WfsSaleDeviceGift_FetchEntityByIdentity_NoLock" primarykey="SaleDeviceDetailNo">
+    SELECT SaleDeviceDetailNo,SaleDeviceNo,SkuNo,Quantity,MarketPrice,IsUseTicket,MerberType,ConditionType,ConditionNo,BeginAmount,EndAmount,OperateUserId,DateCreate  FROM WfsSaleDeviceGift  WITH(NOLOCK)  WHERE SaleDeviceDetailNo=@SaleDeviceDetailNo
+  </statement>
+  <statement id="ComBeziWfs_WfsOnsiteShoppingDetail_FetchEntityByIdentity_NoLock" primarykey="OnsiteShoppingDetailNo">
+    SELECT OnsiteShoppingDetailNo,ProductNo,SkuNo,PID,ItemXmlText,Quantity,Price,OperatorId,DateCreate,WarehouseNo  FROM WfsOnsiteShoppingDetail  WITH(NOLOCK)  WHERE OnsiteShoppingDetailNo=@OnsiteShoppingDetailNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsProductSearchHistory_FetchEntityByIdentity_NoLock" primarykey="Id">
+    SELECT Id,SearchName,SearchUrl,SearchUser,LogType,CreateDate  FROM SWfsProductSearchHistory  WITH(NOLOCK)  WHERE Id=@Id
+  </statement>
+  <statement id="ComBeziWfs_SWfsLotteryInfo_FetchEntityByIdentity_NoLock" primarykey="LotteryId">
+    SELECT LotteryId,LotteryName,LotteryContent,LotteryType,CreateDate  FROM SWfsLotteryInfo  WITH(NOLOCK)  WHERE LotteryId=@LotteryId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSpChannelBrand_FetchEntityByIdentity_NoLock" primarykey="BrandID">
+    SELECT BrandID,GroupID,BrandName,ImgLink,ImgNO,SortValue,CreateDate  FROM SWfsSpChannelBrand  WITH(NOLOCK)  WHERE BrandID=@BrandID
+  </statement>
+  <statement id="ComBeziWfs_SWfsSpChannelRecommendBrand_FetchEntityByIdentity_NoLock" primarykey="RecommendBrandID">
+    SELECT RecommendBrandID,ChannelNO,BrandNO,SortValue,CreateDate  FROM SWfsSpChannelRecommendBrand  WITH(NOLOCK)  WHERE RecommendBrandID=@RecommendBrandID
+  </statement>
+  <statement id="ComBeziWfs_SWfsCDKBatchStrategyRef_FetchEntityByIdentity_NoLock" primarykey="CDKBatchStrategyId">
+    SELECT CDKBatchStrategyId,CDKBathNo,StrategyNo,DateCreate,Creater  FROM SWfsCDKBatchStrategyRef  WITH(NOLOCK)  WHERE CDKBatchStrategyId=@CDKBatchStrategyId
+  </statement>
+  <statement id="ComBeziWfs_WfsBrandRegister_FetchEntityByIdentity_NoLock" primarykey="BrandRegisterId">
+    SELECT BrandRegisterId,BrandNo,UserId,IpAddress,DateCreate,EmailAddress  FROM WfsBrandRegister  WITH(NOLOCK)  WHERE BrandRegisterId=@BrandRegisterId
+  </statement>
+  <statement id="ComBeziWfs_WfsConsignee_FetchEntityByIdentity_NoLock" primarykey="ConsigneeId">
+    SELECT ConsigneeId,UserId,ConsigneeName,ConsigneePhone,ConsigneeMobile,ConsigneeEmail,ConsigneeProvinceId,ConsigneeCityId,ConsigneeAreaId,ConsigneeAddress,ConsigneePostCode,DateCreate,LastFlag,Memo,IsInvoice,ConsigneeTownId  FROM WfsConsignee  WITH(NOLOCK)  WHERE ConsigneeId=@ConsigneeId
+  </statement>
+  <statement id="ComBeziWfs_SWfsFavorite_FetchEntityByIdentity_NoLock" primarykey="FavoriteId">
+    SELECT FavoriteId,UserId,ProductNo,SCategoryNo,DateCreate  FROM SWfsFavorite  WITH(NOLOCK)  WHERE FavoriteId=@FavoriteId
+  </statement>
+  <statement id="ComBeziWfs_SWfsBook_FetchEntityByIdentity_NoLock" primarykey="BookId">
+    SELECT BookId,SkuNo,Quantity,SubjectNo,DateBook,UserId,UserName,UserMobile,UserMemo,OperatorCallBack,IsCallBack,DateCallBack,OperatorMemo  FROM SWfsBook  WITH(NOLOCK)  WHERE BookId=@BookId
+  </statement>
+  <statement id="ComBeziWfs_SWfsCateTempHotBrand_FetchEntityByIdentity_NoLock" primarykey="KeyID">
+    SELECT KeyID,CateTempID,BrandNo,FontSize,Sort,OperatorUserId,DateCreate,DateUpdate  FROM SWfsCateTempHotBrand  WITH(NOLOCK)  WHERE KeyID=@KeyID
+  </statement>
+  <statement id="ComBeziWfs_SWfsAppAlterPic_FetchEntityByIdentity_NoLock" primarykey="AppSlterPicId">
+    SELECT AppSlterPicId,Name,Sort,StartTime,RefType,RefContent,PicNo,AlterType,CreateDate  FROM SWfsAppAlterPic  WITH(NOLOCK)  WHERE AppSlterPicId=@AppSlterPicId
+  </statement>
+  <statement id="ComBeziWfs_SWfsShoppingCart_FetchEntityByIdentity_NoLock" primarykey="ShoppingCartId">
+    SELECT ShoppingCartId,SessionId,SkuCount,ItemXmlText,DeliverId,PayTypeId,PayTypeChildId,DeliverName,Freight,InvoiceFlag,InvoiceTitle,TimeRequest,SpecialRequest,InvoiceType  FROM SWfsShoppingCart  WITH(NOLOCK)  WHERE ShoppingCartId=@ShoppingCartId
+  </statement>
+  <statement id="ComBeziWfs_SwfsFlagShipModule_FetchEntityByIdentity_NoLock" primarykey="ModuleId">
+    SELECT ModuleId,BrandNo,ModuleName,ModuleType,SortId,State,DataState,DataCreate,OperatorUserId  FROM SwfsFlagShipModule  WITH(NOLOCK)  WHERE ModuleId=@ModuleId
+  </statement>
+  <statement id="ComBeziWfs_WfsCmbChinaPay_FetchEntityByIdentity_NoLock" primarykey="CmbChinaInfoNo">
+    SELECT CmbChinaInfoNo,BranchID,CoNo,ShangOrderNo,CmbChinaOrderNo,AmountSend,AmountReturn,TradeDate,SequenceNo,MerchantPara,Msg,Signature,PayResult,PayDate,SettmentResult,SettmentDate,ExcepitonMsg  FROM WfsCmbChinaPay  WITH(NOLOCK)  WHERE CmbChinaInfoNo=@CmbChinaInfoNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsCategoryColumn_FetchEntityByIdentity_NoLock" primarykey="ColumnId">
+    SELECT ColumnId,CategoryNo,ColumnName,Type,Sort,RelateWay,Status,DateCreate,OperatorId  FROM SWfsCategoryColumn  WITH(NOLOCK)  WHERE ColumnId=@ColumnId
+  </statement>
+  <statement id="ComBeziWfs_SWfsBocCreditCardInfo_FetchEntityByIdentity_NoLock" primarykey="OrderNo">
+    SELECT OrderNo,CreditCardNo,ValidDate,Cvv2,AuthorizationCode,Status,LockStatus,DateOperate  FROM SWfsBocCreditCardInfo  WITH(NOLOCK)  WHERE OrderNo=@OrderNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsListAlterPic_FetchEntityByIdentity_NoLock" primarykey="AlterPicId">
+    SELECT AlterPicId,LargePicture,LinkName,AlterAddress,GroupId,CreateDate  FROM SWfsListAlterPic  WITH(NOLOCK)  WHERE AlterPicId=@AlterPicId
+  </statement>
+  <statement id="ComBeziWfs_SWfsAppOperatingPosition_FetchEntityByIdentity_NoLock" primarykey="OperatingPositionId">
+    SELECT OperatingPositionId,Sort,LinkUrl,PicNo,CreateDate  FROM SWfsAppOperatingPosition  WITH(NOLOCK)  WHERE OperatingPositionId=@OperatingPositionId
+  </statement>
+  <statement id="ComBeziWfs_WfsBrandCollection_FetchEntityByIdentity_NoLock" primarykey="BrandCollectionId">
+    SELECT BrandCollectionId,UserId,BrandNo,BrandLogo,ProductCount,DateCreate  FROM WfsBrandCollection  WITH(NOLOCK)  WHERE BrandCollectionId=@BrandCollectionId
+  </statement>
+  <statement id="ComBeziWfs_WfsDeliveryType_FetchEntityByIdentity_NoLock" primarykey="DeliveryTypeId">
+    SELECT DeliveryTypeId,DeliveryTypeName,DeliveryTypeValue,DeliveryCycle,Description  FROM WfsDeliveryType  WITH(NOLOCK)  WHERE DeliveryTypeId=@DeliveryTypeId
+  </statement>
+  <statement id="ComBeziWfs_WfsOperatorRoleRef_FetchEntityByIdentity_NoLock" primarykey="OperatorRoleRefNo">
+    SELECT OperatorRoleRefNo,UserName,RoleNo  FROM WfsOperatorRoleRef  WITH(NOLOCK)  WHERE OperatorRoleRefNo=@OperatorRoleRefNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsCEBPay_FetchEntityByIdentity_NoLock" primarykey="CEBPayNo">
+    SELECT CEBPayNo,MerNo,OriOrderNo,OrderFlowNo,CurrId,OrderAmt,PayNo,AccNo,CstName,RefURL,IP,TranResult,UrlData,RetMsg,DateCreate  FROM SWfsCEBPay  WITH(NOLOCK)  WHERE CEBPayNo=@CEBPayNo
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderHangUp_FetchEntityByIdentity_NoLock" primarykey="OrderNo">
+    SELECT OrderNo,DeliveryType,OperatorUserId,DateOperator,Memo  FROM WfsOrderHangUp  WITH(NOLOCK)  WHERE OrderNo=@OrderNo
+  </statement>
+  <statement id="ComBeziWfs_WfsPromotionTicket_FetchEntityByIdentity_NoLock" primarykey="PromotionTicketNo">
+    SELECT PromotionTicketNo,PromotionTicketName,TicketTotalCount,TicketAmount,DateStart,DateEnd,PromotionTemplateNo,PromotionTicketXmlText,DateCreate,CreateUser,ActivationEndDays,CreateDepartmentNo,CreateDepartmentName,TicketDesc,AuditStatus,AuditUserId,DateAudit,PromotionPicNo,PromotionUrl,ApplyReason,Memo,PromotionTicketFlag,PromotionType,UserChannels  FROM WfsPromotionTicket  WITH(NOLOCK)  WHERE PromotionTicketNo=@PromotionTicketNo
+  </statement>
+  <statement id="ComBeziWfs_SwfsFlagShipModuleLink_FetchEntityByIdentity_NoLock" primarykey="LinkId">
+    SELECT LinkId,ModuleType,ModuleId,SortId,CategoryNo,ShowType,PicIndex,PictureNo,LinkUrl,LinkTarget,State,DataState,DataCreate,OperatorUserId  FROM SwfsFlagShipModuleLink  WITH(NOLOCK)  WHERE LinkId=@LinkId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectOrChannelLog_FetchEntityByIdentity_NoLock" primarykey="SubjectOrChannelLogId">
+    SELECT SubjectOrChannelLogId,SubjectOrChannelNo,TypeValue,DateOperator,OperatorContent,OperatorUserId,OperatorActionType  FROM SWfsSubjectOrChannelLog  WITH(NOLOCK)  WHERE SubjectOrChannelLogId=@SubjectOrChannelLogId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectProductRef_FetchEntityByIdentity_NoLock" primarykey="SubjectProductRefId">
+    SELECT SubjectProductRefId,ProductNo,CategoryNo,PropertyValue,SortNo,TopFlag,BuyType,TypeFlag,DateCreate,IsStarProduct,ShowTime,IsShow  FROM SWfsSubjectProductRef  WITH(NOLOCK)  WHERE SubjectProductRefId=@SubjectProductRefId
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderLog_FetchEntityByIdentity_NoLock" primarykey="OrderLogId">
+    SELECT OrderLogId,OrderNo,OperatorId,DateOperator,OperatorTitle,Memo,OperatorRoleName,OpeartorRoleId,LogType,LogStyle  FROM WfsOrderLog  WITH(NOLOCK)  WHERE OrderLogId=@OrderLogId
+  </statement>
+  <statement id="ComBeziWfs_SWfsIPhoneTokens_FetchEntityByIdentity_NoLock" primarykey="Id">
+    SELECT Id,UserName,UserId,IPhoneDeviceToken,DateCreate  FROM SWfsIPhoneTokens  WITH(NOLOCK)  WHERE Id=@Id
+  </statement>
+  <statement id="ComBeziWfs_stock_FetchEntityByIdentity_NoLock" primarykey="$Table.PK">
+    SELECT dt,code,qty,dest  FROM stock  WITH(NOLOCK)  WHERE $Table.PK=@$Table.PK
+  </statement>
+  <statement id="ComBeziWfs_SWfsUserGroupRef_FetchEntityByIdentity_NoLock" primarykey="UserId">
+    SELECT UserId,GroupNo  FROM SWfsUserGroupRef  WITH(NOLOCK)  WHERE UserId=@UserId
+  </statement>
+  <statement id="ComBeziWfs_SWfsTopicProductRef_FetchEntityByIdentity_NoLock" primarykey="TopicProductNo">
+    SELECT TopicProductNo,TopicNo,ProductNo,OrderFlag  FROM SWfsTopicProductRef  WITH(NOLOCK)  WHERE TopicProductNo=@TopicProductNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandIndex_FetchEntityByIdentity_NoLock" primarykey="IndexId">
+    SELECT IndexId,ModuleNo,TypeId,BrandShowName,BrandNo,BrandPic,BrandAddr,Status,Sort,DateCreate,BrandView  FROM SWfsBrandIndex  WITH(NOLOCK)  WHERE IndexId=@IndexId
+  </statement>
+  <statement id="ComBeziWfs_SWfsQuestAnswerRef_FetchEntityByIdentity_NoLock" primarykey="Id">
+    SELECT QuestAnswerId,ProductNo,RefType,CategoryNo,BrandNo,Id  FROM SWfsQuestAnswerRef  WITH(NOLOCK)  WHERE Id=@Id
+  </statement>
+  <statement id="ComBeziWfs_WfsUser_FetchEntityByIdentity_NoLock" primarykey="UserId">
+    SELECT UserId,Nickname,MailAddress,TrueName,DateBorn,ProvinceId,CityId,AreaId,Telephone,Mobile,Address,PostCode,UserType,IsCommentary,DateCreate  FROM WfsUser  WITH(NOLOCK)  WHERE UserId=@UserId
+  </statement>
+  <statement id="ComBeziWfs_SWfsUserAuthorityGroupRef_FetchEntityByIdentity_NoLock" primarykey="UserAuthorityGroupRefId">
+    SELECT UserAuthorityGroupRefId,AuthorityNo,AuthorityGroupNo  FROM SWfsUserAuthorityGroupRef  WITH(NOLOCK)  WHERE UserAuthorityGroupRefId=@UserAuthorityGroupRefId
+  </statement>
+  <statement id="ComBeziWfs_SWfsFlagShipOperationPicture_FetchEntityByIdentity_NoLock" primarykey="PictureManageId">
+    SELECT PictureManageId,BrandNo,PictureFileNo,PictureName,LinkAddress,PageNo,PictureIndex,PagePositionNo,PagePositionName,DateBegin,DateEnd,SortId,Status,DataState,OperatorUserId,DateCreate  FROM SWfsFlagShipOperationPicture  WITH(NOLOCK)  WHERE PictureManageId=@PictureManageId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSpChannelAdver_FetchEntityByIdentity_NoLock" primarykey="AdverID">
+    SELECT AdverID,ChannelNO,ImgNO,AdverName,AdverLink,CreateDate,Status  FROM SWfsSpChannelAdver  WITH(NOLOCK)  WHERE AdverID=@AdverID
+  </statement>
+  <statement id="ComBeziWfs_SWfsUserVerify_FetchEntityByIdentity_NoLock" primarykey="UserVerifyId">
+    SELECT UserVerifyId,ActivityNo,UserId,Mobile,VerifyStatus,VerifyDate  FROM SWfsUserVerify  WITH(NOLOCK)  WHERE UserVerifyId=@UserVerifyId
+  </statement>
+  <statement id="ComBeziWfs_SWfsVActivity_FetchEntityByIdentity_NoLock" primarykey="ActivityId">
+    SELECT ActivityId,ActivityName,ActivityCode,ActivityStatus,ActivityTypeId,ActivityDateStart,ActivityDateEnd,DeleteFlag,OperatorId,DateCreate,ListingOutletFlag  FROM SWfsVActivity  WITH(NOLOCK)  WHERE ActivityId=@ActivityId
+  </statement>
+  <statement id="ComBeziWfs_SWfsInviteAccountDetail_FetchEntityByIdentity_NoLock" primarykey="InviteAccountDetailId">
+    SELECT InviteAccountDetailId,InviteAccountId,InviteUserId,RegDate,RegAmount,IsMobileVerified,FirstOrderDate,FirstOrderAmount,FirstOrderNo,InviteAmount,Status,OperaterId,OperateDate  FROM SWfsInviteAccountDetail  WITH(NOLOCK)  WHERE InviteAccountDetailId=@InviteAccountDetailId
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderDetailExtend_FetchEntityByIdentity_NoLock" primarykey="OrderDetailNo">
+    SELECT OrderDetailNo,PromotionType,PromotionDeviceNo,PromotionGroupNo,PromotionCodeNo,PromotionContentType,PromotionContent,GroupId  FROM WfsOrderDetailExtend  WITH(NOLOCK)  WHERE OrderDetailNo=@OrderDetailNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsVipSubjectCodeRef_FetchEntityByIdentity_NoLock" primarykey="CodeNo">
+    SELECT CodeNo,VipSubjectNo,CodeName,PayPathID,PayTypeNo,PayTypeTitle,IsOnlyPayType,CodeContent  FROM SWfsVipSubjectCodeRef  WITH(NOLOCK)  WHERE CodeNo=@CodeNo
+  </statement>
+  <statement id="ComBeziWfs_WfsDiffPriceRecord_FetchEntityByIdentity_NoLock" primarykey="DiffPriceRecordId">
+    SELECT DiffPriceRecordId,OrderNo,OrderReturnNo,DiffProductPrice,TotalDiffPrice,ReturnFreight,TradeFreight,ReturnPayCost,DateCreate,OperatorId,Status,DiffPricePayType,ConfirmationStatus,SpeedOrderNo,DiffPriceOwner  FROM WfsDiffPriceRecord  WITH(NOLOCK)  WHERE DiffPriceRecordId=@DiffPriceRecordId
+  </statement>
+  <statement id="ComBeziWfs_SWfsExperienceReport_FetchEntityByIdentity_NoLock" primarykey="Id">
+    SELECT Id,UserId,ProductNo,SkuNo,ProductSize,ReportContent,DateCreate,IsDelete,DateUpdate,IsEnabled,OperatorUserId  FROM SWfsExperienceReport  WITH(NOLOCK)  WHERE Id=@Id
+  </statement>
+  <statement id="ComBeziWfs_SWfsUserInvite_FetchEntityByIdentity_NoLock" primarykey="InviteId">
+    SELECT InviteId,UserId,SerialNo,InviteType,InviteAccount,DateCreate  FROM SWfsUserInvite  WITH(NOLOCK)  WHERE InviteId=@InviteId
+  </statement>
+  <statement id="ComBeziWfs_SWfsTopicsLabel_FetchEntityByIdentity_NoLock" primarykey="TopicLabelNo">
+    SELECT TopicLabelNo,TopicLabelName,Status,OperateUserId,OperateDate,Types  FROM SWfsTopicsLabel  WITH(NOLOCK)  WHERE TopicLabelNo=@TopicLabelNo
+  </statement>
+  <statement id="ComBeziWfs_WfsMarketRoleResourceRef_FetchEntityByIdentity_NoLock" primarykey="RoleResourceRefNo">
+    SELECT RoleResourceRefNo,ResourceNo,RoleNo  FROM WfsMarketRoleResourceRef  WITH(NOLOCK)  WHERE RoleResourceRefNo=@RoleResourceRefNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsABCPay_FetchEntityByIdentity_NoLock" primarykey="ABCInfoNo">
+    SELECT ABCInfoNo,OrderNo,Amount,BatchNo,VoucherNo,HostDate,HostTime,MerchantRemarks,PayType,NotifyType,iRspRef,PayResult,UrlData,TrxType,DateCreate  FROM SWfsABCPay  WITH(NOLOCK)  WHERE ABCInfoNo=@ABCInfoNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsMemberCard_FetchEntityByIdentity_NoLock" primarykey="CardNo">
+    SELECT CardNo,MemberCardTypeId,IsAssigned,IsActived,DateAssigned,DateActived,DateCreate,CreateUserId,CreateUserType  FROM SWfsMemberCard  WITH(NOLOCK)  WHERE CardNo=@CardNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandHallBrandRank_FetchEntityByIdentity_NoLock" primarykey="BrandHallBrandRankId">
+    SELECT BrandHallBrandRankId,BrandHallBrandTopId,BrandNo,Sort  FROM SWfsBrandHallBrandRank  WITH(NOLOCK)  WHERE BrandHallBrandRankId=@BrandHallBrandRankId
+  </statement>
+  <statement id="ComBeziWfs_WfsMarketOperator_FetchEntityByIdentity_NoLock" primarykey="UserName">
+    SELECT UserName,Password,TrueName,Mobile,Telephone,Email,IsValid,CreateDate,LoginFlag  FROM WfsMarketOperator  WITH(NOLOCK)  WHERE UserName=@UserName
+  </statement>
+  <statement id="ComBeziWfs_SWfsUserNoticeRef_FetchEntityByIdentity_NoLock" primarykey="UserId">
+    SELECT UserId,Event,Friend,Survey,News  FROM SWfsUserNoticeRef  WITH(NOLOCK)  WHERE UserId=@UserId
+  </statement>
+  <statement id="ComBeziWfs_WfsMainOrder_FetchEntityByIdentity_NoLock" primarykey="MainOrderNo">
+    SELECT MainOrderNo,UserId,PayAmount,Freight,PayTypeId,PayTypeChildId,PayTypeName,PayTypeChildName,Status,PayStatus,DateCreate,TotalAmount,OnlineAmount,GiftCardAmount,GiftCardPayStatus,IsUseGiftCardPay  FROM WfsMainOrder  WITH(NOLOCK)  WHERE MainOrderNo=@MainOrderNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsHomeHotGroup_FetchEntityByIdentity_NoLock" primarykey="GroupId">
+    SELECT GroupId,GroupName,Status,DateCteate,Gender  FROM SWfsHomeHotGroup  WITH(NOLOCK)  WHERE GroupId=@GroupId
+  </statement>
+  <statement id="ComBeziWfs_uv_WfsProduct_FetchEntityByIdentity_NoLock" primarykey="$Table.PK">
+    SELECT   FROM uv_WfsProduct  WITH(NOLOCK)  WHERE $Table.PK=@$Table.PK
+  </statement>
+  <statement id="ComBeziWfs_WfsCustomerVoice_FetchEntityByIdentity_NoLock" primarykey="CustomerVoiceId">
+    SELECT CustomerVoiceId,CustomerContent,DateCreate,IsShow,IsShowIndex,NickName  FROM WfsCustomerVoice  WITH(NOLOCK)  WHERE CustomerVoiceId=@CustomerVoiceId
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandGallery_FetchEntityByIdentity_NoLock" primarykey="KeyID">
+    SELECT KeyID,BrandName,BrandPicNo,BrandPicExt,LinkAddress,Status,OperatorUserId,DateCreate,DateUpdate,Gender  FROM SWfsBrandGallery  WITH(NOLOCK)  WHERE KeyID=@KeyID
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectApplyPromotion_FetchEntityByIdentity_NoLock" primarykey="APID">
+    SELECT APID,SubjectNo,Level,PicFileUrl,SubjectSalesHot,ProductInfo,OtherDescription,PromotionChannelNo,IsChecked,PromotionApplyTime,PromotionConfirmTime,SeoTitle,SeoKeyWords,SeoDescription,ApplyUserId,ConfirmUserId,ConfirmEditDateTime,CreateDateTime  FROM SWfsSubjectApplyPromotion  WITH(NOLOCK)  WHERE APID=@APID
+  </statement>
+  <statement id="ComBeziWfs_WfsChannelCard_FetchEntityByIdentity_NoLock" primarykey="ChannelCardId">
+    SELECT ChannelCardId,CardNo,IdTypeNo,OrderNo,SupplierOrderNo,ChannelOrderNo,ChannelType  FROM WfsChannelCard  WITH(NOLOCK)  WHERE ChannelCardId=@ChannelCardId
+  </statement>
+  <statement id="ComBeziWfs_WfsPayType_FetchEntityByIdentity_NoLock" primarykey="PayTypeId">
+    SELECT PayTypeId,PayTypeName,PayTypeValue  FROM WfsPayType  WITH(NOLOCK)  WHERE PayTypeId=@PayTypeId
+  </statement>
+  <statement id="ComBeziWfs_WfsCashTicketNew_FetchEntityByIdentity_NoLock" primarykey="CashTicketNo">
+    SELECT CashTicketNo,PromotionTicketNo,IsActivtion,IsUsed,TicketAmount,IsBound,ActiveCount,DateExpires  FROM WfsCashTicketNew  WITH(NOLOCK)  WHERE CashTicketNo=@CashTicketNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsCMBCFQPay_FetchEntityByIdentity_NoLock" primarykey="CmbcPayInfoNo">
+    SELECT CmbcPayInfoNo,InfoType,OrderNo,PayNo,SupplierNo,PayAmount,PayDate,PayTime,OrderStatus,Comment1,Comment2,Periods,FirstPayAmount,RepaymentFee,DateCreate  FROM SWfsCMBCFQPay  WITH(NOLOCK)  WHERE CmbcPayInfoNo=@CmbcPayInfoNo
+  </statement>
+  <statement id="ComBeziWfs_WfsUserCollection_FetchEntityByIdentity_NoLock" primarykey="UserCollectionId">
+    SELECT UserCollectionId,MailAddress,Mobile,SendFlag  FROM WfsUserCollection  WITH(NOLOCK)  WHERE UserCollectionId=@UserCollectionId
+  </statement>
+  <statement id="ComBeziWfs_SWfsVirtualProduct_FetchEntityByIdentity_NoLock" primarykey="VirtualProductID">
+    SELECT VirtualProductID,ProductNo,CDKBathNo,Status,OperatorUserId,DateCreate,DateUpdate  FROM SWfsVirtualProduct  WITH(NOLOCK)  WHERE VirtualProductID=@VirtualProductID
+  </statement>
+  <statement id="ComBeziWfs_SWfsColumnProductRef_FetchEntityByIdentity_NoLock" primarykey="ColumnProductId">
+    SELECT ColumnProductId,ColumnId,CategoryNo,ExtendNo,ProductNo,Sort,DateCreate  FROM SWfsColumnProductRef  WITH(NOLOCK)  WHERE ColumnProductId=@ColumnProductId
+  </statement>
+  <statement id="ComBeziWfs_WfsProductbeifen_FetchEntityByIdentity_NoLock" primarykey="$Table.PK">
+    SELECT ProductNo,CategoryNo,ProductTemplateNo,BrandNo,BarCode,GoodsNo,MarketPrice,SellPrice,ProductTitle,ProductName,IsShelf,IsCheck,WarnCount,ProductWeight,ProductPicFile,ProductXmlText,ProductCreate,DateMarket,SeasonMarket,Knowledges,Description,ProductContent,ProductInfoXml,DateCreate,PromotionNo,IsPromotion,CmbcSellPrice,HxSellPrice,TopSellPrice,IsExtend,PlatinumPrice,DiamondPrice,LimitedPrice,LimitedVipPrice,Video,EditText,DepartmentNo,UserGroupNo,AddUserId,SupplierNo,ProductSizeNo,ProductStyle,ProductUnitNo,VisibleState,ProductType,SizeStandard,DateShelf,ProductShowFlag,DiscountRate,FirstDateShelf,IsTopFlag,DateTop,ProductFrom,GenderStyle,SpecialDesc,IsSupportCod,IsSupportGift,LastLimitedPrice,LastPlatinumPrice,LastDiamondPrice,ProductPicFlag,PublishFlag,IsLimitedOutlet,ProductMaterial,IsSupportReturn,IsSupportChange,AttributeFlag  FROM WfsProductbeifen  WITH(NOLOCK)  WHERE $Table.PK=@$Table.PK
+  </statement>
+  <statement id="ComBeziWfs_wfscategoryinfo_3_FetchEntityByIdentity_NoLock" primarykey="$Table.PK">
+    SELECT CategoryNo,FashionText,ServiceText,OperatorUserId,DateOperator,DiscountRate  FROM wfscategoryinfo_3  WITH(NOLOCK)  WHERE $Table.PK=@$Table.PK
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewProductManage_FetchEntityByIdentity_NoLock" primarykey="Id">
+    SELECT Id,ProductNo,BrandNo,Status,DataStatus,OperatorUserId,DateCreate,OperateType,Sort,DateShelf,WeekDays,HasStock,BrandAmout,floor,DateShow  FROM SWfsNewProductManage  WITH(NOLOCK)  WHERE Id=@Id
+  </statement>
+  <statement id="ComBeziWfs_WfsEmailTemplate_FetchEntityByIdentity_NoLock" primarykey="EmailTempleteNo">
+    SELECT EmailTempleteNo,TempleteTitle,TempleteType,TempleteContent,DateCreate  FROM WfsEmailTemplate  WITH(NOLOCK)  WHERE EmailTempleteNo=@EmailTempleteNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsUserInvestigation_FetchEntityByIdentity_NoLock" primarykey="UserInvestigationId">
+    SELECT UserInvestigationId,UserId,InvestigationNo,InvestigationDetailId  FROM SWfsUserInvestigation  WITH(NOLOCK)  WHERE UserInvestigationId=@UserInvestigationId
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewArrival_FetchEntityByIdentity_NoLock" primarykey="ArrivalID">
+    SELECT ArrivalID,ArrivalTitle,ArrivalTime,DateBegin,DateEnd,Status,Gender,OperatorUserId,DateCreate,DateUpdate  FROM SWfsNewArrival  WITH(NOLOCK)  WHERE ArrivalID=@ArrivalID
+  </statement>
+  <statement id="ComBeziWfs_WfsAlipayInfo_FetchEntityByIdentity_NoLock" primarykey="AlipayInfoNo">
+    SELECT AlipayInfoNo,NotifyId,NotifyType,NotifyTime,Sign,SignType,TradeNo,OutTradeNo,PaymentType,Subject,Body,TotalFee,TradeStatus,SellerEmail,SellerId,BuyerEmail,BuyerId,RawUrl,DateCreate,VerifyStatus  FROM WfsAlipayInfo  WITH(NOLOCK)  WHERE AlipayInfoNo=@AlipayInfoNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsEWalletOperateLog_FetchEntityByIdentity_NoLock" primarykey="MemberOperateLogId">
+    SELECT MemberOperateLogId,UserId,OperateType,Operation,OperateUserId,DateOperate,Memo  FROM SWfsEWalletOperateLog  WITH(NOLOCK)  WHERE MemberOperateLogId=@MemberOperateLogId
+  </statement>
+  <statement id="ComBeziWfs_SwfsFlagShipLogo_FetchEntityByIdentity_NoLock" primarykey="LogoId">
+    SELECT LogoId,BrandNo,LogoName,LogoNo,LinkUrl,LinkTarget,CreateDate,OperateUserId  FROM SwfsFlagShipLogo  WITH(NOLOCK)  WHERE LogoId=@LogoId
+  </statement>
+  <statement id="ComBeziWfs_WfsIPSPayInfo_FetchEntityByIdentity_NoLock" primarykey="IPSPayNo">
+    SELECT IPSPayNo,OrderNo,MerCode,CurrencyType,Amount,OrderDate,SuccFlag,BankMsg,Attach,IPSBillNo,ReturnEncodeType,Signature,RawUrl,DateCreate,VerifyStatus  FROM WfsIPSPayInfo  WITH(NOLOCK)  WHERE IPSPayNo=@IPSPayNo
+  </statement>
+  <statement id="ComBeziWfs_WfsBrowse_FetchEntityByIdentity_NoLock" primarykey="BrowseNo">
+    SELECT BrowseNo,UserId,ProductNo,ProductName,DateBrowse,CategoryNo,ProductGender  FROM WfsBrowse  WITH(NOLOCK)  WHERE BrowseNo=@BrowseNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectGroupRef_FetchEntityByIdentity_NoLock" primarykey="SubjectNo">
+    SELECT GroupNo,SubjectNo  FROM SWfsSubjectGroupRef  WITH(NOLOCK)  WHERE SubjectNo=@SubjectNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsChannelSordRef_FetchEntityByIdentity_NoLock" primarykey="Id">
+    SELECT Id,ChannelNo,SordNo  FROM SWfsChannelSordRef  WITH(NOLOCK)  WHERE Id=@Id
+  </statement>
+  <statement id="ComBeziWfs_WfsShoppingCart_FetchEntityByIdentity_NoLock" primarykey="ShoppingCartId">
+    SELECT ShoppingCartId,SessionId,SkuCount,ItemXmlText,DeliverId,PayTypeId,PayTypeChildId,DeliverName,Freight,InvoiceFlag,InvoiceTitle,TimeRequest,SpecialRequest,InvoiceType  FROM WfsShoppingCart  WITH(NOLOCK)  WHERE ShoppingCartId=@ShoppingCartId
+  </statement>
+  <statement id="ComBeziWfs_SwfsFlagShipGloalConfig_FetchEntityByIdentity_NoLock" primarykey="ConfigId">
+    SELECT ConfigId,BrandNo,ConfigName,ConfigValue,ConfigTime,DataCreate,OperateUserId  FROM SwfsFlagShipGloalConfig  WITH(NOLOCK)  WHERE ConfigId=@ConfigId
+  </statement>
+  <statement id="ComBeziWfs_SWfsNavigation_FetchEntityByIdentity_NoLock" primarykey="NavigationNo">
+    SELECT NavigationNo,NavigationName,NavigationEnName,NavigationType,NavigationGender,ParentNo,DateCreate,VisibleStatus,Description,LinkAddress,Sort  FROM SWfsNavigation  WITH(NOLOCK)  WHERE NavigationNo=@NavigationNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsTagRel_FetchEntityByIdentity_NoLock" primarykey="ID">
+    SELECT ID,TagNo,TagName,Location,Status,Sort,CreateDate,CreateUserId,Tag_code  FROM SWfsTagRel  WITH(NOLOCK)  WHERE ID=@ID
+  </statement>
+  <statement id="ComBeziWfs_SWfsOutStockRegister_FetchEntityByIdentity_NoLock" primarykey="OutStockRegisterId">
+    SELECT OutStockRegisterId,SkuNo,ArtNo,SkuHashText,UserId,Email,MobilePhone,NotifyStatus,DateRegister,SCategoryNo,ProductNo,TrueName,Message  FROM SWfsOutStockRegister  WITH(NOLOCK)  WHERE OutStockRegisterId=@OutStockRegisterId
+  </statement>
+  <statement id="ComBeziWfs_SWfsCMBCCDKUserRef_FetchEntityByIdentity_NoLock" primarykey="ID">
+    SELECT ID,CMBCCDKID,Mobile,OrderNo,OrderDate,XmlData,SignData,DateCreate  FROM SWfsCMBCCDKUserRef  WITH(NOLOCK)  WHERE ID=@ID
+  </statement>
+  <statement id="ComBeziWfs_SWfsUserAuthorityGroup_FetchEntityByIdentity_NoLock" primarykey="AuthorityGroupNo">
+    SELECT AuthorityGroupNo,AuthorityGroupName,Status,Description,CreateUserId,DateCreate  FROM SWfsUserAuthorityGroup  WITH(NOLOCK)  WHERE AuthorityGroupNo=@AuthorityGroupNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsListAlterGroup_FetchEntityByIdentity_NoLock" primarykey="GroupId">
+    SELECT GroupId,GroupName,Status,Gender,Category,CreateDate,GroupType  FROM SWfsListAlterGroup  WITH(NOLOCK)  WHERE GroupId=@GroupId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSpChannelDetail_FetchEntityByIdentity_NoLock" primarykey="DetailID">
+    SELECT DetailID,ChannelNO,WebTemplateNO,WebCode,CssPath,JsPath,CreateDate  FROM SWfsSpChannelDetail  WITH(NOLOCK)  WHERE DetailID=@DetailID
+  </statement>
+  <statement id="ComBeziWfs_WfsCollection_FetchEntityByIdentity_NoLock" primarykey="CollectionId">
+    SELECT CollectionId,UserId,ProductNo,DateCreate  FROM WfsCollection  WITH(NOLOCK)  WHERE CollectionId=@CollectionId
+  </statement>
+  <statement id="ComBeziWfs_SWfsStyleActivityPic_FetchEntityByIdentity_NoLock" primarykey="SAID">
+    SELECT SAID,ActivityName,PicNo,PicUrl,StartTime,CreateDate,CreateUserId  FROM SWfsStyleActivityPic  WITH(NOLOCK)  WHERE SAID=@SAID
+  </statement>
+  <statement id="ComBeziWfs_SWfsObjectSort_FetchEntityByIdentity_NoLock" primarykey="KeyID">
+    SELECT KeyID,TypeNo,ObjectNo,ObjectTitle,Sort,OperatorUserId,DateCreate,DateUpdate  FROM SWfsObjectSort  WITH(NOLOCK)  WHERE KeyID=@KeyID
+  </statement>
+  <statement id="ComBeziWfs_SWfsMeetingTemplateInfo_FetchEntityByIdentity_NoLock" primarykey="TemplateID">
+    SELECT TemplateID,MettingNo,TemplateName,TemplateDirection,TemplateCode,isPreView,isMobile,CssFileName,jsFileName,CreateTime  FROM SWfsMeetingTemplateInfo  WITH(NOLOCK)  WHERE TemplateID=@TemplateID
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectTimeGroup_FetchEntityByIdentity_NoLock" primarykey="GID">
+    SELECT GID,GroupName,DateBegin,DateEnd,Status,GroupPicNo,GroupPicLink,GroupPicType,CreateUserId,DateCreate,DateUpdate,UpdateUserId,ShowType  FROM SWfsSubjectTimeGroup  WITH(NOLOCK)  WHERE GID=@GID
+  </statement>
+  <statement id="ComBeziWfs_WfsMarketRole_FetchEntityByIdentity_NoLock" primarykey="RoleNo">
+    SELECT RoleNo,RoleName  FROM WfsMarketRole  WITH(NOLOCK)  WHERE RoleNo=@RoleNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSpChannelTemplate_FetchEntityByIdentity_NoLock" primarykey="TemplateID">
+    SELECT TemplateID,TemplateNO,TemplateName,TemplateDirection,OcsCssPath,OcsJsPath,CssPath,JsPath,CreateDate,TemplatePath  FROM SWfsSpChannelTemplate  WITH(NOLOCK)  WHERE TemplateID=@TemplateID
+  </statement>
+  <statement id="ComBeziWfs_WfsInvestigationOtherSuggestion_FetchEntityByIdentity_NoLock" primarykey="InvestigationOtherSuggestionId">
+    SELECT InvestigationOtherSuggestionId,InvestigationNo,OtherSuggestion,DateCreate  FROM WfsInvestigationOtherSuggestion  WITH(NOLOCK)  WHERE InvestigationOtherSuggestionId=@InvestigationOtherSuggestionId
+  </statement>
+  <statement id="ComBeziWfs_SWfsUserReminder_FetchEntityByIdentity_NoLock" primarykey="ReminderId">
+    SELECT ReminderId,UserId,SubjectNo,EmailRemind,SmsRemind,CalRemind,DateCreate,IsValid,IsBrand,ListingOutletFlag  FROM SWfsUserReminder  WITH(NOLOCK)  WHERE ReminderId=@ReminderId
+  </statement>
+  <statement id="ComBeziWfs_SWfsVActivityType_FetchEntityByIdentity_NoLock" primarykey="ActivityTypeId">
+    SELECT ActivityTypeId,ActivityTypeName  FROM SWfsVActivityType  WITH(NOLOCK)  WHERE ActivityTypeId=@ActivityTypeId
+  </statement>
+  <statement id="ComBeziWfs_SWfsProductCategory_FetchEntityByIdentity_NoLock" primarykey="ProductCategoryId">
+    SELECT ProductCategoryId,ProductNo,ErpCategoryNo,ProductCategoryNo,RelationType,GenderStyle  FROM SWfsProductCategory  WITH(NOLOCK)  WHERE ProductCategoryId=@ProductCategoryId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectProductAd_FetchEntityByIdentity_NoLock" primarykey="SubjectProductAdNo">
+    SELECT SubjectProductAdNo,SubjectProductAdPic,CreateUserId,DateCreate  FROM SWfsSubjectProductAd  WITH(NOLOCK)  WHERE SubjectProductAdNo=@SubjectProductAdNo
+  </statement>
+  <statement id="ComBeziWfs_SwfsEEPlantCategory_FetchEntityByIdentity_NoLock" primarykey="CategoryId">
+    SELECT CategoryId,CategoryName,CId,DateCreate,CategoryShortName,CategorySite,CategoryType,IsLimitedOutlet,Memo  FROM SwfsEEPlantCategory  WITH(NOLOCK)  WHERE CategoryId=@CategoryId
+  </statement>
+  <statement id="ComBeziWfs_SWfsMobileAd_FetchEntityByIdentity_NoLock" primarykey="ID">
+    SELECT ID,Name,Status,DateBegin,DateEnd,AdPic,Sort,ShowType,ShowUrl,ChannelNo,CreateUserId,CreateDate,UpdateUserId,UpdateDate  FROM SWfsMobileAd  WITH(NOLOCK)  WHERE ID=@ID
+  </statement>
+  <statement id="ComBeziWfs_SWfsPromotionChargeCode_FetchEntityByIdentity_NoLock" primarykey="PromotionChargeCodeNo">
+    SELECT PromotionChargeCodeNo,PromotionChargeCodeName,DateCreate,DateStart,DateEnd,TotalCount  FROM SWfsPromotionChargeCode  WITH(NOLOCK)  WHERE PromotionChargeCodeNo=@PromotionChargeCodeNo
+  </statement>
+  <statement id="ComBeziWfs_WfsCallRecord_FetchEntityByIdentity_NoLock" primarykey="CallRecordNo">
+    SELECT CallRecordNo,UserId,TrueName,Telephone,CallType,CallContent,ReContent,DateSatart,DateEnd,OpeartorId,OrderNo  FROM WfsCallRecord  WITH(NOLOCK)  WHERE CallRecordNo=@CallRecordNo
+  </statement>
+  <statement id="ComBeziWfs_WfsReturnCustomerVoice_FetchEntityByIdentity_NoLock" primarykey="ReturnCustomerVoiceId">
+    SELECT ReturnCustomerVoiceId,CustomerVoiceId,Recontent,ReturnOperatorId,DateReturn  FROM WfsReturnCustomerVoice  WITH(NOLOCK)  WHERE ReturnCustomerVoiceId=@ReturnCustomerVoiceId
+  </statement>
+  <statement id="ComBeziWfs_SWfsProductLabel_FetchEntityByIdentity_NoLock" primarykey="LabelId">
+    SELECT LabelId,LabelNo,ParentNo,LabelName,LabelType,LabelNickName  FROM SWfsProductLabel  WITH(NOLOCK)  WHERE LabelId=@LabelId
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandFlagShipStoreSave_FetchEntityByIdentity_NoLock" primarykey="FlagShipStoreId">
+    SELECT FlagShipStoreId,BrandNo,LogoPicNo,LogoBgPic,IsNaviBg,TemplateCode,AlterPicNo1,AlterPicAddr1,AlterPicNo2,AlterPicAddr2,AlterPicNo3,AlterPicAddr3,DateCreate,ProductTitlePicNo1,ProductTitleAddr1,ProductNos1,ProductTitlePicNo2,ProductTitleAddr2,ProductNos2,Status,StoreBgPic,HtmlCode,ProductPicShowType  FROM SWfsBrandFlagShipStoreSave  WITH(NOLOCK)  WHERE FlagShipStoreId=@FlagShipStoreId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectCategory_FetchEntityByIdentity_NoLock" primarykey="CategoryNo">
+    SELECT CategoryNo,SubjectNo,CategoryName,ShowErpCategory,BackgroundPic,AdPic,LogoPic,BuyType,SortNo,DateCreate,ShowType,WebHtmlText,MobileHtmlText,SortRuleType,IsAutoBottom,MobileSortRuleType,MobileIsAutoBottom  FROM SWfsSubjectCategory  WITH(NOLOCK)  WHERE CategoryNo=@CategoryNo
+  </statement>
+  <statement id="ComBeziWfs_WfsOrder_FetchEntityByIdentity_NoLock" primarykey="OrderNo">
+    SELECT OrderNo,UserId,TotalAmount,TotalQuantity,Freight,PayAmount,PayRebate,PayCost,Status,PayTypeId,PayTypeChildId,PayTypeChildName,PayTypeName,ConsigneeName,ConsigneePhone,ConsigneeMobile,ConsigneeAddress,ConsigneePostCode,ConsigneeProvinceId,ConsigneeProvinceName,ConsigneeCityId,ConsigneeCityName,ConsigneeAreaId,ConsigneeAreaName,DeliverId,DeliverName,InvoiceTitle,InvoiceContent,DeliverDateType,DeliverRequest,DateCreate,DatePay,DateFinancial,DateDeliver,DateCancel,DateComplete,OrderForm,OrderStyle,ConfirmOperatorId,DateConfirm,SplitFlag,ChannelOrderNo,IsTradeOrder,TradeOrderNo,IsUseTicket,PayStatus,LockStatus,DateDeliving,RealPay,NewTradeOrderNo,ExceptionFlag,ExceptionType,AuthorizeNo,IsOnsiteDiscount,SubjectNo,VoucherNo,CheckStatus,LiquidationStatus,InvoiceType,InvoiceStatus,InvoiceFlag,TicketAmount,DateCheck,BuyType,ListingOutletFlag,PayTradeNumber,IsUseGiftCardPay,GiftCardPayStatus,GiftCardAmount,OnlineAmount,MainOrderNo,ConsigneeTownId,ConsigneeTownName  FROM WfsOrder  WITH(NOLOCK)  WHERE OrderNo=@OrderNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSmsSerialnoExt_FetchEntityByIdentity_NoLock" primarykey="Id">
+    SELECT Id,AppType,ProductNo,ProductName,Serialno,SendDate,IntroduceId,Ext1,Ext2,Ext3  FROM SWfsSmsSerialnoExt  WITH(NOLOCK)  WHERE Id=@Id
+  </statement>
+  <statement id="ComBeziWfs_SWfsCreditAccount_FetchEntityByIdentity_NoLock" primarykey="CreditAccountId">
+    SELECT CreditAccountId,UserId,Credits,CreditType,DateCreate  FROM SWfsCreditAccount  WITH(NOLOCK)  WHERE CreditAccountId=@CreditAccountId
+  </statement>
+  <statement id="ComBeziWfs_SWfsStyleMatchSpecial_FetchEntityByIdentity_NoLock" primarykey="ID">
+    SELECT ID,SpecialName,Position,PicUrl,PicNo,StartTime,EndTime,CreateUserId,CreateDate,UpdateUserId,UpdateDate,[Type]  FROM SWfsStyleMatchSpecial  WITH(NOLOCK)  WHERE ID=@ID
+  </statement>
+  <statement id="ComBeziWfs_uv_SWfsProduct_FetchEntityByIdentity_NoLock" primarykey="$Table.PK">
+    SELECT   FROM uv_SWfsProduct  WITH(NOLOCK)  WHERE $Table.PK=@$Table.PK
+  </statement>
+  <statement id="ComBeziWfs_WfsChannelOrderTemp_FetchEntityByIdentity_NoLock" primarykey="ChannelOrderTempId">
+    SELECT ChannelOrderTempId,ChannelOrderTempNo,ChannelOrderXmlText,ChannelType,OrderNo,IsConfirmed,ErrorMessage  FROM WfsChannelOrderTemp  WITH(NOLOCK)  WHERE ChannelOrderTempId=@ChannelOrderTempId
+  </statement>
+  <statement id="ComBeziWfs_SWfsCategoryPicRef_FetchEntityByIdentity_NoLock" primarykey="KeyID">
+    SELECT KeyID,CategoryNo,PictureManageId  FROM SWfsCategoryPicRef  WITH(NOLOCK)  WHERE KeyID=@KeyID
+  </statement>
+  <statement id="ComBeziWfs_SWfsProductRefLabel_FetchEntityByIdentity_NoLock" primarykey="ProductRefLabelId">
+    SELECT ProductRefLabelId,ProductNo,RefLabelNo,RefLabelParentNo,Weight  FROM SWfsProductRefLabel  WITH(NOLOCK)  WHERE ProductRefLabelId=@ProductRefLabelId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectSpikeProductManage_FetchEntityByIdentity_NoLock" primarykey="ID">
+    SELECT ID,ShowTime,ShowProductPicFileNo,ProductNo,Status,SubjectNo,SubjectCategoryNo,DateCreate,CreateUserId,Type  FROM SWfsSubjectSpikeProductManage  WITH(NOLOCK)  WHERE ID=@ID
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandNavigation_FetchEntityByIdentity_NoLock" primarykey="NavigationId">
+    SELECT NavigationId,NavigationName,BrandNo,ParentId,DateCreate,VisibleStatus,Sort,RefType,RefContent  FROM SWfsBrandNavigation  WITH(NOLOCK)  WHERE NavigationId=@NavigationId
+  </statement>
+  <statement id="ComBeziWfs_WfsPromotionTemplate_FetchEntityByIdentity_NoLock" primarykey="PromotionTemplateNo">
+    SELECT PromotionTemplateNo,TemplateName,TemplateXmlText,TemplateDesc,PromotionRuleParserImpl,DateCreate,CreateOperatorId,DateUpdate,UpdateOperatorId,PageUrl  FROM WfsPromotionTemplate  WITH(NOLOCK)  WHERE PromotionTemplateNo=@PromotionTemplateNo
+  </statement>
+  <statement id="ComBeziWfs_wfsfedexcod_old_FetchEntityByIdentity_NoLock" primarykey="$Table.PK">
+    SELECT FedexCodId,CityName,PostalCode,DistrictName  FROM wfsfedexcod_old  WITH(NOLOCK)  WHERE $Table.PK=@$Table.PK
+  </statement>
+  <statement id="ComBeziWfs_SWfsMeetingNavigation_FetchEntityByIdentity_NoLock" primarykey="NavNO">
+    SELECT NavNO,NavName,NavStatus,NavLink,NavType,ParentNO,NavOrder,MeetingID,DateCreate  FROM SWfsMeetingNavigation  WITH(NOLOCK)  WHERE NavNO=@NavNO
+  </statement>
+  <statement id="ComBeziWfs_SWfsPreSell_FetchEntityByIdentity_NoLock" primarykey="PresellID">
+    SELECT PresellID,PresellTitle,PresellFullPicNo,PresellHalfPicNo,PresellingFullPicNo,PresellingHalfPicNo,PresellingUrl,PresellStatus,PresellingStatus,PresellDateBegin,PresellDateEnd,PresellingDateBegin,PresellingDateEnd,Gender,OperatorUserId,DateCreate,DateUpdate  FROM SWfsPreSell  WITH(NOLOCK)  WHERE PresellID=@PresellID
+  </statement>
+  <statement id="ComBeziWfs_SWfsCategoryShowKeyword_FetchEntityByIdentity_NoLock" primarykey="KeyID">
+    SELECT KeyID,TypeNo,KeywordType,ObjectNo,Sort,Gender,OperatorUserId,DateCreate,DateUpdate  FROM SWfsCategoryShowKeyword  WITH(NOLOCK)  WHERE KeyID=@KeyID
+  </statement>
+  <statement id="ComBeziWfs_SWfsChangePhone_FetchEntityByIdentity_NoLock" primarykey="ChangePhoneId">
+    SELECT ChangePhoneId,UserId,VerifyCode,DateCreate,VerifyType,Mobile  FROM SWfsChangePhone  WITH(NOLOCK)  WHERE ChangePhoneId=@ChangePhoneId
+  </statement>
+  <statement id="ComBeziWfs_SWfsCancelOrderReason_FetchEntityByIdentity_NoLock" primarykey="CancelOrderId">
+    SELECT CancelOrderId,OrderNo,UserId,CancelReason,DateCancel  FROM SWfsCancelOrderReason  WITH(NOLOCK)  WHERE CancelOrderId=@CancelOrderId
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewSubjectCategory_FetchEntityByIdentity_NoLock" primarykey="CategoryNo">
+    SELECT CategoryNo,SubjectNo,CategoryName,ShowColumn,PicNo,CreateUserId,DateCreate,SortNo,IsDelete,PicUrl,IphonePicNo,PicType,PuzzlePicNo,PuzzlePicUrl,PuzzleIphonePicNo,IphonePicMemo,TopPicMemo  FROM SWfsNewSubjectCategory  WITH(NOLOCK)  WHERE CategoryNo=@CategoryNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsShangHaiPay_FetchEntityByIdentity_NoLock" primarykey="ShangHaiPayNo">
+    SELECT ShangHaiPayNo,MerchantID,MerOrderNum,MerOrderAmt,CurType,OrderDate,OrderTime,TranSerialNo,TranResult,Comment,SignDataStr,SignData  FROM SWfsShangHaiPay  WITH(NOLOCK)  WHERE ShangHaiPayNo=@ShangHaiPayNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsMemberOperateLog_FetchEntityByIdentity_NoLock" primarykey="MemberOperateLogId">
+    SELECT MemberOperateLogId,UserId,OperateType,OperateUserId,DateOperate,Memo  FROM SWfsMemberOperateLog  WITH(NOLOCK)  WHERE MemberOperateLogId=@MemberOperateLogId
+  </statement>
+  <statement id="ComBeziWfs_WfsPromotion_FetchEntityByIdentity_NoLock" primarykey="PromotionNo">
+    SELECT PromotionNo,PromotionTemplateNo,PromotionName,PromotionTitle,PromotionDesc,PromotionXmlText,PromotionStartDateTime,PromotionEndDateTime,CreateDate,CreateOperatorId,UpdateDate,UpdateOperatorId,HasExecute,PromotionType,ExecuteOrder  FROM WfsPromotion  WITH(NOLOCK)  WHERE PromotionNo=@PromotionNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsCmbcCreditCardInfo_FetchEntityByIdentity_NoLock" primarykey="OrderNo">
+    SELECT OrderNo,CreditCardNo,ValidDate,Cvv2,AuthorizationCode,Status,LockStatus,DateOperate  FROM SWfsCmbcCreditCardInfo  WITH(NOLOCK)  WHERE OrderNo=@OrderNo
+  </statement>
+  <statement id="ComBeziWfs_wfspaytype_old_FetchEntityByIdentity_NoLock" primarykey="$Table.PK">
+    SELECT PayTypeId,PayTypeName,PayTypeValue  FROM wfspaytype_old  WITH(NOLOCK)  WHERE $Table.PK=@$Table.PK
+  </statement>
+  <statement id="ComBeziWfs_SWfsCMBCCDK_FetchEntityByIdentity_NoLock" primarykey="ID">
+    SELECT ID,ProID,Month,CouponCode,Status,DateEnd,DateCreate  FROM SWfsCMBCCDK  WITH(NOLOCK)  WHERE ID=@ID
+  </statement>
+  <statement id="ComBeziWfs_SWfsShopCartDetail_FetchEntityByIdentity_NoLock" primarykey="ShopCartDetailId">
+    SELECT ShopCartDetailId,ShopCartId,IsLimitedOutlet,ProductNo,SkuNo,ProductCategoryNo,Quantity,DeleteFlag,TopicSubjectFlag,DateAdd,CategoryNo,BuyType,VipNo,PromotionNo,PromotionName,PromotionProductType,PromotionType,SkuFrom,SkuColorSize,DynamicAttributeText,RelShopCartDetailId  FROM SWfsShopCartDetail  WITH(NOLOCK)  WHERE ShopCartDetailId=@ShopCartDetailId
+  </statement>
+  <statement id="ComBeziWfs_WfsCashTicket01_FetchEntityByIdentity_NoLock" primarykey="CashTicketNo">
+    SELECT CashTicketNo,PromotionTicketNo,IsActivtion,IsUsed,TicketAmount,IsBound,ActiveCount,DateExpires,DeliverFrom,DateDeliver,DateUseBegin,DateUseEnd,DateUsed  FROM WfsCashTicket01  WITH(NOLOCK)  WHERE CashTicketNo=@CashTicketNo
+  </statement>
+  <statement id="ComBeziWfs_WfsOutStoreRegister_FetchEntityByIdentity_NoLock" primarykey="OutStoreRegisterNo">
+    SELECT OutStoreRegisterNo,UserId,ProductNo,ProductColor,ProductSize,Phone,Email,DateRegister,IsNotify  FROM WfsOutStoreRegister  WITH(NOLOCK)  WHERE OutStoreRegisterNo=@OutStoreRegisterNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectConsultations_FetchEntityByIdentity_NoLock" primarykey="ConsultationsId">
+    SELECT ConsultationsId,UserId,SubjectNo,ConsultationsContent,ForOperator,Status,ReturnStatus,DateCreate,ConsultationsFlag,RecommendStatus  FROM SWfsSubjectConsultations  WITH(NOLOCK)  WHERE ConsultationsId=@ConsultationsId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSpChannelTemplateRegion_FetchEntityByIdentity_NoLock" primarykey="RelationID">
+    SELECT RelationID,ChannelNO,RegionID,ImgNO,Description,RelationType,TemplateNO,CreateDate,RelationContent  FROM SWfsSpChannelTemplateRegion  WITH(NOLOCK)  WHERE RelationID=@RelationID
+  </statement>
+  <statement id="ComBeziWfs_SWfsPingAnPay_FetchEntityByIdentity_NoLock" primarykey="PingAnPayNo">
+    SELECT PingAnPayNo,OrderNo,PayAmount,Currency,PayFlag,TranTime,ErrorCode,Signature,DateCreate  FROM SWfsPingAnPay  WITH(NOLOCK)  WHERE PingAnPayNo=@PingAnPayNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsBDSubjectSubjectRef_FetchEntityByIdentity_NoLock" primarykey="RefID">
+    SELECT RefID,SubjectNo,BDSubjectNo  FROM SWfsBDSubjectSubjectRef  WITH(NOLOCK)  WHERE RefID=@RefID
+  </statement>
+  <statement id="ComBeziWfs_SWfsUserAuthority_FetchEntityByIdentity_NoLock" primarykey="AuthorityNo">
+    SELECT AuthorityNo,AuthorityName,MarkName,AuthorityGroupNo,Status,Description,CreateUserId,DateCreate  FROM SWfsUserAuthority  WITH(NOLOCK)  WHERE AuthorityNo=@AuthorityNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSemKeyWordInfo_FetchEntityByIdentity_NoLock" primarykey="Id">
+    SELECT Id,Channel,ChildNo,PlanId,PlanName,KeyWord,URL,DateCreate  FROM SWfsSemKeyWordInfo  WITH(NOLOCK)  WHERE Id=@Id
+  </statement>
+  <statement id="ComBeziWfs_WfsComplaintsBack_FetchEntityByIdentity_NoLock" primarykey="ComplaintsBackId">
+    SELECT ComplaintsBackId,ComplaintsNo,OperatorId,Status,ReComplaintsContent,DateReturn  FROM WfsComplaintsBack  WITH(NOLOCK)  WHERE ComplaintsBackId=@ComplaintsBackId
+  </statement>
+  <statement id="ComBeziWfs_SWfsProductRef_FetchEntityByIdentity_NoLock" primarykey="RefID">
+    SELECT RefID,ProductNO,TemplateNO,Status,CreateDate,EditeDate,HTMLCode,PublishHTML,ProductTitle,PublishTime,PublishPeople,EditePeople,HTMLCodeMobile,PublishHTMLMobile  FROM SWfsProductRef  WITH(NOLOCK)  WHERE RefID=@RefID
+  </statement>
+  <statement id="ComBeziWfs_SWfsInviteChargeRef_FetchEntityByIdentity_NoLock" primarykey="InviteChargeRefId">
+    SELECT InviteChargeRefId,SerialNo,PromotionChargeCodeNo,CreateUserId,DateCreate  FROM SWfsInviteChargeRef  WITH(NOLOCK)  WHERE InviteChargeRefId=@InviteChargeRefId
+  </statement>
+  <statement id="ComBeziWfs_SWfsCateTempProduct_FetchEntityByIdentity_NoLock" primarykey="KeyID">
+    SELECT KeyID,CateTempID,HotLabelID,ProductNo,ICONType,Sort,OperatorUserId,DateCreate,DateUpdate  FROM SWfsCateTempProduct  WITH(NOLOCK)  WHERE KeyID=@KeyID
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandFlagShipTemplate_FetchEntityByIdentity_NoLock" primarykey="TemplateID">
+    SELECT TemplateID,TemplateNO,TemplateName,TemplateDirection,CSSPath,JSPath,TemplatePath,TemplateType,CreateDate  FROM SWfsBrandFlagShipTemplate  WITH(NOLOCK)  WHERE TemplateID=@TemplateID
+  </statement>
+  <statement id="ComBeziWfs_WfsInventoryChangeLog_FetchEntityByIdentity_NoLock" primarykey="InventoryChangeLogNo">
+    SELECT InventoryChangeLogNo,SkuNo,Quantity,CurrentSkuType,Description,ChangeType,UserId,DateCreate,WarehouseNo,InvoiceNo,OperatorType  FROM WfsInventoryChangeLog  WITH(NOLOCK)  WHERE InventoryChangeLogNo=@InventoryChangeLogNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsIndexModuleLink_FetchEntityByIdentity_NoLock" primarykey="LinkId">
+    SELECT LinkId,ModuleId,LinkName,CategoryNo,LinkHref,LinkType,SortId,DateCreate,OperateUserId,UpdateDate,UpdateOperateUserId,Stutas,DataState  FROM SWfsIndexModuleLink  WITH(NOLOCK)  WHERE LinkId=@LinkId
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandFlagShipStoreMobile_FetchEntityByIdentity_NoLock" primarykey="FlagShipSotreID">
+    SELECT FlagShipSotreID,BrandNO,HtmlCode,CreateDate,TemplateNo  FROM SWfsBrandFlagShipStoreMobile  WITH(NOLOCK)  WHERE FlagShipSotreID=@FlagShipSotreID
+  </statement>
+  <statement id="ComBeziWfs_SWfsSortProduct_FetchEntityByIdentity_NoLock" primarykey="PkId">
+    SELECT PkId,RuleId,ProductNo,Sort,DateCreate,OperatorUserId,OcsCategoryNo  FROM SWfsSortProduct  WITH(NOLOCK)  WHERE PkId=@PkId
+  </statement>
+  <statement id="ComBeziWfs_WfsOcsShoppingCartDetail_FetchEntityByIdentity_NoLock" primarykey="ShoppingCartDetailId">
+    SELECT ShoppingCartDetailId,ShoppingCartId,ProductNo,SkuNo,Quantity  FROM WfsOcsShoppingCartDetail  WITH(NOLOCK)  WHERE ShoppingCartDetailId=@ShoppingCartDetailId
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandHallVergeofBrand_FetchEntityByIdentity_NoLock" primarykey="BrandHallVergeofBrandId">
+    SELECT BrandHallVergeofBrandId,BrandNo,Sort,Status,Gender,DateCreate,DateBegin,DateEnd,BrandName  FROM SWfsBrandHallVergeofBrand  WITH(NOLOCK)  WHERE BrandHallVergeofBrandId=@BrandHallVergeofBrandId
+  </statement>
+  <statement id="ComBeziWfs_WfsNavCategory_FetchEntityByIdentity_NoLock" primarykey="CategoryNo">
+    SELECT CategoryNo,CategoryName,CategoryType,ParentNo,DateCreate,VisibleStatus,Description,IsChannel  FROM WfsNavCategory  WITH(NOLOCK)  WHERE CategoryNo=@CategoryNo
+  </statement>
+  <statement id="ComBeziWfs_SwfsLpMessage_FetchEntityByIdentity_NoLock" primarykey="Id">
+    SELECT Id,AppType,UserId,Message,DateCreate  FROM SwfsLpMessage  WITH(NOLOCK)  WHERE Id=@Id
+  </statement>
+  <statement id="ComBeziWfs_SWfsShoppingCartNewDetail_FetchEntityByIdentity_NoLock" primarykey="ShoppingCartDetailId">
+    SELECT ShoppingCartDetailId,UserId,ListingOutletFlag,ProductNo,SkuNo,ProductCategoryNo,DynamicAttributeText,SkuColorSize,Quantity,DeleteFlag,DateAdd,CategoryNo,BuyType,TopicSubjectFlag,VipNo,promotionGroupId,PromotionNo,PromotionName,PromotionProductType,PromotionType,RelShoppingCartDetailId  FROM SWfsShoppingCartNewDetail  WITH(NOLOCK)  WHERE ShoppingCartDetailId=@ShoppingCartDetailId
+  </statement>
+  <statement id="ComBeziWfs_WfsChannelBankOrder_FetchEntityByIdentity_NoLock" primarykey="ChannelId">
+    SELECT ChannelId,ChannelOrderNo,ChannelProductNo,BuyType,BuyUserName,ConsigneeName,ConsigneeMobile,ConsigneePhone,ConsigneeDateRequest,ProvinceName,CityName,AreaName,Address,PostCode,ProductName,Stages,PointPrice,ProductPrice,CommissionValue,CommissionType,InvoiceTitle,AuthorizationNo,Count,Memo,GiftName,Aomunt,SkuNo,ChannelOrderFrom,DateInput,DateCreate,bolChangeProduct,ReplaceSkuNo  FROM WfsChannelBankOrder  WITH(NOLOCK)  WHERE ChannelId=@ChannelId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSpChannel_FetchEntityByIdentity_NoLock" primarykey="ChannelID">
+    SELECT ChannelID,ChannelNO,Status,CreateDate  FROM SWfsSpChannel  WITH(NOLOCK)  WHERE ChannelID=@ChannelID
+  </statement>
+  <statement id="ComBeziWfs_SWfsRecommLink_FetchEntityByIdentity_NoLock" primarykey="LinkId">
+    SELECT LinkId,CategoryNo,LinkName,PagePosition,LinkAddress,LinkTarget,BeginTime,EndTime,SortId,Status,DateCreate,OperatorUserId  FROM SWfsRecommLink  WITH(NOLOCK)  WHERE LinkId=@LinkId
+  </statement>
+  <statement id="ComBeziWfs_SWfsTempShoppingCart_FetchEntityByIdentity_NoLock" primarykey="TempShoppingCartNo">
+    SELECT TempShoppingCartNo,UserId,ProductNo,BuyingIP,AolaiPrice,DateCreate,ComeUrl  FROM SWfsTempShoppingCart  WITH(NOLOCK)  WHERE TempShoppingCartNo=@TempShoppingCartNo
+  </statement>
+  <statement id="ComBeziWfs_WfsRecommend_FetchEntityByIdentity_NoLock" primarykey="RecommendNo">
+    SELECT RecommendNo,UserId,UserSign,UserEmail,FriendEmail,RecommendContent,DateCreate  FROM WfsRecommend  WITH(NOLOCK)  WHERE RecommendNo=@RecommendNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsNavigationTab_FetchEntityByIdentity_NoLock" primarykey="NavigationTabNo">
+    SELECT NavigationTabNo,NavigationTabName,NavigationNo,LinkAddress,Identification,IsTopNavigation,NavigationTabGender,Status,Sort,DateCreate  FROM SWfsNavigationTab  WITH(NOLOCK)  WHERE NavigationTabNo=@NavigationTabNo
+  </statement>
+  <statement id="ComBeziWfs_WfsBrowseHistory_FetchEntityByIdentity_NoLock" primarykey="BrowseHistoryNo">
+    SELECT BrowseHistoryNo,UserId,ProductNo,ProductName,DateBrowse,DateInput  FROM WfsBrowseHistory  WITH(NOLOCK)  WHERE BrowseHistoryNo=@BrowseHistoryNo
+  </statement>
+  <statement id="ComBeziWfs_SwfsFlagShipFlash_FetchEntityByIdentity_NoLock" primarykey="FlashId">
+    SELECT FlashId,BrandNo,PictureName,PictureIndex,PictureNo,LinkUrl,LinkTarget,BeginDateTime,State,DataState,DataCreate,OperateUserId  FROM SwfsFlagShipFlash  WITH(NOLOCK)  WHERE FlashId=@FlashId
+  </statement>
+  <statement id="ComBeziWfs_SWfsLotteryEvent_FetchEntityByIdentity_NoLock" primarykey="LotteryEventNo">
+    SELECT LotteryEventNo,EventName,DateBegin,DateEnd,Status,DateCreate,DatePublish  FROM SWfsLotteryEvent  WITH(NOLOCK)  WHERE LotteryEventNo=@LotteryEventNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsMeetingRelationRegion_FetchEntityByIdentity_NoLock" primarykey="MeetingRelationID">
+    SELECT MeetingRelationID,MainMeetingNO,MettingNO,RegionID,ImgNO,Direction,RelationType,RelationContent,TemplateNO,AboutID  FROM SWfsMeetingRelationRegion  WITH(NOLOCK)  WHERE MeetingRelationID=@MeetingRelationID
+  </statement>
+  <statement id="ComBeziWfs_WfsPayTypeChild_old_FetchEntityByIdentity_NoLock" primarykey="$Table.PK">
+    SELECT PayTypeChildId,PayTypeId,PayTypeChidLogo,PayTypeChildName,PayTypeChildValue,PayTypeChildUrl  FROM WfsPayTypeChild_old  WITH(NOLOCK)  WHERE $Table.PK=@$Table.PK
+  </statement>
+  <statement id="ComBeziWfs_SWfsTrendPicRef_FetchEntityByIdentity_NoLock" primarykey="TrendPicId">
+    SELECT TrendPicId,TrendId,PictureFileNo,PictureName,Sort,Status,DateCreate  FROM SWfsTrendPicRef  WITH(NOLOCK)  WHERE TrendPicId=@TrendPicId
+  </statement>
+  <statement id="ComBeziWfs_SWfsVipSubjectAllowRef_FetchEntityByIdentity_NoLock" primarykey="VipSubjectAllowNo">
+    SELECT VipSubjectAllowNo,VipSubjectNo,AllowCustomerLevelNo,AllowTime  FROM SWfsVipSubjectAllowRef  WITH(NOLOCK)  WHERE VipSubjectAllowNo=@VipSubjectAllowNo
+  </statement>
+  <statement id="ComBeziWfs_ErpPromotionCode_FetchEntityByIdentity_NoLock" primarykey="PromotionCodeNo">
+    SELECT PromotionCodeNo,PromotionCodeName,Status,ListingOutletFlag,IsUseTicket,IsUsePromotion,PromotionCodeDesc,PromotionCodeUrl,TotalCount,UsedCount,DateStart,DateEnd,PromotionContentType,PromotionContent,CreateDepartmentNo,CreateDepartmentName,CreateUserId,DateCreate,ConfirmUserId,DateConfirm,DirectorAuditMemo,DirectorAuditUserId,DateDirectorAudit,FinanceAuditMemo,FinanceAuditUserId,DateFinanceAudit,StopUserId,DateStop,CancelUserId,DateCancel  FROM ErpPromotionCode  WITH(NOLOCK)  WHERE PromotionCodeNo=@PromotionCodeNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSpecialRecommendation_FetchEntityByIdentity_NoLock" primarykey="SpecialRecommendationNo">
+    SELECT SpecialRecommendationNo,SpecialRecommendationName,SpecialRecommendationURL,SpecialRecommendationPic,Creater,NewOrCategoryOrBrandNo,NewOrCategoryOrBrandFlag,OrderFlag,Status,DateCreate,ShowType  FROM SWfsSpecialRecommendation  WITH(NOLOCK)  WHERE SpecialRecommendationNo=@SpecialRecommendationNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandDetailProductRef_FetchEntityByIdentity_NoLock" primarykey="KeyID">
+    SELECT KeyID,BrandModuleId,ProductNo,Sort,OperatorUserId,DateCreate,DateUpdate  FROM SWfsBrandDetailProductRef  WITH(NOLOCK)  WHERE KeyID=@KeyID
+  </statement>
+  <statement id="ComBeziWfs_SWfsQuestAnswer_FetchEntityByIdentity_NoLock" primarykey="QuestAnswerId">
+    SELECT QuestAnswerId,Quest,Answer,DateQuest,Sort,IsShow,DateAnswer,OperateUserId  FROM SWfsQuestAnswer  WITH(NOLOCK)  WHERE QuestAnswerId=@QuestAnswerId
+  </statement>
+  <statement id="ComBeziWfs_SWfsNoticeState_FetchEntityByIdentity_NoLock" primarykey="UserId">
+    SELECT UserId,NoticeState  FROM SWfsNoticeState  WITH(NOLOCK)  WHERE UserId=@UserId
+  </statement>
+  <statement id="ComBeziWfs_SWfsUserSubscribe_FetchEntityByIdentity_NoLock" primarykey="SubscribeId">
+    SELECT SubscribeId,UserEmail,Source,DateCreate,Flag,Comments  FROM SWfsUserSubscribe  WITH(NOLOCK)  WHERE SubscribeId=@SubscribeId
+  </statement>
+  <statement id="ComBeziWfs_SWfsBDSubject_FetchEntityByIdentity_NoLock" primarykey="SubjectNo">
+    SELECT SubjectNo,SubjectTitle,InvitationCode,IsForceRegister,Belong,LoginPicNo,BannerPicNo,ReportPicNo,DateBegin,DateEnd,CDKBathNo,PayPathID,DefaultPayTypeNo,IsOnlyPayType,Status,Sort,Gender,OperatorUserId,DateCreate,DateUpdate,ReportPicExt,DefaultPayTypeTitle,ShortAddress,Visiable  FROM SWfsBDSubject  WITH(NOLOCK)  WHERE SubjectNo=@SubjectNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsUserAuthorityRef_FetchEntityByIdentity_NoLock" primarykey="UserAuthorityRefId">
+    SELECT UserAuthorityRefId,GroupNo,AuthorityGroupNo  FROM SWfsUserAuthorityRef  WITH(NOLOCK)  WHERE UserAuthorityRefId=@UserAuthorityRefId
+  </statement>
+  <statement id="ComBeziWfs_WfsCommentary_FetchEntityByIdentity_NoLock" primarykey="CommentaryId">
+    SELECT CommentaryId,UserId,ProductNo,CommentaryTitle,OutFeatureGrades,ComfortGrades,AllContent,Grades,IsShow,CommentaryType,IsShowInChannel,IsShowInHome,DateCreate,Memo,SizeEvaluation,ConsultingNickname  FROM WfsCommentary  WITH(NOLOCK)  WHERE CommentaryId=@CommentaryId
+  </statement>
+  <statement id="ComBeziWfs_SWfsSearchPriceInterval_FetchEntityByIdentity_NoLock" primarykey="IntervalId">
+    SELECT IntervalId,CategoryNo,MinPrice,MaxPrice,Status,CreateDate,OperatorUserId  FROM SWfsSearchPriceInterval  WITH(NOLOCK)  WHERE IntervalId=@IntervalId
+  </statement>
+  <statement id="ComBeziWfs_WfsNBillPayInfo_FetchEntityByIdentity_NoLock" primarykey="NBillPayInfoNo">
+    SELECT NBillPayInfoNo,MerchantAcctId,Version,Language,SignType,PayType,BankId,OrderId,OrderTime,OrderAmount,DealId,BankDealId,DealTime,PayAmount,Fee,Ext1,Ext2,PayResult,ErrCode,SignMsg,DateCreate,RawUrl,VerifyStatus  FROM WfsNBillPayInfo  WITH(NOLOCK)  WHERE NBillPayInfoNo=@NBillPayInfoNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsCommonLogs_FetchEntityByIdentity_NoLock" primarykey="CommonLogId">
+    SELECT CommonLogId,TableNameOperate,Action,PkNameOperate,PkValueOperate,DateOperate,OperateUserId,XmlDocument,Memo  FROM SWfsCommonLogs  WITH(NOLOCK)  WHERE CommonLogId=@CommonLogId
+  </statement>
+  <statement id="ComBeziWfs_SWfsIndexHotProductListTemp_FetchEntityByIdentity_NoLock" primarykey="ID">
+    SELECT ID,CategoryNo,ProductNo,SortValue,Status,DataState,DateCreate,OperateUserId,UpdateOperateUserId,UpdateDate  FROM SWfsIndexHotProductListTemp  WITH(NOLOCK)  WHERE ID=@ID
+  </statement>
+  <statement id="ComBeziWfs_SWfsUserGroup_FetchEntityByIdentity_NoLock" primarykey="GroupNo">
+    SELECT GroupNo,GroupName,CreateUserId,DateCreate,Status,Description,SortValue  FROM SWfsUserGroup  WITH(NOLOCK)  WHERE GroupNo=@GroupNo
+  </statement>
+  <statement id="ComBeziWfs_SwfsSkillGroup_FetchEntityByIdentity_NoLock" primarykey="Id">
+    SELECT Id,MeetingID,SkillGroupName,StartTime,EndTime,CreateTime,CreateUser,ModifyTime,ModifyUser,IsVoid  FROM SwfsSkillGroup  WITH(NOLOCK)  WHERE Id=@Id
+  </statement>
+  <statement id="ComBeziWfs_SWfsHomeHotProduct_FetchEntityByIdentity_NoLock" primarykey="HotProductId">
+    SELECT HotProductId,ProductNo,Sort,DateCreate,GroupId,CategoryNo  FROM SWfsHomeHotProduct  WITH(NOLOCK)  WHERE HotProductId=@HotProductId
+  </statement>
+  <statement id="ComBeziWfs_WfsSaleDevice_FetchEntityByIdentity_NoLock" primarykey="SaleDeviceNo">
+    SELECT SaleDeviceNo,SaleDeviceName,DeviceType,DeviceLink,Status,OperateUserId,DateCreate,UsedCount,Memo  FROM WfsSaleDevice  WITH(NOLOCK)  WHERE SaleDeviceNo=@SaleDeviceNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsBocChinaFQPay_FetchEntityByIdentity_NoLock" primarykey="BocChinaPayId">
+    SELECT BocChinaPayId,MerChantNo,OrderNo,OrderSeq,CardType,PayTime,OrderStatus,PayAmount,OrderIp,OrderRefer,BankTranSeq,ReturnActFlag,SignData,DateCreate,PlanFirstAmount,PlanFee,OrderAmount  FROM SWfsBocChinaFQPay  WITH(NOLOCK)  WHERE BocChinaPayId=@BocChinaPayId
+  </statement>
+  <statement id="ComBeziWfs_WfsBankCommPay_FetchEntityByIdentity_NoLock" primarykey="BankCommPayId">
+    SELECT BankCommPayId,MerChNo,OrderNo,TranAmount,TranCurrType,PayBatNo,MerchBatchNo,TanDate,TanTime,SerialNo,TranRst,FeeSum,CardType,BankMoNo,ErrDis,UserRemoteAddr,Referer,SignMsg,DateCreate  FROM WfsBankCommPay  WITH(NOLOCK)  WHERE BankCommPayId=@BankCommPayId
+  </statement>
+  <statement id="ComBeziWfs_SWfsPictureChannelRef_FetchEntityByIdentity_NoLock" primarykey="PictureChannelRefId">
+    SELECT PictureChannelRefId,PictureManageId,ChannelNo  FROM SWfsPictureChannelRef  WITH(NOLOCK)  WHERE PictureChannelRefId=@PictureChannelRefId
+  </statement>
+  <statement id="ComBeziWfs_WfsFedexCod_FetchEntityByIdentity_NoLock" primarykey="FedexCodId">
+    SELECT FedexCodId,CityName,PostalCode,DistrictName  FROM WfsFedexCod  WITH(NOLOCK)  WHERE FedexCodId=@FedexCodId
+  </statement>
+  <statement id="ComBeziWfs_SWfsShoppingCartDetail_FetchEntityByIdentity_NoLock" primarykey="ShoppingCartDetailId">
+    SELECT ShoppingCartDetailId,ShoppingCartId,ProductNo,SkuNo,Quantity,DeleteFlag,DateAdd,CategoryNo,BuyType,PromotionNo,PromotionName,PromotionProductType,PromotionType,RelationSkuNo,TopicSubjectFlag,VipNo  FROM SWfsShoppingCartDetail  WITH(NOLOCK)  WHERE ShoppingCartDetailId=@ShoppingCartDetailId
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderPayExt_FetchEntityByIdentity_NoLock" primarykey="OrderNo">
+    SELECT OrderNo,OrderNoSeq,OrderNoFull  FROM WfsOrderPayExt  WITH(NOLOCK)  WHERE OrderNo=@OrderNo
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderCartDetailRef_FetchEntityByIdentity_NoLock" primarykey="OrderCartDetailRefID">
+    SELECT OrderCartDetailRefID,OrderDetailNo,CartDetailID,DateCreate  FROM WfsOrderCartDetailRef  WITH(NOLOCK)  WHERE OrderCartDetailRefID=@OrderCartDetailRefID
+  </statement>
+  <statement id="ComBeziWfs_WfsOcsShoppingCart_FetchEntityByIdentity_NoLock" primarykey="ShoppingCartId">
+    SELECT ShoppingCartId,SkuCount,ItemXmlText  FROM WfsOcsShoppingCart  WITH(NOLOCK)  WHERE ShoppingCartId=@ShoppingCartId
+  </statement>
+  <statement id="ComBeziWfs_WfsSupplierOrder_FetchEntityByIdentity_NoLock" primarykey="SupplierOrderNo">
+    SELECT SupplierOrderNo,OrderNo,SupplierNo,JointSettlementNo,Status,OrderFlag,TotalProductAmount,TotalProductCount,TotalRebateCash,Freight,SettlementType,LogiticsOrderNo,LogiticsCompanyNo,LogiticsCompanyName,ExportStatus,SettlementStatus,DateSettlement,DateCreate,DateDeliver,DateComplete,DateCancel,DateConfirm,DatePick,PickUser,WarehouseNo,ChannelOrderNo,PuchaseType,PayStatus,LockStatus,DateDeliving,LibraryFlag,PurchaseOrderNo,PurchaseOrderFlag,IsReported,HangUpStatus,CombinPrintNo,DatePay,TotalTicketAmount,DatePack,PackUserId,TotalGiftCardAmount,InvoiceStatus,WmsStatus,ReturnLockStatus,CODAmount,ProductTotalPrice  FROM WfsSupplierOrder  WITH(NOLOCK)  WHERE SupplierOrderNo=@SupplierOrderNo
+  </statement>
+  <statement id="ComBeziWfs_GcOperator_FetchEntityByIdentity_NoLock" primarykey="UserName">
+    SELECT UserName,Password,TrueName,Mobile,Status,DateOperate,OperateUserId  FROM GcOperator  WITH(NOLOCK)  WHERE UserName=@UserName
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderPromotionRef_FetchEntityByIdentity_NoLock" primarykey="OrderPromotionRefID">
+    SELECT OrderPromotionRefID,OrderNo,PromotionRules,DateCreate  FROM WfsOrderPromotionRef  WITH(NOLOCK)  WHERE OrderPromotionRefID=@OrderPromotionRefID
+  </statement>
+  <statement id="ComBeziWfs_WfsBankFQPay_FetchEntityByIdentity_NoLock" primarykey="BankFQInfoNo">
+    SELECT BankFQInfoNo,ShangOrderNo,BankFQOrderNo,AmountSend,AmountReturn,TradeDate,MerchantNo,Currency,Period,RetureData,PayResult,PayDate,Signature,ExcepitonMsg,PostData  FROM WfsBankFQPay  WITH(NOLOCK)  WHERE BankFQInfoNo=@BankFQInfoNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSHDGPay_FetchEntityByIdentity_NoLock" primarykey="SHDGInfoNo">
+    SELECT SHDGInfoNo,OrderNo,Amount,ResCode,PartnerID,MerCode,Sign,DateCreate  FROM SWfsSHDGPay  WITH(NOLOCK)  WHERE SHDGInfoNo=@SHDGInfoNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsMagazineStyleRef_FetchEntityByIdentity_NoLock" primarykey="MagazineNo">
+    SELECT MagazineNo,StyleNo,MagazineName,PicNo,Url,Status,Sort,DateCreate,HtmlContent  FROM SWfsMagazineStyleRef  WITH(NOLOCK)  WHERE MagazineNo=@MagazineNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsTrend_FetchEntityByIdentity_NoLock" primarykey="TrendId">
+    SELECT TrendId,TrendName,TitleExplain,ContentExplain,Sort,Status,DateCreate,TrendLabelNo  FROM SWfsTrend  WITH(NOLOCK)  WHERE TrendId=@TrendId
+  </statement>
+  <statement id="ComBeziWfs_SWfsCategory_FetchEntityByIdentity_NoLock" primarykey="CategoryNo">
+    SELECT CategoryNo,CategoryName,ParentNo,VisibleState,Sort  FROM SWfsCategory  WITH(NOLOCK)  WHERE CategoryNo=@CategoryNo
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderBankFQPay_FetchEntityByIdentity_NoLock" primarykey="ID">
+    SELECT ID,OrderID,NewOrderID,CreateDate  FROM WfsOrderBankFQPay  WITH(NOLOCK)  WHERE ID=@ID
+  </statement>
+  <statement id="ComBeziWfs_WfsBirthDayParty_FetchEntityByIdentity_NoLock" primarykey="WfsBirthDayPartyNO">
+    SELECT WfsBirthDayPartyNO,Phone,DateCreate,UserId,BackUpField,Type,Email,Status  FROM WfsBirthDayParty  WITH(NOLOCK)  WHERE WfsBirthDayPartyNO=@WfsBirthDayPartyNO
+  </statement>
+  <statement id="ComBeziWfs_SWfsSmsTipRecord_FetchEntityByIdentity_NoLock" primarykey="id">
+    SELECT id,OrderNO,UserId,UserPhoneNumber,TipMessage,TipTime,TipType  FROM SWfsSmsTipRecord  WITH(NOLOCK)  WHERE id=@id
+  </statement>
+  <statement id="ComBeziWfs_SWfsVenueVisitInfo_FetchEntityByIdentity_NoLock" primarykey="VisitInfoID">
+    SELECT VisitInfoID,MeetingNO,ClickRegionID,DateStatistics,CreateTime,PV,UV,VIP,GoldenVIP,PlatinaVIP,DiamondVIP,OrderNums,OrderAverge,MobileOrWeb  FROM SWfsVenueVisitInfo  WITH(NOLOCK)  WHERE VisitInfoID=@VisitInfoID
+  </statement>
+  <statement id="ComBeziWfs_SWfsTopics_FetchEntityByIdentity_NoLock" primarykey="TopicNo">
+    SELECT TopicNo,TopicName,TopicURL,TopicPic,CreaterUserId,DepartmentNo,DepartmentName,Status,DateCreate,WebSite,SubHeading,Gender,ThumbnailFileNo,FillPictureFileNo,DateBegin,DateEnd,IPhonePicNo,Types,TopicTotalPicNo,WapPicFileNo,PushDescripton,IsTop,DateTop  FROM SWfsTopics  WITH(NOLOCK)  WHERE TopicNo=@TopicNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSpChannelRecommendLink_FetchEntityByIdentity_NoLock" primarykey="RecommendLinkID">
+    SELECT RecommendLinkID,ParentID,ChannelNO,LinkName,LinkUrl,SortValue,CreateDate  FROM SWfsSpChannelRecommendLink  WITH(NOLOCK)  WHERE RecommendLinkID=@RecommendLinkID
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewBrandManage_FetchEntityByIdentity_NoLock" primarykey="NewBrandId">
+    SELECT NewBrandId,BrandNo,Sort,WeekDays,OperatorUserId,DateCreate  FROM SWfsNewBrandManage  WITH(NOLOCK)  WHERE NewBrandId=@NewBrandId
+  </statement>
+  <statement id="ComBeziWfs_SwfsFlagShipNewArrival_FetchEntityByIdentity_NoLock" primarykey="NewArrivalId">
+    SELECT NewArrivalId,BrandNo,NewArrivalTitle,PageNo,PagePositionNo,PagePositionName,CreateDate,NewShelfDate,SortValue,Status,DataState,OperateUserId,UpdateOperateUserId,UpdateDate  FROM SwfsFlagShipNewArrival  WITH(NOLOCK)  WHERE NewArrivalId=@NewArrivalId
+  </statement>
+  <statement id="ComBeziWfs_SWfsBrandNewArrival_FetchEntityByIdentity_NoLock" primarykey="BrandNewArrivalNo">
+    SELECT BrandNewArrivalNo,BrandNo,NewArrivalName,Creater,Sort,Status,DateCreate,BrandTerminalNo  FROM SWfsBrandNewArrival  WITH(NOLOCK)  WHERE BrandNewArrivalNo=@BrandNewArrivalNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsEWalletWithdraw_FetchEntityByIdentity_NoLock" primarykey="Id">
+    SELECT Id,UserId,CashAmount,BankProvinceId,BankCityId,BankAreaId,BankName,BankAccount,UserName,Mobile,Status,DateCreate,BankSequenceNo,Operator,OperatorId,IsInProcess,LockUser,DateRemittance,SmsContent,Comment,DateUpdate  FROM SWfsEWalletWithdraw  WITH(NOLOCK)  WHERE Id=@Id
+  </statement>
+  <statement id="ComBeziWfs_SWfsUnionPay_FetchEntityByIdentity_NoLock" primarykey="UnionPayNo">
+    SELECT UnionPayNo,Version,Charset,TransType,RespCode,RespMsg,RespTime,MerId,MerAbbr,OrderNo,TraceNumber,TraceTime,Qid,OrderAmount,OrderCurrency,SettleAmount,SettleCurrency,SettleDate,ExchangeRate,ExchangeDate,CupReserved,SignMethod,Signature,RawUrl,DateCreate,VerifyStatus  FROM SWfsUnionPay  WITH(NOLOCK)  WHERE UnionPayNo=@UnionPayNo
+  </statement>
+  <statement id="ComBeziWfs_WfsSaleWarn_FetchEntityByIdentity_NoLock" primarykey="SaleWarnNo">
+    SELECT SaleWarnNo,Phone,Email,Type,SubjectNo,DateCreate,SendTime,Status  FROM WfsSaleWarn  WITH(NOLOCK)  WHERE SaleWarnNo=@SaleWarnNo
+  </statement>
+</statements>

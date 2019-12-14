@@ -1,0 +1,126 @@
+﻿@model IEnumerable<Shangpin.Ocs.Entity.Extenstion.ShangPin.ChannelRecommendBrandExtends>
+@using Shangpin.Ocs.Web.Infrastructure
+@{
+    ViewBag.Title = "频道推荐品牌";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    
+    
+}
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/Venue/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("input[name='recommenditem']").click(function () {
+                var cacellist = $("#cancelBrandNO").val();
+                if (this.checked) {
+                    if (cacellist.length > 0) {
+                        if (cacellist.indexOf(this.value + ",") >= 0) {
+                            $("#cancelBrandNO").val(cacellist.replace(this.value + ",", ""));
+                        } else {
+                            if (cacellist.indexOf("," + this.value) >= 0) {
+                                $("#cancelBrandNO").val(cacellist.replace("," + this.value, ""));
+                            } else {
+                                if (cacellist.indexOf(this.value) >= 0) {
+                                    $("#cancelBrandNO").val(cacellist.replace(this.value, ""));
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    if (cacellist.length == 0) {
+                        $("#cancelBrandNO").val(cacellist + this.value);
+                    } else {
+                        $("#cancelBrandNO").val(cacellist + "," + this.value);
+                    }
+                }
+
+            });
+        });
+        var editepic = function (alterpicid) {
+            $.get("/shangpin/channel/EditeBrandAlterPic/"+alterpicid, function (data) {
+                $("#AlterPicId").val(data.AlterPicId);
+                $("#LargePicture").val(data.LargePicture);
+                $("#LinkName").val(data.LinkName);
+                $("#AlterAddress").val(data.AlterAddress);
+            });
+        }
+        //保存排序
+        var saveSortValue = function (objId, sortValue) {
+            $.get("/shangpin/channel/SaveBrandSortValue", { 'id': objId, 'sort': sortValue }, function (data) {
+                if (data.result == 0) {
+                    alert(data.message);
+                }
+            });
+        }
+    </script>
+}
+<h1>
+    OCS > 尚品 > <a href="/Shangpin/channel/ChannelList">频道页列表</a>  >频道推荐品牌
+</h1>
+<form action="/shangpin/channel/AddRecommendBrand" method="post" id="saveBrand" >
+<table cellpadding="1" cellspacing="1" class="mx-table">
+    <thead>
+        <tr>
+            <th >
+                品牌编号
+            </th>
+            <th >
+                中文名称
+            </th>
+            <th >
+                英文名称
+            </th>
+            <th >
+                推荐状态
+            </th>
+            <th >
+                排序
+            </th>
+        </tr>
+    </thead>
+    <tbody >
+    @if (Model != null)
+    {
+        for (int i = 0; i < Model.Count(); i++)
+        {
+            <tr class="@(i % 2 == 0 ? "cross" : "")" >
+                <td>
+                    @Model.ElementAt(i).BrandNO
+                </td>
+                <td>
+                    @Model.ElementAt(i).BrandCnName
+                </td>
+                <td>
+                    @Model.ElementAt(i).BrandEnName
+                </td>
+                <td>
+                     @if (Model.ElementAt(i).RecommendBrandID == 0)
+                     {
+                        <input type="checkbox" name="itemobj" value="@Model.ElementAt(i).BrandNO" />
+                     }
+                     else
+                     {
+                        <input type="checkbox" name="recommenditem" value="@Model.ElementAt(i).RecommendBrandID" checked="checked"/>
+                     }
+                </td>
+                <td>
+                    @if (Model.ElementAt(i).RecommendBrandID != 0)
+                    {
+                        <input type="text" value="@Model.ElementAt(i).SortValue" onblur="saveSortValue(@Model.ElementAt(i).RecommendBrandID,this.value)"/>
+                    }
+                </td>
+            </tr>
+        }
+            <tr >
+                <td colspan="5">
+                    <a class="button" id="save" onclick="$('#saveBrand').submit();">保存</a>
+                </td>
+            </tr>
+    }
+    </tbody>
+</table>
+<input type="hidden" value="@Request.QueryString["channelno"]" name="channelno"/>
+<input type="hidden" value="" name="cancelBrandNO" id="cancelBrandNO"/>
+</form>
+@ViewData["tip"]
+

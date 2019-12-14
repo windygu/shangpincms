@@ -1,0 +1,131 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.Outlet
+@using Shangpin.Ocs.Web.Infrastructure
+@using Shangpin.Ocs.Service.Common
+@using Shangpin.Entity.Wfs
+@{
+    ViewBag.Title = "频道活动推荐|尚品OCS管理系统";
+    ViewBag.ChannelNo = Request.QueryString["ChannelNo"];
+    ViewBag.ChannelName = Request.QueryString["channelName"];
+}
+@model SWfsSubjectFeaturedEvents
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/lib/jquery.form.js"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/plug/comm.js"></script>
+}
+<script type="text/javascript">
+    $(function () {
+        $("#submitBtn").bind("click", function () {
+            var t1 = $("#ShowDate").val();
+            if (t1 == "") {
+                alert("请选择日期");
+                return false;
+            }
+            if (t1 != "") {
+                var showTime = new Date(t1.replace(/-/g, "/"));
+                var maxTime = new Date("9999-12-31".replace(/-/g, "/"));
+                var minTime = new Date("1900-01-01".replace(/-/g, "/"));
+                if (showTime > maxTime || showTime < minTime) {
+                    alert("非法日期");
+                    return false;
+                }
+            }
+            if ($("#SubjectNo").val() == "") {
+                alert("请填写活动编号");
+                return false;
+            }
+            //保证新增的时候验证图片
+            var tempId = $("#ID").val();
+            if (tempId == "0" || tempId == "") {
+                //图片验证
+                if ($("#AdPicFile").val() == "") {
+                    alert("请上传图片！");
+                    return false;
+                }
+            }
+
+            $('#addform').ajaxSubmit({
+                success: function (html, status) {
+                    if (typeof (html) == "string") {
+                        var rs = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+                        data = eval("(" + rs + ")");
+                    }
+                    else {
+                        data = html;
+                    }
+                    if (data.rs == "ok") {
+                        $("#submitBtn").html("确定");
+                        alert(data.message);
+                        window.location.href = "/outlet/channel/FeaturedEventsList?channel=" +@ViewBag.ChannelNo +"&channelName=@(Request.QueryString["channelName"])";
+                        return false;
+                    }
+                    else {
+                        $("#submitBtn").html("确定");
+                        alert(data.message);
+                        return false;
+                    }
+                }
+            });
+        });
+
+        //取消
+//        $("#cancleBtn").bind("click", function () {
+//            window.location.href = "/outlet/channel/FeaturedEventsList?channel=" +@ViewBag.ChannelNo +"&channelName=@(Request.QueryString["channelName"])";
+//        });
+    });
+</script>
+<style type="text/css">
+    .sleftable td {
+        padding: 5px;
+        float: none;
+    }
+</style>
+<h1><a href="/outlet/channel/FeaturedEventsList">频道管理</a> > 频道活动推荐 > @Request.QueryString["channelName"]</h1>
+<hr />
+<form action="/outlet/channel/FeaturedEventAdd" method="post" id="addform" enctype="multipart/form-data">
+    <input value="@(Model!=null?Model.ID:0)" name="ID" id="ID" type="hidden" />
+    <input value="@ViewBag.ChannelNo" name="ChannelNo" id="ChannelNo" type="hidden" />
+    <input value="@ViewBag.ChannelName" name="ChannelName" id="ChannelName" type="hidden" />
+    <table class="sleftable">
+        <tr>
+            <td colspan="2" style="font-size:14px;">@((Model != null && Model.ID > 0) ? "修改主推活动" : "添加主推活动")</td>
+        </tr>
+        <tr>
+            <td style="color:Red; text-align:right;">展示日期:</td>
+            <td>
+                <input style="width:200px;" id="ShowDate" value="@(Model!=null&&Model.DateShow.ToString("yyyy-MM-dd HH:mm:ss")!="0001-01-01 00:00:00"?Model.DateShow.ToString("yyyy-MM-dd HH:mm:ss"):"")" name="ShowDate" class="Wdate" type="text" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:00' })" readonly="readonly" />
+            </td>
+        </tr>
+        <tr>
+            <td style="color:Red; text-align:right;">位置:</td>
+            <td>
+                <input id="loc1" name="loc" type="radio" value="1" @(Model != null ? (Model.Location != 2 ? "checked=checked" : "") : "checked=checked") />
+                <label for="loc1">1</label>
+                <input id="loc2" name="loc" type="radio" value="2" @(Model != null ? (Model.Location == 2 ? "checked=checked" : "") : "") />
+                <label for="loc2">2</label>
+            </td>
+        </tr>
+        <tr>
+            <td style="color:Red; text-align:right;">活动编号:</td>
+            <td>
+                <input style="width:200px;" id="SubjectNo" type="text" value="@(Model!=null?Model.SubjectNo:"")" name="subjectNo" />
+            </td>
+        </tr>
+        <tr>
+            <td style="color:red; text-align:right;">主推图片:</td>
+            <td>
+                <input id="AdPicFile" type="file" name="AdPicFile" />
+                请上传460*460 小于150K的jpg、gif格式图片
+                <br />
+                <img alt="" src="/ReadPic/GetPic.ashx?width=100&height=60&pictureFileNo=@(Model!=null?Model.SpreadPicture:"")&type=2" />
+                <input id="hidAdPicUp" type="hidden" name="hidAdPicUp" value="@(Model!=null?Model.SpreadPicture:"")" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <a id="submitBtn" class="sumit_btn" href="###">确 定</a>
+                <a id="cancleBtn" class="cancle_btn" href="/outlet/channel/FeaturedEventsList?channel=@ViewBag.ChannelNo&channelName=@ViewBag.ChannelName">取消</a>
+            </td>
+        </tr>
+    </table>
+</form>

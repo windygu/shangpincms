@@ -1,0 +1,25 @@
+.through520 {
+    background: #f6f6f6;
+	width:100%;
+}
+.through520:after {overflow:hidden; clear:both; content:""; height:0; display:block;}
+.trust {
+    width: 960px;
+    margin: 0 auto;
+}
+.trust img {
+    vertical-align: top;
+	position:relative;
+}
+.trust div {
+    position: relative;
+}
+.trust_link {position:absolute; display:block; height:22px; right:50px; background:url(/images/e.gif);}
+.link_wid {width:166px; top:0;}
+.link_wid2 {width:100px; top:0;}
+.trust .link_wid3 {width:78px; height:18px; top:0;}
+.trust .link_top {top:22px;}
+.trust a:active{outline:none;} 
+.trust .link_boss { bottom:0; left:304px; width:291px;}
+#link_hei {height:108px;}
+#link_hei2 {height:200px;}

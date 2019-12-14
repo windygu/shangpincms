@@ -1,0 +1,1845 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+
+  <statement id="ComBeziWfs_SWfsSubject_SubjectList">
+    select SubjectName,SWfsSubject.SubjectNo,DateBegin,DateEnd,Status,DateCreate,ChannelNo,BelongsSubjectPic,SubjectTemplate,TitlePic1,BU,ISNULL([Level],0) AS [Level],ISNULL(PromotionApplyTime,'1900-01-01 00:00:00') AS PromotionApplyTime,ISNULL(PromotionConfirmTime,'1900-01-01 00:00:00') AS PromotionConfirmTime,IsAudited
+    from SWfsSubject with (NoLock)
+    LEFT OUTER JOIN SWfsSubjectApplyPromotion(NoLock) ON dbo.SWfsSubject.SubjectNo = dbo.SWfsSubjectApplyPromotion.SubjectNo
+    #if($ChannelSord !='')
+    inner join SWfsSubjectChannelSordRef on SWfsSubject.SubjectNo=SWfsSubjectChannelSordRef.SubjectNo
+
+    where SWfsSubjectChannelSordRef.SordNo=@ChannelSord and SWfsSubject.Status!=3
+    #end
+    #if($ChannelSord =='')
+
+    where SWfsSubject.Status!=3
+    #end
+    #if($ProductNo!='')
+    and SWfsSubject.SubjectNo IN(SELECT sc.SubjectNo FROM dbo.SWfsSubjectProductRef AS spref , dbo.SWfsSubjectCategory AS sc
+    WHERE spref.CategoryNo=sc.CategoryNo AND spref.ProductNo=@ProductNo AND spref.TypeFlag=0)
+    #end
+    #if($KeyWord !='')
+    and (SWfsSubject.SubjectName like '%'+@KeyWord+ '%' or SWfsSubject.SubjectNo like '%'+@KeyWord+ '%')
+    #end
+    #if($Status!='')
+    and SWfsSubject.Status =@Status
+    #end
+    #if($StartTime!='')
+    and SWfsSubject.DateBegin >@StartTime
+    #end
+    #if($EndTime!='')
+    and SWfsSubject.DateBegin &lt;=@EndTime
+    #end
+    #if($ChannelNo!='')
+    and SWfsSubject.ChannelNo like  '%'+@ChannelNo+ '%'
+    #end
+    #if($SubjectTemplate!='')
+    and SWfsSubject.SubjectTemplate=@SubjectTemplate
+    #end
+    #if($BU!='')
+    and SWfsSubject.BU=@BU
+    #end
+    #if($IsAudited!='')
+    and SWfsSubject.IsAudited=@IsAudited
+    #end
+  </statement>
+  <!--应对活动列表显示所包含商品数量 by lijibo-->
+  <statement id="ComBeziWfs_SWfsSubject_SubjectList1">
+    SELECT   SubjectName ,
+    SWfsSubject.SubjectNo ,
+    SWfsSubject.DateBegin ,
+    DateEnd ,
+    Status ,
+    SWfsSubject.DateCreate ,
+    ChannelNo ,
+    BelongsSubjectPic ,
+    SubjectTemplate ,
+    TitlePic1 ,
+    BU ,
+    ISNULL([Level], 0) AS [Level] ,
+    ISNULL(PromotionApplyTime, '1900-01-01 00:00:00') AS PromotionApplyTime ,
+    ISNULL(PromotionConfirmTime, '1900-01-01 00:00:00') AS PromotionConfirmTime ,
+    IsAudited ,
+    COUNT(WfsProduct.ProductNo) ProCount
+    FROM      SWfsSubjectApplyPromotion(NOLOCK)
+    RIGHT JOIN SWfsSubject WITH ( NOLOCK ) ON dbo.SWfsSubject.SubjectNo = dbo.SWfsSubjectApplyPromotion.SubjectNo
+    LEFT  JOIN SWfsSubjectCategory WITH ( NOLOCK ) ON dbo.SWfsSubject.SubjectNo = dbo.SWfsSubjectCategory.SubjectNo
+    LEFT JOIN SWfsSubjectProductRef WITH ( NOLOCK ) ON dbo.SWfsSubjectCategory.CategoryNo = dbo.SWfsSubjectProductRef.CategoryNo
+    LEFT JOIN WfsProduct WITH ( NOLOCK ) ON SWfsSubjectProductRef.ProductNo = WfsProduct.ProductNo
+
+    #if($ChannelSord !='')
+    inner join SWfsSubjectChannelSordRef on SWfsSubject.SubjectNo=SWfsSubjectChannelSordRef.SubjectNo
+
+    where SWfsSubjectChannelSordRef.SordNo=@ChannelSord and SWfsSubject.Status!=3
+    #end
+    #if($ChannelSord =='')
+
+    where SWfsSubject.Status!=3
+    #end
+    #if($ProductNo!='')
+    and SWfsSubject.SubjectNo IN(SELECT sc.SubjectNo FROM dbo.SWfsSubjectProductRef AS spref , dbo.SWfsSubjectCategory AS sc
+    WHERE spref.CategoryNo=sc.CategoryNo AND spref.ProductNo=@ProductNo AND spref.TypeFlag=0)
+    #end
+    #if($KeyWord !='')
+    and (SWfsSubject.SubjectName like '%'+@KeyWord+ '%' or SWfsSubject.SubjectNo like '%'+@KeyWord+ '%')
+    #end
+    #if($Status!='')
+    and SWfsSubject.Status =@Status
+    #end
+    #if($StartTime!='')
+    and SWfsSubject.DateBegin >@StartTime
+    #end
+    #if($EndTime!='')
+    and SWfsSubject.DateBegin &lt;=@EndTime
+    #end
+    #if($ChannelNo!='')
+    and SWfsSubject.ChannelNo like  '%'+@ChannelNo+ '%'
+    #end
+    #if($SubjectTemplate!='')
+    and SWfsSubject.SubjectTemplate=@SubjectTemplate
+    #end
+    #if($BU!='')
+    and SWfsSubject.BU=@BU
+    #end
+    #if($IsAudited!='')
+    and SWfsSubject.IsAudited=@IsAudited
+    #end
+    GROUP BY SubjectName ,
+    SWfsSubject.SubjectNo ,
+    SWfsSubject.DateBegin ,
+    DateEnd ,
+    Status ,
+    SWfsSubject.DateCreate ,
+    ChannelNo ,
+    BelongsSubjectPic ,
+    SubjectTemplate ,
+    TitlePic1 ,
+    BU ,
+    [Level] ,
+    PromotionApplyTime ,
+    PromotionConfirmTime ,
+    IsAudited
+  </statement>
+
+
+
+  <statement id="ComBeziWfs_SWfsSubjectChannelSordRef_ReadBySubjectNo">
+    select * from SWfsChannelSord(nolock) where
+    SordNo in(
+    SELECT distinct SordNo FROM SWfsSubjectChannelSordRef(nolock) where SubjectNo=@SubjectNo) and Status=1
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsChannelSord_SelectList">
+    select * from SWfsChannelSord with (NoLock)
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsSubject_UpdateStatus">
+    update SWfsSubject set Status=@Status where SubjectNo=@SubjectNo
+  </statement>
+  <statement id="ComBeziWfs_WfsProduct_SelectProductListToExcel">
+    <!--select
+    ProductNo,
+    WfsBrand.BrandEnName,
+    WfsBrand.BrandCnName,
+    ProductName
+    from WfsProduct with(nolock),  WfsBrand with(nolock)
+    where WfsProduct.BrandNo = WfsBrand.BrandNo and  WfsProduct.[IsLimitedOutlet]=2 and
+    WfsProduct.ProductNo  in (
+    SELECT spref.ProductNo FROM dbo.SWfsSubjectCategory(nolock) AS sc,SWfsSubjectProductRef(nolock) AS spref
+    WHERE sc.CategoryNo=spref.CategoryNo AND SubjectNo=@SubjectNo AND spref.TypeFlag=0)-->
+    SELECT SpProduct.ProductNo ,
+    SpBrand.BrandEnName ,
+    SpBrand.BrandCnName ,
+    ProductName
+    FROM   SpProduct WITH ( NOLOCK ) ,
+    SpBrand WITH ( NOLOCK ) ,
+    SpfProductExtend WITH ( NOLOCK )
+    WHERE  SpProduct.BrandNo = SpBrand.BrandNo
+    AND SpfProductExtend.TypeFlag = 2
+    AND SpProduct.ProductNo IN (
+    SELECT  spref.ProductNo
+    FROM    dbo.SWfsSubjectCategory (NOLOCK) AS sc ,
+    SWfsSubjectProductRef (NOLOCK) AS spref
+    WHERE   sc.CategoryNo = spref.CategoryNo
+    AND SubjectNo = @SubjectNo
+    AND spref.TypeFlag = 0 )
+  </statement>
+  <!--针对分组排序及导出商品添加字段 by lijibo-->
+  <statement id="ComBeziWfs_WfsProduct_SelectProductListToExcelNew">
+    <!--SELECT  SWfsSubjectCategory.CategoryName ,
+    SWfsSubjectProductRef.ProductNo ,
+    SWfsSubjectCategory.CategoryNo ,
+    WfsBrand.BrandEnName ,
+    WfsBrand.BrandCnName ,
+    WfsProduct.ProductName
+    FROM    SWfsSubjectCategory WITH ( NOLOCK )
+    INNER JOIN SWfsSubjectProductRef WITH ( NOLOCK ) ON SWfsSubjectProductRef.CategoryNo = SWfsSubjectCategory.CategoryNo
+    INNER JOIN WfsProduct WITH ( NOLOCK ) ON SWfsSubjectProductRef.ProductNo = WfsProduct.ProductNo
+    INNER JOIN WfsBrand WITH ( NOLOCK ) ON WfsProduct.BrandNo = WfsBrand.BrandNo
+    WHERE   WfsProduct.[IsLimitedOutlet] = 2
+    AND SWfsSubjectCategory.SubjectNo =@SubjectNo
+    ORDER BY SWfsSubjectCategory.SortNo,SWfsSubjectProductRef.SubjectProductRefId DESC-->
+    SELECT SWfsSubjectCategory.CategoryName ,
+    SWfsSubjectProductRef.ProductNo ,
+    SWfsSubjectCategory.CategoryNo ,
+    SpBrand.BrandEnName ,
+    SpBrand.BrandCnName ,
+    WfsProduct.ProductName
+    FROM   SWfsSubjectCategory WITH ( NOLOCK )
+    INNER JOIN SWfsSubjectProductRef WITH ( NOLOCK ) ON SWfsSubjectProductRef.CategoryNo = SWfsSubjectCategory.CategoryNo
+    INNER JOIN WfsProduct WITH ( NOLOCK ) ON SWfsSubjectProductRef.ProductNo = WfsProduct.ProductNo
+    INNER JOIN SpBrand WITH ( NOLOCK ) ON WfsProduct.BrandNo = SpBrand.BrandNo
+    WHERE  WfsProduct.[IsLimitedOutlet] = 2
+    AND SWfsSubjectCategory.SubjectNo = @SubjectNo
+    ORDER BY SWfsSubjectCategory.SortNo ,
+    SWfsSubjectProductRef.SubjectProductRefId DESC
+  </statement>
+
+  <statement id="ComBeziWfs_WfsProduct_SelectProductList">
+    <!--select
+    ProductNo,
+    GoodsNo,
+    Status,
+    IsShelf,
+    ProductName,
+    ProductPicFile,
+    SellPrice,
+    PlatinumPrice,
+    DiamondPrice,
+    LimitedPrice,
+    LimitedVipPrice,
+    MarketPrice,
+    PromotionPrice,
+    DepartmentNo,
+    WfsProduct.BrandNo,
+    WfsBrand.BrandCnName,
+    WfsBrand.BrandEnName
+    from WfsProduct with(nolock),
+    WfsBrand with(nolock) where
+    WfsProduct.BrandNo = WfsBrand.BrandNo and
+    WfsProduct.[IsLimitedOutlet]=2 and
+    WfsProduct.ProductNo not in (
+    SELECT spref.ProductNo FROM dbo.SWfsSubjectCategory(nolock) AS sc,SWfsSubjectProductRef(nolock) AS spref
+    WHERE sc.CategoryNo=spref.CategoryNo AND SubjectNo=@SubjectNo AND spref.TypeFlag=0)-->
+    SELECT a.ProductNo ,
+    a.ProductModel AS GoodsNo ,
+    d.isshow AS Status ,
+    --IsShelf ,
+    ProductName ,
+    b.MainPicNo AS ProductPicFile ,
+    c.GoldPrice AS SellPrice ,
+    PlatinumPrice ,
+    DiamondPrice ,
+    c.StandardPrice AS LimitedPrice ,
+    --LimitedVipPrice ,
+    MarketPrice ,
+    PromotionPrice ,
+    DepartmentNo ,
+    a.BrandNo ,
+    d.BrandCnName ,
+    d.BrandEnName
+    FROM   SpProduct a WITH ( NOLOCK )
+    LEFT JOIN SpfSkuExtend AS b ( NOLOCK ) ON b.ProductNo = a.ProductNo
+    LEFT JOIN SpfSkuPrice AS c ( NOLOCK ) ON c.SkuNo = b.SkuNo
+    LEFT JOIN SpfProductExtend AS e ( NOLOCK ) ON e.ProductNo = a.ProductNo
+    LEFT JOIN SpBrand AS d ( NOLOCK ) ON a.BrandNo = d.BrandNo
+    WHERE  a.BrandNo = d.BrandNo
+    AND e.TypeFlag = 2
+    AND b.ProductNo NOT IN (
+    SELECT  spref.ProductNo
+    FROM    dbo.SWfsSubjectCategory (NOLOCK) AS sc ,
+    SWfsSubjectProductRef (NOLOCK) AS spref
+    WHERE   sc.CategoryNo = spref.CategoryNo
+    AND SubjectNo = @SubjectNo
+    AND spref.TypeFlag = 0 )
+    
+    #if($CategoryNo !='')
+    and CategoryNo like @CategoryNo + '%'
+    #else
+    AND SUBSTRING(WfsProduct.CategoryNo,1,3) IN @CategoryList
+    #end
+    #if($IsShelf!='')
+    and WfsProduct.IsShelf =@IsShelf
+    #else
+    and IsShelf != 3
+    #end
+    #if($BrandNo!='')
+    and WfsProduct.BrandNo =@BrandNo
+    #end
+    #if($Keyword!='')
+    and (WfsProduct.ProductName like '%'+@KeyWord+ '%' or WfsProduct.ProductNo like '%'+@KeyWord+ '%' or WfsProduct.GoodsNo like '%'+@KeyWord+ '%')
+    #end
+    #if($GenderStyle!='')
+    and WfsProduct.GenderStyle = @GenderStyle
+    #end
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsChannelSord_SelectChannelSordListBySiteNo">
+    select * from SWfsChannelSord with(nolock) where SiteNo = @SiteNo
+  </statement>
+  <statement id="ComBeziWfs_SpCategory_SelectByParentNo">
+    select * from SpCategory with(nolock) where ParentNo =@ParentNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsChannelSord_ReadChannelSordListByContion">
+    select * from SWfsChannelSord with(nolock) where SiteNo = @SiteNo
+    #if($SordName!='')
+    and SordName like @SordName + '%'
+    #end
+    #if($DateCreate!='')
+    and datediff(day,DateCreate,@DateCreate)=0
+    #end
+    order by SortNo asc
+  </statement>
+  <statement id="ComBeziWfs_SWfsChannelSord_ReadChannelSordBySordName">
+    select * from SWfsChannelSord with(nolock) where SordName=@SordName
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectChannelSordRef_SelectBySubjectNo">
+    select * from SWfsSubjectChannelSordRef with(nolock) where SubjectNo = @SubjectNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectCategoryRef_SelectBySubjectNo">
+    SELECT * FROM dbo.SWfsSubjectCategoryRef with(nolock)
+    WHERE SubjectNo=@SubjectNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubject_SelectBySubjectNo">
+    select IsAudited, BU,SalesForecast, BackgroundPic,BelongsSubjectPic,ChannelNo,ContentIntroduction,
+    ContentRecommended,CreateUserId,DateBegin,DateCreate,DateEnd,Discount,DiscountType,DiscountTypeValue,
+    FlapPic,IPhonePic,IPhoneText,Status,SubjectName,SubjectNo,SubjectTemplate,SubjectEnName,
+    TitlePic1,TitlePic2,TopFlag,ContentTitleOne,ContentTitleTwo,SubjectPreStartTemplateType,PrivilegeValue,
+    DateDiff(hour,DateBegin,DateEnd) as Hours,DatePart(Hour,DateBegin) as Hour,BrandContent,IsPreheat,
+    BrandLogoType,SalesInfo,HeadShowType,HeadWebHtml,HeadMobileHtml,SubjectTitle
+    from SWfsSubject  with (NoLock) where SubjectNo = @SubjectNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectProductRef_ReadByCategoryNo">
+    select ProductNo from SWfsSubjectProductRef with (NoLock)  where CategoryNo = @CategoryNo and TypeFlag=0
+  </statement>
+
+  <!--根据活动编号获得其子类列表-->
+  <statement id="ComBeziWfs_SWfsSubjectCategory_SelectBySubjectNo">
+    select * from SWfsSubjectCategory with (NoLock)  where SubjectNo = @SubjectNo
+    #if($CategoryName !='')
+    and CategoryName like '%' + @CategoryName + '%'
+    #end
+    order by SortNo asc,DateCreate desc
+  </statement>
+  <!--根据分组编号获得其分组信息-->
+  <statement id="ComBeziWfs_SWfsSubjectCategory_SelectByCategoryNo">
+    select * from SWfsSubjectCategory  where CategoryNo = @CategoryNo
+  </statement>
+  <!--根据活动编号获取所有分组信息 by lijibo -->
+  <statement id="ComBeziWfs_SWfsSubjectCategory_SelectAllBySubjectNo">
+    SELECT
+    *
+    FROM    SWfsSubjectCategory
+    WHERE   SubjectNo =@SubjectNo
+    ORDER BY SortNo
+  </statement>
+  <!--根据活动编号获取活动信息  by lijibo -->
+  <statement id="ComBeziWfs_SWfsSubject_SelectEntityBySubjectNo">
+    SELECT * FROM dbo.SWfsSubject with(nolock)
+    WHERE SubjectNo=@SubjectNo
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsSubjectChannelSordRef_DeleteBySubjectNo">
+    DELETE FROM [SWfsSubjectChannelSordRef]
+    WHERE SubjectNo=@SubjectNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectCategoryRef_DeleteBySubjectNo">
+    DELETE FROM [SWfsSubjectCategoryRef]
+    WHERE SubjectNo=@SubjectNo
+  </statement>
+  <statement id="ComBeziPic_SystemPictureFile_DeleteByPicNo">
+    DELETE FROM [ComBeziPic].[dbo].[SystemPictureFile]
+    WHERE PictureFileNo=@PictureFileNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsChannelSord_DelChannelSordBySordNo">
+    <!--update [SWfsChannelSord] set [Status]=0,DateUpdate=getdate() where SordNo=@SordNo-->
+    delete from SWfsChannelSord where  SordNo=@SordNo
+  </statement>
+
+  <!--根据活动子类编号获取商品列表-->
+  <statement id="ComBeziWfs_SWfsSubjectProductRef_SelectByCategoryNo">
+    select
+    SWfsSubjectProductRef.SubjectProductRefId,
+    SWfsSubjectProductRef.PropertyValue,
+    SWfsSubjectProductRef.TopFlag,
+    SWfsSubjectProductRef.SortNo,
+    SWfsSubjectProductRef.BuyType,
+    SWfsSubjectProductRef.IsStarProduct,
+    SWfsSubjectProductRef.ShowTime,
+    SWfsSubjectProductRef.IsShow,
+    WfsProduct.ProductNo,
+    WfsProduct.ProductName,
+    WfsProduct.ProductPicFile,
+    WfsProduct.GoodsNo,
+    WfsProduct.MarketPrice,
+    WfsProduct.SellPrice,
+    WfsProduct.PlatinumPrice,
+    WfsProduct.DiamondPrice,
+    WfsProduct.LimitedPrice,
+    WfsProduct.LimitedVipPrice,
+    WfsProduct.DepartmentNo,
+    WfsProduct.IsShelf,
+    WfsBrand.BrandNo,
+    WfsBrand.BrandCnName,
+    WfsBrand.BrandEnName,
+    WfsProduct.DiscountRate
+    from
+    SWfsSubjectProductRef  with(nolock)
+    inner join
+    WfsProduct  with(nolock)
+    on
+    SWfsSubjectProductRef.ProductNo = WfsProduct.ProductNo
+    inner join
+    WfsBrand with(nolock)
+    on
+    WfsProduct.BrandNo=WfsBrand.BrandNo
+    where
+    SWfsSubjectProductRef.CategoryNo =@SCategoryNo and SWfsSubjectProductRef.TypeFlag=0
+
+    #if($CategoryNo !='')
+    and WfsProduct.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($IsShelf!='')
+    and IsShelf =@IsShelf
+    #end
+    #if($BrandNo!='')
+    and WfsProduct.BrandNo =@BrandNo
+    #end
+    #if($Keyword!='')
+    and (ProductName like '%'+@KeyWord+ '%' or WfsProduct.ProductNo like '%'+@KeyWord+ '%' or GoodsNo like '%'+@KeyWord+ '%')
+    #end
+    #if($GenderStyle!='')
+    and WfsProduct.GenderStyle = @GenderStyle
+    #end
+    order by SortNo ASC,SWfsSubjectProductRef.DateCreate DESC
+  </statement>
+  <!--商品可视化查询SQL-->
+  <statement id="ComBeziWfs_SWfsSubjectProductRef_SelectByCategoryNoView">
+    select
+    SWfsSubjectProductRef.SubjectProductRefId,
+    SWfsSubjectProductRef.PropertyValue,
+    SWfsSubjectProductRef.TopFlag,
+    SWfsSubjectProductRef.SortNo,
+    SWfsSubjectProductRef.BuyType,
+    SWfsSubjectProductRef.IsStarProduct,
+    SWfsSubjectProductRef.ShowTime,
+    SWfsSubjectProductRef.IsShow,
+    SWfsSubjectProductRef.DateCreate,
+    WfsProduct.CategoryNo,
+    WfsProduct.DateShelf,
+    WfsProduct.ProductNo,
+    WfsProduct.ProductName,
+    WfsProduct.ProductPicFile,
+    WfsProduct.GoodsNo,
+    WfsProduct.MarketPrice,
+    WfsProduct.SellPrice,
+    WfsProduct.PlatinumPrice,
+    WfsProduct.DiamondPrice,
+    WfsProduct.LimitedPrice,
+    WfsProduct.LimitedVipPrice,
+    WfsProduct.IsShelf,
+    WfsProduct.ProductXmlText,
+    WfsBrand.BrandNo,
+    WfsBrand.BrandCnName,
+    WfsBrand.BrandEnName,
+    WfsProduct.DiscountRate
+    from
+    SWfsSubjectProductRef  with(nolock)
+    inner join
+    WfsProduct  with(nolock)
+    on
+    SWfsSubjectProductRef.ProductNo = WfsProduct.ProductNo
+    inner join
+    WfsBrand with(nolock)
+    on
+    WfsProduct.BrandNo=WfsBrand.BrandNo
+    where
+    SWfsSubjectProductRef.CategoryNo =@CategoryNo and SWfsSubjectProductRef.TypeFlag=0
+    and WfsProduct.IsShelf=1 and WfsProduct.IsLimitedOutlet=2 and WfsProduct.VisibleState=1
+    and SWfsSubjectProductRef.IsShow=1 and SWfsSubjectProductRef.ShowTime &lt;= @ShowTime
+    order by SortNo ASC,SWfsSubjectProductRef.DateCreate DESC
+  </statement>
+  <!--查询活动下是否有商品-->
+  <statement id="ComBeziWfs_SWfsSubjectProductRef_SelectBySubjectNo">
+    SELECT spref.ProductNo FROM dbo.SWfsSubjectCategory (nolock)AS sc,SWfsSubjectProductRef(nolock) AS spref
+    where sc.CategoryNo=spref.CategoryNo AND SubjectNo=@SubjectNo and spref.TypeFlag=0
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectProductRef_SelectBySubjectNo1">
+    SELECT spref.ProductNo FROM dbo.SWfsSubjectCategory(nolock) AS sc,SWfsSubjectProductRef(nolock) AS spref
+    INNER JOIN WfsProduct ON WfsProduct.ProductNo=spref.ProductNo
+    WHERE
+    WfsProduct.IsShelf=1 and WfsProduct.IsLimitedOutlet=2 and WfsProduct.VisibleState=1
+    and spref.IsShow=1 <!--and spref.ShowTime &lt;= getdate()-->
+    AND sc.CategoryNo=spref.CategoryNo AND SubjectNo=@SubjectNo and spref.TypeFlag=0
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectProductRef_DeleteBySubjectProductRefId">
+    delete SWfsSubjectProductRef where  SubjectProductRefId = @RelationId
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsSubject_NewHomeSubjectList">
+    SELECT TOP $TopCount
+    [SubjectNo]
+    ,[SubjectName]
+    ,[TitlePic1]
+    ,[TitlePic2]
+    ,[DateBegin]
+    ,[DateEnd]
+    ,[BelongsSubjectPic]
+    ,[VisitCount]
+    ,[DiscountType]
+    ,[DiscountTypeValue]
+    ,[ContentIntorType]
+    ,[ContentRecommended]
+    ,[ContentRecommType]
+    ,[SubjectTemplate]
+    ,[FlapPic]
+    ,[Gender]
+    ,[DateCreate]
+    ,[Status]
+    FROM [SWfsSubject] (NoLock)
+
+    where SubjectType=0 and IsRelated=0 and [Status]=1 and CHARINDEX('zsqd001',ChannelNo)>0
+    and SubjectNo in(select S.SubjectNo from SWfsChannelSordRef(nolock)  as C,SWfsSubjectChannelSordRef(nolock) as S where C.SordNo=S.SordNo and C.ChannelNo=@Gender)
+    #if($type == 1)<!--于今天开始，但当前时刻还未开始的活动-->
+    and (convert(varchar(10),DateBegin,120)=@StartDate and DateBegin > getdate()) and DateEnd > getdate()
+    #elseif($type == 2)<!--今天新开的活动-->
+    and datediff(day,DateBegin,@StartDate)=0 and DateEnd > getdate()
+    #elseif($type == 5)<!--正在进行活动-->
+    and DateBegin &lt;= @StartDate and DateEnd > @StopDate
+    #elseif($type == 3)<!--即将结束的活动-->
+    and DateBegin &lt;= @StartDate and DateEnd > @StartDate and DateEnd &lt; @StopDate
+    #elseif($type == 4)<!--即将开启的活动-->
+    and DateBegin >= @StartDate and DateBegin &lt; @StopDate
+    #end
+
+    order by DateBegin desc,DateCreate desc
+  </statement>
+
+  <!--奥莱首页BD活动列表(by wuhonglei 2013-4-11) -->
+  <statement id="ComBeziWfs_SWfsSubject_HomeBDSubjectList">
+    SELECT
+    [t0].[SubjectNo],
+    [t0].[SubjectName],
+    [t0].[TitlePic1],
+    [t0].[TitlePic2],
+    [t0].[DateBegin],
+    [t0].[DateEnd],
+    [t0].[DateCreate],
+    [t0].[BelongsSubjectPic],
+    [t0].[VisitCount],
+    [t0].[DiscountType],
+    [t0].[DiscountTypeValue],
+    [t0].[FlapPic],
+    [t0].[ContentIntorType],
+    [t0].[ContentRecommType],
+    [t0].[ContentRecommended],
+    [t0].[SubjectTemplate],
+    [t0].[Gender],
+    [t0].[Status]
+
+    FROM [SWfsSubject] AS [t0] (NoLock)
+    INNER JOIN [SWfsBDSubjectSubjectRef] AS [t1] (NoLock) ON [t0].[SubjectNo] = [t1].[SubjectNo]
+    INNER JOIN [SWfsBDSubject] AS [t2] (NoLock)  ON [t1].[BDSubjectNo] = [t2].[SubjectNo]
+
+    WHERE [t0].[Status] = 1
+    AND [t0].[SubjectType] = 0
+    AND [t2].[Status] = 1
+    AND ([t0].[DateBegin] &lt; getdate() AND [t0].[DateEnd] > getdate())
+    AND ([t2].[DateBegin] &lt; getdate() AND [t2].[DateEnd] > getdate())
+
+    AND [t0].[Gender] = @Gender
+
+    #if($type==1)<!--普通用户逻辑-->
+    AND [t2].[Visiable] = 1
+    #end
+    #if($type==2)<!--特定链接来源用户逻辑-->
+    AND [t2].[Belong] = @Belong
+    #end
+
+    ORDER BY [t2].[DateBegin] DESC, [t0].[DateBegin] DESC
+  </statement>
+  <!--活动列表页，获取商品列表信息-->
+  <statement id="ComBeziWfs_SWfsSubject_GetSubjectProduct">
+    exec sp_executesql N'SELECT [t9].[CategoryNo2] AS [SubjectOrTopicNo], [t9].[ProductNo],
+    [t9].[ProductName], [t9].[ProductPicFile], [t9].[SellPrice], [t9].[MarketPrice],
+    [t9].[LimitedPrice], [t9].[LimitedVipPrice], [t9].[DiamondPrice], [t9].[PlatinumPrice],
+    [t9].[PropertyValue], [t9].[CategoryNo] AS [SCategoryNo], [t9].[value] AS [AttrSize],
+    [t9].[SizeStandard], [t9].[value2] AS [Discount], [t9].[BrandEnName], [t9].[BrandCnName]
+    FROM (
+    SELECT ROW_NUMBER() OVER (ORDER BY [t8].[ProductNo]) AS [ROW_NUMBER],[t8].[CategoryNo2],
+    [t8].[ProductNo], [t8].[ProductName], [t8].[ProductPicFile], [t8].[SellPrice],
+    [t8].[MarketPrice], [t8].[LimitedPrice], [t8].[LimitedVipPrice], [t8].[DiamondPrice],
+    [t8].[PlatinumPrice], [t8].[PropertyValue], [t8].[CategoryNo], [t8].[value], [t8].[SizeStandard],
+    [t8].[value2], [t8].[BrandEnName], [t8].[BrandCnName]
+    FROM (
+    SELECT [t7].[CategoryNo2],
+    [t7].[ProductNo], [t7].[ProductName], [t7].[ProductPicFile], [t7].[SellPrice], [t7].[MarketPrice],
+    [t7].[LimitedPrice], [t7].[LimitedVipPrice], [t7].[DiamondPrice], [t7].[PlatinumPrice],
+    [t7].[PropertyValue], [t7].[CategoryNo], [t7].[value], [t7].[SizeStandard], CONVERT(Int,[t7].[value2]
+    ) AS [value2], [t7].[BrandEnName], [t7].[BrandCnName]
+    FROM (
+    SELECT [t6].[CategoryNo2], [t6].[ProductNo], [t6].[ProductName], [t6].[ProductPicFile],
+    [t6].[SellPrice], [t6].[MarketPrice], [t6].[LimitedPrice], [t6].[LimitedVipPrice], [t6].[DiamondPrice],
+    [t6].[PlatinumPrice], [t6].[PropertyValue], [t6].[CategoryNo], [t6].[value], [t6].[SizeStandard],
+    [t6].[BrandEnName], [t6].[BrandCnName],
+    (CASE WHEN [t6].[MarketPrice]>0 THEN  ([t6].[LimitedVipPrice] / [t6].[MarketPrice])* @p5  ELSE 0 end  )  AS [value2]
+    FROM (
+    SELECT [t4].[CategoryNo2], [t4].[ProductNo], [t4].[VisibleState],[t4].[ProductName],
+    [t4].[ProductPicFile], [t4].[SellPrice], [t4].[MarketPrice], [t4].[LimitedPrice],
+    [t4].[LimitedVipPrice], [t4].[DiamondPrice], [t4].[PlatinumPrice], [t4].[PropertyValue],
+    [t4].[CategoryNo], [t4].[value], [t4].[SizeStandard], [t4].[BrandEnName], [t4].[BrandCnName]
+    FROM (
+    SELECT [t1].[ProductNo], [t1].[ProductName], [t1].[ProductPicFile],[t1].[IsLimitedOutlet],
+    [t1].[SellPrice],[t1].[VisibleState], [t1].[MarketPrice], [t1].[LimitedPrice], [t1].[LimitedVipPrice],
+    [t1].[DiamondPrice], [t1].[PlatinumPrice], [t0].[PropertyValue], [t1].[CategoryNo],
+    SUBSTRING(CONVERT(NVarChar,[t1].[AttributeFlag]), @p0 + 1,
+    CONVERT(Int,DATALENGTH(CONVERT(NVarChar,[t1].[AttributeFlag])) / 2)) AS [value],
+    [t1].[SizeStandard], [t3].[BrandEnName], [t3].[BrandCnName], [t0].[ProductNo] AS [ProductNo2],
+    [t2].[SubjectNo], [t1].[IsShelf], [t0].[CategoryNo] AS [CategoryNo2], [t1].[BrandNo],
+    [t3].[BrandNo] AS [BrandNo2]
+    FROM [dbo].[SWfsSubjectProductRef] AS [t0] (NoLock), [dbo].[WfsProduct] AS [t1] (NoLock),
+    [dbo].[SWfsSubject] AS [t2] (NoLock), [dbo].[WfsBrand] AS [t3] (NoLock)
+    ) AS [t4]
+    WHERE ([t4].[ProductNo2] = [t4].[ProductNo]) AND ([t4].[IsLimitedOutlet]=2) AND ([t4].[SubjectNo] = @p1)
+    AND ([t4].[IsShelf] = @p2) AND ([t4].[SellPrice] > @p3) AND [t4].[VisibleState]=1 AND (EXISTS(
+    SELECT NULL AS [EMPTY]
+    FROM [dbo].[SWfsSubjectCategory] AS [t5] (NoLock)
+    WHERE ([t5].[CategoryNo] = [t4].[CategoryNo2]) AND ([t5].[SubjectNo] = @p4)
+    )) AND ([t4].[BrandNo] = [t4].[BrandNo2])
+    ) AS [t6]
+    ) AS [t7]
+    ) AS [t8]
+    ) AS [t9] WHERE [t9].[ROW_NUMBER] BETWEEN @p6 + 1 AND @p6 + @p7 ORDER BY [t9].[ROW_NUMBER]',
+    N'@p0 int,@p1 varchar(8000),@p2 smallint,@p3 decimal(31,2),@p4 varchar(8000),@p5 decimal(31,2),
+    @p6 int,@p7 int',@p0=1,@p1=@subjectNo,@p2=1,@p3=0,@p4=@subjectNo,@p5=10.00,@p6=0,@p7=@pageSize
+  </statement>
+  <!--奥莱根据商品编号获取sku信息(by wuhonglei 2013-4-12) -->
+  <statement id="ComBeziWfs_WfsSkuInfo_ByProductNo">
+    SELECT [AttributeTextTwo] FROM [WfsSku]  (NoLock) WHERE [IsValid] =1 AND [ProductNo] = @ProductNo
+  </statement>
+<statement id="ComBeziWfs_WfsBrand_ListParent">
+  select  BrandNo,Replace(BrandEnName,'''','’') as BrandEnName,Replace(BrandCnName,'''','’') as BrandCnName
+  from WfsBrand(nolock)
+</statement>
+  <statement id="ComBeziWfs_SpBrand_ListParent">
+    select  BrandNo,Replace(BrandEnName,'''','’') as BrandEnName,Replace(BrandCnName,'''','’') as BrandCnName
+    from SpBrand(nolock)
+  </statement>
+  <statement id="ComBeziWfs_SWfsProductCategory_SelectBrandByCategoryNo">
+    with product as(
+    SELECT
+    WfsProduct.BrandNo,
+    WfsProduct.ProductNo
+    FROM
+    SWfsProductCategory WITH (NoLock),
+    WfsProduct WITH (NoLock)
+    WHERE
+    SWfsProductCategory.ProductCategoryNo LIKE @CategoryNo+'%'
+    AND (
+    RelationType = 1
+    AND WfsProduct.CategoryNo LIKE SWfsProductCategory.ErpCategoryNo + '%'
+    )
+    UNION ALL
+    SELECT
+    WfsProduct.BrandNo,
+    WfsProduct.ProductNo
+    FROM
+    SWfsProductCategory WITH (NoLock),
+    WfsProduct WITH (NoLock)
+    WHERE
+    SWfsProductCategory.ProductCategoryNo LIKE @CategoryNo+'%'
+    AND (
+    SWfsProductCategory.RelationType = 0
+    AND SWfsProductCategory.ProductNo = WfsProduct.ProductNo
+    )
+    )
+    select distinct product.BrandNo  from product
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectProductSort_DeleteBySubjectNO">
+    DELETE FROM [SWfsSubjectProductSort]
+    WHERE SubjectNo=@SubjectNo AND (ShowChannelType=@ShowChannelType OR ShowChannelType IS NULL)
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectProductSort_DeleteBySubjectNONull">
+    DELETE FROM [SWfsSubjectProductSort]
+    WHERE SubjectNo=@SubjectNo AND ShowChannelType=@ShowChannelType
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectProductSort_SelectBySubjectNo">
+    Select * from [SWfsSubjectProductSort](nolock) where SubjectNo in @SubjectNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectSort_SelectByChannelNo">
+    Select * from [SWfsSubjectSort](nolock) where ChannelNo=@ChannelNo and Type=@type
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectSort_SelectByChannelNoNew">
+    Select * from [SWfsSubjectSort](nolock)
+    where ChannelNo=@ChannelNo and Type=@type
+    #if($ShowType!='')
+    and ShowType = @ShowType
+    #end
+    #if($ShowDateTime!='')
+    and CONVERT(VARCHAR(50), ShowDateTime, 23) = CONVERT(VARCHAR(50), @ShowDateTime, 23)
+    #end
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectSort_DeleteBySubjectNO">
+    DELETE FROM [SWfsSubjectSort]
+    WHERE ChannelNo=@ChannelNo and [Type]=@type
+    #if($ShowType!='')
+    and ShowType = @ShowType
+    #end
+    #if($ShowDateTime!='')
+    and CONVERT(VARCHAR(50), ShowDateTime, 23) = CONVERT(VARCHAR(50), @ShowDateTime, 23)
+    #end
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectOrChannelLog_SelectBySubjectNo">
+    Select * FROM [SWfsSubjectOrChannelLog]
+    WHERE SubjectOrChannelNo=@SubjectNo
+    #if($Key!='')
+    and (OperatorContent like '%'+@Key + '%'
+    or OperatorUserId like '%' + @Key +'%')
+    #end
+    #if($BeginTime!='')
+    and DateOperator > @BeginTime
+    #end
+    #if($EndTime!='')
+    and DateOperator &lt; @EndTime
+    #end
+    order by DateOperator desc
+  </statement>
+
+  <statement id ="ComBeziReport_SubjectSaleStatistics_SelectByConditon">
+    #if($rang=='0')
+    select top 1 SubjectNo,DateStatistics,OrderNums,Amount,CostAmount,StockCount,SKUCount,SaleCount,SaledSKUCount
+    from [OcsReport].[dbo].[SubjectSaleStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo
+    AND ListingOutletFlag=2
+    ORDER BY SubjectSaleStatisticsID DESC
+    #else
+    <!--Select top 1 SubjectNo,DateStatistics,OrderNums,Amount,CostAmount,StockCount,SKUCount,SaleCount,SaledSKUCount
+    from [OcsReport].[dbo].[SubjectSaleStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo  AND DateStatistics BETWEEN @BeginTime AND @EndTime AND ListingOutletFlag=2
+    ORDER BY SubjectSaleStatisticsID DESC-->
+    with tbl as
+    (Select top 1 SubjectNo,DateStatistics,OrderNums,Amount,CostAmount,StockCount,SKUCount,SaleCount,SaledSKUCount
+    from [OcsReport].[dbo].[SubjectSaleStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo AND ListingOutletFlag=2 AND  DateStatistics&lt; @BeginTime
+    ORDER BY SubjectSaleStatisticsID DESC
+    UNION ALL
+    Select top 1 SubjectNo,DateStatistics,OrderNums,Amount,CostAmount,StockCount,SKUCount,SaleCount,SaledSKUCount
+    from [OcsReport].[dbo].[SubjectSaleStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo AND ListingOutletFlag=2 AND DateStatistics BETWEEN @BeginTime AND @EndTime
+    ORDER BY SubjectSaleStatisticsID DESC)
+    select * from tbl
+    #end
+  </statement>
+  <statement id ="ComBeziReport_SubjectVisitDataStatistics_SelectByConditon">
+    #if($rang=='0')
+    <!--select top 1 SubjectNo,DateStatistics,PV,UV,VIP,GoldenVIP,PlatinaVIP,DiamondVIP,OrderNums
+    from [OcsReport].[dbo].[SubjectVisitStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo
+    AND ListingOutletFlag=2
+    ORDER BY DateStatistics DESC-->
+    select top 1 SubjectNo,DateStatistics,PV,UV,VIP,GoldenVIP,PlatinaVIP,DiamondVIP,OrderNums
+    from [OcsReport].[dbo].[SubjectVisitStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo
+    AND ListingOutletFlag=2
+    ORDER BY SubjectVisitStatisticsID desc
+    #else
+    <!--select top 1 SubjectNo,DateStatistics,PV,UV,VIP,GoldenVIP,PlatinaVIP,DiamondVIP,OrderNums
+    from [OcsReport].[dbo].[SubjectVisitStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo  AND DateStatistics BETWEEN @BeginTime AND @EndTime AND ListingOutletFlag=2
+    ORDER BY DateStatistics DESC-->
+    with tbl as
+    (select top 1 SubjectNo,DateStatistics,PV,UV,VIP,GoldenVIP,PlatinaVIP,DiamondVIP,OrderNums
+    from [OcsReport].[dbo].[SubjectVisitStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo AND ListingOutletFlag=2 AND  DateStatistics&lt; @BeginTime
+    ORDER BY SubjectVisitStatisticsID DESC
+    UNION ALL
+    select top 1 SubjectNo,DateStatistics,PV,UV,VIP,GoldenVIP,PlatinaVIP,DiamondVIP,OrderNums
+    from [OcsReport].[dbo].[SubjectVisitStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo  AND ListingOutletFlag=2 AND DateStatistics BETWEEN @BeginTime AND @EndTime
+    ORDER BY SubjectVisitStatisticsID DESC)
+    select * from tbl
+    #end
+  </statement>
+  <statement id ="ComBeziReport_SubjectProductDataStatistics_SelectByConditon">
+    <!--select a.SubjectNo,a.DateStatistics,a.BrandNo,a.BrandName,a.CategoryNo,a.CategoryName,a.SKUCount,a.StockCount,a.SaleCount,a.BU
+    from [OcsReport].[dbo].SubjectProductStatistics a
+    inner join (select SubjectNo,BrandNo,CategoryNo,Max(DateStatistics) DateStatistics
+    from [OcsReport].[dbo].SubjectProductStatistics
+    WHERE SubjectNo = @SubjectNo
+    and DateStatistics BETWEEN @BeginTime AND @EndTime AND ListingOutletFlag=2
+    group by SubjectNo,BrandNo,CategoryNo
+    )  b
+    on a.SubjectNo = b.SubjectNo and a.BrandNo = b.BrandNo and a.CategoryNo = b.CategoryNo
+    and a.DateStatistics = b.DateStatistics
+    Order by BrandName desc-->
+    with b  as
+    (select SubjectNo,BrandNo,CategoryNo,Max(DateStatistics) DateStatistics
+    from [OcsReport].[dbo].SubjectProductStatistics(nolock)
+    WHERE SubjectNo = @SubjectNo
+    and DateStatistics BETWEEN @BeginTime AND @EndTime AND ListingOutletFlag=2
+    group by SubjectNo,BrandNo,CategoryNo
+    )
+    select a.SubjectNo,a.DateStatistics,a.BrandNo,a.BrandName,a.CategoryNo,a.CategoryName,a.SKUCount,a.StockCount,a.SaleCount,a.BU
+    from [OcsReport].[dbo].SubjectProductStatistics(nolock) a
+    inner join  b
+    on a.SubjectNo = b.SubjectNo and a.BrandNo = b.BrandNo and a.CategoryNo = b.CategoryNo
+    and a.DateStatistics = b.DateStatistics
+    Order by BrandName desc
+  </statement>
+  <statement id="ComBeziReport_SubjectProductDataStatistics_SelectBeforeProject">
+    select top 1 SubjectNo,DateStatistics,BrandNo,BrandName,CategoryNo,CategoryName,SKUCount,StockCount,SaleCount
+    from SubjectProductStatistics(nolock)
+    where SubjectNo=@SubjectNo AND BrandNo=@BrandNo AND CategoryNo=@CategoryNo AND DateStatistics &lt; @BeginTime
+    AND ListingOutletFlag=2
+    order by SubjectProductInfoID desc
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubject_UpdateDiscountTypeValue">
+    Update SWfsSubject set DiscountType=@DiscountType,DiscountTypeValue=@DiscountTypeValue where SubjectNo=@SubjectNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsTopics_SelectTopic">
+    <!--select top (@PageSize) * from
+    (select *,Row_Number() OVER (Order by p.DateCreate desc) AS RowNumber from
+    (select * from SWfsTopics with(nolock) where  WebSite =2
+    #if($titleOrNo!='')
+    and (TopicNo like '%'+ @TopicNameOrNo + '%'  or TopicName  like '%'+ @TopicNameOrNo  + '%')
+    #end
+    #if($htitle!='')
+    and SubHeading like '%'+ @SubHeading + '%'
+    #end
+    #if($status!='')
+    and Status= @Status
+    #end
+    ) as p
+    ) as T
+    where  T.RowNumber > @PageSize * (@PageIndex- 1)-->
+    select * from SWfsTopics with(nolock) where  WebSite =2
+    #if($titleOrNo!='')
+    and (TopicNo like '%'+ @TopicNameOrNo + '%'  or TopicName  like '%'+ @TopicNameOrNo  + '%')
+    #end
+    #if($htitle!='')
+    and SubHeading like '%'+ @SubHeading + '%'
+    #end
+    #if($status!='')
+    and Status= @Status
+    #end
+    #if($gender!='')
+    and Gender like '%'+@Gender+'%'
+    #end
+    Order by DateCreate desc
+  </statement>
+  <statement id="ComBeziWfs_SWfsTopics_DeleteTopicByTopicNo">
+    delete from [SWfsTopics]where TopicNo=@TopicNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsChannel_SelectChannelList">
+    select * from SWfsChannel with(nolock) where SiteNo = 2 and ChannelNo not in('0','1','2') and DeleteFlag=0 order by SortNo asc,DateCreate desc
+  </statement>
+  <statement id="ComBeziWfs_SWfsChannelSordRef_SelectByChannelNo">
+    select * from SWfsChannelSordRef with(nolock) where ChannelNo = @ChannelNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsChannelSordRef_DeleteByChannelNo">
+    DELETE FROM [SWfsChannelSordRef] WHERE ChannelNo=@ChannelNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsChannel_DeleteByChannelNo">
+    DELETE FROM [SWfsChannel] WHERE ChannelNo=@ChannelNo
+  </statement>
+  <!--奥莱频道活动正在售卖，即将开始，假日预约 查询-->
+  <statement id="ComBeziWfs_SWfsSubject_GetChannelSubjectByType">
+    select SubjectNo,SubjectName,Status,DateCreate,DateBegin,DateEnd,SpreadPicture,SpreadStatus,Orderflag=1 from SWfsSubject with(nolock) where SubjectNo in
+    (select SubjectNo from SWfsSubjectLableType  with(nolock) where Type=@Type and ChannelNo=@ChannelNo)
+    and SubjectNo in(select S.SubjectNo from SWfsChannelSordRef as C with(nolock),SWfsSubjectChannelSordRef as S with(nolock) where C.SordNo=S.SordNo and C.ChannelNo=@ChannelNo)
+    #if($Key!='')
+    and (SubjectName like '%'+@Key+ '%' or SubjectNo like '%'+@Key+ '%')
+    #end
+    #if($Status!='-1')
+    and Status =@Status
+    #end
+    #if($BelongsSubjectType!='0')
+    and BelongsSubjectType =@BelongsSubjectType
+    #end
+    #if($PromotionType!='0')
+    and PromotionType =@PromotionType
+    #end
+    #if($SpreadStatus!='-1')
+    and SpreadStatus=@SpreadStatus
+    #end
+    #if($Type==1)
+    and DateEnd<![CDATA[>]]>getdate()
+    #if($DateBegin!='')
+    and DateBegin<![CDATA[>=]]>@DateBegin
+    #end
+    #if($DateEnd!='')
+    and DateBegin<![CDATA[<=]]>@DateEnd
+    #end
+    #if($DateBegin=='')
+    and DateBegin<![CDATA[<=]]>getdate()
+    #end
+    #end
+    #if($Type==2)
+    and DateEnd<![CDATA[>]]>getdate()
+    #if($DateBegin!='')
+    and DateBegin<![CDATA[>=]]>@DateBegin
+    #end
+    #if($DateEnd!='')
+    and DateBegin<![CDATA[<=]]>@DateEnd
+    #end
+    #if($DateBegin=='')
+    and DateBegin<![CDATA[>]]>getdate()
+    #end
+    #end
+    #if($Type==3)
+    and DateEnd<![CDATA[>]]>getdate()
+    #if($DateBegin!='')
+    and DateBegin<![CDATA[>=]]>@DateBegin
+    #end
+    #if($DateEnd!='')
+    and DateBegin<![CDATA[<=]]>@DateEnd
+    #end
+    #end
+    union
+    select SubjectNo,SubjectName,Status,DateCreate,DateBegin,DateEnd,SpreadPicture,SpreadStatus,Orderflag=0 from SWfsSubject with(nolock) where SubjectNo not in(
+    select SubjectNo from SWfsSubjectLableType with(nolock) where Type=@Type and ChannelNo=@ChannelNo)
+    and SubjectNo in(select S.SubjectNo from SWfsChannelSordRef  as C with(nolock),SWfsSubjectChannelSordRef as S with(nolock) where C.SordNo=S.SordNo and C.ChannelNo=@ChannelNo)
+    #if($Key!='')
+    and (SubjectName like '%'+@Key+ '%' or SubjectNo like '%'+@Key+ '%')
+    #end
+    #if($Status!='-1')
+    and Status =@Status
+    #end
+    #if($BelongsSubjectType!='0')
+    and BelongsSubjectType =@BelongsSubjectType
+    #end
+    #if($PromotionType!='0')
+    and PromotionType =@PromotionType
+    #end
+    #if($SpreadStatus!='-1')
+    and SpreadStatus=@SpreadStatus
+    #end
+    #if($Type==1)
+    and DateEnd<![CDATA[>]]>getdate()
+    #if($DateBegin!='')
+    and DateBegin<![CDATA[>=]]>@DateBegin
+    #end
+    #if($DateEnd!='')
+    and DateBegin<![CDATA[<=]]>@DateEnd
+    #end
+    #if($DateBegin=='')
+    and DateBegin<![CDATA[<=]]>getdate()
+    #end
+    #end
+    #if($Type==2)
+    and DateEnd<![CDATA[>]]>getdate()
+    #if($DateBegin!='')
+    and DateBegin<![CDATA[>=]]>@DateBegin
+    #end
+    #if($DateEnd!='')
+    and DateBegin<![CDATA[<=]]>@DateEnd
+    #end
+    #if($DateBegin=='')
+    and DateBegin<![CDATA[>]]>getdate()
+    #end
+    #end
+    #if($Type==3)
+    and DateEnd<![CDATA[>]]>getdate()
+    #if($DateBegin!='')
+    and DateBegin<![CDATA[>=]]>@DateBegin
+    #end
+    #if($DateEnd!='')
+    and DateBegin<![CDATA[<=]]>@DateEnd
+    #end
+    #end
+    order by Orderflag desc,DateBegin desc,DateCreate Asc
+  </statement>
+  <!--频道主推活动查询-->
+  <statement id="ComBeziWfs_SWfsSubject_GetChannelSubjectByZhuTui">
+    select SubjectNo,SubjectName,Status,DateCreate,DateBegin,DateEnd,SpreadPicture,SpreadStatus=1 from SWfsSubject with(nolock) where  subjectNo in
+    (select SubjectNo from SWfsSubjectLableType with(nolock) where Type=4 and ChannelNo=@ChannelNo)
+    and subjectNo in( select S.SubjectNo from SWfsChannelSordRef  as C with(nolock),SWfsSubjectChannelSordRef as S with(nolock)
+    where C.SordNo=S.SordNo and C.ChannelNo=@ChannelNo)
+    union
+    select SubjectNo,SubjectName,Status,DateCreate,DateBegin,DateEnd,SpreadPicture,SpreadStatus=0 from SWfsSubject with(nolock) where  subjectNo in( select S.SubjectNo from SWfsChannelSordRef  as C with(nolock),SWfsSubjectChannelSordRef as S with(nolock)
+    where C.SordNo=S.SordNo and C.ChannelNo=@ChannelNo)
+    and subjectNo not in(select SubjectNo from SWfsSubjectLableType with(nolock) where Type=4 and ChannelNo=@ChannelNo)
+    #if($Key!='')
+    and (SubjectName like '%'+@Key+ '%' or SubjectNo like '%'+@Key+ '%')
+    #end
+    #if($Status!='-1')
+    and Status =@Status
+    #end
+    #if($BelongsSubjectType!='0')
+    and BelongsSubjectType =@BelongsSubjectType
+    #end
+    #if($PromotionType!='0')
+    and PromotionType =@PromotionType
+    #end
+    #if($SpreadStatus!='-1')
+    and SpreadStatus=@SpreadStatus
+    #end
+    #if($DateBegin!='')
+    and DateBegin<![CDATA[>=]]>@DateBegin
+    #end
+    #if($DateEnd!='')
+    and DateBegin<![CDATA[<=]]>@DateEnd
+    #end
+    and DateEnd>getdate()
+    order by SpreadStatus desc,DateBegin desc,DateCreate Asc
+  </statement>
+  <!--频道主推活动查询-->
+  <statement id="ComBeziWfs_SWfsSubject_GetChannelFeaturedEvents">
+    select sfe.ID,sfe.DateShow,sfe.SpreadPicture,sub.SubjectNo,sub.SubjectName,sfe.Location,sub.DateBegin,sub.DateEnd,sfe.Type,sfe.ChannelNo
+    from SWfsSubject as sub with(nolock)
+    join SWfsSubjectFeaturedEvents as sfe with(nolock)
+    on sub.SubjectNo = sfe.SubjectNo
+    where sub.[Status]=1 and sub.IsAudited=1
+    and sfe.Type = 1
+    and sub.SubjectTemplate!=5
+    and CHARINDEX('zsqd001',sub.ChannelNo)>0
+    and sfe.ChannelNo = @ChannelNo
+    #if($Key!='')
+    and (sub.SubjectName like '%'+@Key+ '%' or sub.SubjectNo like '%'+@Key+ '%')
+    #end
+    #if($DateBegin!='')
+    and DateShow<![CDATA[>=]]>@DateBegin
+    #end
+    #if($DateEnd!='')
+    and DateShow<![CDATA[<=]]>@DateEnd
+    #end
+    and DateEnd<![CDATA[>]]>getdate()
+    order by sfe.DateShow desc,sfe.Location
+  </statement>
+  <!--根据id查询对应的频道主推活动信息-->
+  <statement id="ComBeziWfs_SWfsSubject_GetChannelFeaturedEventByID">
+    select * from SWfsSubjectFeaturedEvents with(nolock) where ID=@ID
+  </statement>
+  <!--根据活动编号查询对应的活动信息-->
+  <statement id="ComBeziWfs_SWfsSubject_GetSubjectInfoBySubjectNo">
+    select IsAudited,[Status],ChannelNo,SubjectNo,SubjectTemplate,CreateUserId,DateBegin,DateCreate,DateEnd
+    from SWfsSubject  with (NoLock)
+    where [Status]!=3 and SubjectTemplate!=5 and CHARINDEX('zsqd001',ChannelNo)>0 and SubjectNo = @SubjectNo
+  </statement>
+  <!--根据活动位置查询对应的频道主推活动信息-->
+  <statement id="ComBeziWfs_SWfsSubject_GetChannelFeaturedEventByLocation">
+    select * from SWfsSubjectFeaturedEvents with(nolock) where ChannelNo=@ChannelNo and DateShow=@DateShow and Location=@Location
+  </statement>
+  <!--删除频道主推活动信息-->
+  <statement id="ComBeziWfs_SWfsSubject_DeleteChannelFeaturedEventByID">
+    delete from SWfsSubjectFeaturedEvents where ID=@ID
+  </statement>
+  <!--查询活动是否被推荐及类型-->
+  <statement id="ComBeziWfs_SWfsSubjectLableType_ReadBySubjectNoType">
+    select * from SWfsSubjectLableType with(nolock) where SubjectNo=@SubjectNo and [Type]=@Type and ChannelNo=@ChannelNo
+  </statement>
+  <!--删除活动推荐类型-->
+  <statement id="ComBeziWfs_SWfsSubjectLableType_DeleteBySubjectNoType">
+    delete from SWfsSubjectLableType where SubjectNo=@SubjectNo and [Type]=@Type and ChannelNo=@ChannelNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsChannel_GetChannelByChannelNo">
+    select * from SWfsChannel with(nolock) where ChannelNo =@ChannelNo
+  </statement>
+  <!--根据活动编号获得其所属频道-->
+  <statement id="ComBeziWfs_SWfsChannel_ReadBySubjectNo">
+    select distinct SWfsChannel.ChannelNo,SWfsChannel.ChannelName from SWfsChannel(nolock),SWfsChannelSordRef(nolock)
+    where SWfsChannel.ChannelNo= SWfsChannelSordRef.ChannelNo and SWfsChannel.Status=1
+    AND SWfsChannel.SiteNo=2 AND SWfsChannel.DeleteFlag=0 and
+    SWfsChannelSordRef.SordNo in(
+    select distinct SordNo from SWfsSubjectChannelSordRef where SubjectNo=@SubjectNo)
+  </statement>
+  <!--根据商品编号获得其所在活动-->
+  <statement id="ComBeziWfs_SWfsSubjectCategory_SelectSubjectCategoryListByProductNo">
+    SELECT sc.* FROM dbo.SWfsSubjectCategory AS sc with(nolock),dbo.SWfsSubjectProductRef AS scref with(nolock),
+    dbo.SWfsSubject AS subject with(nolock)
+    WHERE sc.CategoryNo=scref.CategoryNo AND subject.subjectno=sc.SubjectNo
+    AND scref.ProductNo=@ProductNo
+    #if($Status!='')
+    AND subject.Status=1
+    #end
+    AND GETDATE() BETWEEN subject.DateBegin AND subject.DateEnd
+    ORDER BY sc.SortNo ASC,sc.DateCreate DESC
+  </statement>
+  <!--根据商品编号所得其所在专题-->
+  <statement id="ComBeziWfs_SWfsTopicProductRef_SelectTopic">
+    SELECT tp.* FROM dbo.SWfsTopicProductRef AS tp with(nolock),dbo.SWfsTopics AS t with(nolock)
+    WHERE tp.TopicNo=t.TopicNo
+    AND t.Status=1 AND t.WebSite=2 AND GETDATE() BETWEEN t.DateBegin AND t.DateEnd
+    AND tp.ProductNo=@ProductNo ORDER BY OrderFlag ASC
+  </statement>
+  <!--奥莱专题商品添加查询-->
+  <statement id="ComBeziWfs_WfsProduct_SelectTopicProductList">
+    select
+    ProductNo,
+    GoodsNo,
+    Status,
+    IsShelf,
+    ProductName,
+    ProductPicFile,
+    SellPrice,
+    PlatinumPrice,
+    DiamondPrice,
+    LimitedPrice,
+    LimitedVipPrice,
+    MarketPrice,
+    PromotionPrice,
+    WfsProduct.BrandNo,
+    WfsBrand.BrandCnName,
+    WfsBrand.BrandEnName
+    from WfsProduct with(nolock)
+    left join WfsBrand with(nolock) on WfsProduct.BrandNo = WfsBrand.BrandNo where IsShelf =1  and [IsLimitedOutlet]=2
+    #if($gCategroyNo!='')
+    and WfsProduct.CategoryNo like '%' + @gCategroyNo + '%'
+    #end
+    #if($brandNo!='')
+    and WfsProduct.BrandNo =@brandNo
+    #end
+    #if($gender!='')
+    and WfsProduct.GenderStyle=@gender
+    #end
+    #if($productNoOrName!='')
+    and (ProductName like '%'+@productNoOrName+ '%' or ProductNo like '%'+@productNoOrName+ '%')
+    #end
+  </statement>
+  <statement id="ComBeziWfs_SWfsTopicProductRef_SelectTopicProductPref">
+    select *  from SWfsTopicProductRef with(nolock) where ProductNo in @ProductNo and TopicNo=@TopicNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsTopicProductRef_SelectTopicProductByTopicNo">
+    select
+    WfsProduct.ProductNo,
+    WfsProduct.GoodsNo,
+    WfsProduct.ProductName,
+    WfsProduct.ProductPicFile,
+    WfsProduct.SellPrice,
+    WfsProduct.PlatinumPrice,
+    WfsProduct.DiamondPrice,
+    WfsProduct.LimitedPrice,
+    WfsProduct.LimitedVipPrice,
+    WfsProduct.MarketPrice,
+    WfsProduct.PromotionPrice,
+    WfsProduct.BrandNo,
+    WfsBrand.BrandCnName,
+    WfsBrand.BrandEnName,
+    WfsProduct.IsShelf,
+    WfsProduct.IsLimitedOutlet,
+    SWfsTopicProductRef.OrderFlag,
+    SWfsTopicProductRef.TopicNo,
+    SWfsTopicProductRef.TopicProductNo
+    from
+    WfsBrand with(nolock)
+    join
+    WfsProduct with(nolock)
+    on WfsBrand.BrandNo=WfsProduct.BrandNo
+    right join
+    SWfsTopicProductRef with(nolock)
+    on
+    SWfsTopicProductRef.ProductNo =WfsProduct.ProductNo
+    WHERE SWfsTopicProductRef.TopicNo=@TopicNo
+    #if($gCategroyNo!='')
+    and WfsProduct.CategoryNo like '%' + @gCategroyNo + '%'
+    #end
+    #if($brandNo!='')
+    and WfsProduct.BrandNo =@brandNo
+    #end
+    #if($productNoOrName!='')
+    and (WfsProduct.ProductName like '%'+@productNoOrName+ '%' or WfsProduct.ProductNo like '%'+@productNoOrName+ '%')
+    #end
+  </statement>
+  <statement id="ComBeziWfs_SWfsTopicProductRef_DelTopicProductByTopicNo">
+    delete from SWfsTopicProductRef where TopicNo=@TopicNo and ProductNo in @ProductNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsTopicProductRef_UpdateTopicProductOrderFlag">
+    update SWfsTopicProductRef set OrderFlag=@OrderFlag where TopicNo=@TopicNo and ProductNo=@ProductNo
+  </statement>
+  <!--根据商品编号和子类编号获得信息-->
+  <statement id="ComBeziWfs_SWfsSubjectProductRef_SelectByProNoAndCategoryNo">
+    SELECT * FROM SWfsSubjectProductRef(nolock) WHERE ProductNo=@ProductNo AND CategoryNo=@CategoryNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsPictureManager_GetSWfsPictureManagerList">
+    SELECT * FROM [SWfsPictureManager](nolock)
+    where WebSite=2 and PagePosition=@PagePosition
+    #if($Position!='')
+    and Position=@Position
+    #end
+    #if($PictureName!='')
+    and  PictureName like '%'+@PictureName + '%'
+    #end
+    #if($BCreate!='')
+    and DateBegin<![CDATA[<=]]>@DateBegin
+    #end
+    #if($ECreate!='')
+    and DateEnd<![CDATA[>=]]>@DateEnd
+    #end
+    #if($Gender!='')
+    and Gender=@Gender
+    #end
+    order by DateCreate desc
+  </statement>
+  <statement id="ComBeziWfs_SWfsPictureManager_DelSWfsPictureManagerById">
+    delete from SWfsPictureManager where PictureManageId=@PictureManageId
+  </statement>
+  
+  <statement id="ComBeziWfs_SWfsPictureManager_GetSWfsPictureManagerModel">
+    select * from  SWfsPictureManager(nolock) where PictureManageId=@PictureManageId
+  </statement>
+  <statement id="ComBeziWfs_WfsCmsContent_GetWfsCmsContentModel">
+    select * from  WfsCmsContent(nolock) where CmsContentNo=@CmsContentNo
+  </statement>
+  <statement id="ComBeziWfs_WfsCmsContent_GetWfsCmsContentList">
+    <!--select wfscc.* from  WfsCmsContentCategory  wfsccc join  WfsCmsContent  wfscc on wfsccc.CmsContentCategoryId=wfscc.CmsContentCategoryId
+    where wfsccc.CmsContentCategoryName =@CmsContentCategoryName  and wfscc.SiteNo = 2
+    #if($Title!='')
+    and  Title like '%'+@Title + '%'
+    #end
+    #if($PublishTime!='')
+    and datediff(day,PublishTime,@PublishTime)=0
+    #end
+    order by PublishTime  desc-->
+    select * from   WfsCmsContent(nolock)
+    where  CmsContentCategoryId=4  and SiteNo = 2
+    #if($Title!='')
+    and  Title like '%'+@Title + '%'
+    #end
+    #if($PublishTime!='')
+    and datediff(day,PublishTime,@PublishTime)=0
+    #end
+    order by PublishTime  desc
+  </statement>
+  <statement id="ComBeziWfs_WfsCmsContent_DelWfsCmsContentById">
+    delete from WfsCmsContent where CmsContentNo=@CmsContentNo
+  </statement>
+  <statement id="ComBeziWfs_WfsCmsContent_UpdateWfsCmsContentById">
+    update WfsCmsContent set ShowStatus=@ShowStatus where CmsContentNo=@CmsContentNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectCategory_DeleteByCategoryNo">
+    delete from SWfsSubjectCategory where CategoryNo=@CategoryNo
+  </statement>
+  <statement id="ComBeziPic_SystemPictureFile_DeleteByPicFileNo">
+    delete from [ComBeziPic].[dbo].[SystemPictureFile] where PictureFileNo=@PictureFileNo
+  </statement>
+  <!--删除活动子类下的商品-->
+  <statement id="ComBeziWfs_SWfsSubjectProductRef_DeleteByCategoryNo">
+    DELETE FROM [SWfsSubjectProductRef]
+    WHERE CategoryNo=@CategoryNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsAolaiAdvancePage_GetSWfsAolaiAdvancePageModel">
+    select *  FROM [SWfsAolaiAdvancePage](nolock)
+    WHERE SWfsAolaiNoticePageId=@SWfsAolaiNoticePageId
+  </statement>
+  <statement id="ComBeziWfs_SWfsAolaiAdvancePage_GetSWfsAolaiAdvancePageList">
+    with temp as(
+    select *,row_number() over(order by DateCreate desc) as row  FROM [SWfsAolaiAdvancePage](nolock)
+    where 1=1 and islimitedOutlet=@islimitedOutlet
+    #if($PageName!='')
+    and  PageName like '%'+@PageName + '%'
+    #end
+    #if($DateCreate!='')
+    and datediff(day,DateCreate,@DateCreate)=0
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <statement id="ComBeziWfs_SWfsAolaiAdvancePage_GetSWfsAolaiAdvancePageListTotal">
+    select count(0)  FROM [SWfsAolaiAdvancePage](nolock)
+    where 1=1 and islimitedOutlet=@islimitedOutlet
+    #if($PageName!='')
+    and  PageName like '%'+@PageName + '%'
+    #end
+    #if($DateCreate!='')
+    and datediff(day,DateCreate,@DateCreate)=0
+    #end
+  </statement>
+  <statement id="ComBeziWfs_SWfsAolaiAdvancePage_DelSWfsAolaiAdvancePage">
+    delete  FROM [SWfsAolaiAdvancePage]
+    WHERE SWfsAolaiNoticePageId=@SWfsAolaiNoticePageId
+  </statement>
+  <statement id="ComBeziWfs_SWfsAolaiAdvancePagePic_GetSWfsAolaiAdvancePagePicList">
+    select * from SWfsAolaiAdvancePagePic(nolock) where SwfsAolaiNoticePageId=@SwfsAolaiNoticePageId order by Sort asc,DateCreate desc
+  </statement>
+  <statement id="ComBeziWfs_SWfsAolaiAdvancePagePic_GetSWfsAolaiAdvancePagePicModel">
+    select * from SWfsAolaiAdvancePagePic(nolock) where SWfsAolaiNoticePagPicId=@SWfsAolaiNoticePagPicId
+  </statement>
+  <statement id="ComBeziWfs_SWfsAolaiAdvancePagePic_DelSWfsAolaiAdvancePagePic">
+    delete  from SWfsAolaiAdvancePagePic where SWfsAolaiNoticePagPicId=@SWfsAolaiNoticePagPicId
+  </statement>
+  <statement id="ComBeziWfs_WfsProduct_selectProductBySubjectNoDisCount">
+    select LimitedVipPrice,DiscountRate from WfsProduct with(nolock)
+    WHERE WfsProduct.ProductNo in (SELECT distinct spref.ProductNo FROM dbo.SWfsSubjectCategory AS sc,SWfsSubjectProductRef AS spref
+    WHERE sc.CategoryNo=spref.CategoryNo AND SubjectNo=@SubjectNo
+    and spref.TypeFlag=0
+    and spref.IsShow=1
+    <!--and spref.ShowTime &lt;= getdate()-->
+    )
+    and WfsProduct.IsShelf=1
+    and WfsProduct.IsLimitedOutlet=2
+    and WfsProduct.VisibleState=1
+  </statement>
+  <!--***20131008后台优化-->
+  <!--***根据活动编号数组批量查询-->
+  <statement id="ComBeziWfs_SWfsSubjectChannelSordRef_SelectBySubjectNoList">
+    select * from SWfsSubjectChannelSordRef with(nolock) where SubjectNo in @SubjectNoList
+  </statement>
+  <!--***根据活动编号批量获得其所属频道-->
+  <statement id="ComBeziWfs_SWfsChannel_ReadBySubjectNoList">
+    select sscs.subjectNo+'|'+sc.ChannelNo as ChannelNo, sc.ChannelName
+    from SWfsChannel as sc Inner JOIN SWfsChannelSordRef as scs
+    on sc.ChannelNo= scs.ChannelNo
+    INNER JOIN SWfsSubjectChannelSordRef as sscs
+    on scs.SordNo = sscs.SordNo
+    where
+    sc.[Status]=1
+    AND sc.SiteNo=2
+    AND sc.DeleteFlag=0
+    AND sscs.subjectNo in @SubjectNoList
+  </statement>
+  <!--***根据商品编号数组 批量获得其所在活动-->
+  <statement id="ComBeziWfs_SWfsSubjectCategory_SelectSubjectCategoryListByProductNoList">
+    SELECT sc.* FROM dbo.SWfsSubjectCategory AS sc with(nolock),dbo.SWfsSubjectProductRef AS scref with(nolock),
+    dbo.SWfsSubject AS subject with(nolock)
+    WHERE sc.CategoryNo=scref.CategoryNo AND subject.subjectno=sc.SubjectNo
+    AND scref.ProductNo in @ProductNoList
+    AND subject.Status=1
+    AND GETDATE() BETWEEN subject.DateBegin AND subject.DateEnd
+    ORDER BY sc.SortNo ASC,sc.DateCreate DESC
+  </statement>
+  <!--***根据商品编号数组 批量获得所在专题-->
+  <statement id="ComBeziWfs_SWfsTopicProductRef_SelectTopicProductNoList">
+    SELECT tp.* FROM dbo.SWfsTopicProductRef AS tp with(nolock),dbo.SWfsTopics AS t with(nolock)
+    WHERE tp.TopicNo=t.TopicNo
+    AND t.Status=1 AND t.WebSite=2 AND GETDATE() BETWEEN t.DateBegin AND t.DateEnd
+    AND tp.ProductNo in @ProductNoList ORDER BY OrderFlag ASC
+  </statement>
+  <!--查询是否置顶-->
+  <statement id="ComBeziWfs_SWfsSubjectTopExpand_GetSWfsSubjectTopExpandBySubjectNo">
+    select * from SWfsSubjectTopExpand with(nolock) where SubjectNo = @SubjectNo
+  </statement>
+  <!--奥莱首页轮播图读取专题类型的活动-->
+  <statement id="ComBeziWfs_SWfsSubjectTopExpand_GetSWfsSubjectTopExpand_List">
+    select A.SubjectNo,SubjectName,Status,DateCreate,DateBegin,DateEnd,SpreadPicture
+    ,SpreadStatus =  (Case SpreadStatus WHEN IsNull(TopCreateTime,0) Then 0
+    ELSE 1 END),PreheatTime
+    from SWfsSubject A with(nolock) Left JOIN SWfsSubjectTopExpand B with(nolock)
+    ON A.SubjectNo=B.SubjectNO
+    where A.SubjectTemplate = 4 and A.IsPreheat = 1
+    #if($Key!='')
+    and (SubjectName like '%'+@Key+ '%' or A.SubjectNo like '%'+@Key+ '%')
+    #end
+    #if($Status!='-1')
+    and Status =@Status
+    #end
+    #if($BelongsSubjectType!='0')
+    and BelongsSubjectType =@BelongsSubjectType
+    #end
+    #if($PromotionType!='0')
+    and PromotionType =@PromotionType
+    #end
+    #if($SpreadStatus!='-1')
+    and SpreadStatus=@SpreadStatus
+    #end
+    #if($DateBegin!='')
+    and DateBegin<![CDATA[>=]]>@DateBegin
+    #end
+    #if($DateEnd!='')
+    and DateBegin<![CDATA[<=]]>@DateEnd
+    #end
+    <!--and DateEnd>getdate()
+    and A.SubjectNo in (select subjectNo from SWfsSubjectChannelSordRef where sordNo=@ChannelNo)-->
+    order by B.TopCreateTime Desc,SpreadStatus desc,DateBegin desc,DateCreate Asc
+  </statement>
+  <statement id="ComBeziWfs_WfsOrder_GetOrderBySubject">
+    select S.SubjectNo,SubjectName,O.OrderNo,O.status,productNo,ProductName from
+    SWfsSubject as S with(nolock) INNER JOIN SWfsSubjectCategory AS C with(nolock) On S.SubjectNo=C.SubjectNo
+    INNER JOIN WfsOrderDetail AS D with(nolock) ON C.CategoryNo = D.CategoryNo
+    INNER JOIN WfsOrder as O  with(nolock) ON D.OrderNo= O.OrderNo
+    where O.ListingOutletFlag=2  AND S.SubjectNo=@SubjectNo
+  </statement>
+  <!--奥莱首页推荐活动，推荐品牌查询逻辑-->
+  <statement id="ComBeziWfs_SWfsSubject_Index_GetChannelSubjectByType">
+    select SubjectNo,SubjectName,Status,DateCreate,DateBegin,DateEnd,SpreadPicture,SpreadStatus,Orderflag=1 from SWfsSubject with(nolock) where SubjectNo in
+    (select SubjectNo from SWfsSubjectLableType  with(nolock) where Type=@Type and ChannelNo=@ChannelNo)
+    and SubjectTemplate not in(4,5) and Status=1 and DateEnd<![CDATA[>=]]>getdate()
+    #if($Key!='')
+    and (SubjectName like '%'+@Key+ '%' or SubjectNo like '%'+@Key+ '%')
+    #end
+    #if($Status!='-1')
+    and Status =@Status
+    #end
+    #if($DateBegin!='')
+    and DateBegin<![CDATA[>=]]>@DateBegin
+    #end
+    #if($DateEnd!='')
+    and DateBegin<![CDATA[<=]]>@DateEnd
+    #end
+    union
+    select SubjectNo,SubjectName,Status,DateCreate,DateBegin,DateEnd,SpreadPicture,SpreadStatus,Orderflag=0 from SWfsSubject with(nolock) where SubjectNo not in(
+    select SubjectNo from SWfsSubjectLableType with(nolock) where Type=@Type and ChannelNo=@ChannelNo)
+    and SubjectTemplate not in(4,5) and Status=1 and DateEnd<![CDATA[>=]]>getdate()
+    #if($Key!='')
+    and (SubjectName like '%'+@Key+ '%' or SubjectNo like '%'+@Key+ '%')
+    #end
+    #if($Status!='-1')
+    and Status =@Status
+    #end
+
+    #if($DateBegin!='')
+    and DateBegin<![CDATA[>=]]>@DateBegin
+    #end
+    #if($DateEnd!='')
+    and DateBegin<![CDATA[<=]]>@DateEnd
+    #end
+
+    order by Orderflag desc,DateBegin desc,DateCreate Asc
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectBrand_GetSubjectBrand">
+    select ISNULL(brandNo,'0') AS BrandNo,ISNULL(BrandEnName,'0') AS BrandEnName,ISNULL(BrandCnName,'0') AS BrandCnName,SubjectNo from SWfsSubject with(nolock)
+    left outer join  WfsBrand(nolock) on  convert(nvarchar(255),SWfsSubject.BrandContent)=WfsBrand.brandNo
+    where SubjectNo in  @SubjectNo
+  </statement>
+  <!--根据时间和商品名称及编号查询秒杀组及秒杀商品-->
+  <statement id="ComBeziWfs_SWfsSubjectSpikeProductManage_GetSpikeProductList">
+    select SP.ID,SP.ShowTime,SP.ShowProductPicFileNo,SP.ProductNo,P.ProductName,SP.SubjectNo,SP.SubjectCategoryNo,SP.Type,
+    CONVERT(varchar(100), SP.ShowTime, 23) as DateDay
+    from SWfsSubjectSpikeProductManage(nolock) as SP
+    left Join Wfsproduct(nolock) as P on P.ProductNo= SP.ProductNo
+    where SP.Status=1 and DATEDIFF(month,SP.ShowTime,@Date)=0
+    #if($ProductNoName!='')
+    and (P.ProductNo=@ProductNoName or P.ProductName like '%'+@ProductNoName+'%')
+    #end
+    #if($SubjectNo!='')
+    and SP.SubjectNo=@SubjectNo
+    #end
+    order by SP.ShowTime ASC
+  </statement>
+  <!--根据活动编号获取秒杀商品列表-->
+  <statement id="ComBeziWfs_SWfsSubjectSpikeProduct_GetSpikeProductBySubjectNo">
+    select
+    $SubjectNo as SubjectNo,
+    SWfsSubjectProductRef.SubjectProductRefId,
+    SWfsSubjectProductRef.PropertyValue,
+    SWfsSubjectProductRef.TopFlag,
+    SWfsSubjectProductRef.SortNo,
+    SWfsSubjectProductRef.BuyType,
+    SWfsSubjectProductRef.IsStarProduct,
+    SWfsSubjectProductRef.ShowTime,
+    SWfsSubjectProductRef.IsShow,
+    SWfsSubjectProductRef.CategoryNo,
+    WfsProduct.ProductNo,
+    WfsProduct.ProductName,
+    WfsProduct.ProductPicFile,
+    WfsProduct.GoodsNo,
+    WfsProduct.MarketPrice,
+    WfsProduct.SellPrice,
+    WfsProduct.PlatinumPrice,
+    WfsProduct.DiamondPrice,
+    WfsProduct.LimitedPrice,
+    WfsProduct.LimitedVipPrice,
+    WfsProduct.IsShelf,
+    WfsBrand.BrandNo,
+    WfsBrand.BrandCnName,
+    WfsBrand.BrandEnName,
+    WfsProduct.DiscountRate
+    from
+    SWfsSubjectProductRef  with(nolock)
+    inner join
+    WfsProduct  with(nolock)
+    on
+    SWfsSubjectProductRef.ProductNo = WfsProduct.ProductNo
+    inner join
+    WfsBrand with(nolock)
+    on
+    WfsProduct.BrandNo=WfsBrand.BrandNo
+    where
+    SWfsSubjectProductRef.CategoryNo in(
+    select CategoryNo from SWfsSubjectCategory(nolock) inner join SWfsSubject(nolock) ON
+    SWfsSubjectCategory.SubjectNo=SWfsSubject.SubjectNo
+    where SWfsSubject.SubjectNo=@SubjectNo
+    and SWfsSubject.SubjectTemplate=5 AND Status=1 and DateEnd>getdate()
+    ) and SWfsSubjectProductRef.TypeFlag=0
+  </statement>
+
+  <!--奥莱V3获取活动列表 by zhangwei 20140110-->
+  <statement id="ComBeziWfs_SWfsSubject_SubjectListNew">
+    SELECT TOP $TopCount sub.[SubjectNo] ,
+    sub.[SubjectName] ,
+    sub.[TitlePic1] ,
+    sub.[TitlePic2] ,
+    sub.[DateBegin] ,
+    sub.[DateEnd] ,
+    sub.[BelongsSubjectPic] ,
+    sub.[VisitCount] ,
+    sub.[DiscountType] ,
+    sub.[DiscountTypeValue] ,
+    sub.[ContentIntorType] ,
+    sub.[ContentRecommended] ,
+    sub.[ContentRecommType] ,
+    sub.[SubjectTemplate] ,
+    sub.[FlapPic] ,
+    sub.[Gender] ,
+    sub.[DateCreate] ,
+    sub.[Status] ,
+    sub.[IPhonePic] ,
+    sub.BrandContent ,
+    sub.BU,
+    b.BrandNo AS BrandSign ,
+    e.BrandLogo ,
+    b.BrandCnName ,
+    b.BrandEnName
+    FROM    [SWfsSubject] (NOLOCK) AS sub
+    LEFT OUTER JOIN SpBrand (NOLOCK) AS b ON CONVERT(VARCHAR(200), sub.BrandContent) = b.BrandNo 
+    inner join SpBrandExtend (NOLOCK) AS e on e.BrandNo = b.BrandNo 
+    WHERE   sub.SubjectType = 0
+    AND sub.IsRelated = 0
+    AND sub.[Status] = 1
+    and sub.IsAudited=1
+    <!--AND sub.SubjectTemplate != 4--><!--20140314 by lijia 去掉此过滤条件-->
+    AND sub.SubjectTemplate != 5
+    #if($ShowType!='')
+    AND CHARINDEX(@ShowType, sub.ChannelNo) > 0
+    #end
+    #if($type == 2) <!--今天新开的活动-->
+    AND convert(varchar(10),sub.DateBegin,120) = @StartDate AND sub.DateEnd > @StopDate
+    #elseif($type == 5) <!--正在进行活动-->
+    AND sub.DateBegin &lt; @StartDate AND sub.DateEnd > @StopDate
+    #elseif($type == 3) <!--即将结束的活动-->
+    AND sub.DateBegin &lt;= @StartDate AND sub.DateEnd > @StartDate AND sub.DateEnd &lt; @StopDate
+    #end
+    ORDER BY sub.DateBegin DESC ,sub.DateCreate DESC
+  </statement>
+  <!--查询是否存在指定时间的秒杀商品-->
+  <statement id="ComBeziWfs_SWfsSubjectSpikeProductManage_IsValidSpikeProduct">
+    <!--select count(1) as Num  from  SWfsSubjectSpikeProductManage(nolock) where ShowTime=@ShowTime-->
+    select * from  SWfsSubjectSpikeProductManage(nolock) where DATEDIFF(day,ShowTime,@ShowTime)=0
+  </statement>
+  <!--查询单个秒杀商品-->
+  <statement id="ComBeziWfs_SWfsSubjectSpikeProductManage_GetModel">
+    select * from SWfsSubjectSpikeProductManage(nolock)  where ID=@ID
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectCategory_SelectSubjectCategoryListByProductNoII">
+    select R.ProductNo,C.* from SWfsSubjectProductRef(nolock) as R left outer join
+    SWfsSubjectCategory(nolock) as C on R.CategoryNo=C.CategoryNo
+    inner join SWfsSubject(nolock) as S on S.SubjectNo=C.SubjectNo
+    where R.ProductNo in @ProductNo
+    #if($Status!='')
+    and S.Status=1
+    #end
+    AND GETDATE() BETWEEN S.DateBegin AND S.DateEnd
+    ORDER BY R.SortNo ASC,R.DateCreate DESC
+  </statement>
+
+  <!--奥莱活动数据统计 by zhangwei 20140304-->
+  <statement id="ComBeziWfs_SWfsSubject_GetSWfsSubjectByDataStatisticsList">
+    <!--SELECT
+    SWfsSubject.SubjectNo ,
+    SWfsSubject.BU ,
+    SWfsSubject.CreateUserId ,
+    SWfsSubject.[Status] ,
+    SWfsSubject.DateBegin ,
+    SWfsSubject.DateEnd ,
+    WfsBrand.BrandCnName
+    FROM    [SWfsSubject] (NOLOCK)
+    INNER JOIN WfsBrand (NOLOCK) ON CONVERT(VARCHAR(100), SWfsSubject.BrandContent) = WfsBrand.BrandNo
+    WHERE
+    SWfsSubject.[Status] = 1
+    AND SWfsSubject.IsAudited=1
+    AND SWfsSubject.SubjectTemplate != 4
+    AND SWfsSubject.SubjectTemplate != 5
+    AND CHARINDEX('zsqd001', SWfsSubject.ChannelNo) > 0
+    AND SWfsSubject.SubjectType = 0
+    AND SWfsSubject.IsRelated = 0
+
+    AND SWfsSubject.IsAudited = 1
+    #if($TypeValue =='2')
+    AND CONVERT(VARCHAR(20), SWfsSubject.DateBegin, 112) &lt; CONVERT(VARCHAR(20), GETDATE(), 112)
+    AND CONVERT(VARCHAR(20), SWfsSubject.DateEnd, 112) > CONVERT(VARCHAR(20), DATEADD(d, 1, GETDATE()), 112)
+    #end
+    #if($TypeValue =='0')
+    and SWfsSubject.SubjectNo in (@SubjectNos)
+    #end
+    #if($TypeValue =='1')
+    and (CONVERT(VARCHAR(20), SWfsSubject.DateBegin, 120) >= @BeginTime AND CONVERT(VARCHAR(20), SWfsSubject.DateBegin, 120) &lt;= @EndTime)
+    #end
+    -->
+    SELECT
+    SWfsSubject.SubjectNo ,
+    SWfsSubject.BU ,
+    SWfsSubject.CreateUserId ,
+    SWfsSubject.[Status] ,
+    SWfsSubject.DateBegin ,
+    SWfsSubject.DateEnd ,
+    SpBrand.BrandCnName
+    FROM    [SWfsSubject] (NOLOCK)
+    INNER JOIN SpBrand (NOLOCK) ON CONVERT(VARCHAR(100), SWfsSubject.BrandContent) = SpBrand.BrandNo
+    WHERE
+    SWfsSubject.[Status] = 1
+    AND SWfsSubject.IsAudited=1
+    AND SWfsSubject.SubjectTemplate != 4
+    AND SWfsSubject.SubjectTemplate != 5
+    AND CHARINDEX('zsqd001', SWfsSubject.ChannelNo) > 0
+    AND SWfsSubject.SubjectType = 0
+    AND SWfsSubject.IsRelated = 0
+
+    AND SWfsSubject.IsAudited = 1
+    #if($TypeValue =='2')
+    AND CONVERT(VARCHAR(20), SWfsSubject.DateBegin, 112) &lt; CONVERT(VARCHAR(20), GETDATE(), 112)
+    AND CONVERT(VARCHAR(20), SWfsSubject.DateEnd, 112) > CONVERT(VARCHAR(20), DATEADD(d, 1, GETDATE()), 112)
+    #end
+    #if($TypeValue =='0')
+    and SWfsSubject.SubjectNo in (@SubjectNos)
+    #end
+    #if($TypeValue =='1')
+    and (CONVERT(VARCHAR(20), SWfsSubject.DateBegin, 120) >= @BeginTime AND CONVERT(VARCHAR(20), SWfsSubject.DateBegin, 120) &lt;= @EndTime)
+    #end
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsChannel_GetChannelSordRefList">
+    SELECT DISTINCT
+    c.ChannelNo ,
+    c.ChannelName ,
+    c.SortNo
+    FROM    dbo.SWfsChannelSordRef AS cs
+    LEFT OUTER JOIN SWfsChannel AS c ON cs.ChannelNo = c.ChannelNo
+    WHERE   c.[Status] = 1
+    AND SiteNo = 2
+    AND DeleteFlag = 0
+    AND EXISTS ( SELECT 1
+    FROM   SWfsSubjectChannelSordRef
+    WHERE  SordNo = cs.SordNo
+    AND SubjectNo = @SubjectNo )
+    ORDER BY c.SortNo
+  </statement>
+
+  <statement id ="ComBeziReport_SubjectSaleStatistics_SelectByConditonNew">
+    #if($rang=='0')
+    select top 1 SubjectNo,DateStatistics,OrderNums,Amount,CostAmount,StockCount,SKUCount,SaleCount,SaledSKUCount
+    from [OcsReport].[dbo].[SubjectSaleStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo
+    AND ListingOutletFlag=2
+    ORDER BY SubjectSaleStatisticsID DESC
+    #else
+    with tbl as
+    (Select top 1 SubjectNo,DateStatistics,OrderNums,Amount,CostAmount,StockCount,SKUCount,SaleCount,SaledSKUCount
+    from [OcsReport].[dbo].[SubjectSaleStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo AND  DateStatistics&lt; @BeginTime AND ListingOutletFlag=2
+    ORDER BY SubjectSaleStatisticsID DESC
+    UNION ALL
+    Select top 1 SubjectNo,DateStatistics,OrderNums,Amount,CostAmount,StockCount,SKUCount,SaleCount,SaledSKUCount
+    from [OcsReport].[dbo].[SubjectSaleStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo  AND DateStatistics BETWEEN @BeginTime AND @EndTime AND ListingOutletFlag=2
+    ORDER BY SubjectSaleStatisticsID DESC)
+    select * from tbl
+    #end
+  </statement>
+  <statement id ="ComBeziReport_SubjectVisitDataStatistics_SelectByConditonNew">
+    #if($rang=='0')
+    select top 1 SubjectNo,DateStatistics,PV,UV,VIP,GoldenVIP,PlatinaVIP,DiamondVIP,OrderNums
+    from [OcsReport].[dbo].[SubjectVisitStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo
+    AND ListingOutletFlag=2
+    ORDER BY SubjectVisitStatisticsID DESC
+    #else
+    with tbl as
+    (select top 1 SubjectNo,DateStatistics,PV,UV,VIP,GoldenVIP,PlatinaVIP,DiamondVIP,OrderNums
+    from [OcsReport].[dbo].[SubjectVisitStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo AND  DateStatistics&lt; @BeginTime AND ListingOutletFlag=2
+    ORDER BY SubjectVisitStatisticsID DESC
+    UNION ALL
+    select top 1 SubjectNo,DateStatistics,PV,UV,VIP,GoldenVIP,PlatinaVIP,DiamondVIP,OrderNums
+    from [OcsReport].[dbo].[SubjectVisitStatistics] (nolock)
+    WHERE SubjectNo = @SubjectNo  AND DateStatistics BETWEEN @BeginTime AND @EndTime AND ListingOutletFlag=2
+    ORDER BY SubjectVisitStatisticsID DESC)
+    select * from tbl
+    #end
+  </statement>
+  <statement id="ComBeziWfs_WfsProduct_SelectProductListBatchNew">
+    select
+    ProductNo,
+    GoodsNo,
+    Status,
+    IsShelf,
+    ProductName,
+    ProductPicFile,
+    SellPrice,
+    PlatinumPrice,
+    DiamondPrice,
+    LimitedPrice,
+    LimitedVipPrice,
+    MarketPrice,
+    PromotionPrice,
+    WfsProduct.BrandNo,
+    WfsBrand.BrandCnName,
+    WfsBrand.BrandEnName
+    from WfsProduct with(nolock),
+    WfsBrand with(nolock) where
+    WfsProduct.BrandNo = WfsBrand.BrandNo and
+    WfsProduct.[IsLimitedOutlet]=2 and
+    WfsProduct.ProductNo not in (
+    SELECT spref.ProductNo FROM dbo.SWfsSubjectCategory(nolock) AS sc,SWfsSubjectProductRef(nolock) AS spref
+    WHERE sc.CategoryNo=spref.CategoryNo AND SubjectNo=@SubjectNo AND spref.TypeFlag=0)
+    #if($ProductNo !='')
+    AND WfsProduct.ProductNo IN @ProductNo
+    #end
+  </statement>
+
+  <!--专题关联预热页-->
+  <statement id="ComBeziWfs_SWfsSubjectTopExpand_GetSubjectDicSPage">
+    select * from SWfsSubjectTopExpand(nolock) where SubjectNo in  @SubjectNo
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsSubjectTopExpand_GetSubjectPreheatAndBody">
+    SELECT  prdheat.SubjectNo ,
+    prdheat.TopCreateTime ,
+    prdheat.StExpand ,
+    prdheat.PreheatTime,
+    page.PageName
+    FROM    SWfsSubjectTopExpand AS prdheat
+    LEFT OUTER JOIN SWfsAolaiAdvancePage AS page ON page.SWfsAolaiNoticePageId = prdheat.StExpand
+    WHERE   prdheat.SubjectNo = @SubjectNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectApplyPromotion_GetModelBySubjectNo">
+    select * from SWfsSubjectApplyPromotion(nolock) where subjectNo=@subjectNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectFocusArea_GetList">
+    select F.Type, F.ID,F.subjectNo,F.ShowDate,F.Sort,S.SubjectName,B.BrandNo,B.BrandEnName,B.BrandCnName,
+    S.DateBegin,S.DateEnd,S.Status,S.IsAudited
+    from SWfsSubjectFocusArea(nolock) as F left join SWfsSubject(nolock) as S on
+    F.SubjectNo=S.SubjectNo
+    LEFT join SpBrand(nolock) as B
+    on convert(nvarchar(255),S.BrandContent)=B.BrandNo
+    where F.Status=1
+    <!--and S.Status=1 and S.IsAudited=1-->
+    #if($startTime!='0')
+    and F.ShowDate <![CDATA[>=]]>@startTime
+    #end
+    #if($endTime!='0')
+    and F.ShowDate <![CDATA[<=]]>@endTime
+    #end
+    #if($subjectNoName!='0')
+    and F.SubjectNo in( select SubjectNo from SWfsSubject(nolock) where SubjectNo =@subjectNoName or SubjectName like '%'+@subjectNoName+ '%' )
+    #end
+    order by F.ShowDate desc, F.Sort asc
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectFocusArea_GetModel">
+    select * from SWfsSubjectFocusArea(nolock) where ID=@ID
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectFocusArea_GetSWfsSubjectFocusAreaList">
+    select * from SWfsSubjectFocusArea(nolock) where ShowDate=@ShowDate and Status=1
+  </statement>
+  <statement id="ComBeziWfs_SWfsMobileAd_SelectMobileAdList">
+    select * from SWfsMobileAd with(nolock) where ChannelNo=@ChannelNo
+    #if($KeyWord !='')
+    and Name like '%'+@KeyWord+ '%'
+    #end
+    #if($Status!='')
+    and Status =@Status
+    #end
+    #if($DateBegin!='')
+    and DateBegin >@DateBegin
+    #end
+    #if($DateEnd!='')
+    and DateEnd &lt;=@DateEnd
+    #end
+    #if($Sort!='')
+    and Sort=@Sort
+    #end
+    order by Sort asc,DateBegin desc
+  </statement>
+  <statement id="ComBeziWfs_SWfsChannel_GetChannelList">
+    select * from SWfsChannel with(nolock) where SiteNo = 2 and ChannelNo not in('0','1','2')
+    and DeleteFlag=0 and Status =1
+    order by SortNo asc,DateCreate desc
+  </statement>
+  <statement id="ComBeziWfs_SWfsMobileAd_DeleteById">
+    DELETE FROM [SWfsMobileAd] WHERE ID=@ID
+  </statement>
+  <statement id="ComBeziWfs_SWfsMobileAd_UpdateStatus">
+    Update SWfsSubject set Status=@Status,
+    UpdateUserId=@UpdateUserId,UpdateDate=@UpdateDate
+    where ID=@ID
+  </statement>
+  <!--查询重复数据-->
+  <statement id="ComBeziWfs_SWfsMobileAd_SelectDuplicates">
+    Select * From SWfsMobileAD
+    Where Sort=@Sort AND ChannelNo=@ChannelNo AND Status=1
+    AND
+    DateBegin in (Select DateBegin From SWfsMobileAD
+    Group by DateBegin having count(*)>1)
+    AND
+    DateEnd in (Select DateEnd From SWfsMobileAD
+    Group by DateEnd having count(*)>1)
+  </statement>
+  <!--读取CMS奥莱活动时间分组新增开始-->
+  <statement id="ComBeziWfs_SWfsSubjectTimeGroup_GetList">
+    select CONVERT(varchar(100), DateBegin, 108) as T, * from SWfsSubjectTimeGroup(nolock) where Status=1 and ShowType=@ShowType
+    #if($name!='')
+    and GroupName like '%'+@Name+ '%'
+    #end
+    order by T asc
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectTimeGroup_GetModelById">
+    select * from SWfsSubjectTimeGroup(nolock) where GID=@GID
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectTimeGroup_DelModelById">
+    delete  from SWfsSubjectTimeGroup where GID=@GID
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectTimeGroup_SelectByName">
+    select * from SWfsSubjectTimeGroup(nolock) where GroupName=@GroupName
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectTimeGroup_SelectByTime">
+    select CONVERT(varchar(100), DateBegin, 108) as T,* from SWfsSubjectTimeGroup(nolock) where(
+    (CONVERT(varchar(100), DateBegin, 108)<![CDATA[<]]>CONVERT(varchar(100), @DateBegin, 108) and CONVERT(varchar(100), DateEnd, 108)<![CDATA[>]]>CONVERT(varchar(100), @DateBegin, 108))
+    or
+    (CONVERT(varchar(100), DateBegin, 108)<![CDATA[<]]> CONVERT(varchar(100), @DateEnd, 108) and  CONVERT(varchar(100), DateEnd, 108)<![CDATA[>]]>CONVERT(varchar(100), @DateEnd, 108))
+    or
+    (CONVERT(varchar(100), DateBegin, 108)<![CDATA[>=]]>CONVERT(varchar(100), @DateBegin, 108) and  CONVERT(varchar(100), DateEnd, 108)<![CDATA[<=]]>CONVERT(varchar(100), @DateEnd, 108)))
+    #if($gid>0)
+    and GID!=@GID
+    #end
+    order by T asc
+  </statement>
+  <!--读取CMS奥莱活动时间分组新增结束-->
+  <statement id="ComBeziWfs_WfsDepartment_SelectAllList">
+    select * from WfsDepartment(nolock) where status=1
+    and ParentDepartmentNo='A01'
+  </statement>
+  <!--根据分组编号，展示渠道获取实体集 by lijibo-->
+  <statement id="ComBeziWfs_SWfsSubjectProductSort_SelectBySubjectNoAndShowChannelType">
+    Select * from [SWfsSubjectProductSort](nolock) where SubjectNo in @SubjectNo AND ShowChannelType=@ShowChannelType
+  </statement>
+  <!--根据品类二级编码获取品类信息 by lijibo-->
+  <statement id="ComBeziWfs_WfsErpCategory_SelectByCategoryNo">
+    Select * from [SpCategory](nolock) where DataState = 1 AND CategoryNo in @CategoryNo
+  </statement>
+  <!--根据颜色获取erp详细颜色信息 by lijibo-->
+  <statement id="ComBeziWfs_WfsPrimaryColor_SelectByColor">
+    SELECT DISTINCT
+    t.*
+    FROM    WfsPrimaryColor t ,
+    WfsProductColorAttrDetail a ,
+    WfsProductDynamicAttribute b
+
+    WHERE   t.PrimaryColorId = a.PrimaryColorId
+    AND a.AttributeName = b.AttributeName
+    AND   (
+    ( b.AttributeName = 'ProductAttrColor'
+    AND b.AttributeType = '1'
+    AND a.ColorName IN  @ColorName
+    )
+    OR
+    ( b.AttributeName = 'ProductAttrColor1'
+    AND b.AttributeType = '1'
+    AND a.ColorName IN @ColorName
+    )
+    )
+  </statement>
+  <!--根据色系获取子色系 by lijibo-->
+  <statement id="ComBeziWfs_WfsProductColorAttrDetail_SelectByColor">
+    SELECT * FROM WfsProductColorAttrDetail WHERE PrimaryColorId IN @PrimaryColorId
+  </statement>
+  <!--根据一级颜色ID获取一级颜色信息 by lijibo by lijibo-->
+  <statement id="ComBeziWfs_WfsPrimaryColor_SelectByColorID">
+    SELECT * FROM WfsPrimaryColor WHERE PrimaryColorId IN @PrimaryColorId
+  </statement>
+  <!--根据商品编码获取收藏信息 by lijibo by lijibo-->
+  <statement id="ComBeziWfs_SWfsFavoriteProduct_SelectCountByProductNos">
+    SELECT    ProductNo ,
+    COUNT(1) ProCount
+    FROM   SWfsFavoriteProduct
+    WHERE  IsVoid=1  AND  ProductNo IN @ProductNo
+    GROUP BY  ProductNo
+  </statement>
+</statements>
+

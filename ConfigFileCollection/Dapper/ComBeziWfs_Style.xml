@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <!--搭配专题 BY LiJia 20140909-->
+  <statement id="ComBeziWfs_SWfsMatchSpecial_GetList">
+    select * from SWfsStyleMatchSpecial WITH(NOLOCK) where [Type]=@Type
+    #if($SpecialName!='')
+    AND (SpecialName like '%'+@SpecialName+'%')
+    #end
+    #if($Position!='0')
+    AND Position=@Position
+    #end
+    #if($pageSize==0)
+    AND StartTime &lt;= @StartTime
+    AND EndTime >= @StartTime
+    #end
+    #if($StartTime!='')
+    #if($pageSize!=0)
+    AND StartTime >= @StartTime
+    #end
+    #end
+    #if($EndTime!='')
+    AND @EndTime >= StartTime
+    #end
+    order by UpdateDate desc
+  </statement>
+  <statement id="ComBeziWfs_SWfsStyleMatchSpecial_DeleteById">
+    DELETE FROM [SWfsStyleMatchSpecial]
+    WHERE ID=@ID
+  </statement>
+  <!--标签展示操作 begin  by lijibo-->
+  <statement id="ComBeziWfs_SWfsTagRel_GetList">
+    SELECT * FROM SWfsTagRel WITH(NOLOCK)
+    WHERE Status=1
+    ORDER BY Sort,CreateDate
+  </statement>
+  <statement id="ComBeziWfs_SWfsTagRel_DeleteByTagNos">
+    DELETE FROM SWfsTagRel
+    WHERE Location = @Location AND TagNo IN @TagNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsTagRel_DeleteByLocation">
+    DELETE FROM SWfsTagRel
+    WHERE Location = @Location
+  </statement>
+  <statement id="ComBeziWfs_SWfsTagRel_GetListByLocation">
+    SELECT * FROM SWfsTagRel WITH(NOLOCK)
+    WHERE Location = @Location
+  </statement>
+  <statement id="ComBeziWfs_SWfsTagRel_GetDataCountByLocation">
+    SELECT COUNT(1) FROM SWfsTagRel WITH(NOLOCK)
+    WHERE Location = @Location
+  </statement>
+  <!--标签展示操作 end -->
+  <!--标签添加列表操作 begin -->
+  <statement id="ComBeziPicLab_t_tag_base_GetTagsCreateList">
+    WITH    temptable
+    AS ( SELECT   COUNT(1) relCount ,
+    tag_base_id
+    FROM     t_tag_instance WITH ( NOLOCK )
+    GROUP BY tag_base_id
+    )
+    SELECT   b.* ,
+    temp.relCount
+    FROM    temptable temp WITH ( NOLOCK )
+    INNER JOIN dbo.t_tag_base b WITH ( NOLOCK ) ON temp.tag_base_id = b.tag_id
+    #if($tag_name!='')
+    AND (tag_name like '%'+@tag_name+'%')
+    #end
+    #if($StartTime!='')
+    AND create_date >= @StartTime
+    #end
+    #if($EndTime!='')
+    AND @EndTime >= create_date
+    #end
+    ORDER BY b.create_date DESC
+  </statement>
+  <statement id="ComBeziPicLab_t_tag_base_GetTagsCreateListBytag_id">
+    SELECT  *
+    FROM    t_tag_base  WITH ( NOLOCK )
+    WHERE tag_id in @tag_id
+  </statement>
+  <!--标签添加列表操作 end -->
+  <!--获取活动图数据列表-->
+  <statement id="ComBeziWfs_SWfsStyleActivityPic_FindStyleActivityPicList">
+    SELECT [SAID] ,
+    [ActivityName] ,
+    [PicNo] ,
+    [PicUrl] ,
+    [StartTime] ,
+    [CreateDate] ,
+    [CreateUserId]
+    FROM   SWfsStyleActivityPic WITH ( NOLOCK )
+    Where 1=1
+    #if($KeyWord !='')
+    and (ActivityName like '%'+@ActivityName+ '%')
+    #end
+    #if($StartTime!='')
+    and CONVERT(varchar(50),StartTime,23) >= CONVERT(varchar(50),@StartTime,23)
+    #end
+    #if($EndTime!='')
+    AND CONVERT(varchar(50),StartTime,23) &lt;= CONVERT(varchar(50),@EndTime,23)
+    #end
+  </statement>
+  <!--根据ID获取活动图片信息-->
+  <statement id="ComBeziWfs_SWfsStyleActivityPic_GetActivityModel">
+    SELECT [SAID] ,
+    [ActivityName] ,
+    [PicNo] ,
+    [PicUrl] ,
+    [StartTime] ,
+    [CreateDate] ,
+    [CreateUserId]
+    FROM  SWfsStyleActivityPic WITH ( NOLOCK )
+    Where SAID=@SAID
+  </statement>
+  <!--根据ID删除活动图-->
+  <statement id="ComBeziWfs_SWfsStyleActivityPic_DeleteActivityPicById">
+    DELETE FROM [SWfsStyleActivityPic]
+    WHERE SAID=@SAID
+  </statement>
+  <!--轮播图-->
+</statements>

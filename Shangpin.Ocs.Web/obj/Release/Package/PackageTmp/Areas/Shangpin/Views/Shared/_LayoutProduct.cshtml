@@ -1,0 +1,77 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="/Areas/Shangpin/Content/css/init.css" rel="stylesheet" type="text/css"
+          charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/core.css" rel="stylesheet" type="text/css"
+          charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/layout/header.css" rel="stylesheet" type="text/css"
+          charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/layout/body.css" rel="stylesheet" type="text/css"
+          charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/page/leftmenu/leftmenu.css" rel="stylesheet"
+          type="text/css" charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/page/rightcontent/rightcontent.css" rel="stylesheet"
+          type="text/css" charset="utf-8" />
+    @RenderSection("HeadStyle", false)
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/lib/jquery.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/plug/leftMenu.js"></script>
+    @RenderSection("HeadScript", false)
+</head>
+<body>
+    <div id="mx-header">
+        <div id="mx-header-logo-wrapper">
+            <span style="float: left;">
+                <a id="mx-header-logo" class="inlb" href="/" style="margin-left: 18px;">
+                    <img src="/Areas/Shangpin/Images/logo/logo.png" alt="尚品OCS系统" />
+                </a>
+            </span><span style="float: right; padding: 20px 20px 0 0;">
+                <a href="/loginout.html">
+                    退出系统
+                </a>
+        </div>
+        <div id="mx-header-nav-wrapper">
+            <ul id="mx-header-nav" class="clr">
+                <li><a href="/Shangpin/Brand/AIIBrandsSelect.html">尚品CMS</a> </li>
+                <li><a href="/outlet/subject/index">奥莱CMS</a></li>
+                <li><a href="/Shangpin/Venue/MeetListManage">市场运营</a></li>
+                <li><a href="/Shangpin/Order/CMBOrderIDQuery.html">订单管理</a></li>
+                <li class="cur"><a href="/Shangpin/product/productmanager">商品管理</a></li>
+                <li ><a href="/productflat/product/productlist?categoryType=1">商品排序管理</a></li>
+                <li><a href="/Permission/cachemanage/clear">缓存清理</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="mx-body">
+        <ul id="mx-leftmenu">
+            <li class="@((Request.Url.ToString().ToLower().IndexOf("product/") > 0) ? "first cur" : "first")">
+                <a href="javascript:;">商品信息管理</a>
+                <p style="@(Request.Url.ToString().ToLower().IndexOf("product/") > 0 ? "display:block;" : "display:none;")">
+                    <a href="/Shangpin/product/ProductManager" @(Request.Url.ToString().ToLower().IndexOf("product/productmanager") > 0 ? "class=cur" : null)>
+                        商品列表
+                    </a>
+                    <a href="/shangpin/product/TemplateList" @(Request.Url.ToString().ToLower().IndexOf("product/templatelist") > 0 ? "class=cur" : null)>模板管理</a>
+                </p>
+            </li>
+            <li class="@((Request.Url.ToString().ToLower().IndexOf("productlabel") > 0) ? "cur" : "")">
+                <a href="javascript:;">商品标签管理</a>
+                <p style="@(Request.Url.ToString().ToLower().IndexOf("shangpin/productlabel") > 0 ? "display:block;" : "display:none;")">
+                    <a href="/Shangpin/productLabel/ProductLabelManager" @(Request.Url.ToString().ToLower().IndexOf("productlabel/productlabelmanager") > 0 ? "class=cur" : null)>
+                        标签管理
+                    </a>
+                    <a href="/shangpin/productLabel/ProductList" @(Request.Url.ToString().ToLower().IndexOf("productlabel/productlist") > 0 ? "class=cur" : null)>商品标签关联</a>
+                </p>
+            </li>
+        </ul>
+        <div id="mx-rightcontent">
+            <div id="mx-rightcontent-inner">
+                <!--内容--->
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</body>
+@RenderSection("hiddendiv", false)
+</html>

@@ -1,0 +1,16 @@
+.sp_ifc_bags {
+	background: url(/images/page/ifc/men/main_bg.jpg) no-repeat center top;
+}
+.sp_bagstitle_tab a {
+	width: 159px;
+}
+.sp_bagstitle_tab a.cur {
+	background: url(/images/page/ifc/men/title_tab_icon.png) no-repeat center top;
+	border-color: #0e51b2;
+}
+.sp_ifc_bagscn li a span ins {
+	color: #367efa;
+}
+.ifc_right_box h3 {
+	background-image:url(/images/page/ifc/men.png);
+}

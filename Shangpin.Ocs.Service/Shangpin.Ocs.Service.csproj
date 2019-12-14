@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BEFAD2E4-1F39-409F-88AA-ED6AC543D13F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Shangpin.Ocs.Service</RootNamespace>
+    <AssemblyName>Shangpin.Ocs.Service</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Com.Shang.SMSService">
+      <HintPath>..\binpublic\Com.Shang.SMSService.dll</HintPath>
+    </Reference>
+    <Reference Include="Com.ShangPin.WebService.Common">
+      <HintPath>..\binpublic\Com.ShangPin.WebService.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Com.ShangPin.WebService.Stock">
+      <HintPath>..\binpublic\Com.ShangPin.WebService.Stock.dll</HintPath>
+    </Reference>
+    <Reference Include="ISendSMS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5622ce6a19949fb3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\binpublic\ISendSMS.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\binpublic\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="SCS_DOTNET40_SDK_v1.1">
+      <HintPath>..\binpublic\SCS_DOTNET40_SDK_v1.1.dll</HintPath>
+    </Reference>
+    <Reference Include="Shangpin.Entity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\binpublic\Shangpin.Entity.dll</HintPath>
+    </Reference>
+    <Reference Include="Shangpin.Framework.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\binpublic\Shangpin.Framework.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Shangpin.Framework.Configuration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\binpublic\Shangpin.Framework.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Shangpin.Framework.WebMvc">
+      <HintPath>..\binpublic\Shangpin.Framework.WebMvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\AppSettingManager.cs" />
+    <Compile Include="Common\CacheService.cs" />
+    <Compile Include="Common\ComDifSubject.cs" />
+    <Compile Include="Common\CommonHelp.cs" />
+    <Compile Include="Common\CommonService.cs" />
+    <Compile Include="Common\DivideHelper.cs" />
+    <Compile Include="Common\EnumService.cs" />
+    <Compile Include="Common\ImageTypeCheck.cs" />
+    <Compile Include="Common\PictureFileConverter.cs" />
+    <Compile Include="Common\PresentationHelper.cs" />
+    <Compile Include="Common\RequestFliter.cs" />
+    <Compile Include="Common\StringUtil.cs" />
+    <Compile Include="DemoService.cs" />
+    <Compile Include="Outlet\LivingService.cs" />
+    <Compile Include="Outlet\MarketOptionService.cs" />
+    <Compile Include="Outlet\OutLetExtendService.cs" />
+    <Compile Include="Outlet\SubjectTimeGroupService.cs" />
+    <Compile Include="Outlet\SWfsAolaiAdvancePageService.cs" />
+    <Compile Include="Outlet\SWfsChannelService.cs" />
+    <Compile Include="Outlet\SWfsMobileAdService.cs" />
+    <Compile Include="Outlet\SWfsPictureManagerService.cs" />
+    <Compile Include="Outlet\SWfsProductService.cs" />
+    <Compile Include="Login\LoginService.cs" />
+    <Compile Include="Outlet\SWfsSubjectConsoleService.cs" />
+    <Compile Include="Outlet\SWfsSubjectFocusAreaService.cs" />
+    <Compile Include="Outlet\SWfsSubjectService.cs" />
+    <Compile Include="Outlet\SWfsTopicService.cs" />
+    <Compile Include="Outlet\TempStatisticsService.cs" />
+    <Compile Include="Outlet\VenueService.cs" />
+    <Compile Include="Outlet\WfsCmsContentService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Shangpin\ADService.cs" />
+    <Compile Include="Shangpin\AppRecommendService.cs" />
+    <Compile Include="Shangpin\CurtainService.cs" />
+    <Compile Include="Shangpin\HomeSecKillService.cs" />
+    <Compile Include="Shangpin\NewCommingProductService.cs" />
+    <Compile Include="Shangpin\NewsChannelsSservice.cs" />
+    <Compile Include="Shangpin\NewShelfBrandProductService.cs" />
+    <Compile Include="Shangpin\OrderService.cs" />
+    <Compile Include="Shangpin\ProductLabelService.cs" />
+    <Compile Include="Shangpin\ProductSort\ProductRulesService.cs" />
+    <Compile Include="Shangpin\ProductSort\ProductSortService.cs" />
+    <Compile Include="Shangpin\ProductSort\SearchSortService.cs" />
+    <Compile Include="Shangpin\ProductSort\SWfsCategoryService.cs" />
+    <Compile Include="Shangpin\ProductSort\SWfsSortHistoryService.cs" />
+    <Compile Include="Shangpin\ProductSort\WfsBrandService.cs" />
+    <Compile Include="Shangpin\SWfsBrandIndexService.cs" />
+    <Compile Include="Shangpin\StyleService.cs" />
+    <Compile Include="Shangpin\SWfsBrandService.cs" />
+    <Compile Include="Shangpin\SWfsBrandWallService.cs" />
+    <Compile Include="Shangpin\SWfsCategoryBrandAliasService.cs" />
+    <Compile Include="Shangpin\SwfsFlagShipModuleLinkService.cs" />
+    <Compile Include="Shangpin\SwfsFlagShipModuleService.cs" />
+    <Compile Include="Shangpin\SwfsFlagShipFlashService.cs" />
+    <Compile Include="Shangpin\SwfsFlagShipNewArrivalProductService.cs" />
+    <Compile Include="Shangpin\SWfsFlagShipOperationPictureService.cs" />
+    <Compile Include="Shangpin\SWfsIndexHotProductListTempService.cs" />
+    <Compile Include="Shangpin\SWfsIndexModuleLinkService.cs" />
+    <Compile Include="Shangpin\SWfsIndexModuleService.cs" />
+    <Compile Include="Shangpin\SWfsIndexNewArrivalProductListService.cs" />
+    <Compile Include="Shangpin\SWfsIndexNewArrivalService.cs" />
+    <Compile Include="Shangpin\SWfsNewSubjectService.cs" />
+    <Compile Include="Shangpin\SWfsNewProductService.cs" />
+    <Compile Include="Shangpin\SWfsPictureManagersService.cs" />
+    <Compile Include="Shangpin\SWfsPopElementsService.cs" />
+    <Compile Include="Shangpin\SWfsOperationPictureService.cs" />
+    <Compile Include="Shangpin\SWfsProductCommentService.cs" />
+    <Compile Include="Shangpin\SWfsProductRefService.cs" />
+    <Compile Include="Shangpin\SWfsRecommLinkService.cs" />
+    <Compile Include="Shangpin\SWfsSearchPriceIntervalService.cs" />
+    <Compile Include="Shangpin\SwfsVenueService.cs" />
+    <Compile Include="Shangpin\VCodeService.cs" />
+    <Compile Include="Shangpin\SWfsChannelService.cs" />
+    <Compile Include="Shangpin\VsinsService.cs" />
+    <Compile Include="Shangpin\AppIndexService.cs" />
+    <Compile Include="Shangpin\SwfsFlagShipLogoService.cs" />
+    <Compile Include="Web References\com.shangpin.erpws02\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\StockWebService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shangpin.Ocs.Entity.Extenstion\Shangpin.Ocs.Entity.Extenstion.csproj">
+      <Project>{652ACF8C-B13A-4BA1-AA99-806CD992D133}</Project>
+      <Name>Shangpin.Ocs.Entity.Extenstion</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://erpws02.shangpin.com/webservice/stockwebservice.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\StockWebService\</RelPath>
+      <UpdateFromURL>http://erpws02.shangpin.com/webservice/stockwebservice.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Shangpin_Ocs_Service_StockWebService_StockWebService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://erpws02.shangpin.com/WebService/ToWfsWebService.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\com.shangpin.erpws02\</RelPath>
+      <UpdateFromURL>http://erpws02.shangpin.com/WebService/ToWfsWebService.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Shangpin_Ocs_Service_com_shangpin_erpws02_ToWfsWebService</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\com.shangpin.erpws02\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\com.shangpin.erpws02\ToWfsWebService.wsdl" />
+    <None Include="Web References\StockWebService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\StockWebService\stockwebservice.disco" />
+    <None Include="Web References\StockWebService\stockwebservice.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\com.shangpin.erpws02\ToWfsWebService.disco" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

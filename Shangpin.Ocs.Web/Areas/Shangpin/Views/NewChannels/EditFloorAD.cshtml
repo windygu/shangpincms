@@ -1,0 +1,185 @@
+﻿@{
+    ViewBag.Title = "楼层广告图设置";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+    <script src="/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+    <script src="/Areas/Shangpin/Scripts/Venue/jquery.form.js" type="text/javascript"
+            charset="utf-8"></script>
+    <script>
+        function beforeSubmit() {
+            var error = "";
+            var flag = true;
+            var inputArr = new Array();
+            $(".caption_dl [errorfor],.border_dl:visible [errorfor]").each(function (i, n) {
+                if (i == 2) {  }
+                $this = $(n);
+                var input = $("#" + $this.attr("errorfor"));
+                if (input.length > 0) {
+                    if (input.is(":not([type=file])"))
+                        input.val($.trim(input.val()));//去空格
+                    var dt = $this.parent().prev();
+                    var title = dt.text();
+                    if (title.split('*').length > 0)
+                        title = title.split('*')[0]
+                    if (title.split('：').length > 0)
+                        title = title.split('：')[0];
+                    if (input.is("[required]") && input.val().length == 0) {
+                        if (input.is("input[type=file]") && !isNaN($("#PictureManageId").val()) && parseInt($("#PictureManageId").val()) > 0) {
+
+                        } else {
+                            inputArr.push(input);
+                            error += "," + title + "不能为空 ";
+                            flag = false;
+                            return true;
+                        }
+                    }
+                    if (input.is("[maxlength]") && input.val().length > (parseInt(input.attr("maxleng")))) {
+                        error += "," + title + "长度不过超过" + input.attr("maxleng");
+                        flag = false;
+                        inputArr.push(input);
+                        return true;
+                    }
+                    if (input.val().length > 0 && input.is("[datatype=http]") && !(input.val().indexOf('http://') == 0 && input.val().split('.').length > 1)) {
+                        error += "," + title + "输入格式不正确";
+                        flag = false;
+                        inputArr.push(input);
+                        return true;
+                    }
+                    if (input.is("[type=file]") && input.val().length > 0 && !(input.val().toLowerCase().indexOf('.jpg') > 1 || input.val().toLowerCase().indexOf('.jpeg') > 1)) {
+                        if (!isNaN($("#PictureManageId").val()) && parseInt($("#PictureManageId").val()) > 0) {
+
+                        } else {
+                            error += ",文件类型不正确";
+                            flag = false;
+                            inputArr.push(input);
+                            return true;
+                        }
+                    }
+                }
+            })
+            Tip(error, inputArr);
+            return flag;
+
+        }
+        function Tip(error, arr) {
+            if (error.length > 0 && error.indexOf(',') == 0) {
+                error = error.substring(1);
+            }
+            if (arr.length > 0) {
+                alert(error);
+                $(arr[0]).focus();
+            }
+        }
+        function doSubmit() {
+            if (!beforeSubmit()) return false;
+            if ($("input[type=file]").val().length == 0) {//如果文件没填 则不提交文件域
+                $("input[type=file]").attr("disable", "disable");
+            }
+
+            $("#formAddFloor").ajaxSubmit(function (data) {
+                data = eval("(" + data + ")");
+                if (data && data.status == 1) {
+                    alert('保存成功');
+                    @(Html.Raw(Request.UrlReferrer == null ? "history.go(-1);" :"location.href='" +Request.UrlReferrer.ToString()+"';"))
+                } else if (data && data.message) {
+                    alert(data.message);
+                } else {
+                    alert('操作失败请稍后重试!');
+                }
+            });
+        }
+
+    </script>
+}
+@section HeadStyle
+{
+    <style type="text/css">
+        .hotblock {
+            display: none;
+        }
+
+        .titleColor, span {
+            color: Red;
+        }
+
+        .mx-rightcontent-msgbox .border_dl dt {
+            width: 150px;
+            padding-right: 10px;
+            text-align: right;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .mx-rightcontent-msgbox .border_dl {
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+            .mx-rightcontent-msgbox .border_dl dd {
+                width: 500px;
+                margin-bottom: 15px;
+            }
+    </style>
+}
+<h1>
+    OCS > 尚品 > 频道页管理>楼层广告图设置
+</h1>
+<hr style="border: 1px solid Black; border-left: none; border-right: none; height: inherit;" />
+<!-- 添加活动 start -->
+<div id="mx-rightcontent-addbox" class="mx-rightcontent-msgbox">
+    <form id="formAddFloor" action="/shangpin/NewChannels/EditFloorAD.html" method="post"
+          enctype="multipart/form-data">
+        <input type="hidden" id="moduleId" name="moduleId" value="@ViewBag.moduleId" />
+        <input type="hidden" id="moduleName" name="moduleName" value="@ViewBag.moduleName" />
+        <input type="hidden" id="pictureIndex" name="pictureIndex" value="@Model.PictureIndex" />
+        <input type="hidden" id="ADShowType" name="ADShowType" value="@ViewBag.ADShowType" />
+        <input type="hidden" id="PictureManageId" name="PictureManageId" value="@Model.PictureManageId" />
+        <input type="hidden" id="PageNo" name="PageNo" value="@(Request.QueryString["PageNo"])" />
+        <dl class="caption_dl">
+            <dt style="width:300px;text-align:left;font-weight:bold;">所处楼层：@ViewBag.moduleName</dt>
+        </dl>
+        <dl class="border_dl" style="border: 1px solid gray; width:800px;">
+            <dt>@(ViewBag.PicType)设置</dt>
+            <dd>
+                <br />
+            </dd>
+            <dt class="titleColor">图片标题*：</dt>
+            <dd>
+                <input id="picTitleTop" type="text" name="picTitleTop" value="@Model.PictureName" maxlength="10" required />
+                <span errorfor="picTitleTop">图片标题不能大于10字符</span>
+            </dd>
+            <dt @(Html.Raw(Model.PictureManageId > 0 ? "" : "class=\"titleColor\""))>图片上传@(Html.Raw(Model.PictureManageId > 0 ? "" : "*"))： </dt>
+            <dd>
+                <input id="picFile" type="file" name="picFile" accept="image/gif, image/jpeg" required />
+                <span errorfor="picFile">@ViewBag.sizeTip</span>
+
+            </dd>
+            <dt>图片链接地址：</dt>
+            <dd>
+                <input id="LinkAddress" type="text" name="LinkAddress" value="@Model.LinkAddress" maxlength="1000" datatype="http" />
+                <span errorfor="LinkAddress">格式：http://www.shangpin.com，开头"http://"</span>
+            </dd>
+            <dt class="titleColor">开始时间*：</dt>
+            <dd>
+                <input readonly="readonly" id="startTimeTop" onclick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm:00'})" type="text" required name="startTimeTop" value="@(Model.PictureManageId>0?Model.DateBegin.ToString("yyyy/MM/dd HH:mm:00"):"")" maxlength="30" />
+                <span errorfor="startTimeTop" style="display:none;"></span>
+            </dd>
+        </dl>
+
+        <span class="error" style="display:none;"></span>
+        <dl>
+            <dt>&nbsp;</dt>
+            <dd>
+                <button type="button" id="btnSave" name="" value="" class="secondary" onclick="doSubmit();">
+                    确 定
+                </button>
+                <button type="button" id="btnCancle" name="" value="" onclick="@(Html.Raw(Request.UrlReferrer == null ? "history.go(-1);" : "location.href='" + Request.UrlReferrer.ToString() + "';"))">
+                    取 消
+                </button>
+            </dd>
+        </dl>
+    </form>
+
+</div>

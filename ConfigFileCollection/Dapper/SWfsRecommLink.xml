@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <statement id="ComBeziWfs_SWfsRecommLink"  primarykey="LinkId">
+    select * from SWfsRecommLink where CategoryNo=@CategoryNo order by SortId desc;
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsRecommLink_Add"  primarykey="LinkId">
+    insert into SWfsRecommLink(CategoryNo, LinkName, PagePosition, LinkAddress, LinkTarget, BeginTime, EndTime, SortId, Status, OperatorUserId) values(@CategoryNo, @LinkName, @PagePosition, @LinkAddress, @LinkTarget, @BeginTime, @EndTime, @SortId, @Status, @OperatorUserId)
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsRecommLink_UpdateSortId"  primarykey="LinkId">
+    update SWfsRecommLink set SortId=@SortId where LinkId=@LinkId
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsRecommLink_Delete"  primarykey="LinkId">
+    delete SWfsRecommLink where LinkId=@LinkId
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsRecommLink_UpdataSatate"  primarykey="LinkId">
+    update SWfsRecommLink set Status=@Status where LinkId=@LinkId
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsRecommLink_ByIdentity"  primarykey="LinkId">
+    select * from SWfsRecommLink where LinkId=@LinkId;
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsRecommLink_GetMaxSortByCategoryNo"  primarykey="LinkId">
+    select max(SortId) as SortId from SWfsRecommLink where CategoryNo=@CategoryNo
+  </statement>
+
+</statements>

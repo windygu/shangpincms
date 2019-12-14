@@ -1,0 +1,588 @@
+﻿@{
+    Shangpin.Ocs.Service.Shangpin.ProductSort.SWfsCategoryService dal = new Shangpin.Ocs.Service.Shangpin.ProductSort.SWfsCategoryService();
+    IList<Shangpin.Ocs.Entity.Extenstion.ProductFlat.OCSInfo> CategoryList = dal.SelectCategoryByParentNo("ROOT");
+    Shangpin.Ocs.Service.Shangpin.ProductSort.WfsBrandService brandDal = new Shangpin.Ocs.Service.Shangpin.ProductSort.WfsBrandService();
+    IList<Shangpin.Ocs.Entity.Extenstion.ShangPin.ProductFlat.WfsBrandSort> brandList = brandDal.SelectWfsBrandAll();
+}
+
+<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="/Areas/Shangpin/Content/css/init.css" rel="stylesheet" type="text/css"
+          charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/core.css" rel="stylesheet" type="text/css"
+          charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/layout/header.css" rel="stylesheet" type="text/css"
+          charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/layout/body.css" rel="stylesheet" type="text/css"
+          charset="utf-8" />
+    <link href="~/Areas/ProductFlat/Content/CSS/ProductSortLayout.css" rel="stylesheet" />
+    <link href="/Areas/Shangpin/Content/css/page/rightcontent/rightcontent.css" rel="stylesheet"
+          type="text/css" charset="utf-8" />
+    @RenderSection("HeadStyle", false)
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/lib/jquery.js" charset="utf-8"></script>
+    @RenderSection("HeadScript", false)
+
+    <script type="text/javascript">
+        function IsShowBrand(obj) {
+            if ($(obj).html() == "+") {
+                $(obj).nextAll("ul").show();
+                $(obj).html("-");
+            } else {
+                $(obj).nextAll("ul").hide();
+                $(obj).html("+");
+            }
+        }
+    </script>
+    <script type="text/javascript">
+    $(function () {
+        //保存左边树形菜单的点击列表页查询之后的状态
+        var categoryNO = '@Request.QueryString["categoryNO"]';
+        var categoryType = '@Request.QueryString["categoryType"]';
+        var BrandNO = '@Request.QueryString["BrandNO"]';
+        if (categoryNO != null && categoryType == "1") {
+            var thisCategoryNO = categoryNO.substring(0, 3);
+            var thisUl = $("#" + thisCategoryNO).prev()
+            ShowState(thisUl, categoryNO, thisCategoryNO);
+        } 
+        var reg = new RegExp("&#39;", "g"); //创建正则RegExp对象
+        var reg2 = new RegExp("TiHuan", "g"); //创建正则RegExp对象
+        var stringObj = '@Request.QueryString["CategoryPath"]';
+        var newstr = stringObj.replace(reg, "''").replace(reg2,"&");;
+            $("#path").text(newstr + "商品列表");
+            if (BrandNO != null && categoryType == "2") {
+                $("#" + BrandNO).parent().show();
+                $("#" + BrandNO).parent().prevAll("label").text("-");
+            }
+            //保存左边树形菜单品牌店查询之后的状态
+        });
+
+        function ShowState(obj, CategoryNo, thisCategoryNo) {
+            if ($(obj).html() == "+") {
+                $.post("@Url.Action("GetErpCategoryChildList", "Product")", { ParentNo: thisCategoryNo }, function (data) {
+                CreateLiHtml(data, obj);
+                $(obj).nextAll("ul").show();
+                $(obj).html("-");
+                if (thisCategoryNo != CategoryNo) {
+                    thisCategoryNo = CategoryNo.substring(0, thisCategoryNo.length + 3);
+                    var thisUL = $("#" + thisCategoryNo).prev()
+                    //alert(thisCategoryNo);
+                    //alert($("#" + thisCategoryNo).html());
+                    ShowState(thisUL, CategoryNo, thisCategoryNo);
+                }
+            }, "json");
+        }
+    }
+
+    //分类前面的符号点击事件
+    function IsShowChildren(obj, CategoryNo) {
+        if ($(obj).html() == "+") {
+            $.post("@Url.Action("GetErpCategoryChildList", "Product")", { ParentNo: CategoryNo }, function (data) {
+                CreateLiHtml(data, obj);
+                $(obj).nextAll("ul").show();
+                $(obj).html("-");
+            }, "json");
+        } else {
+            $(obj).nextAll("ul").hide();
+            $(obj).html("+");
+        }
+    }
+
+    //创建子分类的ul的html
+    function CreateLiHtml(data, obj) {
+        $(obj).nextAll("ul").remove();
+        var ulhtml = "";
+        $.each(data, function (index, item) {
+            ulhtml = ulhtml + "<ul><li>";
+            if (item.isParent == true) {
+                ulhtml = ulhtml + "<label onclick=\"IsShowChildren(this,'" + item.CategoryNo + "')\">+</label>";
+                ulhtml = ulhtml + "<a  id='" + item.CategoryNo + "' onclick=PathShow(this,'" + item.CategoryNo + "') class='li_p_a' style='margin-left:5px;' href='@Url.Action("ProductList", "Product")?categoryNO=" + item.CategoryNo + "&OCSCategoryName= " + item.CategoryName + "&categoryType=1&isLast=" + item.AutoLastFlag + "'>" + item.CategoryName + "</a>";
+                if (item.SortUpdateDate != null) {
+                    if (item.IsUpdateDateOne == true) {
+                        ulhtml = ulhtml + "<a style='color: red;'>" + item.SortUpdateDate + "</a>";
+                    } else {
+                        ulhtml = ulhtml + "<a>" + item.SortUpdateDate + "</a>";
+                    }
+                }
+            } else {
+                ulhtml = ulhtml + "<a   id='" + item.CategoryNo + "' onclick=PathShow(this,'" + item.CategoryNo + "') class='li_p_a' style='margin-left:10px;' href='@Url.Action("ProductList", "Product")?categoryNO=" + item.CategoryNo + "&OCSCategoryName= " + item.CategoryName + "&categoryType=1&isLast=" + item.AutoLastFlag + "'>" + item.CategoryName + "</a>";
+                if (item.SortUpdateDate != null) {
+                    if (item.IsUpdateDateOne == true) {
+                        ulhtml = ulhtml + "<a style='color: red;'>" + item.SortUpdateDate + "</a>";
+                    } else {
+                        ulhtml = ulhtml + "<a>" + item.SortUpdateDate + "</a>";
+                    }
+                }
+            }
+            ulhtml = ulhtml + "</li></ul>";
+        });
+        $(obj).parent().append(ulhtml);
+    }
+
+    function PathShow(obj, CategoryNo) {
+        var path = "";
+        var thisCategoryNo = CategoryNo;
+        for (var i = 0; i <= (CategoryNo.length / 3) - 1; i++) {
+            path = $("#" + thisCategoryNo).text() + "-" + path;
+            thisCategoryNo = thisCategoryNo.substring(0, thisCategoryNo.length - 3);
+        }
+        path = path.substring(0, path.length - 1);
+        $(obj).attr("href", $(obj).attr("href") + "&CategoryPath=" + path);
+    }
+    </script>
+    <style>
+        .divSortLine {
+            float: left;
+            width: 100%;
+            margin-top: 0.5px;
+            height: 2px;
+            background-color: #3e3b3b;
+        }
+
+        .sortPath {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div id="mx-header">
+        <div id="mx-header-logo-wrapper">
+            <span style="float:left;">
+                <a id="mx-header-logo" class="inlb" href="/" style="margin-left: 18px;">
+                    <img src="/Areas/Shangpin/Images/logo/logo.png" alt="尚品OCS系统" />
+                </a>
+            </span>
+            <span style="float:right;padding:20px 20px 0 0;"><a href="/loginout.html">退出系统</a>
+        </div>
+        <div id="mx-header-nav-wrapper">
+            <ul id="mx-header-nav" class="clr">
+                <li><a href="/Shangpin/Brand/AIIBrandsSelect.html">尚品CMS</a> </li>
+                <li><a href="/outlet/subject/index">奥莱CMS</a></li>
+                <li class="cur"><a href="/Shangpin/Venue/MeetListManage">市场运营</a></li>
+                <li><a href="/Shangpin/Order/CMBOrderIDQuery.html">订单管理</a></li>
+                <li><a href="/Shangpin/product/productmanager">商品管理</a></li>
+                <li class="cur"><a href="/productflat/product/productlist?categoryType=1">商品排序管理</a></li>
+                <li><a href="/Permission/cachemanage/clear">缓存清理</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="mx-body">
+
+        <ul id="mx_leftmenu">
+            <li class="first cur">
+                <a href="javascript:;" style="font-size:15px; " class="li_a" onclick="$(this).nextAll('ul').toggle()">列表页排序</a>
+                <ul class="leftmenu_ul" @(Request.QueryString["categoryType"] != null ? (Request.QueryString["categoryType"] == "1" ? Html.Raw("style=\"display: block;\"") : Html.Raw("style=\"display: none;\"")) : null)>
+                    @{foreach (var item in CategoryList)
+                    {
+                        <li>
+                            @(item.isParent == true ? Html.Raw("<label onclick=\"IsShowChildren(this,'" + item.CategoryNo + "')\">+</label>") : Html.Raw("")) <a @(item.isParent == true ? "" : "style=margin-left:10px;") href="@Url.Action("productlist", "Product", new { categoryno = item.CategoryNo, ocscategoryname = item.CategoryName, categoryType = 1, isLast = item.AutoLastFlag })" class="li_p_a" onclick="PathShow(this,'@item.CategoryNo')" id="@item.CategoryNo">@item.CategoryName</a>
+                            @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                        </li> }}
+                    @*<li>
+                            <label onclick="IsShowChildren(this)">+</label> <a>女士</a>
+                            <ul>
+                                <li>
+                                    <label onclick="IsShowChildren(this)">+</label><a>服饰</a>
+                                    <ul>
+                                        <li>
+                                            <label onclick="IsShowChildren(this)">+</label><a>上装</a>
+                                            <ul>
+                                                <li>
+                                                    <a class="li_p_a"> 袖上衣</a><a>2014-06-23</a>
+                                                </li>
+                                                <li>
+                                                    <a class="li_p_a">袖上衣</a><a style="color: red;">2014-06-23</a>
+                                                </li>
+                                                <li>
+                                                    <a class="li_p_a">袖上衣</a><a style="">2014-06-23</a>
+                                                </li>
+                                                <li>
+                                                    <a class="li_p_a">针织衫</a><a style="">2014-06-23</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <p>
+                                        <label onclick="IsShowChildren(this)">+</label><a>箱包</a>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <label onclick="IsShowChildren(this)">+</label><a>鞋靴</a>
+                                    </p>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <p>
+                                <label onclick="IsShowChildren(this)">+</label> <a>男士</a>
+                            </p>
+                            <ul>
+                                <li>
+                                    <p>
+                                        <label onclick="IsShowChildren(this)">+</label><a>子类</a>
+                                    </p>
+                                </li>
+                            </ul>
+                        </li>*@
+                </ul>
+            </li>
+            <li class="first_2 cur">
+                <a href="javascript:;" style="font-size:15px;" class="li_a" onclick="$(this).nextAll('ul').toggle()">品牌店排序</a>
+                <ul class="leftmenu_ul" @(Request.QueryString["categoryType"] != null ? (Request.QueryString["categoryType"] == "2" ? Html.Raw("style=\"display: block;\"") : Html.Raw("style=\"display: none;\"")) : null)>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>0-9</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).IsInt() == true))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>A</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "A"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>B</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "B"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>C</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "C"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>D</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "D"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>E</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "E"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>F</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "F"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>G</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "G"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>H</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "H"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>I</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "I"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>J</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "J"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>K</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "K"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>L</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "L"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>M</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "M"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>N</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "N"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>O</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "O"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>P</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "P"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>Q</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "Q"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>R</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "R"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>S</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "S"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>T</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "T"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>U</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "U"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>V</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "V"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>W</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "W"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>X</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "X"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>Y</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "Y"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>Z</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => t.BrandEnName.Substring(0, 1).ToUpper() == "Z"))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                    <li>
+                        <label onclick="IsShowBrand(this)">+</label> <a>其他</a>
+                        <ul>
+                            @{foreach (var item in brandList.Where(t => char.IsLower(t.BrandEnName.Substring(0, 1).ToLower(), 0) == false&&t.BrandEnName.Substring(0,1).IsInt()==false))
+                            {
+                                <li id="@item.BrandNo">
+                                    <a class="li_p_a" href="@Url.Action("ProductList", "Product")?BrandNO=@item.BrandNo&BrandName=@item.BrandEnName&categoryType=2&isLast=@item.AutoLastFlag&CategoryPath=@item.BrandEnName.Replace("&","TiHuan")-">@item.BrandEnName</a>
+                                    @(item.SortUpdateDate != null ? Html.Raw("<a " + (item.IsUpdateDateOne == true ? " style='color: red;'" : "") + ">" + item.SortUpdateDate + "</a>") : Html.Raw(""))
+                                </li>
+                            }}
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <div id="mx-rightcontent" style="margin-left:230px;">
+            <div id="mx-rightcontent-inner">
+                <div id="path" class="sortPath" style="margin-bottom:8px;">商品列表</div>
+                <div id="divline" class="divSortLine">
+                </div><br />
+                <!--内容--->
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</body>
+@RenderSection("hiddendiv", false)
+</html>

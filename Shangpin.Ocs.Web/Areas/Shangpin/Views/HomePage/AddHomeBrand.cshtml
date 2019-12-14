@@ -1,0 +1,200 @@
+﻿@model IEnumerable<Shangpin.Ocs.Entity.Extenstion.ShangPin.SpHomeRecommendBrandExtends>
+@using Shangpin.Ocs.Service.Common
+@{
+    ViewBag.Title = "编辑模板";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    string IsEdit = Request.QueryString["edit"];
+}
+@section HeadStyle{
+    <link href="/Areas/Shangpin/Content/css/page/rightcontent/brandcontent.css" rel="stylesheet" type="text/css" charset="utf-8" />
+}
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/plug/ERPBrand.js"></script>
+    <script src="/Areas/Shangpin/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+<script src="/Areas/Shangpin/Scripts/plug/uploadPreview.min.js"></script>
+<script src="/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function addHomeBrand() {
+        if (!FlagEmpty("pictureTitle")) {
+            alert("图片标题不能为空！");
+            return false;
+        }
+        if ('@IsEdit'!="1") {
+            if ((!FlagEmpty("FlapHotTwo"))) {
+                alert("请上传图片！");
+                return false;
+            }
+        }
+        if (!FlagEmpty("BrandNo")) {
+            alert("请选择品牌！");
+            return false;
+        }
+        if (!FlagEmpty("DateBegin")) {
+            alert("请填写时间！");
+            return false;
+        }
+            $("#form1").ajaxSubmit({
+                success: function (html) {
+                    if (typeof (html) == "string") {
+                        var rs = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+                        data = eval("(" + rs + ")");
+                    
+                    }
+                    else {
+                        data = html;
+                    }
+                if (data.result == "-1") {
+                        alert(data.message);
+                        return false;
+                    }
+                else if(data.result == "0")
+                {
+                    alert(data.message);
+                    return false;
+                }
+                    else if (data.result == "1") {
+                        alert("保存成功！");
+                    window.location = "/Shangpin/homepage/RecomemendBrandSelectList.html";
+                        return true;
+                    }
+                }
+            });
+        }
+
+    //判断文本框是否为空
+    function FlagEmpty(Id) {
+        var msg = $("#" + Id).val()
+        if (msg == "" || msg == null || msg == undefined) {
+            return false;
+        }
+        return true;
+    }
+
+        $(document).ready(function () {
+            $("#BrandName").selectBrand('BrandNo', 'BrandName', false, '', '');
+            $("input[type=file]").uploadPreview({
+                Width: 69,
+                Height: 69,
+                ImgType: ["gif", "jpeg", "jpg"],
+                errorCallback: function (error) {
+                    alert(error);
+                },
+                Callback: function (patharr, pathstr, fileObj) {
+                    var arr = new Array();
+                    var isIE = false;
+                    if (patharr && patharr.length > 0) {
+                        arr = patharr;
+                    } else if (pathstr && pathstr.length > 0) {
+                        isIE = true;
+                        arr = new Array(pathstr);
+                    }
+                    if (arr.length > 0) {
+                        $("#preview").attr("src", arr[0]);
+                    }
+                }
+            });
+    });
+</script>
+}
+<h1>
+    OCS > 尚品 > 首页推荐品牌 > @(Request.QueryString["PagePositionName"])
+</h1>
+
+<div class="mx-brandcontent-msgbox">
+    <form action="/Shangpin/HomePage/SaveHomeBrand" method="post" id="form1" enctype="multipart/form-data">
+        <dl>
+            <dt>
+                当前位置：
+            </dt>
+            <dd>
+                @(Request.QueryString["PagePositionName"])
+            </dd>
+        </dl>
+        <dl>
+            <dt style="color:Red;">
+                图片标题：
+            </dt>
+            <dd>
+                <input name="pictureTitle" id="pictureTitle" type="text" value="@(Model==null?"":Model.FirstOrDefault().PictureFileTitle)" />
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                状态：
+            </dt>
+            <dd>
+                <input name="pictureStatus" id="pictureOpen" @(Model == null ? "checked=\"checked\"" : (Model.FirstOrDefault().Status == 1 ? "checked=\"checked\"" : "")) type="radio" value="1" />开启
+                <input name="pictureStatus" id="pictureClose" @(Model == null ? "" : (Model.FirstOrDefault().Status == 0 ? "checked=\"checked\"" : "")) type="radio" value="0" />关闭
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                轮播位：
+            </dt>
+            <dd>
+                <input name="brandPosition" id="brandPosition1" @(Model == null ? "checked=\"checked\"" : (Model.FirstOrDefault().PictureIndex == 0 ? "checked=\"checked\"" : "")) type="radio" value="0" />第一帧
+                <input name="brandPosition" id="brandPosition2" @(Model == null ? "" : (Model.FirstOrDefault().PictureIndex == 1 ? "checked=\"checked\"" : "")) type="radio" value="1" />第二帧
+                <input name="brandPosition" id="brandPosition3" @(Model == null ? "" : (Model.FirstOrDefault().PictureIndex == 2 ? "checked=\"checked\"" : "")) type="radio" value="2" />第三帧
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+              &nbsp;
+            </dt>
+            <dd>
+                @{
+                    if (Model != null && Model.Count() > 0)
+                    {
+                        <img alt="" id="FileTopTopImgSrc" src="/ReadPic/GetPic.ashx?width=168&height=260&pictureFileNo=@(Model==null?"":Model.FirstOrDefault().PictureFileNo)&type=2" style="background-color: #CCCCCC;width:168px;height:260px;" />
+                    }
+                }
+            </dd>
+        </dl>
+        <dl>
+            <dt style="color:Red;">上传图片：</dt>
+            <dd>
+               
+                <input id="FlapHotTwo" type="file" name="FlapHotTwo" />
+                <span>*尺寸：168*260;格式：jpg gif;大小：500K以下</span>
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                <span style="color:Red;">选择品牌：</span>
+            </dt>
+            <dd>
+                @if (string.IsNullOrEmpty(Request.QueryString["brandno"]))
+                {
+                    <input type="text" name="BrandName" id="BrandName" style="width: 120px; color: #666;font-size: 12px;" placeholder="请选择品牌" value="@(string.IsNullOrEmpty(Request.QueryString["BrandName"]) ? (Model != null ? Model.FirstOrDefault().BrandCnName : "") : Request.QueryString["BrandName"])" />
+                }
+                else
+                {
+                    <input type="text" name="BrandName" id="BrandName" style="width: 120px; color: #666;font-size: 12px;" value="@(string.IsNullOrEmpty(Request.QueryString["BrandName"]) ? (Model != null ? Model.FirstOrDefault().BrandCnName : "") : Request.QueryString["BrandName"])" placeholder="请选择品牌" />
+                }
+                <input id="BrandNo" name="BrandNo" type="hidden" value="@(string.IsNullOrEmpty(Request.QueryString["BrandNo"]) ? (Model!=null?Model.FirstOrDefault().BrandNO:"") : Request.QueryString["BrandNo"])" />
+                <input id="PageNo" name="PageNo" type="hidden" value="@Request.QueryString["PageNo"]" />
+                <input id="PagePositionNo" name="PagePositionNo" type="hidden" value="@Request.QueryString["PagePositionNo"]" />
+                <input id="PagePositionName" name="PagePositionName" type="hidden" value="@Request.QueryString["PagePositionName"]" />
+                <input id="PrimaryKey" name="PrimaryKey" type="hidden" value="@(Model!=null?Model.FirstOrDefault().RecommendBrandID:0)" />
+                <input id="PictureFileNo" name="PictureFileNo" type="hidden" value="@(Model!=null?Model.FirstOrDefault().PictureFileNo:"")" />
+                <input id="RecommendBrandID" name="RecommendBrandID" type="hidden" value="@(Model!=null?Model.FirstOrDefault().RecommendBrandID:0)" />
+            </dd>
+        </dl>
+        <dl>
+            <dt style="color:Red;">开始时间：</dt>
+            <dd>
+                <input id="DateBegin" name="DateBegin" class="Wdate" type="text" value="@(Model==null?"":Model.FirstOrDefault().DateBegin.ToString())" onclick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm:00'})" />
+            </dd>
+        </dl>
+        <dl>
+            <dt>&nbsp;&nbsp;</dt>
+            <dd>
+                <input type="button" onclick="addHomeBrand()" value="保存" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;" />
+                <input type="button" value="取消" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;" onclick="window.location.href='/Shangpin/HomePage/HomeManager'" />
+            </dd>
+        </dl>
+    </form>
+
+</div>

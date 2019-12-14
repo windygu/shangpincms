@@ -1,0 +1,364 @@
+body {
+	_background-image: url(about:blank);
+	_background-attachment: fixed;
+}
+.sp_body {
+	background: #ece8e9;
+}
+.sp_body .box {
+	background: #ece8e9;
+}
+/*banner*/
+.sp_ifc {
+	background: url(/images/page/ifc/main_bg.jpg) no-repeat center top;
+	padding-top: 530px;
+}
+.sp_ifc img {
+	display: block;
+}
+.sp_ifc_top {
+	width: 960px;
+	margin: 0 auto;
+}
+.topBanner {
+	width: 100%;
+}
+.topBanner dd {
+	width: 477px;
+	height: 88px;
+	overflow: hidden;
+}
+.sp_ifc_list {
+	width: 100%;
+	padding-bottom: 20px;
+}
+.listNav {
+	height: 62px;
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 10;
+	_position: absolute;
+	_bottom: auto;
+ _top:expression(eval(document.documentElement.scrollTop));
+	/*border-bottom: 3px solid rgba(0,0,0,0.5);*/
+}
+.listNavbox {
+	background: #b1821b;
+	width:100%;
+	overflow:hidden;
+}
+.listNav ul {
+	background: #e1b129;
+	position: relative;
+	width: 960px;
+	margin: 0 auto;
+}
+.listNav li {
+	float: left;
+	height:62px;
+	line-height: 62px;
+	overflow: hidden;
+	background: url(/images/page/ifc/listNav_link_index.gif) no-repeat 0 center;
+}
+.listNav li.nav_bigBrand {
+	background: none;
+}
+.listNav li a {
+	display: block;
+	font-size: 22px;
+	font-family: "Microsoft yahei", "微软雅黑";
+	color: #fff;
+	font-weight: bold;
+	text-align: center;
+	padding: 0 18px;
+	_padding: 0 17px;
+}
+.listNav li a:link, .listNav li a:visited {
+	color: #000;
+}
+.listNav li a:hover{
+	color:#fff;
+}
+/*.listNav li.nav_bigBrand a:hover {
+	color: #c48d1d;
+}
+.listNav li.nav_style a:hover {
+	color: #f9acf6;
+}
+.listNav li.nav_bags a:hover {
+	color: #65d5a8;
+}
+.listNav li.nav_women a:hover {
+	color: #fa769f;
+}
+.listNav li.nav_man a:hover {
+	color: #66a3fd;
+}
+.listNav li.nav_shoes a:hover {
+	color: #fc7b5a;
+}
+.listNav li.nav_watches a:hover {
+	color: #fae44c;
+}
+.listNav li.nav_beauty a:hover {
+	color: #8ed15d;
+}
+.listNav li.nav_sales a:hover {
+	color: #fa1e14;
+}*/
+.listNav li.coupon {
+	float: right;
+	width: 155px;
+	padding-left: 23px;
+	background: #000 url(/images/page/108/listNav_link.gif) no-repeat 0 0;
+	text-align: center;
+	overflow: hidden;
+	display:none;
+}
+.listNav li.coupon a {
+	display: inline;
+	font-size: 12px;
+	color: #d08f04;
+	font-family: "宋体";
+	font-weight: bold;
+	padding:0;
+}
+.listNav li.coupon a:link, .listNav li.coupon a:visited {
+	color: #f6a906;
+}
+.listNav li.coupon a:hover, .listNav li.coupon a:active {
+	color: #fbc522;
+	text-decoration:underline;
+}
+.listNav li.titbg {
+	position: absolute;
+	background: url(/images/page/ifc/listNav_bg.gif) no-repeat center;
+	width: 133px;
+	left: -133px;
+	top: 0;
+	
+	 
+	/*background: #000 url(/images/page/ifc/listNav_bg.gif) no-repeat right center;
+	width: 9999px;
+	left: -9999px;*/
+	 
+}
+/*v码有大牌*/
+.vCode_list {
+	width: 100%;
+	margin-top: 5px;
+}
+.vCode_list h2 {
+	height: 50px;
+	background-color: #d08f04;
+}
+.vCode_list dl dd {
+	width: 477px;
+	height: 142px;
+	overflow: hidden;
+	position:relative;
+}
+.vCode_list ul {
+	width: 970px;
+}
+.vCode_list ul li {
+	width: 316px;
+	height: 190px;
+	overflow: hidden;
+	margin: 9px 6px 0 0;
+	float: left;
+	background-color: #c5c5c5;
+	position:relative;
+}
+/* 追造型 */
+.style_list {
+	width: 100%;
+	margin-top: 15px;
+}
+.style_list dl {
+	width: 975px;
+	height: 365px;
+	overflow: hidden;
+}
+.style_list dl dt, .style_list dl dd {
+	float: left;
+}
+.style_list dl dt {
+	width: 231px;
+	height: 365px;
+	overflow: hidden;
+	margin-right: 12px;
+	position:relative;
+}
+.style_list dl dd {
+	width: 353px;
+	height: 177px;
+	overflow: hidden;
+	margin: 0 11px 11px 0;
+	background-color: #c5c5c5;
+	position:relative;
+}
+.style_list ul {
+	width: 975px;
+	margin-top: 9px;
+}
+.style_list ul li {
+	width: 231px;
+	height: 365px;
+	overflow: hidden;
+	float: left;
+	margin-right: 12px;
+	background-color: #c5c5c5;
+	position:relative;
+}
+
+/*列表*/
+.sp_ifc_demo {
+	width: 975px;
+	margin-top: 6px;
+}
+.sp_ifc_demo li {
+	width: 231px;
+	height: 365px;
+	overflow: hidden;
+	margin: 9px 12px 0 0;
+	float: left;
+	background-color: #c5c5c5;
+	position:relative;
+}
+.sp_ifc_demo li.txtBox {
+	width: 229px;
+	height: 363px;
+	border: 1px solid #5e5d5d;
+	background-color: #fff;
+	
+}
+.sp_ifc_demo li.txtBox img {
+	width: 229px;
+	height: 306px;
+}
+.sp_ifc_demo li.txtBox p {
+	display: block;
+	border-top: 2px solid #5e5d5d;
+	padding: 6px 8px 0;
+}
+.sp_ifc_demo li.txtBox a em, .sp_ifc_demo li.txtBox a span {
+	display: block;
+	height: 20px;
+	line-height: 20px;
+	color: #000;
+	overflow: hidden;
+}
+.sp_ifc_demo li.txtBox a em {
+	font-size: 14px;
+	font-weight: bold;
+	font-family: Arial;
+	text-transform: uppercase;
+}
+.sp_ifc_demo li.txtBox a span {
+	position: relative;
+}
+.sp_ifc_demo li.txtBox a span ins {
+	display: inline-block;
+	font-size: 12px;
+	font-family: "Microsoft yahei", "微软雅黑";
+	height: 20px;
+	line-height: 20px;
+	max-width: 132px;
+	_width: 132px;
+	vertical-align: top;
+	overflow: hidden;
+}
+.sp_ifc_demo li.txtBox a span i {
+	color: #37ad7e;
+	font-size: 12px;
+	font-family: "Microsoft yahei", "微软雅黑";
+	font-weight: bold;
+	padding-left: 5px;
+	height: 20px;
+	line-height: 20px;
+	overflow: hidden;
+	vertical-align: top;
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+.sp_ifc_demo li.txtBox a span i b {
+	display: inline-block;
+	_display:inline;
+	font-family: Arial;
+	font-weight: bold;
+	font-size: 20px;
+	max-width: 55px;
+	_width: 55px;
+	overflow: hidden;
+	vertical-align: text-bottom;
+	*vertical-align:baseline;
+}
+.women_demo li.txtBox a span i {
+	color: #fb3c78;
+}
+.man_demo li.txtBox a span i {
+	color: #367efa;
+}
+.shoes_demo li.txtBox a span i {
+	color: #fc5e35;
+}
+.watches_demo li.txtBox a span i {
+	color: #fec708;
+}
+.beauty_demo li.txtBox a span i {
+	color: #7fbb1e;
+}
+.sales_demo li.txtBox a span i {
+	color: #e40a14;
+}
+/*鼠标滑过遮罩层*/
+.sp_ifc_demo li a span.hover_bg,.sp_ifc_demo li.txtBox a span.hover_bg,.style_list span.hover_bg,.vCode_list dd span.hover_bg,.vCode_list ul li span.hover_bg{
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	background: url(/images/page/ifc/hover_bg.png) no-repeat center;
+	height: 365px;
+	width: 231px;
+	border: none;
+	padding: 0;
+	_background: url(/images/page/ifc/hover_bg_ie6.png) no-repeat center;
+	_filter: alpha(opacity = 40);
+}
+.sp_ifc_demo li.txtBox a span.hover_bg{
+	height: 306px;
+	width: 229px;
+}
+.style_list dl dd span.hover_bg{
+	width: 353px;
+	height: 177px;
+}
+.vCode_list dd span.hover_bg{
+	width: 477px;
+	height: 142px;
+}
+.vCode_list ul li span.hover_bg{
+	width: 316px;
+	height: 190px;
+}
+.vCode_list dd span.hover_bg,.style_list dt span.hover_bg,.sp_ifc_demo li a span.hover_bg,.style_list span.hover_bg{
+	background-image:url(/images/page/ifc/hover_notext_bg.png);
+	_background-image:url(/images/page/ifc/hover_notext_ie6_bg.png);
+}
+/*重置底部导航坐标*/
+
+.ifc_footer_nav li a.ifc_index{
+	background-position:0 0;
+}
+.ifc_footer_nav li a.ifc_index{ cursor:default;}
+
+/*右侧导航*/
+.ifc_right_box h3 {
+	background-image:url(/images/page/ifc/index.png);
+	background-position:center 16px;
+}

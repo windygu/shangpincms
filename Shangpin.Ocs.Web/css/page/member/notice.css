@@ -1,0 +1,23 @@
+/*  ============== Member coupon ==============  */
+
+.member_menu{
+	margin-top:28px;
+}
+
+.memberList th,.memberList td{ text-align:left; padding:0 20px;}
+.memberList td{ padding:15px 20px;position:relative;}
+/*.memberList td.message_con{ padding-left:44px; }*/
+.memberList td.message_con i{ width:14px; height:12px; position:absolute; left:0; top:1px; background:url(/images/page/member/message/message_icon.gif) no-repeat 0 0;}
+.memberList td.message_con i.message_old{ background-position: 0 -17px;}
+.memberList td.message_con a,.memberList td.message_con a:link,.memberList td.message_con a:visited{ color:#666;position:relative; padding-left:20px;} 
+.memberList td.message_con a:hover{ color:#ac8c48; text-decoration:underline;}
+.memberList tr.msg_cn { display:none;}
+.memberList tr.msg_cn td{ text-align:center; padding:30px 0;}
+.message_old_msg{ float:right; line-height:29px; color:#666; display:none;}
+
+
+.spWindow{ border:none; box-shadow:0 0 10px 0 #444; border-radius:5px; padding:10px;}
+.window_title{ padding-left:2%; color:#333;}
+.window_content,.window_bottom{ text-align:left; color:#666; width:96%; line-height:24px; margin:0 auto;}
+.title_closeBtn{ top:0; right:0;}
+

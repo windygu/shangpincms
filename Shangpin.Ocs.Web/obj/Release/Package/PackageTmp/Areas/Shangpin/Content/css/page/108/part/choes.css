@@ -1,0 +1,13 @@
+.sp_ifc_bags {
+	background: url(/images/page/ifc/choes/main_bg.jpg) no-repeat center top;
+}
+.sp_bagstitle_tab a.cur {
+	background: url(/images/page/ifc/choes/title_tab_icon.png) no-repeat center top;
+	border-color: #c3280d;
+}
+.sp_ifc_bagscn li a span ins {
+	color: #fc5e35;
+}
+.ifc_right_box h3 {
+	background-image:url(/images/page/ifc/shoes.png);
+}

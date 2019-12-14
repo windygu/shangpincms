@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <statement id="ComBeziWfs_GcCardAccount_FetchEntityByIdentity"  primarykey="CardAccountId">
+    SELECT CardAccountId,MailAddress,CardAccount,Status,DateRegist,PayPassword,PasswordStrength,SecuritySalt  FROM GcCardAccount   WHERE CardAccountId=@CardAccountId
+  </statement>
+  <statement id="ComBeziWfs_GcCardChangeAmount_FetchEntityByIdentity"  primarykey="CardChangeAmountId">
+    SELECT CardChangeAmountId,GiftCardNo,LastAmount,CurrentAmount,DateChange,ChangeType,ChangeUserId,RelationNo  FROM GcCardChangeAmount   WHERE CardChangeAmountId=@CardChangeAmountId
+  </statement>
+  <statement id="ComBeziWfs_GcGiftCard_FetchEntityByIdentity"  primarykey="GiftCardNo">
+    SELECT GiftCardNo,GiftCardBatchNo,CardType,Amount,Password,Status,CurrentAmount,UserId,MailAddress,DateOpen,DateEnd,OldStatus,Pid,OrderNo,DateClaim  FROM GcGiftCard   WHERE GiftCardNo=@GiftCardNo
+  </statement>
+  <statement id="ComBeziWfs_GcGiftCardBatch_FetchEntityByIdentity"  primarykey="GiftCardBatchNo">
+    SELECT GiftCardBatchNo,CardType,Amount,Quantity,DateEnd,Memo,DateCreate,CreateUserId  FROM GcGiftCardBatch   WHERE GiftCardBatchNo=@GiftCardBatchNo
+  </statement>
+  <statement id="ComBeziWfs_WfsApplyOrder_FetchEntityByIdentity"  primarykey="ApplyOrderNo">
+    SELECT ApplyOrderNo,OrderNo,ApplyOrderFrom,ApplyOrderStatus,WarehouseNo,DateCreate,CreateUserId,DateOperate,OperateUserId,Memo,NewOrderNo,LogisticOrderNo,LogiticsCompanyName,Sender,Telphone,ConsigneeTwo,PhoneTwo  FROM WfsApplyOrder   WHERE ApplyOrderNo=@ApplyOrderNo
+  </statement>
+  <statement id="ComBeziWfs_WfsApplyOrderConsignee_FetchEntityByIdentity"  primarykey="ApplyOrderConsigneeId">
+    SELECT ApplyOrderConsigneeId,ApplyOrderNo,ConsigneeType,ConsigneeName,ConsigneePhone,ConsigneeMobile,ConsigneeAddress,ConsigneePostCode,ConsigneeProvinceId,ConsigneeProvinceName,ConsigneeCityId,ConsigneeCityName,ConsigneeAreaId,ConsigneeAreaName,OperateUserId,DateOperate,DeliverDateType  FROM WfsApplyOrderConsignee   WHERE ApplyOrderConsigneeId=@ApplyOrderConsigneeId
+  </statement>
+  <statement id="ComBeziWfs_WfsApplyOrderDetail_FetchEntityByIdentity"  primarykey="ApplyOrderDetailId">
+    SELECT ApplyOrderDetailId,ApplyOrderNo,OrderNo,SkuNo,Quantity,ApplyOrderDetailType,CheckQuantity,ChangeSkuNo,ChangeQuantity,StorePositionNo,IsLockInventorySum,DateLock,ChangeMemo,OrderDetailNo,UnlockQuantity  FROM WfsApplyOrderDetail   WHERE ApplyOrderDetailId=@ApplyOrderDetailId
+  </statement>
+  <statement id="ComBeziWfs_WfsApplyOrderLog_FetchEntityByIdentity"  primarykey="ApplyOrderLogId">
+    SELECT ApplyOrderLogId,ApplyOrderNo,LogTitle,LogContent,ApplyOrderStatus,DateOperate,OperateUserId  FROM WfsApplyOrderLog   WHERE ApplyOrderLogId=@ApplyOrderLogId
+  </statement>
+  <statement id="ComBeziWfs_WfsApplyOrderPidRef_FetchEntityByIdentity"  primarykey="ApplyOrderPidRefId">
+    SELECT ApplyOrderPidRefId,ApplyOrderNo,OrderNo,SkuNo,Pid,ChangeSkuNo,CheckStatus,DefectiveFrom,CheckResult,CheckMemo,PidStatus,DateReceiving,ReceivingUserId,DateCheck,CheckUserId,DateProcess,ProcessUserId,StorePositionNo  FROM WfsApplyOrderPidRef   WHERE ApplyOrderPidRefId=@ApplyOrderPidRefId
+  </statement>
+  <statement id="ComBeziWfs_WfsApplySendOrder_FetchEntityByIdentity"  primarykey="ApplySendOrderNo">
+    SELECT ApplySendOrderNo,ApplyOrderNo,OrderNo,Quantity,Status,DateCreate,CreateUserId,LogiticsCompanyNo,LogiticsCompanyName,LogiticsOrderNo,DatePack,PackUserId,DateDeliver,DeliverUserId,DeliveryOrderNo,WarehouseNo,SendOrderType  FROM WfsApplySendOrder   WHERE ApplySendOrderNo=@ApplySendOrderNo
+  </statement>
+  <statement id="ComBeziWfs_WfsApplySendOrderDetail_FetchEntityByIdentity"  primarykey="ApplySendOrderDetailId">
+    SELECT ApplySendOrderDetailId,ApplySendOrderNo,SkuNo,Pid,Status  FROM WfsApplySendOrderDetail   WHERE ApplySendOrderDetailId=@ApplySendOrderDetailId
+  </statement>
+  <statement id="ComBeziWfs_WfsAssistColor_FetchEntityByIdentity"  primarykey="AssistColorId">
+    SELECT AssistColorId,AssistColorName,PrimaryColorId,ColorPicNo,IsValid  FROM WfsAssistColor   WHERE AssistColorId=@AssistColorId
+  </statement>
+  <statement id="ComBeziWfs_WfsBrand_FetchEntityByIdentity"  primarykey="BrandNo">
+    SELECT BrandNo,BrandLogo,BrandLogoMiddle,BrandLogoLargeOne,BrandLogoLargeTwo,BrandCnName,BrandEnName,BrandStory,LinkAddress,BrandOrder,IsShow,IsSpecialIndex,IsSpecial,BrandFrom,WomanBrandStory,BrandDescription,Gender,Status,BrandPic,AdvertisePic1,AdvertisePic2,AdvLinkAddress1,AdvLinkAddress2,SmallLogo,ManBrandStory,BrandType,MSmallLogo,MBrandPic,MAdvertisePic1,MAdvertisePic2,MAdvLinkAddress1,MAdvLinkAddress2,MStatus,IsValid,IsSupportDiscount,IsShowMarketPrice,MainCategoryNo,IsSupportShangPin,BrandIntroduce,Specialitystorepic,IsShowInternatCode,IsShowChinaCode,IsShowSizePic,BrandWhiteLogo,BrandEnShortName,BrandCnSurName  FROM WfsBrand   WHERE BrandNo=@BrandNo
+  </statement>
+  <statement id="ComBeziWfs_WfsCategoryInfo_FetchEntityByIdentity"  primarykey="CategoryNo">
+    SELECT CategoryNo,FashionText,ServiceText,OperatorUserId,DateOperator,DiscountRate,OutletServiceText,ReturnChangeRemind  FROM WfsCategoryInfo   WHERE CategoryNo=@CategoryNo
+  </statement>
+  <statement id="ComBeziWfs_WfsCategoryLabelTemp_FetchEntityByIdentity"  primarykey="CategoryLabelTempId">
+    SELECT CategoryLabelTempId,CategoryNo,ProductLabelNo,ProductLabelDetailNo,OperateUserId,DateOperate  FROM WfsCategoryLabelTemp   WHERE CategoryLabelTempId=@CategoryLabelTempId
+  </statement>
+  <statement id="ComBeziWfs_WfsCategorySetting_FetchEntityByIdentity"  primarykey="CategoryNo">
+    SELECT CategoryNo,CategoryName,ProductSizeHtmlText,OperateUserId,DateOperate  FROM WfsCategorySetting   WHERE CategoryNo=@CategoryNo
+  </statement>
+  <statement id="ComBeziWfs_WfsDepartment_FetchEntityByIdentity"  primarykey="DepartmentNo">
+    SELECT DepartmentNo,DepartmentName,DepartmentType,Description,ParentDepartmentNo,OperateUserId,DateCreate,Status  FROM WfsDepartment   WHERE DepartmentNo=@DepartmentNo
+  </statement>
+  <statement id="ComBeziWfs_WfsErpCategory_FetchEntityByIdentity"  primarykey="CategoryNo">
+    SELECT CategoryNo,CategoryName,CategoryType,DefaultRate,MiniRate,MiniStockCount,MaxStockDay,IsBatch,ParentNo,DateCreate,VisibleStatus,MaxPurchaseCount  FROM WfsErpCategory   WHERE CategoryNo=@CategoryNo
+  </statement>
+  <statement id="ComBeziWfs_WfsInventorySum_FetchEntityByIdentity"  primarykey="InventorySumId">
+    SELECT InventorySumId,SkuNo  FROM WfsInventorySum   WHERE InventorySumId=@InventorySumId
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderRefund_FetchEntityByIdentity"  primarykey="OrderRefundId">
+    SELECT OrderRefundId,UserId,OrderNo,OrderReturnNo,RefundType,Status,Reasons,OpeanAmountBank,OpenAmountNo,OpenAomuntUser,ReturnAmount,TicketAmount,RealReturnAmount,OperateUserId,OperateUserName,DateOperate,DateCreate,DeleteFlag,ReturnAllFlag,CreateFlag,SkuNo,PayTypeId,PayTypeName,PayTypeChildId,PayTypeChildName,OrderPayAmount,UserName,RefundFrom,RefundRemarkType,ReturnType,ReturnApplyOrderNo,DateBankRefund,ConfirmReturnAmount  FROM WfsOrderRefund   WHERE OrderRefundId=@OrderRefundId
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderReturn_FetchEntityByIdentity"  primarykey="OrderReturnNo">
+    SELECT OrderReturnNo,OrderNo,ComplaintsNo,ReturnAmount,RealReturnQuantity,TotalReturnAmount,ReturnFreight,PayRebate,ReturnPayCost,ReturnStatus,ReturnQuantity,DateCreate,DateCancel,DateComplete,AuditStatus,AuditUser,Reasons,Memo,SplitFlag,InspectionStatus,TypeCreate,RefuseProductPrice,RefuseFreight,RefuseRebate,RefuseAmount,RefuseQuantity,DateRefuse,RefundType,OpeanAmountBank,OpenAmountNo,OpenAomuntUser,TradeOrderNo,RefundStatus,OperaterOfCreate,ChannelOrderNo,ReturnOtherFee,RefundFee,ChannelOrderFrom,ReturnFlag,ReturnTicketFlag,LiquidationStatus,RefundCompleteFlag,ReturnCompleteFlag,ReturnAllFlag,MinReturnAmount,ReturnType,IsUseTicket,ReturnTicketAmount,IsRecoup,RecoupAmount  FROM WfsOrderReturn   WHERE OrderReturnNo=@OrderReturnNo
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderReturnDetail_FetchEntityByIdentity"  primarykey="OrderReturnDetailNo">
+    SELECT OrderReturnDetailNo,OrderReturnNo,SupplierOrderReturnNo,SupplierOrderNo,ProductNo,SkuNo,UnitPrice,Freight,RebateMethod,Rebate,RebateCash,SettlementType,ReturnQuantity,DeliverStatus,VerifyStatus,PromotionNo,PromotionName,DateCreate,RefuseQuantity,ReceivingQuantity,ProductName,OrderDetailNo,ReturnDetailTicketAmount,ReturnDetailRecoupAmount  FROM WfsOrderReturnDetail   WHERE OrderReturnDetailNo=@OrderReturnDetailNo
+  </statement>
+  <statement id="ComBeziWfs_WfsOrderReturnLog_FetchEntityByIdentity"  primarykey="OrderReturnLogId">
+    SELECT OrderReturnLogId,OrderReturnNo,OperatorId,DateOperator,OperatorTitle,Memo,OperatorRoleName,OpeartorRoleId,LogType,LogStyle  FROM WfsOrderReturnLog   WHERE OrderReturnLogId=@OrderReturnLogId
+  </statement>
+  <statement id="ComBeziWfs_WfsPrimaryColor_FetchEntityByIdentity"  primarykey="PrimaryColorId">
+    SELECT PrimaryColorId,PrimaryColorName,ColorPicNo  FROM WfsPrimaryColor   WHERE PrimaryColorId=@PrimaryColorId
+  </statement>
+  <statement id="ComBeziWfs_WfsProduct_FetchEntityByIdentity"  primarykey="ProductNo">
+    SELECT ProductNo,CategoryNo,ProductTemplateNo,BrandNo,BarCode,GoodsNo,MarketPrice,SellPrice,ProductTitle,ProductName,IsShelf,IsCheck,WarnCount,ProductWeight,ProductPicFile,ProductXmlText,ProductCreate,DateMarket,SeasonMarket,Knowledges,Description,ProductContent,ProductInfoXml,DateCreate,PromotionNo,IsPromotion,CmbcSellPrice,HxSellPrice,TopSellPrice,IsExtend,PlatinumPrice,DiamondPrice,LimitedPrice,LimitedVipPrice,Video,EditText,DepartmentNo,UserGroupNo,AddUserId,SupplierNo,ProductSizeNo,ProductStyle,ProductUnitNo,VisibleState,ProductType,SizeStandard,DateShelf,ProductShowFlag,DiscountRate,FirstDateShelf,IsTopFlag,DateTop,ProductFrom,GenderStyle,SpecialDesc,IsSupportCod,IsSupportGift,LastLimitedPrice,LastPlatinumPrice,LastDiamondPrice,ProductPicFlag,PublishFlag,IsLimitedOutlet,ProductMaterial,IsSupportReturn,IsSupportChange,AttributeFlag,ProductSizeXmlText,BuyingAdvice,LastSellPrice,ProductFlag,Prefix,Suffix,PromotionPrice,LastPromotionPrice,IsVCode,PreShowFlag,DateShowFlagBegin,DateShowFlagEnd,ProductPicFileTwo,ProductLong,ProductWidth,ProductHeight,ShelfLife,AvailablePeriod,TransportFlag,BrokenFlag  FROM WfsProduct   WHERE ProductNo=@ProductNo
+  </statement>
+  <statement id="ComBeziWfs_WfsProduct_new_FetchEntityByIdentity"  primarykey="$Table.PK">
+    SELECT ProductNo,CategoryNo,ProductTemplateNo,BrandNo,BarCode,GoodsNo,MarketPrice,SellPrice,ProductTitle,ProductName,IsShelf,IsCheck,WarnCount,ProductWeight,ProductPicFile,ProductXmlText,ProductCreate,DateMarket,SeasonMarket,Knowledges,Description,ProductContent,ProductInfoXml,DateCreate,PromotionNo,IsPromotion,CmbcSellPrice,HxSellPrice,TopSellPrice,IsExtend,PlatinumPrice,DiamondPrice,LimitedPrice,LimitedVipPrice,Video,EditText,DepartmentNo,UserGroupNo,AddUserId,SupplierNo,ProductSizeNo,ProductStyle,ProductUnitNo,VisibleState,ProductType,SizeStandard,DateShelf,ProductShowFlag,DiscountRate,FirstDateShelf,IsTopFlag,DateTop,ProductFrom,GenderStyle,SpecialDesc,IsSupportCod,IsSupportGift,LastLimitedPrice,LastPlatinumPrice,LastDiamondPrice,ProductPicFlag,PublishFlag,IsLimitedOutlet,ProductMaterial,IsSupportReturn,IsSupportChange,AttributeFlag,ProductSizeXmlText,BuyingAdvice,LastSellPrice,ProductFlag,Prefix,Suffix,PromotionPrice,LastPromotionPrice,IsVCode,PreShowFlag,DateShowFlagBegin,DateShowFlagEnd,ProductPicFileTwo,ProductLong,ProductWidth,ProductHeight,ShelfLife,AvailablePeriod  FROM WfsProduct_new   WHERE $Table.PK=@$Table.PK
+  </statement>
+  <statement id="ComBeziWfs_WfsProduct2_FetchEntityByIdentity"  primarykey="ProductNo">
+    SELECT ProductNo,CategoryNo,ProductTemplateNo,BrandNo,BarCode,GoodsNo,MarketPrice,SellPrice,ProductTitle,ProductName,IsShelf,IsCheck,WarnCount,ProductWeight,ProductPicFile,ProductXmlText,ProductCreate,DateMarket,SeasonMarket,Knowledges,Description,ProductContent,ProductInfoXml,DateCreate,PromotionNo,IsPromotion,CmbcSellPrice,HxSellPrice,TopSellPrice,IsExtend,PlatinumPrice,DiamondPrice,LimitedPrice,LimitedVipPrice,Video,EditText,DepartmentNo,UserGroupNo,AddUserId,SupplierNo,ProductSizeNo,ProductStyle,ProductUnitNo,VisibleState,ProductType,SizeStandard,DateShelf,ProductShowFlag,DiscountRate,FirstDateShelf,IsTopFlag,DateTop,ProductFrom,GenderStyle,SpecialDesc,IsSupportCod,IsSupportGift,LastLimitedPrice,LastPlatinumPrice,LastDiamondPrice,ProductPicFlag,PublishFlag,IsLimitedOutlet,ProductMaterial,IsSupportReturn,IsSupportChange,AttributeFlag,ProductSizeXmlText,BuyingAdvice,LastSellPrice,ProductFlag,Prefix,Suffix,PromotionPrice,LastPromotionPrice,IsVCode,PreShowFlag,DateShowFlagBegin,DateShowFlagEnd,ProductPicFileTwo,ProductLong,ProductWidth,ProductHeight,ShelfLife,AvailablePeriod,TransportFlag,BrokenFlag  FROM WfsProduct2   WHERE ProductNo=@ProductNo
+  </statement>
+  <statement id="ComBeziWfs_WfsProductAttr_FetchEntityByIdentity"  primarykey="ProductAttrNo">
+    SELECT ProductAttrNo,ProductNo,BarCode,ProductAttrHashNo,ProductAttrHashText,ProductAttrTitle,ProductAttrName,ProductAttrText,ProductAttrLogo,ProductAttrCloseup,ProductAttrPic,ProductAttrDesc,ProductAttrExamplePic  FROM WfsProductAttr   WHERE ProductAttrNo=@ProductAttrNo
+  </statement>
+  <statement id="ComBeziWfs_WfsProductAttrPic_FetchEntityByIdentity"  primarykey="ProductAttrPicNo">
+    SELECT ProductAttrPicNo,ProductAttrNo,PictureFileNo,PictureFileName,IsDefault,PictureOrder  FROM WfsProductAttrPic   WHERE ProductAttrPicNo=@ProductAttrPicNo
+  </statement>
+  <statement id="ComBeziWfs_WfsProductColorAttrDetail_FetchEntityByIdentity"  primarykey="ProductColorAttrDetailId">
+    SELECT ProductColorAttrDetailId,AttributeName,ColorName,AssistColorId,PrimaryColorId,ColorPicNo  FROM WfsProductColorAttrDetail   WHERE ProductColorAttrDetailId=@ProductColorAttrDetailId
+  </statement>
+  <statement id="ComBeziWfs_WfsProductDynamicAttribute_FetchEntityByIdentity"  primarykey="AttributeName">
+    SELECT AttributeName,AttributeTitle,AttributeText,AttributeDesc,InputType,OperateUserId,DateOperate,AttributeType  FROM WfsProductDynamicAttribute   WHERE AttributeName=@AttributeName
+  </statement>
+  <statement id="ComBeziWfs_WfsProductLabel_FetchEntityByIdentity"  primarykey="ProductLabelNo">
+    SELECT ProductLabelNo,ProductLabelName,LabelType,DeleteFlag,OperateUserId,DateOperate,SortValue,IsSelected,LabelCategoryNo  FROM WfsProductLabel   WHERE ProductLabelNo=@ProductLabelNo
+  </statement>
+  <statement id="ComBeziWfs_WfsProductLabelDetail_FetchEntityByIdentity"  primarykey="ProductLabelDetailNo">
+    SELECT ProductLabelDetailNo,ProductLabelNo,LabelContent,DeleteFlag,IsGlobal,OperateUserId,DateOperate,SortValue,LabelDetailPicNo,IsShowPic  FROM WfsProductLabelDetail   WHERE ProductLabelDetailNo=@ProductLabelDetailNo
+  </statement>
+  <statement id="ComBeziWfs_WfsProductLabelRef_FetchEntityByIdentity"  primarykey="ErpProductLabelRefId">
+    SELECT ErpProductLabelRefId,ProductNo,ProductLabelNo,ProductLabelDetailNo,OperateUserId,DateOperate,LabelType  FROM WfsProductLabelRef   WHERE ErpProductLabelRefId=@ErpProductLabelRefId
+  </statement>
+  <statement id="ComBeziWfs_WfsProductModelReport_FetchEntityByIdentity"  primarykey="ProductModelReportId">
+    SELECT ProductModelReportId,ProductNo,ModelName,High,Weight,Bust,Waist,BodySize,ShoesSizeNo,FootLong,FootSize,SortValue,EffectDesc,SuggestionSize,EffectPicNo,OperateUserId,DateOperate  FROM WfsProductModelReport   WHERE ProductModelReportId=@ProductModelReportId
+  </statement>
+  <statement id="ComBeziWfs_WfsProductPic_FetchEntityByIdentity"  primarykey="ProductPicId">
+    SELECT ProductPicId,ProductNo,PictureType,PictureFileNo,PictureFileName,PictureDesc,PictureOrder,OperateCreate,OperateUserId  FROM WfsProductPic   WHERE ProductPicId=@ProductPicId
+  </statement>
+  <statement id="ComBeziWfs_WfsProductSize_FetchEntityByIdentity"  primarykey="ProductSizeNo">
+    SELECT ProductSizeNo,ProductSizeName,ProductSizeHtmlText,OperateUserId,DateOperate  FROM WfsProductSize   WHERE ProductSizeNo=@ProductSizeNo
+  </statement>
+  <statement id="ComBeziWfs_WfsProductSizeAttrDetail_FetchEntityByIdentity"  primarykey="ProductSizeAttrDetailId">
+    SELECT ProductSizeAttrDetailId,AttributeName,SizeName,SizeStandard,SortValue,IsValid  FROM WfsProductSizeAttrDetail   WHERE ProductSizeAttrDetailId=@ProductSizeAttrDetailId
+  </statement>
+  <statement id="ComBeziWfs_WfsProductStaticProperty_FetchEntityByIdentity"  primarykey="PropertyName">
+    SELECT PropertyName,PropertyTitle,PropertyDesc,PropertyText,InputType,OperateUserId,DateOperate  FROM WfsProductStaticProperty   WHERE PropertyName=@PropertyName
+  </statement>
+  <statement id="ComBeziWfs_WfsProductTemplate_FetchEntityByIdentity"  primarykey="ProductTemplateNo">
+    SELECT ProductTemplateNo,TemplateTitle,StaticPropertyText,DynamicAttributeText,TemplateXmlText,DownLoadFilePath,OperateUserId,DateOperate  FROM WfsProductTemplate   WHERE ProductTemplateNo=@ProductTemplateNo
+  </statement>
+  <statement id="ComBeziWfs_WfsProductTemplateExt_FetchEntityByIdentity"  primarykey="ProductTemplateExtNo">
+    SELECT ProductTemplateExtNo,TemplateExtTitle,CategoryNo,TemplateExtXmlText,OperateUserId,DateOperate  FROM WfsProductTemplateExt   WHERE ProductTemplateExtNo=@ProductTemplateExtNo
+  </statement>
+  <statement id="ComBeziWfs_WfsProductTemplateSetting_FetchEntityByIdentity"  primarykey="ProductTemplateSettingId">
+    SELECT ProductTemplateSettingId,OptionName,OptionColumn,TableName,ColumnName,IsEnabled  FROM WfsProductTemplateSetting   WHERE ProductTemplateSettingId=@ProductTemplateSettingId
+  </statement>
+  <statement id="ComBeziWfs_WfsProductUnit_FetchEntityByIdentity"  primarykey="ProductUnitNo">
+    SELECT ProductUnitNo,ProductUnitCnName,ProductUnitEnName,Memo,OperateUserId,DateOperate  FROM WfsProductUnit   WHERE ProductUnitNo=@ProductUnitNo
+  </statement>
+  <statement id="ComBeziWfs_WfsPromotionCode_FetchEntityByIdentity"  primarykey="PromotionCodeNo">
+    SELECT PromotionCodeNo,PromotionCodeName,Status,ListingOutletFlag,IsUseTicket,IsUsePromotion,PromotionCodeDesc,PromotionCodeUrl,TotalCount,UsedCount,DateStart,DateEnd,PromotionContentType,PromotionContent,CreateDepartmentNo,CreateDepartmentName,CreateUserId,DateCreate,ConfirmUserId,DateConfirm,DirectorAuditMemo,DirectorAuditUserId,DateDirectorAudit,FinanceAuditMemo,FinanceAuditUserId,DateFinanceAudit,StopUserId,DateStop,CancelUserId,DateCancel,UserChannels  FROM WfsPromotionCode   WHERE PromotionCodeNo=@PromotionCodeNo
+  </statement>
+  <statement id="ComBeziWfs_WfsPromotionCodeCondition_FetchEntityByIdentity"  primarykey="PromotionCodeNo">
+    SELECT PromotionCodeNo,ConditionStyle,OrderAmount,ProductCount,ConditionType,CategoryNos,BrandType,BrandNos,ProductNos,SubjectNos,SpecialProductNos,NewSubjectNos,VipSubjectNos,TopicNos,AfterDeviceFlag,CategoryType  FROM WfsPromotionCodeCondition   WHERE PromotionCodeNo=@PromotionCodeNo
+  </statement>
+  <statement id="ComBeziWfs_WfsPromotionDevice_FetchEntityByIdentity"  primarykey="PromotionDeviceNo">
+    SELECT PromotionDeviceNo,PromotionDeviceName,PromotionType,Status,ListingOutletFlag,IsUseTicket,PromotionCodeDesc,PromotionCodeUrl,PromotionTitle,PromotionPicNo,DateStart,DateEnd,CreateDepartmentNo,CreateDepartmentName,CreateUserId,DateCreate,ConfirmUserId,DateConfirm,DirectorAuditMemo,DirectorAuditUserId,DateDirectorAudit,FinanceAuditMemo,FinanceAuditUserId,DateFinanceAudit,StopUserId,DateStop,CancelUserId,DateCancel,PromotionTitleFlag  FROM WfsPromotionDevice   WHERE PromotionDeviceNo=@PromotionDeviceNo
+  </statement>
+  <statement id="ComBeziWfs_WfsPromotionGiftCondition_FetchEntityByIdentity"  primarykey="PromotionGiftConditionId">
+    SELECT PromotionGiftConditionId,PromotionDeviceNo,ConditionStyle,OrderAmount,ProductCount,ConditionType,CategoryNos,BrandType,BrandNos,ProductNos,SubjectNos,SpecialProductNos,CDKBathNo  FROM WfsPromotionGiftCondition   WHERE PromotionGiftConditionId=@PromotionGiftConditionId
+  </statement>
+  <statement id="ComBeziWfs_WfsPromotionGroup_FetchEntityByIdentity"  primarykey="PromotionGroupNo">
+    SELECT PromotionGroupNo,PromotionDeviceNo,GroupAmount,GroupProfitRate,SortValue  FROM WfsPromotionGroup   WHERE PromotionGroupNo=@PromotionGroupNo
+  </statement>
+  <statement id="ComBeziWfs_WfsPromotionGroupProductRef_FetchEntityByIdentity"  primarykey="PromotionGroupProductRef">
+    SELECT PromotionGroupProductRef,PromotionGroupNo,PromotionDeviceNo,ProductNo,GroupPrice,ProfitRate  FROM WfsPromotionGroupProductRef   WHERE PromotionGroupProductRef=@PromotionGroupProductRef
+  </statement>
+  <statement id="ComBeziWfs_WfsReturnApplyOrder_FetchEntityByIdentity"  primarykey="ReturnApplyOrderNo">
+    SELECT ReturnApplyOrderNo,OrderNo,UserName,UserId,MailAddress,Consignee,Phone,ConsigneeTwo,PhoneTwo,Status,RefundRemarkType,RefundType,OpeanAmountBank,OpenAmountNo,OpenAomuntUser,DateCreate,SkuNo,PicNo,DateComplete,CompleteUserId,UserMemo,CheckMemo,OrderDetailNo  FROM WfsReturnApplyOrder   WHERE ReturnApplyOrderNo=@ReturnApplyOrderNo
+  </statement>
+  <statement id="ComBeziWfs_WfsReturnReasonCategory_FetchEntityByIdentity"  primarykey="ReturnReasonCategoryId">
+    SELECT ReturnReasonCategoryId,ReturnReasonDetailNo,ReturnReasonTempNo,CategoryNo  FROM WfsReturnReasonCategory   WHERE ReturnReasonCategoryId=@ReturnReasonCategoryId
+  </statement>
+  <statement id="ComBeziWfs_WfsReturnReasonDetail_FetchEntityByIdentity"  primarykey="ReturnReasonDetailNo">
+    SELECT ReturnReasonDetailNo,ReturnReasonTempNo,ReasonDetailContent,IsValid,IsShow,ReturnOrSwap  FROM WfsReturnReasonDetail   WHERE ReturnReasonDetailNo=@ReturnReasonDetailNo
+  </statement>
+  <statement id="ComBeziWfs_WfsReturnReasonResult_FetchEntityByIdentity"  primarykey="ReturnReasonResultId">
+    SELECT ReturnReasonResultId,InvoiceNo,InvoiceType,SkuNo,Pid,ReturnReasonDetailNo,ReasonMemo,CreateUserId,DateCreate,ApplyOrderDetailId  FROM WfsReturnReasonResult   WHERE ReturnReasonResultId=@ReturnReasonResultId
+  </statement>
+  <statement id="ComBeziWfs_WfsReturnReasonTemp_FetchEntityByIdentity"  primarykey="ReturnReasonTempNo">
+    SELECT ReturnReasonTempNo,ReasonContent,IsValid  FROM WfsReturnReasonTemp   WHERE ReturnReasonTempNo=@ReturnReasonTempNo
+  </statement>
+  <statement id="ComBeziWfs_WfsSize_FetchEntityByIdentity"  primarykey="SizeId">
+    SELECT SizeId,SizeName,SizeStandardId,GroupSizeId  FROM WfsSize   WHERE SizeId=@SizeId
+  </statement>
+  <statement id="ComBeziWfs_WfsSizeStandard_FetchEntityByIdentity"  primarykey="SizeStandardId">
+    SELECT SizeStandardId,SizeStandardName,CategoryNo,SizeStandard  FROM WfsSizeStandard   WHERE SizeStandardId=@SizeStandardId
+  </statement>
+  <statement id="ComBeziWfs_WfsSku_FetchEntityByIdentity"  primarykey="SkuNo">
+    SELECT SkuNo,ProductNo,ProductAttrNo,SupplierNo,SkuHashNo,SkuHashText,SkuTitle,BarCode,ArtNo,SkuAttrText,SupplierPrice,StorePrice,WarnCount,SetPrice,RebateMethod,RebateRate,SellPrice,StoreAmount,IsPack,SkuType,MarketPrice,CmbcSellPrice,HxSellPrice,TopSellPrice,PlatinumPrice,DiamondPrice,LimitedPrice,LimitedVipPrice,IsValid,AttributeTextOne,AttributeTextTwo,PromotionPrice,SizeMeasuredStatus  FROM WfsSku   WHERE SkuNo=@SkuNo
+  </statement>
+  <statement id="ComBeziWfs_WfsStyleGroup_FetchEntityByIdentity"  primarykey="StyleGroupNo">
+    SELECT StyleGroupNo,StyleGroupName,StyleGroupTempNo,Description,HtmlText,Status,StyleGroupPicNo,DateCreate,CreateUserId,DatePublish,PublishUserId  FROM WfsStyleGroup   WHERE StyleGroupNo=@StyleGroupNo
+  </statement>
+  <statement id="ComBeziWfs_WfsStyleGroupDetail_FetchEntityByIdentity"  primarykey="StyleGroupDetailId">
+    SELECT StyleGroupDetailId,StyleGroupNo,StyleGroupDetailPicNo,PicType,ImgName,ProductNo,IsShow,PictureOrder  FROM WfsStyleGroupDetail   WHERE StyleGroupDetailId=@StyleGroupDetailId
+  </statement>
+  <statement id="ComBeziWfs_WfsSupplier_FetchEntityByIdentity"  primarykey="SupplierNo">
+    SELECT SupplierNo,SupplierName,SupplierType,PriceType,BusinessCode,TaxNo,LicenseNo,LegalRep,LegalRepId,LegalRepNo,AccountBank,Account,CompanyAddress,RegisteredCapital,ConnectionUser,ConnectionMobile,ConnectionPhone,ConnectionEmail,DateCreate,SupplierProperty,DeliverType,InspectionType,DepartmentNo,UserId,IsUsed,DateUsed,AddUserId,Mnemonic,CompanyUser,Memo,BrandRange,UserGroupRange,ReturnProductAddress,SupplierCType,CooperStatus,Consignee,ConsigneeMobile  FROM WfsSupplier   WHERE SupplierNo=@SupplierNo
+  </statement>
+  <statement id="ComBeziWfs_WfsSupplierOrderReturn_FetchEntityByIdentity"  primarykey="SupplierOrderReturnNo">
+    SELECT SupplierOrderReturnNo,OrderReturnNo,SupplierOrderNo,SupplierNo,ReturnStatus,JointSettlementNo,OrderReturnFlag,ReturnRebateCash,TotalReturnProductAmount,TotalReturnProductCount,TotalReFreight,ToBackFreight,SettlementStatus,DateCreate,DateComplete,DateCancel,WarehouseNo,TypeCreate,RefuseFreight,RefuseProductPrice,RefuseRebate,RefuseAmount,RefuseOtherFee,RefuseQuantity,DateRefuse,InspectionStatus,DateInspection,IsReported,ReturnType,TotalReturnTicketAmount  FROM WfsSupplierOrderReturn   WHERE SupplierOrderReturnNo=@SupplierOrderReturnNo
+  </statement>
+  <statement id="ComBeziWfs_WfsTransport_FetchEntityByIdentity"  primarykey="TransportId">
+    SELECT TransportId,TransportNo,ParentTransportNo,CompanyType,Destination,SendUser,DateSend,ReceivingUser,SignedUser,DateReceiving,ServiceType,StationName,Status,Description,DateUpdate,ExpressCompanyNo,DateCreate,ShangpinStatus  FROM WfsTransport   WHERE TransportId=@TransportId
+  </statement>
+  <statement id="ComBeziWfs_WfsTransportDetail_FetchEntityByIdentity"  primarykey="TransportDetailId">
+    SELECT TransportDetailId,TransportId,ScanTitle,DetailContent,StationName,OperateUser,DateOperate,OpCode,ShangpinStatus,DateCreate,SouceSN  FROM WfsTransportDetail   WHERE TransportDetailId=@TransportDetailId
+  </statement>
+  <statement id="ComBeziWfs_WfsWarehouse_FetchEntityByIdentity"  primarykey="WarehouseNo">
+    SELECT WarehouseNo,WarehouseName,DateCreate,WarehouseType,TrueWarehouseNo,Priority,SelfWarehouseNo,WarehouseFlag,DefectiveWarehouseNo,GiftWarehouseNo,IsEnabled,Address,LinkMan,Telephone,PostCode  FROM WfsWarehouse   WHERE WarehouseNo=@WarehouseNo
+  </statement>
+</statements>

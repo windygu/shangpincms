@@ -1,0 +1,231 @@
+﻿@using Shangpin.Entity.Item
+@using Shangpin.Entity.User
+@using Shangpin.Entity.Wfs
+@using Shangpin.Framework.Common
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@using Shangpin.Ocs.Service.Shangpin;
+@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    PaginationInfoModel pageinfoSingle = new PaginationInfoModel();
+    try
+    {
+        pageinfoSingle = (PaginationInfoModel)ViewBag.PaginationInfoSingel;
+    }
+    catch { }
+    IList<SWfsOperationPicture> picManagerList = (IList<SWfsOperationPicture>)ViewBag.PictureManagerList;
+    string url = Request.Url.ToString();
+
+    ViewBag.Title = "首页轮播图管理";
+
+}
+@using Shangpin.Ocs.Web.Infrastructure;
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/page/index/popDiv.js"></script>
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/page/index/comm.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/plug/comm.js" charset="utf-8"></script>
+
+    <script type="text/javascript">
+        function onmousemoveImageShow(id, src) {
+            $("#" + id).empty();
+            $("#" + id).addClass("divShowClass");
+            $("#" + id).html("<img  src='" + src + "'></img>");
+        }
+
+        function onmouseoutImageShow(id, src) {
+            $("#" + id).removeClass("divShowClass");
+            $("#" + id).empty();
+        }
+    </script>
+    <style type="text/css">
+        .divShowClass {
+            position: absolute;
+            top: 0px;
+            height: 320px;
+            left: 200px;
+            z-index: 100;
+            width: 770px;
+        }
+    </style>
+}
+<h1>
+    OCS > 尚品 >  频道页管理 > 频道页轮播图管理
+</h1>
+@*<div class="handle" style="padding: 0; text-align: left;">
+    <a href="/shangpin/subject/subjectview.html" name="view" id="view" class="button" style="padding: 5px 10px;
+        5px 10px;">视图模式</a></div>*@
+<a style="float:right;cursor:pointer;font-size:16px;color:#ffffff;background:#1153f1;margin-left:10px;margin-right:10px;" class="button" href="Shoes?PageNo=@Request.QueryString["PageNo"]">返回列表</a>
+<a href='/shangpin/NewChannels/shoescreatetopswitch?PageNo=@Request.QueryString["PageNo"]' style="color: #ffffff; background: #1153f1; font-size: 16px; float: right; cursor: pointer;">新增轮播图</a>
+<form method="get" action='/shangpin/NewChannels/ShoesTopPiclist.html?PageNo=@Request.QueryString["PageNo"]' id="SelectNewSubjectList">
+    <input type="hidden" value='@Request.QueryString["PageNo"]' name="PageNo" id="PageNo" />
+    <table width="auto" border="0" style="margin-top:10px;">
+        <tr>
+            @*<td align="left">
+                 <span>男/女首页:</span>    <br />
+                    <select style="width: 80px;" name="gender">
+                        <option value="0" @(ViewBag.GenderValue == "0" ? "selected=selected" : "")>女士首页 </option>
+                        <option value="1" @(ViewBag.GenderValue == "1" ? "selected=selected" : "")> 男士首页</option>
+                    </select>
+                </td>*@
+            <td>
+                <span>名称:</span>
+                <input name="KeyWord" value="@(!string.IsNullOrEmpty(ViewBag.KeyWord) ? ViewBag.KeyWord : "名称")" style="width: 120px; color: #666; font-size: 12px;"
+                       onfocus="if(this.value == '名称') this.value = ''" onblur="if(this.value == '') this.value = '名称'" />
+            </td>
+
+            <td align="left">
+                <span>状态:</span>
+                <select style="width: 80px;" name="Status">
+                    <option value="">活动状态 </option>
+                    <option value="0" @(ViewBag.Status == "0" ? "selected=selected" : "")>关闭 </option>
+                    <option value="1" @(ViewBag.Status == "1" ? "selected=selected" : "")>开启 </option>
+                </select>
+            </td>
+            <td align="left">
+                <span>轮播位:</span>
+                <select style="width: 80px;" name="PagePosition">
+                    <option value="0" @(ViewBag.PagePosition == "0" ? "selected=selected" : "")>轮播位 </option>
+                    <option value="1" @(ViewBag.PagePosition == "1" ? "selected=selected" : "")>第一帧 </option>
+                    <option value="2" @(ViewBag.PagePosition == "2" ? "selected=selected" : "")>第二帧 </option>
+                    <option value="3" @(ViewBag.PagePosition == "3" ? "selected=selected" : "")>第三帧 </option>
+                </select>
+            </td>
+            <td width="350px" align="left" style="padding-left: 15px;">
+                <span>时间范围</span>
+                <input id="StartTime" name="StartTime" value="@ViewBag.StartTime" maxlength="30" class="Wdate" type="text" onclick="WdatePicker()" readonly="readonly" />
+                <span>至</span>
+                <input id="EndTime" name="EndTime" value="@ViewBag.EndTime" maxlength="30" class="Wdate" type="text" onclick="WdatePicker()" readonly="readonly" />
+            </td>
+            <td>
+                <input class="button" href="#" type="submit" style="width:100px;" />
+            </td>
+        </tr>
+      
+    </table>
+</form>
+<table class="mx-table">
+    <thead>
+        <tr>
+
+            <th width="10%">
+                预览图
+            </th>
+            <th width="15%">
+                图片名称
+            </th>
+            <th width="10%">
+                开始时间
+            </th>
+            <th width="10%">
+                轮播位
+            </th>
+            <th width="10%">
+                状态
+            </th>
+            <th width="35%">
+                操作
+            </th>
+        </tr>
+    </thead>
+    @if (picManagerList != null && picManagerList.Count() > 0)
+    {
+        int flag = 0;
+        foreach (SWfsOperationPicture picItem in picManagerList)
+        {
+            string categoryNo = string.Empty;
+            flag = flag + 1;
+
+            <tbody style="width:100%">
+                <tr class="@(flag % 2 == 0 ? "cross" : "")">
+
+                    <td>
+                        <div style="position:relative">
+                            <a class="preview" onmousemove="onmousemoveImageShow('preview@(picItem.PictureManageId)','@Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", picItem.PictureFileNo, 0, 0)')" onmouseout="onmouseoutImageShow('preview@(picItem.PictureManageId)','@Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", picItem.PictureFileNo, 0, 0)')" title="@picItem.PictureManageId" href="@Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", picItem.PictureFileNo, 0, 0)" target="_blank">
+                                <img width="130" alt="@picItem.PictureName" height="100" src="/ReadPic/GetPic.ashx?width=130&height=100&pictureFileNo=@picItem.PictureFileNo&type=2">
+                            </a>
+                            <div id="preview@(picItem.PictureManageId)">
+
+                            </div>
+                        </div>
+                    </td>
+                    <td align="center">
+                        @picItem.PictureName
+                    </td>
+                    <td>
+                        @(picItem.DateBegin)
+                    </td>
+                    <td>
+                        @{
+            string strPostition = string.Empty;
+            switch (picItem.PictureIndex)
+            {
+                case 1:
+                    strPostition = "第一帧";
+                    break;
+                case 2:
+                    strPostition = "第二帧";
+                    break;
+                case 3:
+                    strPostition = "第三帧";
+                    break;
+
+            }
+            <a>@strPostition</a>
+                        }
+                    </td>
+                    <td align="center">
+                        @(picItem.Status == 1 ? "开启" : "关闭")
+                    </td>
+                    <td align="center">
+                        <a class="button" onclick="updateStatus('@picItem.PictureManageId',0,@(picItem.Status == 1?'0':'1'),'0')">@(@picItem.Status == 1 ? "关闭" : "开启")</a>
+
+                        <a href="/shangpin/NewChannels/ShoesUpdatetopswitch.html?pid=@(picItem.PictureManageId)&PageNo=@Request.QueryString["PageNo"]" class="button">编 辑</a>
+                        <a onclick="updateStatus('@picItem.PictureManageId',0,@(picItem.Status == 1?'0':'1'),'1')" class="button">删 除</a>
+                    </td>
+                </tr>
+            </tbody>
+        }
+    }
+</table>
+<div class="spPage">
+    @Html.Raw(@Html.PagerX("page", pageinfoSingle.CurrentPage, pageinfoSingle.PageSize, pageinfoSingle.TotalCount))
+</div>
+
+@using (Html.BeginForm("PictureManagerStatusModify", "NewChannels", FormMethod.Post, new { id = "SubjectUpdate" }))
+{
+    <input type="hidden" name="SubjectNo" id="SubjectNo" value="" />
+    <input type="hidden" name="Status" id="Status" value="" />
+    <input type="hidden" name="DelectStatus" id="DelectStatus" value="" />
+}
+
+<script type="text/javascript">
+
+    function updateStatus(subjectNo, scategoryNo, status, del) {
+        var isDel = confirm("确定操作吗？")
+        if (isDel) {
+            $("#SubjectNo").val(subjectNo);
+            $("#Status").val(status);
+            $("#DelectStatus").val(del);
+            $("#SubjectUpdate").ajaxSubmit({
+                success: function (html, status) {
+                    if (typeof (html) == "string") {
+                        var rs = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+                        data = eval("(" + rs + ")");
+                    }
+                    else {
+                        data = html;
+                    }
+                    if (data.result == "1") {
+                        alert(data.message);
+                        window.location = '@(url)';
+                        return true;
+                    } else {
+                        alert(data.message);
+                        return false;
+                    }
+                }
+            });
+        }
+    }
+</script>

@@ -1,0 +1,163 @@
+﻿@model IEnumerable<Shangpin.Entity.Wfs.SWfsMeetingNavigation>
+@using Shangpin.Ocs.Web.Infrastructure;
+@{
+    ViewBag.Title = "导航项目管理";
+    Layout = "~/Areas/Shangpin/Views/Shared/_VenueLayout.cshtml";
+    int pageIndex = Request.QueryString["pageindex"] != null ? int.Parse(Request.QueryString["pageindex"]) : 1;
+    int pageSize = 30;
+    int totalCount = ViewBag.totalCount;
+}
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/Venue/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+}
+<h1>
+    OCS > 尚品 > <a href="/shangpin/venue/MeetListManage">会场列表</a> > <a href="/shangpin/venue/MeetingNavList?meetingid=@Request.QueryString["meetingid"]">会场导航列表</a> > <a href="/shangpin/venue/NavContentList?parentid=@Request.QueryString["pp"]&meetingid=@Request.QueryString["meetingid"]">导航项目列表</a> > 导航内容管理</h1>
+<form action="/shangpin/venue/NavThirdList" method="get">
+    <table class="mx-table" width="auto" border="0" style="width: 100%;">
+        <tbody>
+            <tr>
+                <td style="text-align:left">
+                  <input type="text" placeholder="标题名称" name="navname" value="@Request.QueryString["navname"]"/>
+                  <input type="text" placeholder="链接" name="navlink" value="@Request.QueryString["navlink"]"/>
+                  <select name="navtype">
+                    <option value="" >类型</option>
+                    <option value="1" @(Request.QueryString["navtype"] == "1" ? "selected=selected" : "")>标题</option>
+                    <option value="2" @(Request.QueryString["navtype"] == "2" ? "selected=selected" : "")>内容</option>
+                  </select>
+                  <input type="hidden" value="@Request.QueryString["parentid"]" name="parentid"/>
+                  <input type="hidden" name="meetingid" value="@(Request.QueryString["meetingid"])"/>
+                  <input type="hidden" name="pp" value="@Request.QueryString["pp"]" />
+                </td>
+                <td style="text-align:right">
+                    <input type="submit" value="查询"/>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+<form action="/shangpin/venue/AddThirdNav" method="post" id="meetingnavform">
+    <table class="mx-table"  width="auto" border="0" style="width: 100%;">
+        <tbody>
+            <tr>
+                <td style="text-align:left;">
+                    <input type="text" name="NavName" placeholder="标题名称" maxlength="30" id="NavName"/>
+                    <input type="text" placeholder="链接" name="NavLink" maxlength="200" id="NavLink"/>
+                    <select name="NavType" id="NavType">
+                        <option value="1">标题</option>
+                        <option value="2">内容</option>
+                    </select>
+                    <input type="hidden" value="" name="NavNO" id="NavNO"/>
+                    <input type="hidden" value="" name="NavOrder" id="NavOrder"/>
+                    <input type="hidden" value="@Request.QueryString["parentid"]" name="ParentNO" id="ParentNO"/>
+                    <input type="hidden" name="MeetingID" value="@(Request.QueryString["meetingid"])" id="MeetingID"/>
+                </td>
+                <td style="text-align:right;">
+                    <input type="button" value="保存" onclick="saveNav()"/>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+<table class="mx-table" cellspacing="1" cellpadding="1">
+    <thead>
+    <tr>
+    <th > 导航内容信息 </th>
+    <th> 操作 </th>
+    </tr>
+    </thead>
+    <tbody>
+        @if (Model!=null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td style="text-align:left">
+                        标题名称：@item.NavName &nbsp;&nbsp;&nbsp;&nbsp; 
+                        @if (!string.IsNullOrEmpty(item.NavLink))
+                        {
+                            <a href="@item.NavLink" target="_blank">链接检查</a>
+                        }
+                        <br />
+                        类型:&nbsp;&nbsp;
+                        @if (item.NavType == 1)
+                        {
+                            @("标题");
+                        }
+                        @if (item.NavType == 2)
+                        {
+                            @("内容")
+                        }
+                        <br />
+                        顺序:&nbsp;&nbsp;<input type="text" value="@item.NavOrder" onblur="updateOrder(@item.NavNO,this.value)" style="width:50px;"/>
+                        &nbsp;&nbsp;
+                    </td>
+                    <td style="text-align:right">
+                        <br />
+                        <br />
+                        <br />
+                        <a class="button" href="javascript:editeNavByID(@item.NavNO);">编辑</a>
+                        <a class="button" href="/shangpin/venue/DeleteThird/@item.NavNO?parentid=@Request.QueryString["parentid"]&meetingid=@(Request.QueryString["meetingid"])&pp=@Request.QueryString["pp"]">删除</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<div class="spPage">
+    @Html.Raw(@Html.PagerX("page", pageIndex, pageSize, totalCount))
+</div>
+<script type="text/javascript">
+    //修改导航状态
+    function updateStatuse(id, status, obj) {
+        $.get("/shangpin/venue/UpdateNavStatus/" + id + "?status=" + status, function (data) {
+            if (data > 0) {
+                if (status == 0) {
+                    $(obj).html("开启");
+                    $(obj).parent().children("span[title='statusText']").html("关闭");
+                } else {
+                    $(obj).html("关闭");
+                    $(obj).parent().children("span[title='statusText']").html("开启");
+                }
+            }
+        });
+    }
+    //修改排序
+    function updateOrder(id, order) {
+        $.get("/shangpin/venue/UpdateOrder/" + id + "?order="+order, function (data) {
+            
+        });
+    }
+    //保存三级导航
+    function saveNav() {
+        $("#meetingnavform").ajaxSubmit(function (data) {
+            data = eval("(" + data + ")");
+            if (data.status == 0) {
+                alert(data.message);
+            } else {
+                $("#NavNO").val("");
+                $("#NavName").val("");
+                $("#NavLink").val("");
+                //$("#ParentNO").val("");
+                $("#MeetingID").val("");
+                $("#NavType").val("");
+                $("#NavOrder").val("");
+                window.location.reload();
+            }
+        });
+    }
+    //按id获取导航对象
+    function editeNavByID(id) {
+        $.get("/shangpin/venue/GetNavObjByID/" + id, function (data) {
+            data = eval("(" + data + ")");
+            if (data != null) {
+                $("#NavNO").val(data.NavNO);
+                $("#NavName").val(data.NavName); 
+                $("#NavLink").val(data.NavLink);
+                $("#ParentNO").val(data.ParentNO);
+                $("#MeetingID").val(data.MeetingID);
+                $("#NavType").val(data.NavType);
+                $("#NavOrder").val(data.NavOrder);
+            }
+        });
+     }
+</script>

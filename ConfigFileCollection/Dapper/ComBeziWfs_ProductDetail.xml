@@ -1,0 +1,601 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <!--查询模板列表-->
+  <statement id="ComBeziWfs_SWfsProductTemplate_GetProductRecommendTemplateList">
+    with temp as(
+    select TemplateID
+    ,TemplateNO
+    ,TemplateName
+    ,TemplateDirection
+    ,CreateDate
+    ,row_number() over(order by CreateDate desc) as row
+    from SWfsProductTemplate (nolock)
+    where 1=1
+    #if($TemplateNO!='')
+    and TemplateNO=@TemplateNO
+    #end
+    #if($TemplateName!='')
+    and TemplateName like '%'+@TemplateName+'%'
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!--查询模板总条数-->
+  <statement id="ComBeziWfs_SWfsProductTemplate_GetProductTemplateTotalCount">
+    select count(0) from SWfsProductTemplate (nolock)
+    where 1=1
+    #if($TemplateNO!='')
+    and TemplateNO=@TemplateNO
+    #end
+    #if($TemplateName!='')
+    and TemplateName like '%'+@TemplateName+'%'
+    #end
+  </statement>
+  <!--按模板编号查询模板-->
+  <statement id="ComBeziWfs_SWfsProductTemplate_GetProductTemplateByTempNO">
+    select TemplateID
+    ,TemplateNO
+    ,TemplateName
+    ,TemplateDirection
+    ,CreateDate
+    where TemplateNO=@TemplateNO
+  </statement>
+  <!--按模板编号查询模板代码-->
+  <statement id="ComBeziWfs_SWfsProductTemplate_GetProductTemplateCodeByTempNO">
+    select TemplateCode from SWfsProductTemplate
+    where TemplateNO=@TemplateNO
+  </statement>
+  <!--是否存在重复模板编号-->
+  <statement id="ComBeziWfs_SWfsProductTemplate_IsExistProductTemplateByTempNO">
+    select count(0) from SWfsProductTemplate where TemplateNO=@TemplateNO
+  </statement>
+  <!--是否存在重复模板名称-->
+  <statement id="ComBeziWfs_SWfsProductTemplate_IsExistProductTemplateByTempName">
+    select TemplateID from SWfsProductTemplate where TemplateName=@TemplateName
+  </statement>
+  <!--删除模板-->
+  <statement id="ComBeziWfs_SWfsProductTemplate_DeleteProductTemplateByID">
+    delete SWfsProductTemplate  where TemplateID=@TemplateID
+  </statement>
+  <!--按商品编号查询商品推荐编辑内容-->
+  <statement id="ComBeziWfs_SWfsProductRef_GetSWfsProductRefHtmlCodeByProductNo">
+    select RefID
+    ,ProductNO
+    ,TemplateNO
+    ,Status
+    ,HTMLCode
+    from SWfsProductRef (nolock) where ProductNO=@ProductNO
+  </statement>
+  <!--发布HTMLCode-->
+  <statement id="ComBeziWfs_SWfsProductRef_PublishProductRefHtmlCodeByRefID">
+    update SWfsProductRef set PublishHTML=HTMLCode,PublishHTMLMobile=HTMLCodeMobile,status=1,PublishTime=@PublishTime,PublishPeople=@PublishPeople where RefID=@RefID
+  </statement>
+  <!--查询产品列表-->
+  <statement id="ComBeziWfs_SWfsProduct_SelectSWfsProductList">
+    with temp as (
+    SELECT a.ProductNO as ProductNo
+    ,a.GoodsNo
+    ,a.ProductName
+    ,a.ProductPicFile
+    ,a.IsShelf
+    ,b.BrandCnName
+    ,b.BrandEnName
+    ,c.status as IsPublish
+    ,d.TemplateName
+    ,row_number() over(order by a.DateCreate desc) as row
+    FROM [WfsProduct](nolock) as a
+    left join WfsBrand (nolock) as b on b.BrandNo=a.BrandNo
+    left join SWfsProductRef (nolock) as c on a.productNO=c.ProductNO
+    left join SWfsProductTemplate (nolock) as d on d.TemplateNO=c.TemplateNO
+    where 1=1
+    #if($Keyword!='')
+    and (a.ProductName like '%'+@KeyWord+ '%' or a.ProductNo =@KeyWord or a.GoodsNo =@KeyWord)
+    #end
+    #if($CategoryNo !='')
+    and a.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and a.GenderStyle=@Gender
+    #end
+    #if($BrandNO !='')
+    and a.BrandNO=@BrandNO
+    #end
+    #if($IsShelf!='')
+    and a.IsShelf=@IsShelf
+    #end
+    #if($IsPublish!='')
+    and c.Status=@IsPublish
+    #end
+    #if($TemplateName!='')
+    and d.TemplateName like '%'+@TemplateName+'%'
+    #end
+    )
+    select * from temp  where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <statement id="ComBeziWfs_SWfsProduct_SelectSWfsProductCount">
+    select count(0) from WfsProduct (NOLOCK) as a
+    left join WfsBrand (nolock) as b on b.BrandNo=a.BrandNo
+    left join SWfsProductRef (nolock) as c on a.productNO=c.ProductNO
+    left join SWfsProductTemplate (nolock) as d on d.TemplateNO=c.TemplateNO
+    where 1=1
+    #if($Keyword!='')
+    and (a.ProductName like '%'+@KeyWord+ '%' or a.ProductNo =@KeyWord or a.GoodsNo =@KeyWord)
+    #end
+    #if($CategoryNo !='')
+    and a.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and a.GenderStyle=@Gender
+    #end
+    #if($BrandNO !='')
+    and a.BrandNO=@BrandNO
+    #end
+    #if($IsShelf!='')
+    and a.IsShelf=@IsShelf
+    #end
+    #if($IsPublish!='')
+    and c.Status=@IsPublish
+    #end
+    #if($TemplateName!='')
+    and d.TemplateName like '%'+@TemplateName+'%'
+    #end
+  </statement>
+
+  <!--查询评论，先查询商品级-->
+  <statement id="ComBeziWfs_SWfsProductComment_SelectSWfsProductLevelCommentList">
+    with temp as (
+    SELECT p.ProductNo,p.GoodsNo,p.ProductName,p.BrandNo,brandCnName,brandEnName,p.CategoryNo FROM dbo.Product AS p
+    INNER  JOIN
+    (SELECT
+    productNo FROM SWfsProductComment
+    WHERE 1=1
+    #if($Status !='')
+    and x.Status=@Status
+    #end
+    #if($OrderNo !='')
+    and x.OrderNo=@OrderNo
+    #end
+    #if($StarLevel!='')
+    #if($StarLevel==1)
+    and x.StarLevel=1
+    #end
+    #if($StarLevel==2)
+    and (x.StarLevel=2 or x.StarLevel=3)
+    #end
+    #if($StarLevel==3)
+    and (x.StarLevel=4 or x.StarLevel=5)
+    #end
+    #end
+    #if($IsResult!='')
+    #if($IsResult=='reply')
+    and x.CommentRContent!=''
+    #end
+    #if($IsResult=='noreply')
+    and x.CommentRContent=''
+    #end
+    #if($IsResult=='result')
+    and x.ResultCode!=''
+    #end
+    #if($IsResult=='noresult')
+    and x.ResultCode=''
+    #end
+    #end
+    #if($CommentKeyWord!='')
+    and x.CommentContent like '%'+@CommentKeyWord+'%'
+    #end
+    #if($UserName!='')
+    and (x.NickName like '%'+@UserName+'%' or u.NickName like '%'+@UserName+'%' or u.MailAddress like '%'+@UserName+'%')
+    #end
+    #if($StartTime!='')
+    AND CONVERT(VARCHAR(50),x.DateCreate,23) >= CONVERT(VARCHAR(50),@StartTime,23)
+    #end
+    #if($EndTime!='')
+    AND CONVERT(VARCHAR(50),x.DateCreate,23) &lt;= CONVERT(VARCHAR(50),@EndTime,23)
+    #end
+    GROUP BY ProductNo) AS tempn
+    ON p.ProductNo=tempn.ProductNo
+    INNER JOIN dbo.SpBrand AS b
+    ON p.BrandNo=b.BrandNo
+    WHERE 1=1
+    #if($Keyword!='')
+    and (a.ProductName like '%'+@KeyWord+ '%' or a.ProductNo like '%'+@KeyWord+ '%' or a.ProductModel like '%'+@KeyWord+ '%')
+    #end
+    #if($CategoryNo !='')
+    and a.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($BrandNO !='')
+    and d.BrandNO=@BrandNO
+    #end
+    )
+    SELECT  *
+    FROM    temp
+    WHERE   row BETWEEN ( @pageIndex - 1 ) * @pageSize + 1
+    AND     @pageIndex * @pageSize
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsProductComment_SelectSWfsProductLevelCommentListCount">
+    SELECT count(0) FROM dbo.Product AS p
+    INNER  JOIN
+    (SELECT  productNo FROM SWfsProductComment GROUP BY ProductNo) AS tempn
+    ON p.ProductNo=tempn.ProductNo
+    INNER JOIN dbo.SpBrand AS b
+    ON p.BrandNo=b.BrandNo
+    WHERE 1=1
+    #if($Keyword!='')
+    and (a.ProductName like '%'+@KeyWord+ '%' or a.ProductNo like '%'+@KeyWord+ '%' or a.ProductModel like '%'+@KeyWord+ '%')
+    #end
+    #if($CategoryNo !='')
+    and a.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($BrandNO !='')
+    and d.BrandNO=@BrandNO
+    #end
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsProductComment_SelectSWfsProductCommentCount">
+    SELECT count(0)
+    FROM     SWfsProductComment AS x
+    INNER JOIN SpProduct a ON a.ProductNo = x.ProductNo
+    --LEFT JOIN SpfSkuExtend AS b ( NOLOCK ) ON b.ProductNo = a.ProductNo
+    --LEFT JOIN SpfSkuPrice AS c ( NOLOCK ) ON c.SkuNo = b.SkuNo
+    --LEFT JOIN SpfProductExtend AS e ( NOLOCK ) ON e.ProductNo = a.ProductNo
+    LEFT JOIN SpBrand AS d ( NOLOCK ) ON a.BrandNo = d.BrandNo
+    LEFT JOIN sWfsUser AS u ON x.userId = u.UserId
+    LEFT JOIN swfsaccount AS y ON y.UserId = u.UserId
+    LEFT JOIN SWfsUserLevel AS ul ON ul.LevelNo = y.LevelNo
+    WHERE    1 = 1
+    #if($Keyword!='')
+    and (a.ProductName like '%'+@KeyWord+ '%' or a.ProductNo like '%'+@KeyWord+ '%' or a.ProductModel like '%'+@KeyWord+ '%')
+    #end
+    #if($CategoryNo !='')
+    and a.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Status !='')
+    and x.Status=@Status
+    #end
+    #if($BrandNO !='')
+    and d.BrandNO=@BrandNO
+    #end
+    #if($OrderNo !='')
+    and x.OrderNo=@OrderNo
+    #end
+    #if($StarLevel!='')
+    #if($StarLevel==1)
+    and x.StarLevel=1
+    #end
+    #if($StarLevel==2)
+    and (x.StarLevel=2 or x.StarLevel=3)
+    #end
+    #if($StarLevel==3)
+    and (x.StarLevel=4 or x.StarLevel=5)
+    #end
+    #end
+    #if($IsResult!='')
+    #if($IsResult=='reply')
+    and x.CommentRContent!=''
+    #end
+    #if($IsResult=='noreply')
+    and x.CommentRContent=''
+    #end
+    #if($IsResult=='result')
+    and x.ResultCode!=''
+    #end
+    #if($IsResult=='noresult')
+    and x.ResultCode=''
+    #end
+    #end
+    #if($CommentKeyWord!='')
+    and x.CommentContent like '%'+@CommentKeyWord+'%'
+    #end
+    #if($UserName!='')
+    and (x.NickName like '%'+@UserName+'%' or u.NickName like '%'+@UserName+'%' or u.MailAddress like '%'+@UserName+'%')
+    #end
+    #if($StartTime!='')
+    AND CONVERT(VARCHAR(50),x.DateCreate,23) >= CONVERT(VARCHAR(50),@StartTime,23)
+    #end
+    #if($EndTime!='')
+    AND CONVERT(VARCHAR(50),x.DateCreate,23) &lt;= CONVERT(VARCHAR(50),@EndTime,23)
+    #end
+  </statement>
+  
+  
+  <!--查询评论列表-->
+  <statement id="ComBeziWfs_SWfsProductComment_SelectSWfsProductCommentList">
+    <!--with temp as (
+    SELECT
+    pc.commentId,pc.CommentContent,pc.CommentRContent,pc.datecreate,pc.StarLevel,pc.status,pc.OrderNo,
+    pc.ResultCode,pc.ResultDate,pc.ResultNo,pc.CommentType,pc.CommentSource,pc.NickName as UserName,pc.UserLevel,
+    p.productName,p.productNo,p.GoodsNo,p.ProductPicFile,p.brandNo,
+    b.brandEnName,
+    u.nickname,u.MailAddress,
+    ul.LevelName,
+    row_number() over(order by pc.DateCreate desc) as row
+    FROM SWfsProductComment AS pc
+    LEFT JOIN wfsproduct AS p ON pc.productNo=p.productNo
+    LEFT JOIN WfsBrand AS b ON p.brandNo=b.brandNo
+    LEFT JOIN sWfsUser AS u on pc.userId=u.UserId
+    LEFT JOIN swfsaccount AS c on c.UserId=u.UserId
+    LEFT JOIN SWfsUserLevel AS ul on ul.LevelNo=c.LevelNo
+    where 1=1
+    #if($Keyword!='')
+    and (p.ProductName like '%'+@KeyWord+ '%' or p.ProductNo =@KeyWord or p.GoodsNo =@KeyWord)
+    #end
+    #if($CategoryNo !='')
+    and p.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Status !='')
+    and pc.Status=@Status
+    #end
+    #if($BrandNO !='')
+    and b.BrandNO=@BrandNO
+    #end
+    #if($OrderNo !='')
+    and pc.OrderNo=@OrderNo
+    #end
+    #if($StarLevel!='')
+    #if($StarLevel==1)
+    and pc.StarLevel=1
+    #end
+    #if($StarLevel==2)
+    and (pc.StarLevel=2 or pc.StarLevel=3)
+    #end
+    #if($StarLevel==3)
+    and (pc.StarLevel=4 or pc.StarLevel=5)
+    #end
+    #end
+    #if($IsResult!='')
+    #if($IsResult=='reply')
+    and pc.CommentRContent!=''
+    #end
+    #if($IsResult=='noreply')
+    and pc.CommentRContent=''
+    #end
+    #if($IsResult=='result')
+    and pc.ResultCode!=''
+    #end
+    #if($IsResult=='noresult')
+    and pc.ResultCode=''
+    #end
+    #end
+    #if($CommentKeyWord!='')
+    and pc.CommentContent like '%'+@CommentKeyWord+'%'
+    #end
+    #if($UserName!='')
+    and u.NickName like '%'+@UserName+'%'
+    #end
+    #if($StartTime!='')
+    AND CONVERT(VARCHAR(50),pc.DateCreate,23) >= CONVERT(VARCHAR(50),@StartTime,23)
+    #end
+    #if($EndTime!='')
+    AND CONVERT(VARCHAR(50),pc.DateCreate,23) &lt;= CONVERT(VARCHAR(50),@EndTime,23)
+    #end
+    )
+    select * from temp  where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize-->
+    WITH  temp
+    AS ( SELECT   x.commentId ,
+    x.CommentContent ,
+    x.CommentRContent ,
+    x.datecreate ,
+    x.StarLevel ,
+    x.status ,
+    x.OrderNo ,
+    x.ResultCode ,
+    x.ResultDate ,
+    x.ResultNo ,
+    x.CommentType ,
+    x.CommentSource ,
+    x.NickName AS UserName ,
+    x.UserLevel ,
+    a.productName ,
+    a.productNo ,
+    a.ProductModel AS GoodsNo ,
+    e.ProductShowPic AS ProductPicFile ,
+    a.brandNo ,
+    d.brandEnName ,
+    u.nickname ,
+    u.MailAddress ,
+    ul.LevelName ,
+    ROW_NUMBER() OVER ( ORDER BY x.DateCreate DESC ) AS row
+    FROM     SWfsProductComment AS x
+    INNER JOIN SpProduct a ON a.ProductNo = x.ProductNo
+    --LEFT JOIN SpfSkuExtend AS b ( NOLOCK ) ON b.ProductNo = a.ProductNo
+    --LEFT JOIN SpfSkuPrice AS c ( NOLOCK ) ON c.SkuNo = b.SkuNo
+    LEFT JOIN SpfProductExtend AS e ( NOLOCK ) ON e.ProductNo = a.ProductNo
+    LEFT JOIN SpBrand AS d ( NOLOCK ) ON a.BrandNo = d.BrandNo
+    LEFT JOIN sWfsUser AS u ON x.userId = u.UserId
+    LEFT JOIN swfsaccount AS y ON y.UserId = u.UserId
+    LEFT JOIN SWfsUserLevel AS ul ON ul.LevelNo = y.LevelNo
+    WHERE    1 = 1
+    #if($Keyword!='')
+    and (a.ProductName like '%'+@KeyWord+ '%' or a.ProductNo like '%'+@KeyWord+ '%' or a.ProductModel like '%'+@KeyWord+ '%')
+    #end
+    #if($CategoryNo !='')
+    and a.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Status !='')
+    and x.Status=@Status
+    #end
+    #if($BrandNO !='')
+    and d.BrandNO=@BrandNO
+    #end
+    #if($OrderNo !='')
+    and x.OrderNo=@OrderNo
+    #end
+    #if($StarLevel!='')
+    #if($StarLevel==1)
+    and x.StarLevel=1
+    #end
+    #if($StarLevel==2)
+    and (x.StarLevel=2 or x.StarLevel=3)
+    #end
+    #if($StarLevel==3)
+    and (x.StarLevel=4 or x.StarLevel=5)
+    #end
+    #end
+    #if($IsResult!='')
+    #if($IsResult=='reply')
+    and x.CommentRContent!=''
+    #end
+    #if($IsResult=='noreply')
+    and x.CommentRContent=''
+    #end
+    #if($IsResult=='result')
+    and x.ResultCode!=''
+    #end
+    #if($IsResult=='noresult')
+    and x.ResultCode=''
+    #end
+    #end
+    #if($CommentKeyWord!='')
+    and x.CommentContent like '%'+@CommentKeyWord+'%'
+    #end
+    #if($UserName!='')
+    and (x.NickName like '%'+@UserName+'%' or u.NickName like '%'+@UserName+'%' or u.MailAddress like '%'+@UserName+'%')
+    #end
+    #if($StartTime!='')
+    AND CONVERT(VARCHAR(50),x.DateCreate,23) >= CONVERT(VARCHAR(50),@StartTime,23)
+    #end
+    #if($EndTime!='')
+    AND CONVERT(VARCHAR(50),x.DateCreate,23) &lt;= CONVERT(VARCHAR(50),@EndTime,23)
+    #end
+    )
+    SELECT  *
+    FROM    temp
+    WHERE   row BETWEEN ( @pageIndex - 1 ) * @pageSize + 1
+    AND     @pageIndex * @pageSize
+  </statement>
+  <!--通过skuno查询评论列表未发现评论则只返回一条商品信息-->
+  <statement id="ComBeziWfs_SWfsProductComment_GetProductDetailOrCommentDetailBySku">
+    <!--select
+    sku.SkuNo,brand.BrandEnName,product.CategoryNo, product.ProductName,product.ProductPicFile,
+    sku.SellPrice,sku.SkuAttrText,
+    CONVERT(varchar(50), comment.DateCreate , 120) DateCreate,comment.CommentSource,comment.StarLevel,comment.Status,
+    product.ProductNo ,comment.OrderNo
+    from Wfssku (NOLOCK) sku
+    left join SWfsProductComment (NOLOCK) comment
+    on comment.skuno=sku.skuno
+    JOIN WfsProduct(NOLOCK) product
+    left join WfsBrand (nolock) as brand on product.BrandNo=brand.BrandNo
+    ON sku.ProductNo=product.ProductNo
+    where sku.skuno=@skuNo
+    order by comment.DateCreate desc--> 
+    select
+    sku.SkuNo,brand.BrandEnName,product.CategoryNo, product.ProductName,extend.ProductShowPic ProductPicFile,
+    sku.MarketPrice SellPrice,sku.SkuAttrTitle SkuAttrText,
+    CONVERT(varchar(50), comment.DateCreate , 120) DateCreate,comment.CommentSource,comment.StarLevel,comment.Status,
+    product.ProductNo ,comment.OrderNo
+    from SpSku (NOLOCK) sku
+    left join SWfsProductComment (NOLOCK) comment
+    on comment.skuno=sku.skuno
+    JOIN SpProduct(NOLOCK) product
+    left join SpfProductExtend extend on extend.productno=product.productno
+    left join SpBrand (nolock) as brand on product.BrandNo=brand.BrandNo
+    ON sku.ProductNo=product.ProductNo
+    where sku.skuno=@skuNo
+    order by comment.DateCreate desc
+  </statement>
+  <statement id="ComBeziWfs_SWfsUserLevel_GetAllUserLevel">
+    select * from SWfsUserLevel
+  </statement>
+  <!--通过商品编号 订单编号 创建时间查找一条数据-->
+  <statement id="ComBeziWfs_WfsOrder_GetCommentByProductNoAndOrderNoAndDate">
+    select * from SWfsProductComment where productNo=@productNo and orderNo=@orderNo and DateCreate=@DateCreate
+  </statement>
+ 
+
+  <statement id="ComBeziWfs_SWfsProductCommentPicRef_SelectListForComment">
+    <!--根据评论ID查询评论图片列表-->
+    select CommentPicId,PictureFileNo,CommentId,CreateDate,SortId from SWfsProductCommentPicRef(nolock) where CommentId = @CommentId order by SortId ASC
+  </statement>
+  
+  <statement id="ComBeziWfs_SWfsProductComment_UpdateCommentRContent">
+    Update SWfsProductComment set CommentRContent=@CommentRContent where CommentId=@CommentId
+  </statement>
+  <!--查询咨询列表-->
+  <statement id="ComBeziWfs_SWfsProductQuestAnswer_SelectSWfsProductQuestAnswerList">
+    with temp as (
+    SELECT qa.*,row_number() over(order by qa.DateQuest desc) as row
+    FROM SWfsQuestAnswer AS qa
+    where 1=1
+    #if($QuestKeywords !='')
+    and qa.Quest like '%' + @QuestKeywords + '%'
+    #end
+    #if($AnswerKeywords !='')
+    and qa.Answer like '%' + @AnswerKeywords + '%'
+    #end
+    #if($ProductKeywords!='')
+    and qa.QuestAnswerId in (
+    SELECT QuestAnswerId From SWfsQuestAnswerRef where productNo in (select productNo From WfsProduct as p where p.ProductName like '%'+@ProductKeywords+ '%' or p.ProductNo =@ProductKeywords or p.GoodsNo =@ProductKeywords)
+    UNION
+    SELECT QuestAnswerId From SWfsQuestAnswerRef where categoryNo in (select categoryNo From WfsProduct as p where p.ProductName like '%'+@ProductKeywords+ '%' or p.ProductNo =@ProductKeywords or p.GoodsNo =@ProductKeywords)
+    UNION
+    SELECT QuestAnswerId From SWfsQuestAnswerRef where brandNo in  (select brandNo From WfsProduct as p where p.ProductName like '%'+@ProductKeywords+ '%' or p.ProductNo =@ProductKeywords or p.GoodsNo =@ProductKeywords)
+    )
+    #end
+
+    )
+    select * from temp  where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!--查询咨询列表Count-->
+  <statement id="ComBeziWfs_SWfsProductQuestAnswer_SelectSWfsProductQuestAnswerCount">
+    SELECT COUNT(DISTINCT QA.QuestAnswerId)
+    FROM SWfsQuestAnswer AS qa
+    where 1=1
+    #if($QuestKeywords !='')
+    and qa.Quest like '%' + @QuestKeywords + '%'
+    #end
+    #if($AnswerKeywords !='')
+    and qa.Answer=@AnswerKeywords
+    #end
+    #if($ProductKeywords!='')
+    and qa.QuestAnswerId in (
+    SELECT QuestAnswerId From SWfsQuestAnswerRef where productNo in (select productNo From WfsProduct as p where p.ProductName like '%'+@ProductKeywords+ '%' or p.ProductNo =@ProductKeywords or p.GoodsNo =@ProductKeywords)
+    UNION
+    SELECT QuestAnswerId From SWfsQuestAnswerRef where categoryNo in (select categoryNo From WfsProduct as p where p.ProductName like '%'+@ProductKeywords+ '%' or p.ProductNo =@ProductKeywords or p.GoodsNo =@ProductKeywords)
+    UNION
+    SELECT QuestAnswerId From SWfsQuestAnswerRef where brandNo in  (select brandNo From WfsProduct as p where p.ProductName like '%'+@ProductKeywords+ '%' or p.ProductNo =@ProductKeywords or p.GoodsNo =@ProductKeywords)
+    )
+    #end
+  </statement>
+  <statement id="ComBeziWfs_SWfsProductQuestAnswer_SelectSWfsProductQuestAnswerById">
+    SELECT * FROM SWfsQuestAnswer where QuestAnswerId=@QuestAnswerId
+  </statement>
+  
+  <statement id="ComBeziWfs_SWfsProductQuestAnswer_DeleteSWfsProductQuestAnswer_Delete">
+    delete SWfsQuestAnswer where QuestAnswerId=@QuestAnswerId
+  </statement>
+  <statement id="ComBeziWfs_SWfsProductQuestAnswerRef_DeleteSWfsProductQuestAnswerRef_Delete">
+    delete SWfsQuestAnswerRef where QuestAnswerId=@QuestAnswerId
+  </statement>
+  <statement id="ComBeziWfs_SWfsProductQuestAnswerRef_DeleteSWfsProductQuestAnswerRef_DeleteById">
+    delete SWfsQuestAnswerRef where Id=@Id
+  </statement>
+  <!--查询咨询关联列表-->
+  <statement id="ComBeziWfs_SWfsProductQuestAnswerRef_SelectSWfsProductQuestAnswerRefList">
+    select SpProduct.ProductNo
+		,SWfsQuestAnswerRef.id
+		,SWfsQuestAnswerRef.RefType
+		,SWfsQuestAnswerRef.QuestAnswerId
+		,SpProduct.ProductName
+		,SpCategory.CategoryName
+		,SpBrand.BrandCnName from SWfsQuestAnswerRef
+		left join SpProduct on SpProduct.ProductNo=SWfsQuestAnswerRef.ProductNo
+		left join SpCategory on SpCategory.CategoryNo=SWfsQuestAnswerRef.CategoryNo
+		left join SpBrand on SpBrand.BrandNo=SWfsQuestAnswerRef.BrandNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsProductQuestAnswerRef_SelectSWfsProductQuestAnswerRefByNos">
+    with temp as (
+    SELECT QuestAnswerId FROM dbo.SWfsQuestAnswerRef WHERE 1=1 AND ProductNo=@ProductNo AND brandNo=@BrandNo AND CategoryNo=@CategoryNo AND QuestAnswerId=@QuestAnswerId
+    )
+    select * from temp
+  </statement>
+  <statement id="ComBeziWfs_SWfsProductQuestAnswerRef_SelectSWfsProductQuestAnswerRefListByQuestAnswerId">
+    SELECT qar.questanswerId,qar.productNo,qar.categoryNo,qar.brandNo,p.productName,p.productNo,c.CategoryName,c.categoryNo,b.BrandCnName,b.brandNo,qar.RefType FROM dbo.SWfsQuestAnswerRef AS qar
+    LEFT JOIN WfsProduct AS p ON qar.productNo=p.productNo
+    LEFT JOIN WfsErpCategory AS c ON qar.categoryNo=c.categoryNo
+    LEFT JOIN dbo.WfsBrand AS b ON qar.brandNo=b.brandNo
+    WHERE qar.QuestAnswerId=@QuestAnswerId
+  </statement>
+  <statement id="ComBeziWfs_SWfsProductComment_BetchInsertComment">
+    $SQL
+  </statement>
+</statements>

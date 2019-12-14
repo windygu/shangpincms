@@ -1,0 +1,155 @@
+﻿@model IList<Shangpin.Entity.Wfs.SWfsRecommLink>
+
+@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "NewChannelListePager";
+
+    List<Shangpin.Entity.Wfs.SWfsSearchPriceInterval> pricelist = ViewBag.PriceList;
+}
+
+<script src="~/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script src="~/Areas/Shangpin/Scripts/json2.js"></script>
+<link href="~/Areas/Shangpin/Scripts/NewChanne/ListePager.css" rel="stylesheet" />
+<script src="~/Areas/Shangpin/Scripts/NewChanne/ListePager.js"></script>
+
+<h2>OCS > 尚品 > 列表页管理</h2>
+<div class="tabs">
+    <ul id="tabs">
+        <li class="tab-nav-action" style="border-right:0px; border-bottom:0px;">热门推荐</li>
+        <li class="tab-nav" style="border-right:0px; border-bottom:0px;" id="popel">流行元素</li>
+        <li class="tab-nav" style="border-bottom:0px;">价格</li>
+    </ul>
+</div>
+<div id="tabs-body" class="tabs-body">
+    <div style="display:block">
+        <table class="tabshot" id="table_main">
+            <tr>
+                <th>名称</th>
+                <th>链接</th>
+                <th>状态</th>
+                <th width="160px">展示时间</th>
+                <th width="70px">操作</th>
+            </tr>
+            @{
+                if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td style="display:none;">@item.LinkId,@item.SortId</td>
+                            <td>@item.LinkName</td>
+                            <td style="width:260px;">@item.LinkAddress</td>
+                            <td style="color:blue;"><font onclick="UpdateState(this)" style="cursor:pointer">@(item.Status == 1 ? "显示" : "隐藏")</font></td>
+                            <td>@item.BeginTime 至 @item.EndTime</td>
+                            <td style="color:blue;"><font onclick="GotoTop(this)" style="cursor:pointer">上移</font>&nbsp;&nbsp;<font onclick="GotoBottom(this)" style="cursor:pointer">下移</font>&nbsp;&nbsp;<font onclick="DelBottom(this)" style="cursor:pointer">删除</font></td>
+                        </tr>
+                    }
+                }
+            }
+
+        </table>
+
+        <input type="button" value="添加" onclick="AddManager()" style="margin-left:30px;margin-top:10px;width:100px;height:30px;" />
+        @*<input type="button" value="保存" onclick="savetable()" style="margin-left: 20px; width: 100px; height: 30px; display: none;cursor: pointer;" id="SaveTable" />*@
+        <input type="hidden" value="@ViewBag.ChannelNo" id="hidChannelNo" />
+        <input type="hidden" value="@ViewBag.sChannelNo" id="hidsChannelNo" />
+        @*添加热门信息*@
+        <form style="margin-left:30px;margin-top:10px;display:none;" id="FormAdd">
+            <table style="line-height:30px;text-align:center;">
+                <tr>
+                    <td style="width:60px;line-height:45px;text-align:right;">名称：</td>
+                    <td><input type="text" style="width:400px;height:30px;" name="LinkName" id="LinkName" /></td>
+                </tr>
+                <tr>
+                    <td style="width: 60px; line-height: 45px; text-align: right; ">链接：</td>
+                    <td><input type="text" style="width:400px;height:30px;" name="LinkAddress" id="LinkAddress" /></td>
+                </tr>
+                <tr>
+                    <td style="width: 60px; line-height: 45px; text-align: right; ">打开方式：</td>
+                    <td style="text-align:left;"><input type="radio" name="LinkTarget" value="_self" checked="checked" />当前页打开&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="LinkTarget" value="_blank" />新页面打开</td>
+                </tr>
+                <tr>
+                    <td style="width: 60px; line-height: 45px; text-align: right;">状态：</td>
+                    <td style="text-align:left;"><input type="radio" name="Status" value="1" checked="checked" />显示&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="Status" value="0" />隐藏</td>
+                </tr>
+                <tr>
+                    <td style="width: 60px; line-height: 45px; text-align: right;">开始时间：</td>
+                    <td><input type="text" onclick="WdatePicker({ startDate: '%y-%M-01 00:00:00', dateFmt: 'yyyy-MM-dd HH:mm:ss', alwaysUseStartDate: true })" style="width:400px;height:30px;" name="BeginTime" id="BeginTime" /></td>
+                </tr>
+                <tr>
+                    <td style="width: 60px; line-height: 45px; text-align: right;">结束时间：</td>
+                    <td><input type="text" onclick="WdatePicker({ startDate: '%y-%M-01 00:00:00', dateFmt: 'yyyy-MM-dd HH:mm:ss', alwaysUseStartDate: true })" style="width:400px;height:30px;" name="EndTime" id="EndTime" /></td>
+                </tr>
+            </table>
+            <input type="submit" value="保存" style="width: 100px; height: 30px; background: #808080; margin-top: 20px;margin-left:60px;" />
+        </form>
+    </div>
+    <div style="display:none">
+        <table cellpadding="5" cellspacing="1" border="1" bgcolor="#CCCCCC" width="90%" id="popel">
+            <tr style="height:30px;background-color:#dddddd;">
+                <td align="center">使用标签分类</td>
+                <td align="center">是否显示</td>
+                <td align="center">操作</td>
+            </tr>
+            <tbody id="popelebody"></tbody>
+        </table>
+    </div>
+    @*价格添加*@
+    <div style="display:none">
+        <table width="100%">
+            <tr>
+                <td width="100%">
+                    <div id="PriceAdd">
+                        <table id="tb1" style="margin-left:3px;">
+                            <tr>
+                                <th>起始价（不包含）</th>
+                                <th style="width:20px;"></th>
+                                <th>结束价（包含）</th>
+                            </tr>
+                            <tr style="width:400px;height:40px;line-height:40px;text-align:center;">
+                                <td name="price1">0</td>
+                                <td>-</td>
+                                <td><input type="text" style="width:80px;height:30px" name="price2" p='price' /></td>
+                            </tr>
+                        </table>
+                        <input type="button" value="添加" style="width: 80px; height: 30px; margin-top: 20px;margin-left:50px;" onclick="Add()" />
+                        <input type="button" onclick="SaveListPagePrice()" value="保存" style="width: 80px; height: 30px;margin-top: 20px;margin-left:10px;" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td width="100%" valign="top">
+                    已填价格：
+                    <table class="tabshot">
+                        <tr width="300">
+                            <td>最低价</td>
+                            <td>最高价</td>
+                            <td>创建时间</td>
+                        </tr>
+                        <tbody id="priceBody">
+                            @{
+                                foreach (Shangpin.Entity.Wfs.SWfsSearchPriceInterval pircedto in pricelist)
+                                {
+                                    <tr>
+                                        <td>@pircedto.MinPrice</td>
+                                        <td>
+                                            @{
+                                    string maxp = pircedto.MaxPrice == "" ? pircedto.MinPrice + "以上" : pircedto.MaxPrice;
+
+                                            }
+                                            @maxp
+                                        </td>
+                                        <td>@pircedto.CreateDate</td>
+                                    </tr>
+                                }
+
+                            }
+                        </tbody>
+                    </table>
+
+                </td>
+            </tr>
+        </table>
+
+    </div>
+</div>

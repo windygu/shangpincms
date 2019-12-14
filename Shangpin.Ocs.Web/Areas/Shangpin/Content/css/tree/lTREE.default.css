@@ -1,0 +1,69 @@
+/****************************
+CSS Code for lTREEMenu
+Version: Ver2.0.1
+Author : CNLei, 枫岩
+E-Mail : CNLei.Y.L@Gmail.com
+MySite : http://www.cnlei.com
+Passed : IE6.0+, FF1.0+, Opera8.5+, Safari 3.0+
+Update : 2008-5-19
+****************************/
+body { margin: 0; padding: 0px; font: 12px tahoma,宋体,sans-serif; }
+h4 { margin: 0; padding: 0; font-size: 18px; }
+p { margin: 0; padding: 0 0 0 18px; }
+p a, p a:visited { color: #00f; background: inherit; }
+/*lTREEMenu Start*/
+.lTREEMenu { text-align: left; }
+#TopDL { padding: 0; margin: 0 0 0 0px; clear: both; }
+#TreeHeader { background: url(../images/default/tree/base.gif) repeat-y 0 0; padding-left: 19px; }
+.lTREEMenu dl { padding: 0; margin: 5px 0 3px 17px; clear: both; }
+.lTREEMenu dd { padding: 0; margin: 3px 0px; list-style: none; clear: both; }
+.lTREEMenu dd button { width: 35px; height: 18px; overflow: hidden; cursor: pointer; vertical-align: middle; border: none; background: url(../images/default/tree/folder-opened.gif) no-repeat 3px 1px; }
+.lTREEMenu dd.folderClose dl { display: none; }
+.lTREEMenu dd.folderClose button { background-image: url(../images/default/tree/folder-closed.gif); }
+.lTREEMenu dd { background: url(../images/default/tree/elbow-line.gif) repeat-y 0 0; }
+.lTREEMenu dd.lastChild { background: url(../images/default/tree/folder-last.gif) no-repeat 0 0; }
+.lTREEMenu dt { margin: 3px 0px; padding: 2px 0 0 36px; background: url(../images/default/tree/leaf-normal.gif) no-repeat 0 0; line-height: 18px; }
+.lTREEMenu dt.lastChild { background: url(../images/default/tree/leaf-last.gif) no-repeat 0 0; }
+.lTREEMenu dl span.editor { display: none; }
+.lTREEMenu dl span.editor a { margin: 0px 0px 0px 10px; cursor: pointer; color: #484848; border: solid 1px #649393; padding: 1px 2px; border-radius:3px;}
+.lTREEMenu dl span.editor a:hover { color: Red; text-decoration: underline; }
+.lTREEMenu dl span.editor a.unable { color: #8e8e8e; }
+.lTREEMenu dl span.editor a.unable:hover { color: #8e8e8e; text-decoration:line-through;}
+.lTREEMenu dl a.joined{ color:Red; margin:0px 3px;}
+.lTREEMenu dl a.categoryno{color:#336699; padding-left:10px;}
+.lTREEMenu span.hiddenClass { padding-right: 15px; background: transparent url(../images/default/tree/hidden.jpg) no-repeat right 2px; }
+/*lTREEMenu End*/
+/**/
+.joinTitle{ margin-top:10px; float:left;}
+.joinTitle td{ border-left:solid 1px #8492A9; border-top:solid 1px #8492A9; border-right:solid 1px #8492A9; }
+.joinTitle a{ display:block; padding:10px; width:80px; text-decoration:none;color:White; background-color:#344566;}
+.joinTitle a.current{ color:#434343; background-color:Transparent;}
+.leftErpCategory{ width:360px; margin-top:10px; margin-bottom:10px; margin-right:10px; border-bottom:solid 1px #8492A9; float:left;}
+.JoinedTree{height:400px;}
+.JoinedTree,.TreeTitle,.TreeFooter { float:left; overflow:auto;width:360px; padding:10px 0px; border-top:solid 1px #8492A9; border-left:solid 1px #8492A9; border-right:solid 1px #8492A9;}
+#SelectedErpCategory div{ width:100%; border-bottom:solid 1px #8492A9; text-align:left; float:left; }
+#SelectedErpCategory div:hover{ background-color:#8492A9;}
+#SelectedErpCategory span{ float:left; margin:5px 15px;width: 160px;}
+#SelectedErpCategory select{margin-top:4px;}
+#SelectedErpCategory a{ float:right; cursor:pointer; color:#484848; text-decoration:none; margin:5px 15px;}
+#SelectedErpCategory a:hover{ color:Red; text-decoration:underline;}
+#SelectedErpCategory div.joinedDelete span{text-decoration:line-through;}
+/**/
+.joinProductTree{ float:left; width:220px; padding:0px 10px;}
+#rightProductList{ float:left; width:547px;}
+#rightProductList table{ width:100%;}
+#rightProductList h3{ margin:10px;}
+#rightProductList td{text-align:center;}
+.JoinOprater{padding:5px 10px; line-height:20px; background-color:#8695AB; text-align:left; border-bottom:solid 1px #eaeaea;}
+.JoinOprater .btn{border:solid 1px #344566; background:#eaeaea url("/image/button_left.gif") repeat; color:#eaeaea; cursor:pointer;}
+.JoinOprater .btn:hover{ color:Red;}
+span.btn{ color:#344566; cursor:pointer; text-decoration:underline;}
+span.btn:hover{ color:Red;}
+.spanOprate input{ margin-left:10px;}
+.spanOprate textarea{width:150px; height:50px; border:none;}
+.spanOprate div{ width:155px; background-color:#ededed; height:auto; color:Red;}
+#multiJoin{text-align:center; margin-top:5px; background-color:#7185aB; border:outset 1px #666; display:none;}
+#multiJoin textarea{width:97%; border:none; height:60px;}
+#multiJoin input{margin:10px;}
+/**/
+.lTREEMenu label:hover{background-color:#cdcdcd;}

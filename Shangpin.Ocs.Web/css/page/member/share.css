@@ -1,0 +1,48 @@
+.member_tebcell { padding: 20px; }
+.share_content { padding: 0 35px 0 0; }
+.share_block { }
+.share_block h4 { color: #999; line-height: 25px; text-align: right; }
+.share_block dl { width: 100%; }
+.share_block dt { width: 120px; float: left; }
+.share_block dd { width: 490px; border: 1px solid #eee; float: right; padding: 15px 25px; line-height: 180%; }
+.share_block dd span { display: block; position: relative; }
+.share_block dd span a { color: #000; }
+.share_block dd span a:hover { text-decoration: underline; }
+.share_block dd span em { display: block; color: #999; }
+.share_block dd span .dot { width: 13px; height: 14px; overflow: hidden; position: absolute; top: 5px; left: -38px; background: url(/images/page/member/public/share_icon.png) no-repeat 0 0; }
+.share_block dd p { padding: 15px 0; line-height: 160%; }
+.share_block dd .share_size { border-top: 1px solid #eee; line-height: 30px; color: #666; }
+.comment_imgs { padding: 0; }
+.share_block .share_handle { text-align: right; line-height: 35px; color: #666; position: relative; margin: 5px 0 0 0; }
+.share_block .share_handle a.edit { display: inline-block; padding: 0 0 0 18px; background: url(/images/page/member/public/share_icon.png) no-repeat -86px -13px #fff; }
+.share_block .share_handle a.delete { display: inline-block; padding: 0 0 0 18px; background: url(/images/page/member/public/share_icon.png) no-repeat -86px -48px #fff; }
+.share_block .share_handle a.delete:hover { text-decoration: underline; }
+.share_block .share_handle .share_tips { width: 155px; padding-top: 6px; position: absolute; top: -60px; right: -45px; _right: 10px; text-align: center; border: 1px solid #979797; background: #fff; display: none; }
+.share_tips li { display: block; height: 55px; position: relative; font-family: "宋体"; line-height: 23px; }
+.share_tips li i { background-image: url(/images/plug/arrow/sp_li.gif); background-position: -149px -233px; background-repeat: no-repeat; background-color: #fff; display: block; width: 9px; height: 6px; overflow: hidden; position: absolute; left: 80px; bottom: -6px; _bottom: -7px; }
+.share_tips li a { display: inline-block; width: 53px; height: 20px; border: 1px solid #999; border-radius: .3em; -webkit-border-radius: .3em; background: #f0f0f0; padding: 0; }
+.share_tips li a:link, .share_tips li a:visited { text-decoration: none; }
+.share_tips li a:hover, .share_tips li a:active { color: #666; border: 1px solid #333; }
+.share_prod { width: 100%; overflow: hidden; }
+.share_prod ul { padding: 20px 0 20px 20px; }
+.share_prod li { width: 210px; margin-right: 26px; float: left; }
+.share_prod li a { display: block; width: 100%; height: 280px; position: relative; text-align: center; }
+:root .share_prod li a p { filter: none; }/*for IE9*/
+.share_prod li a p { height: 280px; width: 210px; position: absolute; left: 0; top: 0; background: rgba(0,0,0,0.6); zoom: 1; filter:progid:DXImageTransform.Microsoft.gradient(enabled='true', startColorstr='#99000000', endColorstr='#99000000');
+text-align: center; font-size: 14px; font-weight: 700; color: #fff; line-height: 280px; display: none; }
+.share_prod li a.hover p { display: block; }
+.share_prod li span { display: block; padding: 15px 0 15px 15px; color: #666; }
+.none_noDataMsg { text-align: center; line-height: 35px; padding: 15px 0; }
+.none_noDataMsg a { color: #b9966a; }
+.spPage { margin: 10px 0 0; }
+/*删除确定层*/
+#share_tip_box { position: absolute; z-index: 1000; padding: 10px; border: 1px solid #979797; background: #FFF; text-align: center; display:none; width:160px;}
+#share_tip_box p { padding: 5px 0; color: #666; line-height:24px;}
+#share_tip_box a { display: inline-block; *display:inline;
+*zoom:1;
+width: 53px; height: 20px; line-height: 20px; border: 1px solid #999; border-radius: .3em; background: #F0F0F0; padding: 0; margin: 5px; }
+#share_tip_box a:hover { border-color: #666; }
+#share_tip_box i { background-image: url(/images/plug/arrow/sp_li.gif); background-position: -149px -233px; background-repeat: no-repeat; background-color: #FFF; width: 9px; height: 6px; overflow: hidden; position: absolute; left: 80px; bottom: -6px; _bottom: -7px; }
+
+.member_right_info{ height:29px; line-height:29px; float:right; color:#999;}
+.member_right_info em{ color:#000; font-weight:bold; margin:0 3px;}

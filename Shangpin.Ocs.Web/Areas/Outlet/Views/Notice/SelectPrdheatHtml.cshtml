@@ -1,0 +1,61 @@
+﻿@{
+    Layout = null;
+    List<Shangpin.Entity.Wfs.SWfsAolaiAdvancePage> list = ViewBag.PrdheadList as List<Shangpin.Entity.Wfs.SWfsAolaiAdvancePage>;
+}
+<link href="/Areas/Shangpin/Content/css/init.css" rel="stylesheet" type="text/css"
+    charset="utf-8" />
+<link href="/Areas/Shangpin/Content/css/core.css" rel="stylesheet" type="text/css"
+    charset="utf-8" />
+<link href="/Areas/Shangpin/Content/css/page/rightcontent/rightcontent.css" rel="stylesheet"
+    type="text/css" charset="utf-8" />
+<style>
+    #divSPage ul
+    {
+        width: 500px;
+    }
+    #divSPageBox li
+    {
+        float: left;
+        width: 260px;
+        height: 25px;
+        line-height: 25px;
+        padding-right: 5px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+</style>
+<script type="text/javascript" src="/Areas/Shangpin/Scripts/lib/jquery.js" charset="utf-8"></script>
+<script language="javascript" type="text/javascript">
+    $(function () {
+        $("#clearBtn").bind("click", parent.window.TrueInfo);
+        $("#selectBtn").click(function () {
+            var obj = $("input:radio[name='radBox']:checked");
+            var id = $(obj).val();
+            var val = $(obj).attr("pname");
+            parent.window.ClickRowNew(id, val);
+        });
+    });
+</script>
+<div style="padding-top: 10px; padding-left: 10px;">
+    <ul id="divSPageBox">
+        @if (list != null && list.Count() > 0)
+        {
+            foreach (var item in list)
+            {
+            <li>
+                <label>
+                    <input type="radio" name="radBox" @(ViewBag.PrdheatID != null && ViewBag.PrdheatID != "" && item.SWfsAolaiNoticePageId.Equals(ViewBag.PrdheatID) ? "checked='checked'" : "") value="@item.SWfsAolaiNoticePageId" pname="@item.PageName"/>@item.PageName</label>
+            </li> 
+            }
+        }
+        else
+        { 
+            <li>查询结果为空！</li>
+        }
+    </ul>
+    <div style="clear: both; padding: 10px; text-align: center;">
+        <a class="sumit_btn" href="#" id="selectBtn">确定关联</a> <a class="sumit_btn" href="#"
+            id="clearBtn">取消关联</a>
+    </div>
+</div>

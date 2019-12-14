@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{652ACF8C-B13A-4BA1-AA99-806CD992D133}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Shangpin.Ocs.Entity.Extenstion</RootNamespace>
+    <AssemblyName>Shangpin.Ocs.Entity.Extenstion</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Shangpin.Entity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\binpublic\Shangpin.Entity.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Login\Passport.cs" />
+    <Compile Include="Login\OcsServiceResult.cs" />
+    <Compile Include="Outlet\ChannelFeaturedEventsInfo.cs" />
+    <Compile Include="Outlet\FavoriteProductCount.cs" />
+    <Compile Include="Outlet\ImageModel.cs" />
+    <Compile Include="Outlet\IndexAD.cs" />
+    <Compile Include="Outlet\MarketOptionSearchParm.cs" />
+    <Compile Include="Outlet\ORderToExcel.cs" />
+    <Compile Include="Outlet\OutletEnum.cs" />
+    <Compile Include="Outlet\PredicateBuilder.cs" />
+    <Compile Include="Outlet\PredicateBuilder_extend.cs" />
+    <Compile Include="Outlet\ProductInfo.cs" />
+    <Compile Include="Outlet\ProductInventory.cs" />
+    <Compile Include="Outlet\SkuDto.cs" />
+    <Compile Include="Outlet\StockFlag.cs" />
+    <Compile Include="Outlet\SubjectBrand.cs" />
+    <Compile Include="Outlet\SubjectConsoleProductM.cs" />
+    <Compile Include="Outlet\SubjectDataStatistics.cs" />
+    <Compile Include="Outlet\SubjectDisCountType.cs" />
+    <Compile Include="Outlet\SubjectInfo.cs" />
+    <Compile Include="Outlet\SubjectMonitorSearchParm.cs" />
+    <Compile Include="Outlet\SubjectOLNewStatistic.cs" />
+    <Compile Include="Outlet\SubjectPreheatInfoM.cs" />
+    <Compile Include="Outlet\SubjectProductInfo.cs" />
+    <Compile Include="Outlet\SubjectProductRef.cs" />
+    <Compile Include="Outlet\BrandInfo.cs" />
+    <Compile Include="Outlet\SubjectSortRuleType.cs" />
+    <Compile Include="Outlet\SubjectTopicM.cs" />
+    <Compile Include="Outlet\SubjectUVFromM.cs" />
+    <Compile Include="Outlet\SWfsSubjectFocusUIModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShangPin\ActiveAndSpecial.cs" />
+    <Compile Include="ShangPin\AppRecommendProduct.cs" />
+    <Compile Include="ShangPin\Brand.cs" />
+    <Compile Include="ShangPin\BrandExtendForAlias.cs" />
+    <Compile Include="ShangPin\BrandIndexM.cs" />
+    <Compile Include="ShangPin\Category.cs" />
+    <Compile Include="ShangPin\CategoryExtendForAlias.cs" />
+    <Compile Include="ShangPin\ErpCategory.cs" />
+    <Compile Include="ShangPin\HomeSecKill.cs" />
+    <Compile Include="ShangPin\IndexHotProductInfo.cs" />
+    <Compile Include="ShangPin\MeetingRelationRegion.cs" />
+    <Compile Include="ShangPin\NewShelfListModel.cs" />
+    <Compile Include="ShangPin\PageInfoModel.cs" />
+    <Compile Include="ShangPin\Product.cs" />
+    <Compile Include="ShangPin\ProductFlat\OCSInfo.cs" />
+    <Compile Include="ShangPin\ProductFlat\Parameters.cs" />
+    <Compile Include="ShangPin\ProductCommentEntity.cs" />
+    <Compile Include="ShangPin\ProductFlat\ProductHot.cs" />
+    <Compile Include="ShangPin\ProductFlat\ProductInfo.cs" />
+    <Compile Include="ShangPin\ProductFlat\ProductPrimaryColors.cs" />
+    <Compile Include="ShangPin\ProductFlat\SearchProductInfo.cs" />
+    <Compile Include="ShangPin\ProductFlat\SearchResultBrands.cs" />
+    <Compile Include="ShangPin\ProductFlat\SearchResultCategorys.cs" />
+    <Compile Include="ShangPin\ProductInfoShoes.cs" />
+    <Compile Include="ShangPin\ProductInventoryShoesNew.cs" />
+    <Compile Include="ShangPin\ResultBase_form.cs" />
+    <Compile Include="Outlet\SkuExtendPrice.cs" />
+    <Compile Include="ShangPin\SpfSkuExtendInfo.cs" />
+    <Compile Include="ShangPin\SWfsIndexNewArrivalExt.cs" />
+    <Compile Include="ShangPin\ProductFlat\WfsBrandSort.cs" />
+    <Compile Include="ShangPin\ProductFlat\XMLReturnClassLists.cs" />
+    <Compile Include="ShangPin\ProductInfoNew.cs" />
+    <Compile Include="ShangPin\ProductAgeing.cs" />
+    <Compile Include="ShangPin\ProductInventoryNew.cs" />
+    <Compile Include="ShangPin\ProductLabel.cs" />
+    <Compile Include="ShangPin\ProductListForLabelSelect.cs" />
+    <Compile Include="ShangPin\ListManager.cs" />
+    <Compile Include="ShangPin\ProductRefLabelDetail.cs" />
+    <Compile Include="ShangPin\SearchListParm.cs" />
+    <Compile Include="ShangPin\ServiceResult.cs" />
+    <Compile Include="ShangPin\SkillProductExtends.cs" />
+    <Compile Include="ShangPin\SubjectInfoNew.cs" />
+    <Compile Include="ShangPin\SubjectNewProductRef.cs" />
+    <Compile Include="ShangPin\SubjectProductRefNew.cs" />
+    <Compile Include="ShangPin\SWfsBrandExtendList.cs" />
+    <Compile Include="ShangPin\SWfsBrandIndexInfo.cs" />
+    <Compile Include="ShangPin\SWfsChannelExtends.cs" />
+    <Compile Include="ShangPin\SWfsFlagRelationRegion.cs" />
+    <Compile Include="ShangPin\SWfsListAlterGroupList.cs" />
+    <Compile Include="ShangPin\SWfsMeetingHtmlInfoList.cs" />
+    <Compile Include="ShangPin\SWfsMeetingRelationRegionContent.cs" />
+    <Compile Include="ShangPin\SWfsMeetingSubjectTopicM.cs" />
+    <Compile Include="ShangPin\SWfsMeetingTemplateInfoList.cs" />
+    <Compile Include="ShangPin\SWfsNewAlterPicInfo.cs" />
+    <Compile Include="ShangPin\SWfsNewBrandInfo.cs" />
+    <Compile Include="ShangPin\SWfsNewProductInfo.cs" />
+    <Compile Include="ShangPin\SWfsProductCommentExtends.cs" />
+    <Compile Include="ShangPin\SWfsPromotionsList.cs" />
+    <Compile Include="ShangPin\SWfsQuestAnswerExtends.cs" />
+    <Compile Include="ShangPin\SWfsStyleActivityPicM.cs" />
+    <Compile Include="ShangPin\SwfsVenueVisitInfoExtends.cs" />
+    <Compile Include="ShangPin\T_tag_baseExtenstion.cs" />
+    <Compile Include="ShangPin\VCodeInfo.cs" />
+    <Compile Include="ShangPin\VsinsHotProduct.cs" />
+    <Compile Include="ShangPin\WfsBankFQPayM.cs" />
+    <Compile Include="ShangPin\SubjectNewStatistic.cs" />
+    <Compile Include="ShangPin\SWfsNewSubjectVCodeRef.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

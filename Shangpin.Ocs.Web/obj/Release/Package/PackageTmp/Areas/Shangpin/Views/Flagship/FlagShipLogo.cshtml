@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "精品旗舰店|品牌LOGO编辑";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+<link href="/Areas/Shangpin/Content/css/page/rightcontent/brandcontent.css" rel="stylesheet" type="text/css">
+<script src="~/Areas/Shangpin/Scripts/validata/jquery-1.8.2.js"></script>
+<script src="~/Areas/Shangpin/Scripts/validata/jquery.form.js"></script>
+@*<script src="~/Areas/Shangpin/Scripts/validata/jquery.metadata.js"></script>*@
+<script src="~/Areas/Shangpin/Scripts/validata/jquery.validate.js"></script>
+<script src="~/Areas/Shangpin/Scripts/validata/messages_cn.js"></script>
+<script src="~/Areas/Shangpin/Scripts/validata/validate.form.js"></script>
+<link href="~/Areas/Shangpin/Scripts/css/validate.css" rel="stylesheet" />
+<script type="text/javascript">
+    function subafter(result) {
+        window.location = "/Shangpin/Flagship?brandNo=" + result.content.BrandNo
+    }
+    $("input[type=file]").live(($.browser.msie && ($.browser.version == "6.0")) ? 'propertychange' : 'change', function () {
+        $("#img").remove();
+    });
+    $(function () {
+        if ($("#LogoNo").val() == "") {
+            $("#img").hide();
+            $("#picFile").addClass("{required:true}");
+        }
+    })
+</script>
+<div id="mx-rightcontent-inner">
+    <h1>
+        OCS &gt; 尚品 &gt; <a href="/Shangpin/Flagship?brandNo=@Request.QueryString["brandNo"]">精品旗舰店管理</a> &gt; 品牌LOGO图管理 &gt; 编辑
+    </h1>
+    <div class="mx-brandcontent-msgbox">
+        <form action="/Shangpin/Flagship/FlagShipLogo" method="post" enctype="multipart/form-data">
+            <input type="hidden" value="@Model.LogoId" name="LogoId" />
+            <input type="hidden" value="@Model.OperateUserId" name="OperateUserId" />
+            <input type="hidden" value="@Request.QueryString["brandNo"]" name="BrandNo" />
+            <input type="hidden" value="@Model.LogoNo" name="LogoNo" id="LogoNo" />
+            <input type="hidden" value="@Model.CreateDate" name="CreateDate">
+            <input type="hidden" value="@Model.LinkTarget" name="LinkTarget">
+            <input type="hidden" value="264" name="Width">
+            <input type="hidden" value="33" name="Height">
+            <input type="hidden" value="20" name="Length">
+            <dl>
+                <dt style=" color:Red;">Logo中文名称：</dt>
+                <dd>
+                    <input id="LogoName" type="text" name="LogoName" value="@Model.LogoName" class="text-input small-input {required:true}">
+                </dd>
+            </dl>
+            <dl style="display:none;">
+                <dt style=" color:Red;">链接地址：</dt>
+                <dd>
+                    <input id="LinkUrl" type="text" name="LinkUrl" value="@Model.LinkUrl" class="text-input small-input{required:true,url:true}">
+                </dd>
+            </dl>
+            <div id="form1">
+                <dl>
+                    <dt style=" color:Red;">图片上传：</dt>
+                    <dd>
+                        <input type="file" id="picFile" name="picFile" class="text-input small-input" /> 264*33  小于20K
+                        <div id="img">
+                            <img src="/ReadPic/GetPic.ashx?width=0&height=0&pictureFileNo=@Model.LogoNo&type=2" style="max-width:690px; max-height:200px;" />
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+            <dl>
+                <dt>&nbsp;</dt>
+                <dd>
+                    <button type="submit" value="">
+                        确 定
+                    </button>
+                    <a href="/Shangpin/Flagship?brandNo=@Request.QueryString["brandNo"]" class="secondary">返回</a>
+                </dd>
+            </dl>
+        </form>
+    </div>
+</div>

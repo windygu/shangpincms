@@ -1,0 +1,107 @@
+*{
+	padding:0;
+	margin:0;
+}
+body {
+	font-size:12px;
+}
+i {
+	font-style:normal;
+}
+a:link, a:visited {
+    color: #008CD7;
+    text-decoration: none;
+}
+a:hover, a:active {
+    color: #D10042;
+}
+.center {
+	width:960px;
+	margin:0 auto;
+}
+#seo_list_title h6 {
+    border-bottom: 1px solid #CCCCCC;
+    font-family: '微软雅黑','黑体',Hei,'宋体';
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 44px;
+    text-indent: 18px;
+}
+#seo_list_table_category, #seo_list_table_problem {
+    width: 960px;
+}
+.seo_l_t_title {
+    background-color: #F1F1F1;
+    color: #000000;
+    font-size: 12px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+}
+#seo_list_tb {
+    border: 1px solid #E3E3E3;
+    border-collapse: collapse;
+    width: 960px;
+	margin-top:20px;
+}
+#seo_list_tb tr, #seo_list_tb td, #seo_list_tb th {
+    border: 1px solid #E3E3E3;
+    line-height: 24px;
+    text-align: center;
+}
+#seo_list_tb thead th {
+    background-color: #F1F1F1;
+    font-weight: 400;
+}
+#seo_list_title table tbody td {
+    color: #666666;
+}
+#seo_list_tb tbody th a:link, #seo_list_tb tbody th a:visited {
+    color: #0066CC;
+    display: block;
+    font-weight: 400;
+    height: 24px;
+    line-height: 24px;
+    overflow: hidden;
+    padding: 0 12px;
+    text-decoration: none;
+    width: 390px;
+}
+#seo_list_tb tbody th a:hover, #seo_list_tb tbody th a:active {
+    color: #FC3398;
+}
+.co_blue {
+    color: #0066CC;
+}
+/**/
+
+#pagedowner {
+    padding: 20px 0;
+    position: relative;
+    right: 0;
+    top: 0;
+}
+ #pageupper a:link, #pageupper a:visited, #pagedowner a:link, #pagedowner a:visited {
+    color: #999999;
+    display: inline;
+    float: left;
+    height: 20px;
+    line-height: 20px;
+    margin: 4px 0 0 4px;
+}
+#pagedowner span, #pagedowner a {
+    padding: 4px 10px;
+    text-align: center;
+}
+#pagedowner .prev, #pagedowner .prevnot {
+    padding: 4px 12px;
+}
+#pagedowner .next, #pagedowner .nextnot {
+    padding: 4px 18px 4px 6px;
+}
+#pagedowner .curpage {
+    background-color: #FBEDF4;
+    border: 1px solid #D10042;
+    color: #D10042;
+    font-weight: 700;
+}

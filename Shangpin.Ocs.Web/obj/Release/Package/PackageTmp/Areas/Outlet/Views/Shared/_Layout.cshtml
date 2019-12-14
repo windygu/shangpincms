@@ -1,0 +1,201 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="/Areas/Outlet/Content/css/init.css" rel="stylesheet" type="text/css"
+        charset="utf-8" />
+    <link href="/Areas/Outlet/Content/css/core.css" rel="stylesheet" type="text/css"
+        charset="utf-8" />
+    <link href="/Areas/Outlet/Content/css/layout/header.css" rel="stylesheet" type="text/css"
+        charset="utf-8" />
+    <link href="/Areas/Outlet/Content/css/layout/body.css" rel="stylesheet" type="text/css"
+        charset="utf-8" />
+    <link href="/Areas/Outlet/Content/css/page/leftmenu/leftmenu.css" rel="stylesheet"
+        type="text/css" charset="utf-8" />
+    <link href="/Areas/Outlet/Content/css/page/rightcontent/rightcontent.css" rel="stylesheet"
+        type="text/css" charset="utf-8" /> 
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/lib/jquery.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/plug/leftMenu.js"></script>
+     @*<script src="/Areas/Outlet/Scripts/plug/comm.js" charset="utf-8" type="text/javascript"></script>*@
+    @RenderSection("HeadStyle", false)
+    @RenderSection("HeadScript", false)
+</head>
+<body>
+    <div id="mx-header">
+        <div id="mx-header-logo-wrapper">
+            <span style="float: left;"><a id="mx-header-logo" class="inlb" href="/" style="margin-left: 18px;">
+                <img src="/Areas/Outlet/Images/logo/logo.png" alt="尚品OCS系统" />
+            </a></span><span style="float: right; padding: 20px 20px 0 0;"><a href="/loginout.html">
+                退出系统</a>
+        </div>
+        <div id="mx-header-nav-wrapper">
+            <ul id="mx-header-nav" class="clr">
+                <li class=""><a href="/Shangpin/Brand/AIIBrandsSelect.html">尚品CMS</a></li>
+                <li class="cur"><a href="#">奥莱CMS</a></li>
+                <li><a href="/Shangpin/Venue/MeetListManage">市场运营</a></li>
+                <li><a href="/Permission/cachemanage/clear">缓存清理</a></li>
+                @*<li><a href="#">业务流程</a> </li>
+                <li><a href="#">操作管理</a> </li>
+                <li><a href="#">数据统计</a> </li>*@
+            </ul>
+        </div>
+    </div>
+    <div id="mx-body">
+        <ul id="mx-leftmenu">
+            <li class="first"><a href="javascript:;">活动管理</a>
+                <p>
+                    <a href="/outlet/subject/index">活动列表</a> <a href="/outlet/subject/SordManage">活动分类</a> <a href="/outlet/subject/DataStatisticsNew">数据统计</a>
+                    <a href="/outlet/GroupTime/index">活动分组管理</a>
+                </p>
+            </li>
+            <li><a href="javascript:;">活动控制台</a>
+                <p>
+                    <a href="/outlet/SubjectConsole/SubjectMonitorToday">活动监控</a> <a href="/outlet/SubjectConsole/SubjectManageList">活动管理</a> <a href="/outlet/SubjectConsole/SubjectWaiting">活动排期</a>@* <a href="/outlet/SubjectConsole/DataMonitor">数据监控</a>*@
+                </p>
+            </li>
+           @* <li><a href="javascript:;">专题管理</a>
+                <p>
+                    <a href="/outlet/topic/index">专题列表</a> <a href="/outlet/topic/manage?act=create">新建专题</a>
+                </p>
+            </li>*@
+            <li><a href="javascript:;">频道管理</a>
+                <p>
+                    <a href="/outlet/channel/index">频道列表</a>
+                </p>
+            </li>
+            <li><a href="javascript:;">首页广告管理</a>
+                <p>
+                    <a href="/outlet/indexad/index">广告列表</a>
+                </p>
+            </li>
+            <li><a href="javascript:;">首页公告管理</a>
+                <p>
+                    <a href="/outlet/adcoment/index">公告列表</a>
+                </p>
+            </li>
+            <li><a href="javascript:;">预告页管理</a>
+                <p>
+                    <a href="/outlet/notice/index?islimitedOutlet=1" @(Request.Url.ToString().ToLower().IndexOf("islimitedoutlet=1") > 0 ? Html.Raw("class=\"cur\"") : null)>尚品预告页列表</a>
+                </p>
+                <p>
+                    <a href="/outlet/notice/index?islimitedOutlet=2" @(Request.Url.ToString().ToLower().IndexOf("islimitedoutlet=2") > 0 ? Html.Raw("class=\"cur\"") : null)>奥莱预告页列表</a>
+                </p>
+            </li>
+        </ul>
+        <div id="mx-rightcontent">
+            <div id="mx-rightcontent-inner">
+                <!--内容--->
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    $(function () {
+        var url = window.location.href;
+        url = url.toLowerCase();
+        if (url.indexOf("/subject/") > 0 || url.indexOf("/grouptime/") > 0) {
+            $("#mx-leftmenu li:eq(0)").addClass('cur');
+            $("#mx-leftmenu li:eq(0) p").show();
+            var index = 0;
+            if (url.indexOf("/sordmanage") > 0) {
+                index = 1;
+            }
+            if (url.indexOf("/datastatisticsnew") > 0) {
+                index = 2;
+            }
+            if (url.indexOf("/grouptime") > 0) {
+                index = 3;
+            }
+            $("#mx-leftmenu li:eq(0) p > a:eq(" + index + ")").addClass('cur');
+        }
+        if (url.indexOf("/subjectconsole/") > 0) {
+            $("#mx-leftmenu li:eq(1)").addClass('cur');
+            $("#mx-leftmenu li:eq(1) p").show();
+            var index = 0;
+            if (url.indexOf("/subjectmonitor") > 0) {
+                index = 0;
+            }
+            if (url.indexOf("/subjectmanage") > 0) {
+                index = 1;
+            }
+            if (url.indexOf("/subjectwaiting") > 0) {
+                index = 2;
+            }
+            if (url.indexOf("/datamonitor") > 0) {
+                index = 3;
+            }
+            $("#mx-leftmenu li:eq(1) p > a:eq(" + index + ")").addClass('cur');
+        }
+//        if (url.indexOf("/topic") > 0) {
+//            $("#mx-leftmenu li:eq(2)").addClass('cur');
+//            $("#mx-leftmenu li:eq(2) p").show();
+//            var index = 0;
+//            if (url.indexOf("/manage") > 0) {
+//                index = 1;
+//            }
+//            $("#mx-leftmenu li:eq(2) p > a:eq(" + index + ")").addClass('cur');
+//        }
+        if (url.indexOf("/channel") > 0 || url.indexOf("/mobilead")>0) {
+            $("#mx-leftmenu li:eq(2)").addClass('cur');
+            $("#mx-leftmenu li:eq(2) p").show();
+            var index = 0;
+            if (url.indexOf("/manage") > 0) {
+                index = 1;
+            }
+            $("#mx-leftmenu li:eq(2) p > a:eq(" + index + ")").addClass('cur');
+        }
+        if (url.indexOf("/indexad") > 0) {
+            $("#mx-leftmenu li:eq(3)").addClass('cur');
+            $("#mx-leftmenu li:eq(3) p").show();
+            var index = 0;
+            if (url.indexOf("/manage") > 0) {
+                index = 1;
+            }
+            $("#mx-leftmenu li:eq(3) p > a:eq(" + index + ")").addClass('cur');
+        }
+
+        if (url.indexOf("/adcoment") > 0) {
+            $("#mx-leftmenu li:eq(4)").addClass('cur');
+            $("#mx-leftmenu li:eq(4) p").show();
+            var index = 0;
+            if (url.indexOf("/manage") > 0) {
+                index = 1;
+            }
+            $("#mx-leftmenu li:eq(4) p > a:eq(" + index + ")").addClass('cur');
+        }
+        if (url.indexOf("/notice") > 0) {
+            $("#mx-leftmenu li:eq(5)").addClass('cur');
+            $("#mx-leftmenu li:eq(5) p").show();
+            //var index = 0;
+//            if (url.indexOf("/manage") > 0) {
+//                index = 1;
+//            }
+            //$("#mx-leftmenu li:eq(5) p > a:eq(" + index + ")").addClass('cur');
+        }
+
+
+
+        $("#mx-leftmenu li > a").toggle(function () {
+            $(this).parent('li').find('p').show();
+            $(this).parent('li').addClass('cur');
+        }, function () {
+            $(this).parent('li').find('p').hide();
+            $(this).parent('li').find('p').removeClass('cur');
+            $(this).parent('li').removeClass('cur');
+        });
+
+        $("#mx-leftmenu li").on('click', function () {
+            var that = $(this),
+			childLen = that.find('p').length;
+            that.addClass('cur').siblings('li').removeClass('cur');
+            $("#mx-leftmenu li").find('p').hide();
+            if (childLen > 0) {
+                that.find('p').show();
+            }
+
+        });
+    });
+</script>

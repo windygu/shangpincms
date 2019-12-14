@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <!--查询标签商品列表-->
+  <statement id="ComBeziWfs_SWfsProduct_SelectSWfsProductList2">
+    with temp as (
+    select a.ProductNo,
+    a.OnSalesTime as DateShelf,
+    a.ProductModel as GoodsNo,
+    a.ProductModel ,
+    a.ProductName,
+    b.ProductShowPic as ProductPicFile,
+    b.ProductShowPic ,
+    b.IsOutSide,
+    c.PcSaleState as IsShelf,
+    c.PcSaleState ,
+    c.PcShowState,
+    d.BrandCnName,
+    d.BrandEnName,
+    e.status as IsPublish,
+    f.TemplateName,
+    row_number() over(order by a.CreateTime desc) as row
+    from SpProduct (nolock) as a
+    left join  SpfProductExtend (nolock)  as b  on a.ProductNo=b.ProductNo
+    left join SpfSkuExtend (nolock) as c on a.ProductNo=c.ProductNo
+    left join SpBrand (nolock) as d on a.BrandNo = d.BrandNo
+    left join SWfsProductRef (nolock) as e on a.productNO=e.ProductNO
+    left join SWfsProductTemplate (nolock) as f on f.TemplateNO=e.TemplateNO
+
+    where 1=1
+    #if($Keyword!='')
+    and (a.ProductName like '%'+@KeyWord+ '%' or a.ProductNo =@KeyWord or a.ProductModel =@KeyWord)
+    #end
+    #if($CategoryNo !='')
+    and a.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and a.ProductSex=@Gender
+    #end
+    #if($BrandNO !='')
+    and a.BrandNo=@BrandNO
+    #end
+    #if($IsShelf!='')
+    and c.PcSaleState=@IsShelf
+    #end
+    #if($IsPublish!='')
+    and e.Status=@IsPublish
+    #end
+    #if($TemplateName!='')
+    and f.TemplateName like '%'+@TemplateName+'%'
+    #end
+    #if($StartDateShelf!='')
+    and c.PcShelfDate &gt; @StartDateShelf
+    #end
+    #if($EndDateShelf!='')
+    and c.PcShelfDate &lt; @EndDateShelf
+    #end
+    #if($IsOutSide!='')
+    and b.IsOutSide =@IsOutSide
+    #end
+    )
+    select * from temp  where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!--查询模板总条数-->
+  <statement id="ComBeziWfs_SWfsProduct_SelectSWfsProductCount2">
+    select count(0) from
+    SpProduct (nolock) as a
+    left join  SpfProductExtend (nolock)  as b  on a.ProductNo=b.ProductNo
+    left join SpfSkuExtend (nolock) as c on a.ProductNo=c.ProductNo
+    left join SpBrand (nolock) as d on a.BrandNo = d.BrandNo
+    left join SWfsProductRef (nolock) as e on a.productNO=e.ProductNO
+    left join SWfsProductTemplate (nolock) as f on f.TemplateNO=e.TemplateNO
+
+    where 1=1
+    #if($Keyword!='')
+    and (a.ProductName like '%'+@KeyWord+ '%' or a.ProductNo =@KeyWord or a.ProductModel =@KeyWord)
+    #end
+    #if($CategoryNo !='')
+    and a.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and a.ProductSex=@Gender
+    #end
+    #if($BrandNO !='')
+    and a.BrandNo=@BrandNO
+    #end
+    #if($IsShelf!='')
+    and c.PcSaleState=@IsShelf
+    #end
+    #if($IsPublish!='')
+    and c.Status=@IsPublish
+    #end
+    #if($TemplateName!='')
+    and d.TemplateName like '%'+@TemplateName+'%'
+    #end
+    #if($StartDateShelf!='')
+    and c.PcShelfDate &gt; @StartDateShelf
+    #end
+    #if($EndDateShelf!='')
+    and c.PcShelfDate &lt; @EndDateShelf
+    #end
+    #if($IsOutSide!='')
+    and b.IsOutSide =@IsOutSide
+    #end
+  </statement>
+  <!--获取商品标签-->
+  <statement id="ComBeziWfs_SwfsProductRefLabel_GetProductLabel" primarykey="ProductRefLabelId">
+    select  * from SwfsProductRefLabel  where productNo=@ProductNo
+  </statement>  
+  <!--删除商品标签-->
+  <statement id="ComBeziWfs_SwfsProductRefLabel_DeleteProductLabel" primarykey="ProductRefLabelId">
+    delete from SwfsProductRefLabel where ProductNo=@ProductNo
+  </statement>  
+<!--查询所有标签-->
+  <statement id="ComBeziWfs_SWfsProductLabel_GetLabelAll">
+    SELECT [LabelId]
+    ,[LabelNo]
+    ,[ParentNo]
+    ,[LabelName]
+    ,[LabelType]
+    ,[LabelNickName]
+    FROM [SWfsProductLabel](nolock)
+  </statement>
+  <!--获取商品标签详情-->
+  <statement id="ComBeziWfs_SwfsProductRefLabel_GetProductRefLabelDetail" >
+    select a.ProductNo,a.RefLabelNo,a.Weight,RefLabelParentNo,b.LabelName,c.LabelType,c.LabelName ParentLabelName
+    from SwfsProductRefLabel a
+    left join SWfsProductLabel b on a.RefLabelNo=b.LabelNo
+    left join SWfsProductLabel c on a.RefLabelParentNo=c.LabelNo where ProductNo=@ProductNo
+  </statement>  
+  <!--查询所有标签-->
+  <statement id="ComBeziWfs_SWfsProductLabel_GetAllLabels" primarykey="LabelId">
+    SELECT [LabelId]
+    ,[LabelNo]
+    ,[ParentNo]
+    ,[LabelName]
+    ,[LabelType]
+    ,[LabelNickName]
+    FROM [SWfsProductLabel](nolock)
+  </statement>
+  <!--验证是否存在标签-->
+  <statement id="ComBeziWfs_SWfsLabel_IsExistsProductLabel">
+    SELECT count(0) FROM [SWfsProductLabel](nolock) WHERE  ParentNo=@ParentNo AND LabelName=@LabelName
+  </statement>
+  <statement id="ComBeziWfs_SWfsLabel_IsExistsProductLabelEx">
+    SELECT count(0) FROM [SWfsProductLabel](nolock) WHERE  ParentNo=@ParentNo AND LabelId!=@LabelId AND LabelName=@LabelName
+  </statement>
+  <statement id="ComBeziWfs_SWfsLabel_DeleteLabel">
+    delete [SWfsProductLabel] WHERE  LabelNo=@LabelNo or ParentNo=@LabelNo
+  </statement>
+  <!--查询最大标签编号-->
+  <statement id="ComBeziWfs_SWfsLabel_GetMaxProductLabelNo">
+    select COUNT(0) from SWfsProductLabel where ParentNo=@ParentNo
+  </statement>
+  <!--按id查询标签-->
+  <statement id="ComBeziWfs_SWfsLabel_GetProductLabelByID">
+    SELECT [LabelId]
+    ,[LabelNo]
+    ,[ParentNo]
+    ,[LabelName]
+    ,[LabelType]
+    FROM [SWfsProductLabel](nolock) WHERE LabelId=@LabelId
+  </statement>
+  
+  <!--查询商品各个角度的图片-->
+   <!--select PictureFileNo from  wfsproductattr(nolock) as a inner join WfsProductAttrPic(nolock) as b
+    on a.ProductAttrNo=b.ProductAttrNo where a.ProductNo=@ProductNo-->
+  <statement id="ComBeziWfs_WfsPrductAttr_GetProductPicList">
+    select b.PictureFileNo from SpfSkuExtend as a inner join SpfSkuPicture as b on a.SkuNo=b.SkuNo and 3 > b.PictureType where a.ProductNo=@ProductNo
+  </statement>
+  <!--查询历史记录-->
+  <statement id="ComBeziWfs_SWfsProductLabelSearchHistory_GetSearchHistory">
+    select top $getCount * from SWfsProductLabelSearchHistory(nolock) where SearchUser=@SearchUser order by CreateDate desc
+  </statement>
+  <!--清除查询历史-->
+  <statement id="ComBeziWfs_SWfsProductLabelSearchHistory_DeleteLabelHistory">
+    delete SWfsProductLabelSearchHistory where SearchUser=@SearchUser
+  </statement>
+</statements>

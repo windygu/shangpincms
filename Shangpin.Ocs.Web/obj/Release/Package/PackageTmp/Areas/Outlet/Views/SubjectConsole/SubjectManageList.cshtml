@@ -1,0 +1,739 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.Outlet
+@using Shangpin.Ocs.Web.Infrastructure
+@using Shangpin.Ocs.Service.Outlet
+@model Shangpin.Entity.Common.RecordPage<SubjectInfo>
+@{
+    ViewBag.Title = "活动管理";
+    Layout = "~/Areas/Outlet/Views/Shared/_Layout.cshtml";
+}
+@{
+    int page = ViewBag.PageIndex != null ? (int)ViewBag.PageIndex : 1;
+    int pageSize = ViewBag.PageSize != null ? (int)ViewBag.PageSize : 10;
+    int totalCount = ViewBag.TotalCount != null ? (int)ViewBag.TotalCount : 0;
+    IList<Shangpin.Entity.Wfs.SWfsChannelSord> channelSordList = ViewBag.ChannelSordList;
+}
+@section HeadStyle
+{
+    <link href="/Areas/Outlet/Content/css/tipswindown.css" rel="stylesheet" type="text/css" />
+    <link href="/Areas/Outlet/Content/css/tablesorter.style.css" rel="stylesheet" type="text/css" />
+    <script src="/Areas/Outlet/Scripts/kindeditor-4.1.10/kindeditor.js"></script>
+    <script src="/Areas/Outlet/Scripts/kindeditor-4.1.10/CommKindeditor.js"></script>
+
+    <style type="text/css">
+        #ol-index-today-tab {
+            padding-top: 15px;
+            height: 33px;
+            border-bottom-width: 1px;
+            border-bottom-color: #cccccc;
+            border-bottom-style: solid;
+        }
+
+            #ol-index-today-tab ul {
+                height: 32px;
+                left: 10px;
+                top: 14px;
+                width: 190px;
+                border: 1px solid #cccccc;
+                border-bottom-color: #cccccc;
+            }
+
+                #ol-index-today-tab ul li {
+                    float: left;
+                    font-size: 14px;
+                    font-weight: bold;
+                    height: 32px;
+                    line-height: 32px;
+                    text-align: center;
+                    width: 95px;
+                }
+
+                    #ol-index-today-tab ul li.curr {
+                        background-color: #2293E2;
+                        color: #ffffff;
+                    }
+
+        .console-bottom-page {
+            height: 50px;
+            position: relative;
+        }
+
+            .console-bottom-page ul {
+                padding-top: 10px;
+                width: 210px;
+            }
+
+                .console-bottom-page ul li {
+                    float: left;
+                    width: 70px;
+                    font-size: 14px;
+                }
+
+                .console-bottom-page ul a:link, .console-bottom-page ul a:visited {
+                    color: #05609F;
+                }
+
+                .console-bottom-page ul a:hover, .console-bottom-page ul a:active {
+                    color: #FF6600;
+                }
+
+        .timeFlagDiv {
+            float: left;
+            width: 150px;
+        }
+
+            .timeFlagDiv ul li {
+                float: left;
+                height: 22px;
+                width: 45px;
+                text-align: center;
+                cursor: pointer;
+                font-size: 14px;
+            }
+
+        .curr {
+            background-color: #2293E2;
+            color: #ffffff;
+        }
+
+        .mouseUp {
+            float: left;
+            height: 22px;
+            width: 45px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 14px;
+            background-color: #99CCFF;
+        }
+
+        textarea.status-content {
+            display: inline-block;
+            font-size: 12px;
+            height: 20px;
+            line-height: 20px;
+            outline: 0 none;
+            resize: none;
+            transition: height 0.1s ease-in 0s;
+            width: 200px;
+            z-index: 1000;
+            overflow: auto;
+            border: 1px solid #cccccc;
+        }
+
+        .status-input .status-textarea {
+            border: 1px solid #cccccc;
+            padding-top: 5px;
+            position: fixed;
+            z-index: 1000;
+            overflow: auto;
+            color: #666;
+        }
+
+        textarea {
+            font-size: 12px;
+            overflow: auto;
+            word-break: break-all;
+            word-wrap: break-word;
+        }
+    </style>
+}
+@section HeadScript{
+    <script src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+    <script src="/Areas/Outlet/Scripts/plug/tipswindown.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="/Areas/Outlet/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+    <script src="/Areas/Outlet/Scripts/plug/DivWaitMsg.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/plug/ERPBrand.js"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/plug/autoComplete.js"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/plug/jquery.tablesorter.js"></script>
+    <script language="javascript" type="text/javascript">
+        (function (window, $, undefined) {
+            $(function () {
+                $("#QueryBrandName").selectBrandNew('QueryBrandNo', 'QueryBrandName', false, '', ''); //执行品牌选择操作
+                $(".timeFlagDiv li").click(function () {
+                    if ($(this).attr("class") == "curr") {
+                        $(this).removeClass();
+                        $("#hidTimeFlag").val("");
+                    } else {
+                        $(".timeFlagDiv li").each(function () {
+                            $(this).removeClass();
+                            $("#hidTimeFlag").val("");
+                        });
+                        $(this).addClass("curr");
+                        $("#hidTimeFlag").val($(this).attr("flag"));
+                    }
+                });
+                $("#ol-index-today-tab li").mousemove(function (e) {
+                    var obj = $(this);
+                    if ($(obj).attr("class") != "curr") {
+                        $(obj).addClass("mouseUp");
+                    }
+                });
+                $("#ol-index-today-tab li").mouseout(function () {
+                    var obj = $(this);
+                    if ($(obj).attr("class") != "curr") {
+                        $(obj).removeClass();
+                    }
+                });
+                UpdateSubjectProductNum(); //更新活动商品数量
+
+                $("#txtBatchSubjectNo").focus(function () {
+                    $(this).animate({ height: "200px", position: "absolute", overflow: "auto" }, 300);
+                }).blur(function () {
+                    $(this).animate({ height: "19px", position: "absolute", overflow: "auto" }, 300);
+                });
+
+            });
+        })(window, jQuery);
+        function checkAll(obj) {
+            if (obj.checked) {
+                $("[name='SubjectNoCheckBox']").each(function () {
+                    $(this).attr("checked", "true");
+                });
+            }
+            else {
+                $("[name='SubjectNoCheckBox']").each(function () {
+                    $(this).removeAttr("checked");
+                });
+            }
+        }
+        function Edit(id) {
+            $.get("/outlet/SubjectConsole/ConsoleEdit", { subjectNo: id, t: Math.random() }
+                , function (res) {
+                    if (res) {
+                        $("#mx-rightcontent-fixbarbg").show();
+                        $("#mx-rightcontent-fixbarbg > .fixbarcontent").empty();
+                        $("#mx-rightcontent-fixbarbg > .fixbarcontent").html(res);
+                    }
+                });
+            return false;
+        }
+        //设置活动每页显示数量
+        function SetPageSizeUrl(size) {
+            $("#hidPageSize").val(size);
+            $("#SelectSWfsSubjectProductRef").submit();
+        }
+        //活动申请推广
+        function ApplyPromotion(subjectNo) {
+            var obj = $(this);
+            tipsWindown("活动网推申请", "iframe:/outlet/MarketOption/AddApply?flag=addapply&subjectNo=" + subjectNo, "600", "350", "true", "", "true", "text");
+        }
+        //更新商品数量
+        function UpdateSubjectProductNum() {
+            var arraySubjectNo = '';
+            $("input[name='SubjectNoCheckBox']").each(function () {
+                arraySubjectNo = arraySubjectNo + "," + $(this).val();
+            });
+            if (arraySubjectNo != "") {
+                $.ajax({
+                    url: "/Outlet/SubjectConsole/UpdateSubjectProductNum",
+                    type: "post",
+                    dataType: "json",
+                    data: "subjectNo=" + arraySubjectNo + "&type=1&t=" + new Date().getTime(),
+                    success: function (data) {
+                        if (data != null) {
+                            for (var i = 0; i < data.jsonProduct.length; i++) {
+                                $("#productNum_" + data.jsonProduct[i].SubjectNo).html(data.jsonProduct[i].ProductNum);
+                            }
+                            //异步加载商品数量完成后再绑定排序字段
+                            $(".mx-table").tablesorter({
+                                headers: {
+                                    0: { sorter: false }, 1: { sorter: false }, 2: { sorter: false }, 3: { sorter: false }, 4: { sorter: false },
+                                    5: { sorter: false }, 6: { sorter: false }, 7: { sorter: false }, 8: { sorter: false }, 9: { sorter: false }, 10: { sorter: "integer" }, 14: { sorter: false }, 11: { sorter: "integer" }
+                                },
+                                textExtraction: function (node) {
+                                    return $(node).find("span").html();
+                                }
+                            });
+                        }
+                    },
+                    error: function (x, e) {
+                        alert(x.responseText);
+                    }
+                });
+            }
+
+        }
+        //修改活动时间
+        function UpdateSubjectTime(subjectNo) {
+            tipsWindown("修改活动时间", "iframe:/outlet/SubjectConsole/EditSubjectTime?subjectNo=" + subjectNo, "600", "350", "true", "", "true", "text");
+        }
+        //批量审核活动
+        function AuditSubject() {
+            var arraySubjectNo = "";
+            var subjectNoObj = $("input:checkbox[name='SubjectNoCheckBox']:checked");
+            $(subjectNoObj).each(function () {
+                arraySubjectNo = arraySubjectNo + "," + $(this).val() + "|" + $(this).attr("status");
+            });
+            if (arraySubjectNo != "") {
+                LoadMsgBegin("审核中...");
+                $.ajax({
+                    url: "/Outlet/SubjectConsole/UpdateSubjectAuditStatus",
+                    type: "post",
+                    dataType: "json",
+                    data: "subjectNo=" + arraySubjectNo + "&t=" + new Date().getTime(),
+                    success: function (data) {
+                        if (data != null) {
+                            if (data.result == "1") {
+                                if (data.successMsg.length > 0) {
+                                    for (var i = 0; i < data.successMsg.length; i++) {
+                                        if (data.successMsg[i].value == "1") {
+                                            $("#td_txt_status_" + data.successMsg[i].key).html("");
+                                            $("#td_txt_status_" + data.successMsg[i].key).html("开启");
+                                            $("#td_txt_audited_" + data.successMsg[i].key).html("");
+                                            $("#td_txt_audited_" + data.successMsg[i].key).html("已审核");
+                                        }
+                                    }
+                                }
+                                if (data.errorMsg.length > 0) {
+                                    var strArray = "编号为";
+                                    var statusVal = "";
+                                    var len = data.errorMsg.length;
+                                    for (var i = 0; i < len; i++) {
+                                        if (data.errorMsg[i].value == "-1") {
+                                            statusVal = "已关闭";
+                                        } else if (data.errorMsg[i].value == "-2") {
+                                            statusVal = "未开启";
+                                        } else if (data.errorMsg[i].value == "-3") {
+                                            statusVal = "已删除";
+                                        }
+                                        strArray = strArray + data.errorMsg[i].key + "活动" + statusVal;
+                                        if (i < len - 1) { strArray = strArray + ","; }
+                                    }
+                                    strArray = strArray + "审核失败！";
+                                    alert(strArray);
+                                    $("input[type='checkbox']").prop("checked", false);
+                                    LoadMsgEnd();
+                                    return true;
+                                } else {
+                                    alert("审核成功！");
+                                    $("input[type='checkbox']").prop("checked", false);
+                                    LoadMsgEnd();
+                                    return true;
+                                }
+                            } else {
+                                alert("数据更新失败！");
+                                LoadMsgEnd();
+                                return false;
+                            }
+                        }
+                    },
+                    error: function (x, e) {
+                        alert(x.responseText);
+                        LoadMsgEnd();
+                    }
+                });
+            } else {
+                alert("请选择审核活动！");
+                return false;
+            }
+        }
+        //批量查看统计数据
+        function ViewStatisticsData() {
+            var arraySubjectNo = "";
+            var len = $("input:checkbox[name='SubjectNoCheckBox']:checked").length;
+            $("input:checkbox[name='SubjectNoCheckBox']:checked").each(function (i) {
+                arraySubjectNo = arraySubjectNo + $(this).val();
+                if (len > (i + 1)) {
+                    arraySubjectNo = arraySubjectNo + ",";
+                }
+            });
+            if (arraySubjectNo != "") {
+                $("#hidSubjectNo").val(arraySubjectNo);
+                $("#frmSubjectConsoleData").submit();
+            } else {
+                alert("请选择查看数据 ！");
+                return false;
+            }
+        }
+        //取消修改并且关闭弹出层
+        function TrueInfo() {
+            $("#windown-close").trigger("click");
+        }
+        //保存后返回数据
+        function ClickRowNew(id, value, h) {
+            $("#time_td_" + id).empty();
+            $("#time_td_" + id).html(value);
+            $("#time_td_h_" + id).empty();
+            $("#time_td_h_" + id).html(h + "H");
+            $("#windown-close").trigger("click");
+            //window.location.reload(true);
+        }
+
+        //删除未开启活动
+        function DelNoOpenSubject(subjectNo) {
+            if (subjectNo != "") {
+                if (confirm("确定要删除选择的活动吗？")) {
+                    LoadMsgBegin("删除中...");
+                    $.ajax({
+                        url: "/Outlet/SubjectConsole/UpdateSubjectStatusToDel",
+                        type: "post",
+                        dataType: "json",
+                        data: "subjectNo=" + subjectNo + "&t=" + new Date().getTime(),
+                        success: function (data) {
+                            if (data != null) {
+                                if (data.result == "1") {
+                                    alert("删除成功！");
+                                    LoadMsgEnd();
+                                    $("#SelectSWfsSubjectProductRef").submit();
+                                    return true;
+                                } else {
+                                    alert("删除失败！");
+                                    LoadMsgEnd();
+                                    return false;
+                                }
+                            }
+                        },
+                        error: function (x, e) {
+                            alert(x.responseText);
+                            LoadMsgEnd();
+                        }
+                    });
+                }
+            } else {
+                alert("请选择要删除的活动！");
+                return false;
+            }
+        }
+
+        function GoPageIndex(page) {
+            $("#txtpageindex").val(page);
+            $("#SelectSWfsSubjectProductRef").submit();
+        }
+    </script>
+}
+<h1>
+    OCS > 奥莱CMS > 活动控制台 > 活动管理 > 全部活动
+</h1>
+<form method="post" action="/outlet/SubjectConsole/SubjectManageList" id="SelectSWfsSubjectProductRef">
+    <div id="ol-index-today-tab">
+        <ul>
+            <li tabid="mytab-1" class="curr"><span>全部活动</span></li>
+            <li tabid="mytab-2">
+                <span>
+                    <a href="/outlet/SubjectConsole/SubjectManagePreheatList">
+                        预热活动
+                    </a>
+                </span>
+            </li>
+        </ul>
+    </div>
+    <div style="height: 70px; position: relative;">
+        <table border="0" class="mx-table" style="text-align: left; width: 1100px;">
+            <tr>
+                <td align="left" style="text-align: left; position: absolute;">
+                    <textarea id="txtBatchSubjectNo" onfocus="if(this.value == '多个活动编号用逗号或回车隔开') this.value = ''"
+                              onblur="if(this.value == '') this.value = '多个活动编号用逗号或回车隔开'" class="status-content"
+                              name="BatchSubjectNo" style="margin-top: 2px; height: 20px; color: #666; position: absolute;
+                    overflow: auto;">@(!string.IsNullOrEmpty(ViewBag.BatchSubjectNo) ? ViewBag.BatchSubjectNo : "多个活动编号用逗号或回车隔开")</textarea>
+            </td>
+            <td align="left" style="text-align: left; padding-left: 210px;">
+                <input name="keyWord" value="@(!string.IsNullOrEmpty(ViewBag.KeyWord) ? ViewBag.KeyWord : "活动编号/名称")" style="width:140px;color:#666;font-size:12px;text-align:left;"
+                       onfocus="if(this.value == '活动编号/名称') this.value = ''" onblur="if(this.value == '') this.value = '活动编号/名称'" class="status-input" />
+            </td>
+            <td align="left" style="text-align: left;">
+                <input name="productNo" value="@(!string.IsNullOrEmpty(ViewBag.ProductNo) ? ViewBag.ProductNo : "商品编号")" style="width: 120px; color: #666; font-size: 12px;"
+                       onfocus="if(this.value == '商品编号') this.value = ''" onblur="if(this.value == '') this.value = '商品编号'" class="status-input" />
+            </td>
+            <td align="left" style="text-align: left;">
+                <input type="hidden" value="@ViewBag.BrandNo" id="QuerybranchNo" name="QuerybranchNo" />
+                <input name="QueryBrandName" id="QueryBrandName" onfocus="if(this.value == '品牌') this.value = ''" onblur="if(this.value == '') this.value = '品牌'"
+                       style="width: 100px; color: #666; font-size: 12px;" value="@(!string.IsNullOrEmpty(ViewBag.BrandName) ? ViewBag.BrandName : "品牌")" class="status-input" />
+            </td>
+            <td align="left">
+                <select name="Status">
+                    <option value="">状态 </option>
+                    <option value="0" @(ViewBag.Status == "0" ? "selected=selected" : "")>已关闭 </option>
+                    <option value="1" @(ViewBag.Status == "1" ? "selected=selected" : "")>已开启 </option>
+                    <option value="2" @(ViewBag.Status == "2" ? "selected=selected" : "")>未开启 </option>
+                </select>
+            </td>
+            <td align="left">
+                <select name="IsAudited" id="IsAudited">
+                    <option value="">审核状态</option>
+                    <option value="0" @(ViewBag.IsAudited == "0" ? "selected=selected" : "")>待审核</option>
+                    <option value="1" @(ViewBag.IsAudited == "1" ? "selected=selected" : "")>已审核</option>
+                </select>
+            </td>
+            <td align="left">
+                <select name="ChannelSord">
+                    <option value="">分类</option>
+                    @foreach (var channel in channelSordList)
+                    {
+                        <option value="@channel.SordNo" @(ViewBag.ChannelSord == channel.SordNo ? "selected=selected" : "")>
+                            @channel.SordName
+                    </option>
+                    }
+                </select>
+            </td>
+            <td align="left">
+                <select name="BU" id="BU">
+                    <option value="">BU</option>
+                    <option value="1" @(ViewBag.BU == "1" ? "selected=selected" : "")>BU1</option>
+                    <option value="2" @(ViewBag.BU == "2" ? "selected=selected" : "")>BU2</option>
+                    <option value="3" @(ViewBag.BU == "3" ? "selected=selected" : "")>BU3</option>
+                    <option value="4" @(ViewBag.BU == "4" ? "selected=selected" : "")>BU4</option>
+                    <option value="5" @(ViewBag.BU == "5" ? "selected=selected" : "")>BU5</option>
+                    <option value="6" @(ViewBag.BU == "6" ? "selected=selected" : "")>BU6</option>
+                    <option value="0" @(ViewBag.BU == "0" ? "selected=selected" : "")>其他</option>
+                </select>
+            </td>
+            <td>
+                <select name="Template" id="Template">
+                    <option value="">类型</option>
+                    <option value="1" @(ViewBag.Template == "1" ? "selected=selected" : "")>纯图片</option>
+                    <option value="3" @(ViewBag.Template == "3" ? "selected=selected" : "")>小图模式</option>
+                    <option value="2" @(ViewBag.Template == "2" ? "selected=selected" : "")>大图模式</option>
+                    <option value="4" @(ViewBag.Template == "4" ? "selected=selected" : "")>专题模式</option>
+                    <option value="5" @(ViewBag.Template == "5" ? "selected=selected" : "")>秒杀模式</option>
+                </select>
+            </td>
+            <td align="left">
+                <select name="RunStatus" id="RunStatus">
+                    <option value="">运行状态</option>
+                    <option value="1" @(ViewBag.RunStatus == "1" ? "selected=selected" : "")>预热</option>
+                    <option value="2" @(ViewBag.RunStatus == "2" ? "selected=selected" : "")>正常</option>
+                    <option value="3" @(ViewBag.RunStatus == "3" ? "selected=selected" : "")>结束</option>
+                </select>
+            </td>
+            <td>
+                <input type="hidden" name="pageindex" id="txtpageindex" value="1" />
+                <input class="button" type="submit" id="btnConfirmSubmit" value="查 询" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" align="left" style="text-align: left;">
+                <div style="float: left; position: relative; width: 300px;">
+                    <span>开始时间</span>
+                    <input id="StartTime" name="StartTime" value="@ViewBag.StartTime" maxlength="30" class="Wdate" type="text" onclick="WdatePicker()" readonly="readonly" style="width:100px;" />
+                    <span>至</span>
+                    <input id="EndTime" name="EndTime" value="@ViewBag.EndTime" maxlength="30" class="Wdate" type="text" onclick="WdatePicker()" readonly="readonly" style="width:100px;" />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<input type="hidden" id="hidTimeFlag" name="hidTimeFlag" value="@ViewBag.TimeFlag" /><input type="hidden" id="hidPageSize" name="pageSize" value="@ViewBag.PageSize" />
+                </div>
+                <div class="timeFlagDiv">
+                    <ul>
+                        <li flag="1" @(ViewBag.TimeFlag == "1" ? "class=curr" : "")>今 天</li>
+                        <li flag="2" @(ViewBag.TimeFlag == "2" ? "class=curr" : "")>本 周</li>
+                        <li flag="3" @(ViewBag.TimeFlag == "3" ? "class=curr" : "")>本 月</li>
+                    </ul>
+                </div>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <span style="float: right; font-weight: bold; position: absolute; right: 0; bottom: 0;">
+        <a href="#" onclick="SetPageSizeUrl(10)" @(ViewBag.PageSize == 10 ? "class=curr" : "")>
+            10
+        </a> | <a href="#" onclick="SetPageSizeUrl(50)" @(ViewBag.PageSize == 50 ? "class=curr" : "")>
+            50
+        </a> | <a href="#" onclick="SetPageSizeUrl(100)" @(ViewBag.PageSize == 100 ? "class=curr" : "")>
+            100
+        </a>
+    </span>
+</div>
+</form>
+<table cellpadding="1" cellspacing="1" class="mx-table">
+    <thead>
+        <tr>
+            <th>
+                选择
+            </th>
+            <th>
+                活动编号
+            </th>
+            <th>
+                活动名称
+            </th>
+            <th>
+                品牌
+            </th>
+            <th>
+                状态
+            </th>
+            <th>
+                审核状态
+            </th>
+            <th>
+                分类
+            </th>
+            <th>
+                BU
+            </th>
+            <th>
+                类型
+            </th>
+            <th>
+                运行状态
+            </th>
+            <th>
+                销售额预估
+            </th>
+            <th>
+                商品数量
+            </th>
+            <th>
+                活动时间
+            </th>
+            <th>
+                持续时间
+            </th>
+            <th>
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Items != null && Model.Items.Count() > 0)
+        {
+            var flag = 0;
+            foreach (var subject in Model.Items)
+            {
+
+                IList<string> sordlist = null;
+                flag = flag + 1;
+                <tr class="@(flag % 2 == 0 ? "cross" : "")">
+                    <td>
+                        <input type="checkbox" name="SubjectNoCheckBox" value="@subject.SubjectNo" status="@subject.Status" />
+                    </td>
+                    <td>
+                        @subject.SubjectNo
+                    </td>
+                    <td>
+                        @subject.SubjectName
+                    </td>
+                    <td>
+                        @(!string.IsNullOrEmpty(subject.BrandEnName) ? subject.BrandEnName : subject.BrandCnName)
+                    </td>
+                    <td id="td_txt_status_@(subject.SubjectNo)">
+                        @(subject.Status == 1 ? "开启" : subject.Status == 0 ? "关闭" : "未开启")
+                    </td>
+                    <td id="td_txt_audited_@(subject.SubjectNo)">
+                        @(subject.IsAudited == 1 ? "已审核" : "待审核")
+                    </td>
+                    <td>
+                        @if (subject.ChannelSordList != null)
+                        {
+                            sordlist = subject.ChannelSordList.Select(s => s.SordNo).ToList();
+                            foreach (Shangpin.Entity.Wfs.SWfsChannelSord sord in channelSordList)
+                            {
+                                if (sordlist.Contains(sord.SordNo))
+                                {
+                                    @sord.SordName<br />
+                                }
+                            }
+                        }
+                    </td>
+                    <td>
+                        @(!string.IsNullOrEmpty(subject.BU) ? subject.BU.Equals("0") ? "其它" : "BU" + subject.BU : "")
+                    </td>
+                    <td>
+                        @if (subject.SubjectTemplate == 1 || subject.SubjectTemplate == 3 || subject.SubjectTemplate == 2)
+                        {
+                            @("活动")
+                        }
+                        else if (subject.SubjectTemplate == 4)
+                        {
+                            @("专题")
+                        }
+                        else if (subject.SubjectTemplate == 5)
+                        {
+                            @("秒杀")
+                        }
+                    </td>
+                    <td>
+                        @if ((new DateTime(subject.DateBegin.Year, subject.DateBegin.Month, subject.DateBegin.Day, 0, 0, 0) <= DateTime.Now || subject.DateBegin > DateTime.Now) && subject.IsPreheat == 0 && subject.DateEnd > DateTime.Now)
+                        {
+                            @("正常")
+                        }
+                        else if (subject.DateEnd <= DateTime.Now)
+                        {
+                            @("结束")
+                        }
+                        else if (subject.IsPreheat == 1 && subject.PreheatTime.Year > 1900 && subject.DateBegin > DateTime.Now)
+                        {
+                            @("预热")
+                        }
+                        else if (subject.IsPreheat == 1 && subject.PreheatTime.Year > 1900 && new DateTime(subject.DateBegin.Year, subject.DateBegin.Month, subject.DateBegin.Day, 0, 0, 0) <= DateTime.Now)
+                        {
+                            @("正常")
+                        }
+                    </td>
+                    <td>
+                        <span>@subject.SalesForecast</span>
+                    </td>
+                    <td>
+                        <span id="productNum_@subject.SubjectNo">0</span>
+                    </td>
+                    <td style="width: 170px;">
+                        <table style="width: 170px; position: relative; clear: both;">
+                            <tr>
+                                <td>
+                                    <div id="time_td_@subject.SubjectNo" style="height:auto;">
+                                        @if (subject.IsPreheat == 1)
+                                        {
+                                            @("预热" + subject.PreheatTime.ToString("yyyy-MM-dd/HH:mm"))<br />
+                                        }
+                                        开始<span>@(subject.DateBegin.ToString("yyyy-MM-dd/HH:mm"))</span><br />
+                                        结束@(subject.DateEnd.ToString("yyyy-MM-dd/HH:mm"))
+                                    </div>
+                                    @if (subject.PromotionApplyTime != null && subject.PromotionApplyTime.Year > 1900)
+                                    {
+                                        @("推广" + subject.PromotionApplyTime.ToString("yyyy-MM-dd/HH:mm"))
+                                    }
+                                </td>
+                                <td style="text-align: left;">
+                                    <a href="#" onclick="UpdateSubjectTime(@subject.SubjectNo)">修改</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td id="time_td_h_@subject.SubjectNo">
+                        <span>@(subject.TotalHour)</span>H
+                    </td>
+                    <td style="text-align: left;">
+                        <a href="/outlet/subject/SubjectChildList?SubjectNo=@subject.SubjectNo">商品</a>&nbsp;&nbsp;
+                        <a id="@subject.SubjectNo" href="#" onclick="Edit(@subject.SubjectNo)">编辑</a>
+                        <br />
+                        <a href="/outlet/subject/DataStatistics?subjectNo=@subject.SubjectNo&BackSubjectUrl=@Url.Encode(ViewBag.SubjectCurrUrl)">
+                            数据
+                        </a>&nbsp;&nbsp;<a href="#" id="tcPromotion" onclick="ApplyPromotion(@subject.SubjectNo)">推广</a>
+                        @if (subject.Status == 2)
+                        {@Html.Raw("&nbsp;")<a id="del" href="#" onclick="DelNoOpenSubject(@(subject.SubjectNo))">删除</a>}
+                    </td>
+                </tr>
+
+            }
+        }
+    </tbody>
+</table>
+<div class="console-bottom-page">
+    <div style="float: left;">
+        <ul>
+            <li>
+                <label style="cursor: pointer; font-size: 12px;">
+                    <input type="checkbox" onclick="checkAll(this)" style="margin-left: 15px;" />&nbsp;&nbsp;全选
+                </label>
+            </li>
+            <li>
+                <input type="button" value="查看数据" onclick="ViewStatisticsData()" />
+            </li>
+            <li>
+                <input type="button" value="审核" onclick="AuditSubject()" />
+            </li>
+        </ul>
+    </div>
+    <div class="spPage">
+        @Html.Raw(@Html.AjaxPage("GoPageIndex", Model.CurrentPage, Model.ItemsPerPage, Model.TotalItems))
+    </div>
+</div>
+<div id="mx-rightcontent-fixbarbg" style="height: 680px; overflow-y: scroll; display: none;
+    z-index: 2000;">
+    <div class="fixbarcontent">
+    </div>
+</div>
+<form id="frmSubjectConsoleData" method="get" action="/outlet/subject/DataStatisticsNew">
+    <input type="hidden" name="subjectNo" id="hidSubjectNo" />
+</form>

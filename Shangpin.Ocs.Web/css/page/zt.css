@@ -1,0 +1,178 @@
+
+/*****专题汇总******/
+.spZt_box{
+	width:100%;
+	background:#f6f6f6;
+	padding:15px 0;
+	margin:-10px 0;
+}
+.spZt_box h2{
+	font-size:14px;
+	color: #666;
+	padding-bottom:5px;
+	border-bottom:1px solid #f2f2f2;
+}
+.spZt_border{
+	width:900px;
+	font-family:"宋体" , Arial;
+	border-top:0;
+	border-left:1px solid #eee;
+	border-bottom:1px solid #dfdfdf;
+	border-right:1px solid #eee;
+	background:#fff;
+	padding:15px 30px;
+}
+.spZt_tag {
+	margin-top:10px;
+}
+.spZt_tag li{
+	width:73px;
+	height:25px;
+	text-align: center;
+	color: #666;
+	float: left;
+	margin:0 7px 10px 0;
+	position: relative;
+	background:url(/images/page/zt/zt_sp.gif) 0 -418px no-repeat;
+}
+.spZt_tag li a{
+	display: block;
+	font-family:"宋体";
+	padding-left:10px;
+	height:25px;
+	line-height:25px;
+	width:63px;
+	color: #666;
+	position: absolute;
+	left:0;
+}
+.spZt_tag li a:hover{
+	color: #b9976a;
+}
+.spZt_tag li.seled{
+	background:url(/images/page/zt/zt_sp.gif) -76px -418px no-repeat;
+}
+.spZt_tag li.seled a{
+	color: #b9976a;
+	height:26px;
+	font-weight:bold;
+}
+
+#spZt_season{
+	width:735px;
+	margin:15px 0;
+}
+#spZt_season ul li{
+	float: left;
+	width:172px;
+	height:45px;
+	position: relative;
+	border-right:1px dotted #999;
+}
+#spZt_season ul li i{
+	position: absolute;
+	width:20px;
+	height:12px;
+	bottom:-15px;
+	left:80px;
+	background:url(/images/page/zt/zt_sp.gif) -130px -455px no-repeat;
+}
+#spZt_season ul li.nobd{
+	border:none;
+}
+#spZt_season ul li a{
+	display: block;
+	width:172px;
+	height:45px;
+	text-indent:-2000px;
+}
+#spZt_spring a, #spZt_summer a, #spZt_autumn a, #spZt_winter a{
+	background-image:url(/images/page/zt/zt_sp.gif);
+	background-position:35px 5px;
+	background-repeat:no-repeat;
+}
+#spZt_summer a{background-position:35px -41px;}
+#spZt_autumn a{background-position:35px -87px;}
+#spZt_winter a{background-position:35px -133px;}
+
+#spZt_spring .seled{background-position:20px -192px;}
+#spZt_summer .seled{background-position:20px -245px;}
+#spZt_autumn .seled{background-position:20px -299px;}
+#spZt_winter .seled{background-position:20px -351px;}
+
+#spZt_year select{
+	margin-top:25px;
+}
+
+#spZt_list{
+	margin-top:15px;
+	width:925px;
+}
+#spZt_list ul li.spZt_cells{
+	float: left;
+	width:286px;
+	height:242px;
+	margin:0 20px 30px 0;
+}
+#spZt_list ul li img{
+	display: block;
+	width:286px;
+	height:140px;
+}
+
+#spZt_list .spZt_listDetail{
+	height:87px;
+	background:#f8f8f8;
+	padding:13px 20px 0;
+	margin-top:1px;
+	font-family:"宋体";
+}
+#spZt_list .spZt_listDetail p{
+	margin-bottom:5px;
+}
+#spZt_list .spZt_list_tt{
+	display: block;
+	font-weight:bold;
+	color: #666;
+	margin-bottom:5px;
+	overflow: hidden;
+	height:18px;
+	line-height:18px;
+	font-family:"宋体";
+}
+#spZt_list .spZt_list_tt:hover{
+	text-decoration:underline;
+}
+.spZt_list_tags{
+	width:150px;
+}
+.spZt_list_tags a{
+	font-family:"宋体";
+	display: block;
+	width:56px;
+	height:18px;
+	overflow: hidden;
+	line-height:18px;
+	padding-left:6px;
+	float: left;
+	text-align:center;
+	margin-bottom:5px;
+	background:url(/images/page/zt/zt_sp.gif) 0 -448px no-repeat;
+}
+
+.spZt_shareBox{
+	width:80px;
+	position: relative;
+}
+.spZt_shareBox span{
+	display: block;
+	width:36px;
+	height:18px;
+	line-height:18px;
+	font-family:"宋体";
+}
+.spZt_shareBox .spZt_share{
+	position: absolute;
+	left:38px;
+	top:0;
+}

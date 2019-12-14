@@ -1,0 +1,160 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Ocs.Service.Shangpin;
+@{
+    ViewBag.Title = "";
+    Layout = "~/Areas/Shangpin/Views/Shared/_VenueLayout.cshtml";
+    List<VsinsHotProduct> hotproductList = Model;
+    int totalCount = ViewBag.totalcount;
+    int currentPage = ViewBag.PageIndex;
+    int pageSize = 10;
+}
+<script src="/Areas/Shangpin/Scripts/lib/jquery.js" type="text/javascript"></script>
+<script src="/Areas/Shangpin/Scripts/plug/comm.js" type="text/javascript"></script>
+<script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+<form action="/Shangpin/vsins/VSinsList.html" method="post">
+<div>
+    商品编号:<input type="text" id="productNo" name="productNo" value="@(ViewBag.ProductNo!=null?ViewBag.ProductNo:"")" />
+    可购买时间
+    <input id="datetime" name="datetime" class="Wdate" type="text" value="@(ViewBag.Time!=null?ViewBag.Time:"")" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
+        readonly="readonly" style="width: 150px;" />
+    <input class="button" type="submit" value="查询" />
+    <input class="button" type="button" value="新建" onclick="location.href='CreateHotProduct.html'" />
+</div>
+</form>
+<table class="mx-table" border="0">
+    <thead>
+        <tr>
+            <th width="5%">
+                可购买时间
+            </th>
+            <th>
+                商品图片
+            </th>
+            <th>
+                商品信息
+            </th>
+            <th>
+                锁定库存
+            </th>
+            <th>
+                价格
+            </th>
+            <th>
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{foreach (var product in hotproductList)
+          {
+            <tr>
+                <td>@product.StartDate 至 @product.EndDate
+                </td>
+                <td>
+                    <img src="/ReadPic/GetPic.ashx?width=200&height=300&pictureFileNo=@product.ProductPicFile&type=1"/>
+                </td>
+                <td class="lt">
+                    商品编号：@product.ProductNo
+                    <br />
+                    商品货号：@product.GoodsNo
+                    <br />
+                    商品名称：@product.ProductName
+                    <br />
+                    所属品牌：@product.BrandEnName (@product.BrandCnName)
+                </td>
+                <td style="text-align: left;">
+                    @if (product.IsShelf == 0)
+                    {
+                        @Html.Raw("未上架");
+                    }
+                    else if (product.IsShelf == 1)
+                    {
+                        @Html.Raw("已上架");
+                    }
+                    else if (product.IsShelf == 2)
+                    {
+                        @Html.Raw("已下架");
+                    }
+                    @{
+                    SWfsNewProductService service = new SWfsNewProductService();
+                    ProductInventoryNew inventory = service.GetInventoryByProductNo(product.ProductNo);
+                    int Quantity = inventory.SumQuantity;
+                    int LockQuantity = inventory.SumLockQuantity;
+                    }
+                    <br />
+                    可用库存:@Quantity
+                    <br />
+                    锁定库存:@LockQuantity<br />
+                </td>
+                <td style="text-align: left;">
+                    市场价:@product.MarketPrice.ToString("#0")
+                    <br />
+                    尚品价:@product.LimitedPrice.ToString("#0")
+                    <br />
+                    黄金价:@product.SellPrice.ToString("#0")
+                    <br />
+                    白金价:@product.PlatinumPrice.ToString("#0")
+                    <br />
+                    钻石价:@product.DiamondPrice.ToString("#0")               
+                    <br />
+                    <span style="color:Red">促销价：@product.PromotionPrice.ToString("#0")</span>
+                </td>
+                <td style="text-align: left;">
+                    <a style="text-decoration:underline;color:#0000FF;cursor:pointer;" href="/shangpin/vsins/createhotproduct.html?hotpId=@product.HotProductId" >
+                        编辑</a> | <span id="span_show_@product.HotProductId">
+                            @if (product.Status == 1)
+                            {
+                                <text>显示/</text>
+                                <a style="text-decoration:underline;color:#0000FF;cursor:pointer;" onclick="UpdateHotProductStatusById('@product.HotProductId',1)" >
+                                    隐藏</a>
+                            }
+                            else
+                            {
+                                <a style="text-decoration:underline;color:#0000FF;cursor:pointer;" onclick="UpdateHotProductStatusById('@product.HotProductId',0)" >
+                                    显示</a>
+                                <text>/隐藏</text>
+                            }
+                        </span>| <a style="text-decoration:underline;color:#0000FF;cursor:pointer;" onclick="DeletHotProductById('@product.HotProductId')" >
+                            删除</a>
+                </td>
+            </tr>
+          }
+        }
+    </tbody>
+</table>
+ <div class="spPage">@Html.Raw(Html.PagerX("page", currentPage, pageSize, totalCount))</div>
+<script type="text/javascript">
+    function DeletHotProductById(proId) {
+        if (window.confirm("确实要删除吗?")) {
+            $.ajax({
+                type: "post",
+                url: "/shangpin/vsins/DeleHotProductById?hotproductId=" + proId,
+                datatype: "json",
+                success: function (data) {
+                    if (data.result = "success")
+                    { window.location.href = gettimestampurl(window.location.href); }
+                }
+            });
+        }
+    }
+
+    function UpdateHotProductStatusById(proId, type) {
+        $.ajax({
+            type: "post",
+            url: "/shangpin/vsins/UpdateHotProductStatus?hotproductId=" + proId,
+            datatype: "json",
+            success: function (data) {
+                if (data.result = "success") {
+                    if ($("#span_show_" + proId)) {
+                        if (type == 1) {
+                            $("#span_show_" + proId).html("<a style=\"text-decoration:underline;color:#0000FF;cursor:pointer;\" onclick=\"UpdateHotProductStatusById('" + proId + "',0)\" >显示</a><text>/隐藏</text>");
+                        } else {
+                            $("#span_show_" + proId).html(" <text>显示/</text><a style=\"text-decoration:underline;color:#0000FF;cursor:pointer;\" onclick=\"UpdateHotProductStatusById('" + proId + "',1)\" >隐藏</a>");
+                        }
+                    }
+                }
+            }
+        });
+    }
+</script>

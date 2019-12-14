@@ -1,0 +1,70 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td, address, caption, cite, code, dfn, em, strong, th, var, header, footer, nav {
+    font: 400 12px "微软雅黑", "Microsoft YaHei", "Tahoma", "宋体";
+}
+
+a:link, a:visited {
+    color: #313131;
+    text-decoration: none;
+}
+
+a:hover, a:active {
+    color: #000;
+}
+
+body {
+    background: #f1f5f8;
+}
+
+/*
+ * 清除浮动
+ */
+.clr:after, .clearfix:after {
+    content: "";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden
+}
+.clr, .clearfix {
+    zoom: 1
+}
+
+.flt {
+    float: left;
+}
+
+.fltr {
+    float: right;
+}
+
+.inlb {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+}
+
+.relt {
+    position: relative;
+}
+
+.mx-box, .mx-box-pd {
+    width: 1200px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.mx-box-pd {
+    padding: 22px 0;
+}
+
+.blk {
+    display: block;
+}
+
+.non {
+    display: none;
+}
+
+.inl {
+    display: inline;
+}

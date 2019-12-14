@@ -1,0 +1,75 @@
+﻿@model Shangpin.Entity.Wfs.SWfsSpChannelProductGroup
+@using Shangpin.Ocs.Service.Common
+@{
+    ViewBag.Title = "编辑商品组";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    string startDT = Model.StartTime <= new DateTime(0001, 1, 1, 0, 0, 0) ? "" : Model.StartTime.ToString("yyyy-MM-dd HH:mm");
+    string endDT = Model.EndTime <= new DateTime(0001, 1, 1, 0, 0, 0) ? "" : Model.EndTime.ToString("yyyy-MM-dd HH:mm");
+}
+@section HeadStyle{
+    <link href="/Areas/Shangpin/Content/css/page/rightcontent/brandcontent.css" rel="stylesheet" type="text/css" charset="utf-8" />
+}
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function save(len) {
+            if ($("#GroupName").val().length <= 0) {
+                alert("品牌组名称不能为空");
+                return;
+            }
+            var nums = $("#GroupName").val().replace(/[^\x00-\xff]/g, "00").length;
+            if (nums > len) {
+                alert("名称只能在" + len / 2 + "个汉字" + len + "个字符");
+                return false;
+            }
+            $("#formobj").submit();
+        }
+    </script>
+}
+<h1>
+    OCS > 尚品 > <a href="/Shangpin/channel/ChannelList">频道页列表</a> > <a href="/shangpin/channel/ChannelProductGroupManager?channelNO=@(Request.QueryString["channelno"])">促销商品组管理 </a> > <a>添加促销商品组</a>
+</h1>
+
+<div class="mx-brandcontent-msgbox">
+    <form action="/Shangpin/Channel/EditeProductGroup?channelno=@(Request.QueryString["channelno"])" method="post" id="formobj">
+        <dl>
+            <dt>
+               <span style="color:Red;">商品组名称</span>:
+            </dt>
+            <dd>
+                @Html.HiddenFor(model=>model.GroupID)
+                @Html.HiddenFor(model=>model.ChannelNO)
+                @Html.TextBoxFor(model => model.GroupName, new { maxlength = "40" })
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                <span style="color:Red;">商品组状态</span>:
+            </dt>
+            <dd>
+                @Html.RadioButtonFor(model => model.Status, 1) 开启
+                @Html.RadioButtonFor(model => model.Status, 0) 关闭
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                <span style="color:Red;">展期时间</span>:
+            </dt>
+            <dd>
+                <input id="StartTime" type="text" name="StartTime" value="@startDT"  class="Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',isShowClear:true,readOnly:true,maxDate:'#F{$dp.$D(\'EndTime\',{d:0});}'})"/>
+                至
+                <input id="EndTime" type="text" name="EndTime" value="@endDT"  class="Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',isShowClear:true,readOnly:true,minDate:'#F{$dp.$D(\'StartTime\',{d:0});}'})"/>
+            </dd>
+        </dl>
+        <dl>
+            <dt>&nbsp;&nbsp;</dt>
+            <dd>
+                <input type="button" onclick="save(40)"  value="保存" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;"/>
+                <input type="button" value="取消" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;" onclick="window.location.href='/Shangpin/channel/ChannelProductGroupManager?channelno=@Model.ChannelNO'"/>
+            </dd>
+        </dl>
+    </form>
+</div>
+@ViewData["tip"]

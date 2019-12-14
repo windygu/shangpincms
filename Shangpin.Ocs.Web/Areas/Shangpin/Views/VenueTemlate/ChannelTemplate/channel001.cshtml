@@ -1,0 +1,103 @@
+﻿@{
+    Layout = null;
+    Shangpin.Entity.Wfs.SWfsSpChannelTemplateRegion obj = null;
+    Dictionary<int, string> typelist = new Dictionary<int, string>();
+    typelist.Add(1, "http://www.shangpin.com/women/subject/{0}");
+    typelist.Add(2, "http://www.aolai.com/subject/index/{0}/0");
+    typelist.Add(3, "http://www.aolai.com/topic/index/{0}");
+    typelist.Add(4, "http://www.aolai.com/topic/index/{0}");
+    typelist.Add(5, "{0}");
+}
+@using Shangpin.Framework.WebMvc
+@model IEnumerable<Shangpin.Entity.Wfs.SWfsSpChannelTemplateRegion>
+
+<div class="spIndex_border">
+    <ul class="clr activity_model">
+        @for (int i = 1; i <= 5; i++)
+        {
+            if (Model.Count(p => p.RegionID == i) == 1)
+            {
+                obj = Model.Single(p => p.RegionID == i);
+                switch (i)
+                {
+                    case 1:
+                        <li class="bigImg" style="left:0; top:0;" opratorRegion="@i" relationtype="@obj.RelationType">
+                            <a target="_blank" href="@(string.Format(typelist[obj.RelationType], obj.RelationContent))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 320, 450))" />
+                            </a>
+                        </li>
+                                       break;
+                    case 2:
+                        <li class="midImg" style="left:460px; top:0;" opratorRegion="@i" relationtype="@obj.RelationType">
+                            <a target="_blank" href="@(string.Format(typelist[obj.RelationType], obj.RelationContent))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 320, 220))" />
+                            </a>
+                        </li>
+                                       break;
+                    case 3:
+                        <li  style="left:0; top:330px;" opratorRegion="@i" relationtype="@obj.RelationType">
+                            <a target="_blank" href="@(string.Format(typelist[obj.RelationType], obj.RelationContent))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 155))" />
+                            </a>
+                        </li>
+                                       break;
+                    case 4:
+                        <li style="left:230px; top:330px;" opratorRegion="@i" relationtype="@obj.RelationType">
+                            <a target="_blank" href="@(string.Format(typelist[obj.RelationType], obj.RelationContent))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 155))" />
+                            </a>
+                        </li>
+                                       break;
+                    case 5:
+                        <li style="left:460px; top:330px;" opratorRegion="@i" relationtype="@obj.RelationType">
+                            <a target="_blank" href="@(string.Format(typelist[obj.RelationType], obj.RelationContent))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 155))" />
+                            </a>
+                        </li>
+                                       break;
+                }
+            }
+            else 
+            {
+                switch (i)
+                {
+                    case 1:
+                        <li class="bigImg" style="left:0; top:0;" opratorRegion="@i" relationtype="1">
+                            <a target="_blank" href="javascript:;">
+                                <img lazy="" />
+                            </a>
+                        </li>
+                                       break;
+                    case 2:
+                        <li class="midImg" style="left:460px; top:0;" opratorRegion="@i" relationtype="1">
+                            <a target="_blank" href="javascript:;">
+                                <img lazy="" />
+                            </a>
+                        </li>
+                                       break;
+                    case 3:
+                        <li  style="left:0; top:330px;" opratorRegion="@i" relationtype="1">
+                            <a target="_blank" href="javascript:;">
+                                <img lazy="" />
+                            </a>
+                        </li>
+                                       break;
+                    case 4:
+                        <li style="left:230px; top:330px;" opratorRegion="@i" relationtype="1">
+                            <a target="_blank" href="javascript:;">
+                                <img lazy="" />
+                            </a>
+                        </li>
+                                       break;
+                    case 5:
+                        <li style="left:460px; top:330px;" opratorRegion="@i" relationtype="1">
+                            <a target="_blank" href="javascript:;">
+                                <img lazy="" />
+                            </a>
+                        </li>
+                                       break;
+                }
+            }
+        }
+    </ul>
+</div>

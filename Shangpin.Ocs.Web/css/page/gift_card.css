@@ -1,0 +1,87 @@
+.aside_commbox ul li{width:100%; white-space:nowrap; text-overflow:ellipsis; -o-text-overflow:ellipsis; overflow: hidden;} 
+
+.bgHook .box{background-color:#fff;}
+.hotCard{padding:15px 20px 20px;}
+.hotCard h2{border-top:1px solid #d9d9d9; font-size:14px; font-weight:700; line-height:40px; font-family:"宋体";}
+.hotCard .giftNotice{color:#666; padding-bottom:10px; line-height:160%; font-family:"宋体"}
+.hotCard .giftNotice a:link, .hotCard .giftNotice a:visited{color:#b9966a;}
+.hotCard .giftNotice a:active, .hotCard .giftNotice a:hover{color:#E5232A;}
+.hotCard_List{width:715px; padding-top:10px;}
+.hotCard_List li{float:left; width:220px; margin:0 18px 0 0; text-align:center; color:#b9966a; line-height:30px; padding-bottom:20px;}
+.hotCard_List li a:link, .hotCard_List li a:visited{color:#b9966a;}
+.hotCard_List li a:active, .hotCard_List li a:hover{color:#E5232A;}
+.hotCard_List li img{display:block; float:left;}
+.kindCard{background:url(/images/page/gift_card/kindBg.jpg) no-repeat 475px center;}
+.kindCard li{min-height:150px; _height:150px;}
+.hotGift{border-top:0 none;}
+
+/*礼品卡电子卡*/
+.giftCard_box{padding:50px 0; width:600px; margin:0 auto;}
+.giftCard_box h2{font-size:14px; font-weight:700; font-family:"宋体"; line-height:50px;}
+.giftCard_box ul{width:100%; height:380px; overflow:hidden; background:url(/images/page/gift_card/cardBg.jpg) no-repeat;}
+.giftCard_box ul.giftBg01{
+	background:url(/images/page/gift_card/cardBg01.jpg) no-repeat;
+}
+.giftCard_box ul.giftBg02{
+	background:url(/images/page/gift_card/cardBg02.jpg) no-repeat;
+}
+.giftCard_box ul.giftBg03{
+	background:url(/images/page/gift_card/cardBg03.jpg) no-repeat;
+}
+.giftCard_box ul.giftBg04{
+	background:url(/images/page/gift_card/cardBg04.jpg) no-repeat;
+}
+.giftCard_box ul.giftBg05{
+	background:url(/images/page/gift_card/cardBg05.jpg) no-repeat;
+}
+.giftCard_box ul.giftBg06{
+	background:url(/images/page/gift_card/cardBg06.jpg) no-repeat;
+}
+.giftCard_box ul.giftBg07{
+	background:url(/images/page/gift_card/cardBg07.jpg) no-repeat;
+}
+.giftCard_box ul.giftBg08{
+	background:url(/images/page/gift_card/cardBg08.jpg) no-repeat;
+}
+.giftCard_box ul.giftBg09{
+	background:url(/images/page/gift_card/cardBg09.jpg) no-repeat;
+}
+.giftCard_box ul li{height:215px; width:445px; margin:97px auto 0; color:#333;}
+.giftCard_box ul li h3{font-size:14px; font-family:"宋体"; font-weight:700; line-height:45px;}
+.giftCard_box ul li p{font-size:14px; font-family:"宋体"; line-height:22px; padding:0 20px 0 30px; height:70px;}
+.giftCard_box ul li dl{margin-top:30px;}
+.giftCard_box ul li dl dt, .giftCard_box ul li dl dd{display:inline-block; float:left;}
+.giftCard_box ul li dl dt{font-size:46px; font-family:Arial; padding-left:30px; width:200px;}
+.giftCard_box ul li dl dt em{font-size:26px;}
+.giftCard_box ul li dl dd{font-size:14px; font-family:"宋体"; line-height:18px;}
+.giftCard_box .notice{padding:10px 0; line-height:35px; font-family:"宋体";}
+.giftCard_box .notice .bindBtn{float:right; width:108px; height:34px; line-height:34px; text-align:center; margin-top:15px; background:url(/images/page/gift_card/bindBtn_bg.jpg) no-repeat; color:#fff; font-size:15px; font-family:"微软雅黑","Microsoft YaHei";}
+
+/* 轮播图 */
+
+.hotCard .giftScroll_nav{
+	width:100%;
+	display:block;
+	height:15px;
+	padding:8px 0;
+	line-height:15px;
+}
+.hotCard .giftScroll_nav span{
+	display:block;
+	float:right;
+	padding-right:10px;
+}
+.hotCard .giftScroll_nav span a{
+	float:left;
+	width:16px;
+	_width:17px;
+	height:15px;
+	_line-height:14px;
+	margin-right:7px;
+	text-align:center;
+	background:url(/images/page/gift_card/nav_bg.png) no-repeat;
+	color:#fff;
+}
+.hotCard .giftScroll_nav span a.cur{
+	background:url(/images/page/gift_card/nav_curbg.png) no-repeat;
+}

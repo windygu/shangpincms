@@ -1,0 +1,251 @@
+﻿@model Shangpin.Ocs.Entity.Extenstion.ShangPin.SubjectNewStatisticInfo
+@using Shangpin.Ocs.Entity.Extenstion.Outlet
+@using Shangpin.Entity.Item
+@using Shangpin.Entity.User
+@using Shangpin.Entity.Wfs
+@using Shangpin.Framework.Common
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@using Shangpin.Ocs.Service.Shangpin;
+@using Shangpin.Ocs.Service.Common
+@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "数据统计";
+    int subjectCount = Model.SubjectCount;
+}
+<script type="text/javascript" src="/Areas/shangpin/Scripts/My97DatePicker/WdatePicker.js"></script>
+      <!-- 表单样式 -->
+                    <style type="text/css">
+						table.mx-table tbody th{padding-left:20px; text-align:left; width:15%;}
+						table.mx-table tbody th input{vertical-align:middle; margin:0 5px;}
+					</style>
+<h1>
+    <a href="@ViewBag.SubjectCurrUrl">活动管理</a> >数据统计</h1>
+<form action="/shangpin/subject/DataStatisticsNew.html" method="get" id="DataStatistics">
+<div style="padding: 5px;"> 
+
+
+             <table class="mx-table">
+                    <tbody>
+                    <tr>
+                    	<th style="text-align:left;" colspan="2">
+                     
+                     	  <span>查询日期:</span> 
+    <input id="StartTime" name="beginTime" maxlength="30"  class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm:00'})" readonly="readonly"  value="@Model.BeginTime" />
+    <span>至</span>
+    <input id="EndTime" name="endTime" maxlength="30" class="Wdate"  type="text" onclick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm:00'})" readonly="readonly" value="@Model.EndTime" />
+ 
+    <button type="submit" >查询</button>&nbsp;&nbsp;<a href="javascript:;"  onclick="onToExcelTotal()">导出报表</a> 
+                        </th>
+                    </tr>
+                    <tr>
+                      
+                      <th>
+                       @Html.RadioButton("range", "0", Model.Range == "0" ? true : false, new { id = "range0" })@Html.Label("range0", "查询活动编号")</label>
+                      </th>
+                      <td style="text-align:left;">   <textarea id="subjectNo" name="subjectNo"  cols="30" rows="2" >@(Model.SubjectNos)</textarea> 
+
+                      </td>
+                     </tr>
+                     <tr>
+                      <th>
+                         @Html.RadioButton("range", "2", Model.Range == "2" ? true : false, new { id = "range2" })@Html.Label("range2", "查询进行中活动")
+                      </th>
+                      <td style="text-align:left;">
+                      	
+                      </td>
+                     </tr>
+                     <tr>
+                      <th>
+                              @Html.RadioButton("range", "1", Model.Range == "1" ? true : false, new { id = "range1" })@Html.Label("range1", "自定义活动日期") 
+                   
+                     </th>
+                     <td style="text-align:left;">
+                       <input id="StartTimeSubject" name="beginTimeSubject" maxlength="30"  class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm:00'})" readonly="readonly"  value="@Model.BeginTimeSubject" />
+    <span>至</span>
+    <input id="EndTimeSubject" name="endTimeSubject" maxlength="30" class="Wdate"  type="text" onclick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm:00'})" readonly="readonly" value="@Model.EndTimeSubject" />
+
+     </td>
+                     </tr>
+                  </tbody></table>
+                   
+</div>
+</form>
+<table class="mx-table">
+    <thead >
+        <tr>
+        <th>活动编号</th>
+        <th>品类</th>
+        <th>BU</th>
+        <th>创建人</th>
+        <th>状态</th>
+        <th>时间</th>
+        <th>成功订单</th>
+        <th>成功订单<br />
+         金额</th>
+        <th>订单转化
+        率</th>
+        <th>总成本价</th>
+        <th>平均毛利<br />
+        率</th>
+        <th>总库存</th>
+        <th>可销售金<br />
+        额</th>
+        <th>总单款数</th>
+        <th>售罄率</th>
+        <th>金额售罄<br />
+        率</th>  
+        <th>动销率</th>  
+        <th>UV</th>  
+        <th>PV</th>  
+        <th>UV产值</th>    
+        <th>会员数量</th>    
+ 
+        </tr>
+    </thead>
+    <tbody>
+        @{  
+            if (Model.SubjectNewStatisticList!=null)
+            {
+            foreach (var statisticSingle in Model.SubjectNewStatisticList)
+            {
+                var Visit = statisticSingle.VisitStatistic;
+                var Sale = statisticSingle.SaleStatistic;
+            <tr>
+       <td>@(statisticSingle.NewSubject.SubjectNo)</td>
+        <td style="text-align:left; white-space:nowrap;">@if (statisticSingle.NewSubject.SubjectCategoryNo.IsEmpty() == false)
+                                                         {
+                                                             string[] channelList = statisticSingle.NewSubject.SubjectCategoryNo.Split(',');
+                                                             if (null != channelList && channelList.Length > 0)
+                                                             {
+                                                                 foreach (var item in channelList)
+                                                                 {
+                                                                     ErpCategory erpSingle = Model.ErpCategoryList.SingleOrDefault(p => p.CategoryNo == item);
+                                @erpSingle.CategoryName <br/>
+                                                                 }
+                                                             }
+                                                         }</td>
+        <td>@(statisticSingle.NewSubject.SubjectBU==6?"其他":"BU"+statisticSingle.NewSubject.SubjectBU)</td>
+         <td>@(statisticSingle.NewSubject.CreateUserId)</td>
+        <td>@(statisticSingle.NewSubject.Status == 1 ? "开启" : "关闭")</td>
+        <td style="text-align:left;white-space:nowrap;">
+          预热时间: @(statisticSingle.NewSubject.DatePre.ToString().Contains("9999") == true ? "" : "" + statisticSingle.NewSubject.DatePre.ToString())
+          <br />
+         开始时间：@statisticSingle.NewSubject.DateBegin 
+           <br />
+         关闭时间：@statisticSingle.NewSubject.DateEnd  
+        </td>
+        <td>@Sale.OrderNums</td>
+        <td>@Sale.Amount</td>
+        <td>@DivideHelper.Divide((int)Visit.OrderNums, (int)Visit.UV, 2)</td>
+        <td>@Sale.CostAmount</td>
+        <td>@(Sale.Amount == 0 ? "0" : (((Sale.Amount - Sale.CostAmount) / Sale.Amount) * 100).ToString(".##") + "%")</td>
+        <td>@(Sale.StockCount + Sale.SaleCount)</td>
+        <td>@Sale.StockTotalAmount</td>
+        <td>@Sale.SKUCount</td>
+        <td>@DivideHelper.Divide(Sale.SaleCount, Sale.StockCount + Sale.SaleCount, 2)</td>
+        <td>@DivideHelper.Divide(Sale.Amount, (int)Sale.StockTotalAmount, 2)</td>  
+        <td>@DivideHelper.Divide(Sale.SaledSKUCount, Sale.SKUCount, 2)</td>  
+        <td>@Visit.UV</td>  
+        <td>@Visit.PV</td>  
+        <td>@DivideHelper.Divide((int)(Sale.Amount), Visit.UV, 2)</td> 
+        <td style="text-align:left;white-space:nowrap;">
+              普通会员:@Visit.VIP
+              <br />
+              黄金会员:@Visit.GoldenVIP
+              <br />
+              白金会员:@Visit.PlatinaVIP
+              <br />
+              钻石会员:@Visit.DiamondVIP
+              <br />
+        </td>   
+    
+            </tr>
+            }
+         
+        }
+        }
+        <tr>
+        <td colspan="22" style="text-align:left; font-size:13px; font-weight:bold; border-bottom:1px; border-bottom-style:inherit; border-bottom-color:Black;">统计</td>
+        </tr>
+
+       @if (Model.SaleStatistic != null || Model.VisitStatistic != null)
+       {
+           var Visit = Model.VisitStatistic;
+           var Sale = Model.SaleStatistic;
+        <tr>    
+        <td>合计：</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      <td>@Sale.OrderNums</td>
+      <td>@Sale.Amount</td>
+        <td></td>
+       <td>@Sale.CostAmount</td>
+        <td></td>
+       <td>@(Sale.StockCount + Sale.SaleCount)</td>
+        <td>@(Sale.StockTotalAmount)</td>
+       <td>@Sale.SKUCount</td>
+        <td></td>
+        <td></td>  
+        <td></td>  
+        <td>@Visit.UV</td>  
+        <td>@Visit.PV</td>  
+        <td>@DivideHelper.Divide((int)(Sale.Amount), Visit.UV, 2)</td>  
+        <td></td>    
+      
+        </tr>
+       
+         
+        <tr>    
+        <td>平均：</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+       <td>@(subjectCount <= 0 ? 0 : DivideHelper.DivideDecimalValue((int)Sale.OrderNums, subjectCount, 2))</td>
+       <td>@(subjectCount <= 0 ? 0 : DivideHelper.DivideDecimalValue((int)Sale.Amount, subjectCount, 2))</td>
+       <td>@(subjectCount <= 0 ? "0":(DivideHelper.DivideDecimal((int)Visit.OrderNums, (int)Visit.UV, 2)).ToString()+"%")</td>
+       <td>@(subjectCount <= 0 ? 0 :DivideHelper.DivideDecimalValue((int)Sale.CostAmount, subjectCount, 2))</td>
+       <td>@((Sale.Amount == 0 || subjectCount <= 0) ? "0" : (((Sale.Amount - Sale.CostAmount) / Sale.Amount) * 100).ToString(".##") + "%")</td>
+       <td>@(subjectCount <= 0 ? 0 : DivideHelper.DivideDecimalValue((int)(Sale.StockCount + Sale.SaleCount), subjectCount, 2))</td>
+       <td>@(subjectCount <= 0?0: DivideHelper.DivideDecimalValue((int)(Sale.StockTotalAmount ), subjectCount, 2))</td>
+       <td>@(subjectCount <= 0 ? 0 : DivideHelper.DivideDecimalValue((int)(Sale.SKUCount), subjectCount, 2))</td>
+        <td>@(subjectCount <= 0 ? "0" : (DivideHelper.DivideDecimal(Sale.SaleCount, Sale.StockCount + Sale.SaleCount, 2)).ToString()+"%")</td>
+        <td>@(subjectCount <= 0 ? "0" : (DivideHelper.DivideDecimal(Sale.Amount, (int)Sale.StockTotalAmount, 2)).ToString()+"%")</td>  
+        <td>@(subjectCount <= 0 ? "0" : (DivideHelper.DivideDecimal(Sale.SaledSKUCount, Sale.SKUCount, 2)).ToString()+"%")</td>  
+        <td>@(subjectCount <= 0 ? 0 :  DivideHelper.DivideDecimalValue(Visit.UV, subjectCount, 2))</td>  
+        <td>@(subjectCount <= 0 ? 0 : DivideHelper.DivideDecimalValue(Visit.PV, subjectCount, 2))</td>  
+        <td>@(subjectCount <= 0 ? "0" : (DivideHelper.Divide((int)(Sale.Amount), Visit.UV, 2)).ToString())</td>  
+        <td></td>    
+   
+        </tr> 
+       }
+    </tbody>
+</table> 
+
+ 
+<script language="javascript" type="text/javascript">
+    $(
+    function () {
+      
+
+        $("#StartTime").click(function () {
+            $("#rangeSel").attr("checked", "checked");
+        })
+
+        $("#EndTime").click(function () {
+            $("#rangeSel").attr("checked", "checked");
+        })
+    })
+    function onToExcelTotal() { 
+       var urlC= window.location.href;
+       if (urlC.indexOf("?") > -1) {
+           window.location.href = urlC + "&toexcel=1";
+       } else { window.location.href = urlC + "?toexcel=1"; }
+   }
+    
+</script>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       

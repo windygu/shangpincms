@@ -1,0 +1,17 @@
+D:\workObject\cms\ShangPin.Cms.Power\bin\Debug\ShangPin.Cms.Power.dll
+D:\workObject\cms\ShangPin.Cms.Power\bin\Debug\ShangPin.Cms.Power.pdb
+D:\workObject\cms\ShangPin.Cms.Power\bin\Debug\Newtonsoft.Json.dll
+D:\workObject\cms\ShangPin.Cms.Power\bin\Debug\Shangpin.Framework.Common.dll
+D:\workObject\cms\ShangPin.Cms.Power\bin\Debug\Enyim.Caching.dll
+D:\workObject\cms\ShangPin.Cms.Power\bin\Debug\NVelocity.dll
+D:\workObject\cms\ShangPin.Cms.Power\bin\Debug\ServiceStack.Redis.dll
+D:\workObject\cms\ShangPin.Cms.Power\bin\Debug\ServiceStack.Interfaces.dll
+D:\workObject\cms\ShangPin.Cms.Power\bin\Debug\NLog.dll
+D:\workObject\cms\ShangPin.Cms.Power\bin\Debug\Memcached.ClientLibrary.dll
+D:\workObject\cms\ShangPin.Cms.Power\bin\Debug\ServiceStack.Common.dll
+D:\workObject\cms\ShangPin.Cms.Power\bin\Debug\ServiceStack.Text.dll
+D:\workObject\cms\ShangPin.Cms.Power\bin\Debug\log4net.dll
+D:\workObject\cms\ShangPin.Cms.Power\bin\Debug\Newtonsoft.Json.xml
+D:\workObject\cms\ShangPin.Cms.Power\obj\Debug\ShangPin.Cms.Power.dll
+D:\workObject\cms\ShangPin.Cms.Power\obj\Debug\ShangPin.Cms.Power.pdb
+D:\workObject\cms\ShangPin.Cms.Power\obj\Debug\Shangpin.Cms.Power.csprojResolveAssemblyReference.cache

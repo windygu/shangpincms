@@ -1,0 +1,506 @@
+
+/* CSS Document */
+
+#splogin_header{
+	padding:35px 0 10px 0;
+	text-align:right;
+}
+#splogin_header a{
+	display:inline-block;
+	height:22px;
+	line-height:22px;
+	padding:0 15px;
+	border:1px solid #cdcdcd;
+	margin:0 0 0 9px;
+	background:url(/images/page/login/login_topbtn.gif) repeat-x;
+	color:#707070;
+	text-shadow:1px 1px 1px #fff;
+	-webkit-text-shadow:1px 1px 1px #fff;
+	border-radius:.2em;
+	-webkit-border-radius:.2em;
+	font-weight:700;
+}
+
+
+.splogin_block{
+	width:263px;
+	margin:10px auto 0;
+	border:1px solid #d5d5d5;
+	background:#ececec;
+	padding:25px 25px 0;
+	text-align:center;
+}
+.splogin_block h1{
+	font-size:20px;
+	font-weight:700;
+	color:#7a7a7a;
+	line-height:200%;
+}
+.splogin_block dl, #splogin_block dd{
+	width:100%;
+}
+.splogin_block dl{
+	width:207px;
+	margin:20px auto 0;
+}
+.splogin_block dd{
+	height:58px;
+	color:#7a7a7a;
+	vertical-align:middle;
+}
+.splogin_block dd input.txt_input{
+	height:18px;
+	line-height:18px;
+	width:185px;
+	padding:8px 10px;
+	border:1px solid #b1adaa;
+	color:#999;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-o-border-radius: 3px;
+	border-radius: 3px;
+	font-family:"宋体";
+	font-size:16px;
+}
+.splogin_block dd input.txt_input:focus{
+	color:#333;
+	border:1px solid #000;
+}
+.splogin_block dd span{
+	display:none;
+	color:#ed4747;
+	text-align:left;
+	line-height:23px;
+	padding:0 0 0 20px;
+	background:url(/images/public/sp.gif) no-repeat 2px -1046px;
+}
+.splogin_block dd label{
+	cursor:pointer;
+}
+.splogin_block dd.normal_login{
+	height:35px;
+	text-align:left;
+	position:relative;
+}
+.splogin_block dd.normal_login input{
+	vertical-align:middle;
+	position:relative;
+	top:-2px;
+}
+.splogin_block dd.normal_login a{
+	position:absolute;
+	right:0;
+}
+.splogin_block dd.sex_login{
+	height:30px;
+	text-align:center;
+}
+.splogin_block dd.sex_login .label_margin{
+	margin:0 35px 0 0;
+}
+.splogin_block dd.sex_login input{
+	vertical-align:middle;
+	margin:-4px 5px 0 0;
+}
+.splogin_block dd a.submit_btn{
+	display:block;
+	width:205px;
+	height:31px;
+	line-height:30px;
+	border:1px solid #202020;
+	background:url(/images/page/login/login_submitbtn.gif) repeat-x;
+	font-size:16px;
+	color:#fff;
+	border-radius:.2em;
+	-webkit-border-radius:.2em;
+}
+.splogin_block dd.other_login{
+	text-align:left;
+	line-height:30px;
+}
+.splogin_block dd.other_login a{
+	display:inline-block;
+	height:17px;
+	line-height:17px;
+	overflow:hidden;
+	color:#01589f;
+}
+.splogin_block dd.other_login a.alipay_login{
+	padding:0 0 0 17px;
+	margin:0 22px 0 0;
+	background:url(/images/public/sp.gif) no-repeat 0 -1080px;
+}
+.splogin_block dd.other_login a.sina_login{
+	padding:0 0 0 20px;
+	margin:0 22px 0 0;
+	background:url(/images/public/sp.gif) no-repeat 0 -1100px;
+}
+.splogin_block dd.other_login a.qq_login{
+	padding:0 0 0 18px;
+	margin:0 0 0 1px;
+	background:url(/images/public/sp.gif) no-repeat 0 -1120px;
+}
+.splogin_block dd.reg_link , .splogin_block dd.login_link{
+	text-align:right;
+	line-height:58px;
+}
+.splogin_block dd.reg_link a , .splogin_block dd.login_link a , .splogin_block dd.forgetPwd a{
+	color:#01589f;
+}
+
+.splogin_block dd p{
+	color:#e5323a;
+	line-height:200%;
+	font-family:"宋体";
+}
+
+
+#spLoginBodyBox{
+	position:relative;
+}
+#loginBox{ 
+	position: absolute; 
+	top:0; 
+	left:0; 
+	width:965px; 
+	height:100%; 
+	background:#fff; 
+	display: none;
+	z-index:999;
+}
+
+
+/*弹出层样式*/
+.spForget_title {
+	display:block;
+	padding-top:8px;
+}
+.sp_forget_poplayer {
+	font-size:12px;
+	color:#555;
+	padding-bottom:20px;
+}
+.sp_forget_poplayer p {
+	text-align:left;
+	line-height:1.5;
+	padding-left:8px;
+}
+.sp_forget_poplayer table {
+	margin:10px;
+	width:450px;
+}
+.sp_forget_poplayer td { padding:2px 0 2px 4px; }
+.spTxt_right {
+	text-align:right;
+	width:68px;
+}
+.sp_forget_poplayer span{
+	display:none;
+	float:left;
+	color:#ed4747;
+	text-align:left;
+	line-height:20px;
+	padding:0 0 0 20px;
+	background:url(/images/public/sp.gif) no-repeat 2px -1046px;
+}
+.spForget_txt {
+	width:180px;
+	height:20px;
+	line-height:20px;
+	border:1px solid #ccc;
+	margin-right:8px;
+	float:left;
+}
+input.small_txt {
+	width:60px;
+}
+.spForget_testbox img { 
+	vertical-align:middle; 
+}
+.spChange_testcode {
+	color:#005AA0 !important;
+	padding-left:8px;
+}
+
+/*新版注册登录*/
+#spComm_regloginbox {
+	overflow:hidden;
+}
+.spComm_regloghook {
+	width:2000px;
+}
+.sp_regLoginBox {
+	height:500px;
+	overflow:hidden;
+	border:1px solid #e7e7e7;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+	margin-bottom:36px;
+	float:left;
+	width:958px;
+}
+.regLogin_box {
+	width:643px;
+}
+/**/
+
+.sp_regLoginBox .splogin_block {
+	background:none;
+	border:0 none;
+	width:555px;
+	text-align:left;
+	padding:0 0 0 56px;
+	margin-top:35px;
+	float: left;
+	position: absolute;
+}
+#spSign_box{
+	width:643px;
+	height:485px;
+	position: relative;
+	overflow: hidden;
+}
+
+.spreg_form{ margin-left:-960px;}
+.splogin_block h1 {
+	font-size:14px;
+	color:#3b3b3b;
+	padding-bottom:6px;
+	background:url("/images/public/alIndexB.gif") repeat-x 0 -50px;
+}
+.sp_regLoginBox .splogin_block dl {
+	width:auto;
+	/* padding-left:40px; */
+}
+.sp_regLoginBox .splogin_block dl dd {
+	overflow:hidden;
+	color:#3b3b3b;
+}
+.sp_regLoginBox .splogin_block dd input.txt_input {
+	width:200px;
+	float:left;
+	display:inline;
+	margin:0 12px 0 6px;
+}
+.sp_regLoginBox .splogin_block dd input.code_input {
+	width:95px;
+}
+.sp_regLoginBox dd .inputparent_rlat {
+	width:475px;
+	height:58px;
+	float:left;
+}
+.sp_regLoginBox dd .inputparent_rlat  input#aggreeSer{
+	margin:0 5px;
+	position: relative;
+    top: 2px
+}
+.sp_regLoginBox dd .inputparent_rlat i{
+	float:left;
+	margin:0 12px 0 0;
+	line-height:36px;
+}
+.sp_regLoginBox dd .inputparent_rlat i img{
+	vertical-align:middle;
+	margin-right:10px;
+}
+
+#aggreeSer_lab a{
+	color: #01589f;
+}
+#aggreeSer_lab a:hover{
+	text-decoration:underline;
+}
+.sp_regLoginBox dd .inputparent_rlat span {
+	overflow:hidden;
+	zoom:1;
+	margin-top:5px;
+}
+.sp_regLoginBox .splogin_block dd em {
+	float:left;
+	padding-top:10px;
+	width:76px;
+	text-align:right;
+}
+
+.splogin_block dd.normal_login {
+	padding-left:82px;
+	width:235px;
+}
+.splogin_block dd.normal_login{
+	height:40px;
+}
+.spSignin_btnBox {
+	padding-top:35px;
+}
+
+.spSignin_btnBox .loading , .splogin_block dd .loading{
+	margin-left:84px;
+}
+
+.splogin_block dd a.submit_btn {
+	text-align:center;
+	margin-left:84px;
+}
+
+/**/
+.regLogin_rightbox {
+	width:300px;
+	height:500px;
+	border-left:1px solid #e7e7e7;
+	background:#F2F2F2;
+	background-image:-moz-linear-gradient(#fff,#ededed);
+	background-image:-webkit-linear-gradient(#fff,#ededed);
+}
+.regLogin_rightinner {
+	width:226px;
+	margin:0 auto;
+	padding-top:46px;
+}
+.regLogin_rightinner p {
+	padding-bottom:16px;
+}
+.regLogin_rightinner p.spReg_newbox {
+	padding-bottom:20px;
+	/* background:url(/images/public/alIndexB.gif) repeat-x 0 -93px; */
+	border-bottom:1px dotted #333;
+}
+.comm_regBtn {
+	height:32px;
+	line-height:32px;
+	text-align:center;
+	color:#707070;
+	font-size:16px;
+	text-align:center;
+	border:1px solid #cdcdcd;
+	border-radius:3px;
+	display:inline-block;
+	background:#dcdcdc;
+	background-image:-moz-linear-gradient(#f9f9f9,#dcdcdc);
+	background-image:-webkit-linear-gradient(#f9f9f9,#dcdcdc);
+}
+#spReg_new {
+    width:224px;
+}
+#splog_new {
+	width:224px;
+}
+.other_loginbox {
+	padding-top:18px;
+}
+.other_logininner a {
+	margin-bottom:8px;
+}
+
+#slSign_weibo, #slSign_alipay, #slSign_weibosina {
+	width: 104px;
+	height: 25px;
+	background: url(/images/page/login/login_ico.gif) no-repeat 0 0;
+}
+
+#slSign_weibo{
+	margin-right: 10px;
+}
+
+#slSign_weibo{
+	background-position:0 -27px;
+}
+#slSign_weibosina {
+	background-position:0 -52px;
+}
+.splogin_block dd span {
+	overflow:hidden;
+	zoom:1;
+}
+
+.splogin_block dd.sex_login {
+	height:45px;
+}
+.splogin_block dd.sex_login .apSex_box{
+	padding-top:10px;
+	text-align:left;
+	position:relative;
+	zoom:1;
+}
+.splogin_block dd.sex_login .apSex_box input {
+	margin-left:6px;
+}
+.splogin_block dd.sex_login .apSex_box span { 
+    position:absolute; 
+	left:160px;
+	top:2px;
+}
+.apAgree_box{
+	position: relative;
+}
+.apAgree_box span{
+	position:absolute; 
+	left:120px;
+	top:-7px;
+}
+
+/*注册条款*/
+.spRegServer_txt{
+	max-height: 400px;
+	_height:expression(this.scrollHeight > 400 ? "400px" : "auto");
+	overflow:scroll;
+	overflow-x:hidden;
+	overflow-y:scroll;
+}
+.spRegServer_txt p{
+	text-align:left;
+	text-indent:24px;
+	margin:0 0 10px 0;
+	font-size:12px;
+}
+
+.spRegServer_txt h2{
+	font-weight:bold;
+	font-size:14px;
+}
+
+.spRegServer_txt p strong{
+	font-weight:bold;
+}
+
+/*密码强度*/
+.sp_regLoginBox .splogin_block dl dd.passStrength{
+	height:auto;
+	padding-bottom:22px;
+}
+.sp_regLoginBox dd.passStrength .inputparent_rlat{
+	height:auto;
+}
+.testresult {
+	clear:both;
+	margin:10px 0 0 85px;
+	background:#BFBFBF;
+	width:215px;
+	color:#fff;
+	float:left;
+}
+.testresult div {
+	overflow:hidden;
+	background:#ccc;
+	height:17px;
+	line-height:17px;
+	width:0;
+	text-align:center;
+}
+.shortPass div {
+	width:60px;
+	background:#f00;
+}
+.badPass div{
+	width:120px;
+	background:#f00;
+}
+.goodPass div {
+	width:180px;
+	background:orange;
+}
+.strongPass div {
+	width:215px;
+	background:#080;
+}

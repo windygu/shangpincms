@@ -1,0 +1,210 @@
+﻿@using Shangpin.Entity.Wfs
+@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "标签添加列表|尚品OCS管理系统";
+    int totalCount = ViewBag.totalcount;
+    int currentPage = ViewBag.PageIndex;
+    int pageSize = 18;
+    string tagid = Request["tagid"];
+    IList<SWfsTagRel> _existlist = ViewBag.existlist;
+    IList<T_tag_baseExtenstion> _createList = ViewBag.createlist;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>标签添加列表</title>
+    <script type="text/javascript" src="/Areas/ShangPin/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajax({
+                url: "/Shangpin/Style/ajaxTagShowCount",
+                type: "post",
+                data: { tagid: $("#tagid").val() },
+                dataType: "json",
+                success: function (data) {
+                    if (data.result == "1") {
+                        $("#hidDataCount").val(data.message);
+                    }
+                    else {
+                        $("#hidDataCount").val(data.message);
+                    }
+                },
+                error: function (x, e) {
+                    alert(x.responseText);
+                }
+            });
+        });
+
+        //全选，全不全
+        function checkAll(obj) {
+            var tagsStr = "";
+            var i = 0;
+            if (obj.checked) {
+                $("[name='TagsCheckBox']").each(function () {
+                    if ($(this).attr('disabled') == undefined) {
+                        $(this).attr("checked", "true");
+                        tagsStr += $(this).val() + ",";
+                        i++;
+                    }
+                });
+            }
+            else {
+                $("[name='TagsCheckBox']").each(function () {
+                    $(this).removeAttr("checked");
+                    tagsStr = "";
+                });
+            }
+            $("#tagsVal").val(tagsStr);
+            var _TempCount = $("#hidDataCount").val();
+            if (_TempCount != "") {
+                var _count = parseInt(_TempCount);
+                if (_count + i > 18) {
+                    alert("标签展示列表已经显示了【" + _count + "】个,加上选择数超过了18个，请重新选择！");
+                    $("[name='TagsCheckBox']").each(function () {
+                        $(this).removeAttr("checked");
+                        tagsStr = "";
+                    });
+                    $("#tagsVal").val(tagsStr);
+                    return false;
+                }
+            }
+        }
+
+        // 保存
+        function saveData() {
+            var Number = $("#tagid").val();
+            var idList = "";
+            var i = 0;
+            $("[name='TagsCheckBox']").each(function () {
+                if ($(this).attr('checked') == "checked") {
+                    idList += $(this).val() + ",";
+                    i++;
+                }
+            });
+            if (idList == "") {
+                alert("请选择要添加的数据");
+                return false;
+            }
+
+            var _TempCount = $("#hidDataCount").val();
+            if (_TempCount != "") {
+                var _count = parseInt(_TempCount);
+                if (_count + i > 18) {
+                    alert("标签展示列表已经显示了【" + _count + "】个,加上选择数超过了18个，请重新选择！");
+                    return false;
+                }
+            }
+
+            $.ajax({
+                url: "/Shangpin/Style/ajaxTagSave",
+                type: "post",
+                data: { tagsStr: idList, location: Number, des: "add" },
+                dataType: "json",
+                success: function (data) {
+                    if (data.result == "1") {
+                        //window.location.href = gettimestampurl(window.location.href);
+                        alert(data.message);
+                        window.location.href = "/Shangpin/Style/TagRelList";
+                    }
+                    else {
+                        alert(data.message);
+                        return false;
+                    }
+                },
+                error: function (x, e) {
+                    alert(x.responseText);
+                }
+            });
+        }
+
+    </script>
+</head>
+<body>
+    <div>
+        <h1>
+            OCS > 尚品 > <a href="/Shangpin/newchannel/newChannelList">频道列表页</a> > Style > <a href="/Shangpin/Style/TagRelList">标签管理</a> > 标签添加列表
+        </h1>
+        <form method="get" action="/Shangpin/Style/TagRelCreateList" id="SelectTagRelCreateList">
+            <input type="hidden" id="tagid" name="tagid" value="@tagid">
+            <table width="100%" border="0">
+                <tr>
+                    <td align="left" width="20%">
+                        标签名称：<input id="tagName" name="tagName" value="@Request["tagName"]" style="width: 120px; color: #666; font-size: 12px;"
+                                    onfocus="if (this.value == '请输入标签名称') this.value = ''" onblur="    if (this.value == '') this.value = '请输入标签名称'" />
+                    </td>
+                    <td align="left" width="40%">
+                        开始时间：
+                        <input id="StartTime" name="StartTime" value="@Request["StartTime"]" style="width: 35%;" class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:00:00'})"
+                               readonly="readonly" />
+                        至
+                        <input id="EndTime" name="EndTime" value="@Request["EndTime"]" style="width: 35%;" class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:00:00'})"
+                               readonly="readonly" />
+                    </td>
+                    <td>
+                        <input class="sumit_btn" type="submit" value="查询" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="sumit_btn" type="button" value="返回" onclick="javascript: window.location.href = 'TagRelList';" />
+                    </td>
+                </tr>
+                <tr></tr>
+            </table>
+        </form>
+        <table width="100%" class="mx-table">
+            <thead>
+                <tr>
+                    <th width="10%">
+                        <input type="checkbox" onclick="checkAll(this)">
+                    </th>
+                    <th width="30%">
+                        标签名称
+                    </th>
+                    <th width="30%">
+                        创建时间
+                    </th>
+                    <th width="30%">
+                        关联搭配数
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @{
+                    var flag = 0;
+                    if (_createList != null && _createList.Count() > 0)
+                    {
+                        int isexist = 0;
+                        foreach (T_tag_baseExtenstion _createEntity in _createList)
+                        {
+                            flag = flag + 1;
+                            <tr class="@(flag % 2 == 0 ? "cross" : "")">
+                                @if (_existlist != null && _existlist.Count() > 0)
+                                {
+                                    SWfsTagRel _existEntity = _existlist.SingleOrDefault(c => c.TagNo == _createEntity.tag_id && c.Location == short.Parse(tagid));
+                                    if (_existEntity != null)
+                                    {
+                                        isexist = 1;
+                                    }
+                                }
+                                <td><input type="checkbox" name="TagsCheckBox" value="@_createEntity.tag_id" @(isexist == 1 ? "disabled='disabled'" : "") /></td>
+                                <td>@_createEntity.tag_name</td>
+                                <td>@_createEntity.create_date</td>
+                                <td>@_createEntity.relCount</td>
+                            </tr>
+                                isexist = 0;
+                        }
+                    }
+                }
+
+            </tbody>
+        </table>
+        <div class="spPage">@Html.Raw(Html.PagerX("page", currentPage, pageSize, totalCount))</div>
+        <input type="checkbox" onclick="checkAll(this)" style="margin-left: 20px;" />全选
+        <div style="text-align: center; height:30px;"> <a class="sumit_btn" onclick="saveData()" style="MARGIN-RIGHT: auto; MARGIN-LEFT: auto; margin-right:30px;">添 加</a><a class="sumit_btn" href="TagRelList">返回</a></div>
+        <input type="hidden" id="tagsVal" />
+        <input type="hidden" id="hidDataCount" />
+    </div>
+</body>
+</html>

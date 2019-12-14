@@ -1,0 +1,141 @@
+﻿@model IEnumerable<Shangpin.Entity.Wfs.SWfsBrandFlagShipTemplate>
+@using Shangpin.Ocs.Web.Infrastructure;
+@{
+    Layout = null;
+    int pageIndex = ViewBag.pageIndex;
+    int pageSize = ViewBag.pageSize;
+    int totalCount = ViewBag.totalCount;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>选择会场模板</title>
+    <link href="/Areas/Shangpin/Content/css/init.css" rel="stylesheet" type="text/css"
+        charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/core.css" rel="stylesheet" type="text/css"
+        charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/page/rightcontent/rightcontent.css" rel="stylesheet"
+        type="text/css" charset="utf-8" />
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/lib/jquery.js" charset="utf-8"></script>
+    <script src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript" charset="utf-8"></script>
+    <script language="javascript" type="text/javascript">
+        $(function () {
+            $(".clearBtn").bind("click", parent.window.TrueInfo);
+            $(".button").click(function () {
+                parent.window.ClickRowNew($(this).attr("mIdVal"));
+            });
+        });
+    </script>
+    <style type="text/css">
+        table.mx-table a.clearBtn{
+	        background-color:#4d90fe;
+            border:1px solid #3079ed;
+            color:#fff;
+	        -webkit-border-radius:5px;
+	        -moz-border-radius:5px;
+            border-radius:5px;
+	        font-size:14px;
+            display:inline-block;
+            padding:5px 10px;
+	        *padding:3px 0px 0;
+            position:relative;
+            text-decoration:none;
+	        -webkit-transition:border-color 0.218s ease 0s;
+	        -moz-transition:border-color 0.218s ease 0s;
+	        -o-transition:border-color 0.218s ease 0s;
+            transition:border-color 0.218s ease 0s;
+	        cursor:pointer;
+	        margin:0 15px 0 0;
+	        *zoom:1;
+        }
+        table.mx-table a.clearBtn:hover {
+	        border-color:#1c8ede;
+	        -webkit-box-shadow:0 0 8px rgba(82, 168, 236, 0.6);
+	        -moz-box-shadow:0 0 8px rgba(82, 168, 236, 0.6);
+	        box-shadow:0 0 8px rgba(82, 168, 236, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <form action="/shangpin/brand/SelectMeetingTemplate" method="get">
+            <input type="text" placeholder="模板编号/模板名称" name="templatenameorno" value="@Request.QueryString["templatenameorno"]"/>
+            <select name="templatetype">
+                <option value="" @(Request.QueryString["templateType"]==""?"selected":null)>全部</option>
+                <option value="1" @(Request.QueryString["templateType"]=="1"?"selected":null)>移动端</option>
+                <option value="2" @(Request.QueryString["templateType"]=="2"?"selected":null)>web端</option>
+            </select>
+            <input type="hidden" value="@Request.QueryString["templateno"]" name="templateno"/>
+            <input id="StartTime" name="starttime" class="Wdate" type="text" style=" width:150px;" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'EndTime\')||\'2020-10-01\'}'})" readonly="readonly" onclick="WdatePicker()" value="@Request.QueryString["starttime"]"  />&nbsp;至&nbsp;
+            <input id="EndTime" name="endtime" class="Wdate" type="text" style=" width:150px;" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'StartTime\')}',maxDate:'2020-10-01'})" readonly="readonly" onclick="WdatePicker()" value="@Request.QueryString["endtime"]"  />
+            <input type="submit" value="查询"/>
+        </form>
+    </div>
+    <table class="mx-table" border="0">
+        <thead>
+            <tr>
+            <th></th>
+            <th>
+                模板编号
+            </th>
+            <th>
+                模板名称
+            </th>
+            <th>
+                使用范围
+            </th>
+            <th>
+                创建时间
+            </th>
+            <th>
+                操作
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                <tr>
+                    <td>
+                        @if (Model.ElementAt(i).TemplateNO==Request.QueryString["templateno"])
+                        {
+                            @Html.Raw("<span style='color:red;'>已选择</span>")
+                        }
+                    </td>
+                    <td>
+                        @Model.ElementAt(i).TemplateNO
+                    </td>
+                    <td>
+                        @Model.ElementAt(i).TemplateName
+                    </td>
+                    <td>
+                    @(Model.ElementAt(i).TemplateType==1?"移动端":"web端")
+                    </td>
+                    <td>
+                        @Model.ElementAt(i).CreateDate.ToString("yyyy-MM-dd HH:mm:ss")
+                    </td>
+                    <td>
+                         <a class="button" href="#" style="margin: 0 0 0 0;" mIdVal="@Model.ElementAt(i).TemplateNO">
+                            选择</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="spPage">
+        <!--分页-->
+        @if (totalCount>0)
+        {
+            @Html.Raw(Html.PagerX("page", pageIndex, pageSize, totalCount))
+        }
+    </div>
+    <table class="mx-table" border="0">
+        <tr>
+            <td>
+                <a class="clearBtn" href="javascript:void(0);" style="margin: 0 0 0 0;">清除选择</a>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

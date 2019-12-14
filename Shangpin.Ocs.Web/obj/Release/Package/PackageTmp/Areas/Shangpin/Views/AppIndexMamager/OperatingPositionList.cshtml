@@ -1,0 +1,211 @@
+﻿@using Shangpin.Ocs.Web.Infrastructure;
+@model System.Collections.Generic.IEnumerable<Shangpin.Entity.Wfs.SWfsAppOperatingPosition>
+@{
+    ViewBag.Title = "尚品-内容管理APP-搜索页运营位管理";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    int pageIndex = ViewBag.pageIndex;
+    int pageSize = ViewBag.pageSize;
+    int totalCount = ViewBag.TotalCount;
+}
+@section HeadStyle{
+    <style type="text/css">
+        .mx-table {
+            font-size: 12px;
+        }
+
+        .dispalayRegion {
+            display: none;
+            position: absolute;
+            width: 600px;
+            background-color: White;
+            height: auto;
+            top: 0px;
+            left: 0px;
+            font-size: 12px;
+        }
+
+            .dispalayRegion td {
+                padding: 10px;
+            }
+
+        .opratorbutton {
+            width: 90px;
+            height: 27px;
+            background-color: #4D90FE;
+            border: 1px solid #3079ED;
+            color: #FFFFFF;
+            cursor: pointer;
+        }
+
+        .operatingPositionLinkUrl div {
+            margin-top: 10px;
+        }
+    </style>
+}
+@section HeadScript{
+<script src="/Areas/Shangpin/Scripts/Venue/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        function deleteData(currentSort) {
+            if (confirm("确定删除此信息吗")) {
+                $.post("/shangpin/appindexmamager/DeleteOperatingPositionBySort/", { sort: currentSort }, function (data) {
+                    if (data.status == 1) {
+                        //alert("删除成功！");
+                        window.location.href = window.location.href;
+                    }
+                });
+            }
+        }
+
+        var showDivOperatingPosition = function (imgNo,linkUrl,sort) {
+            $("#operatingPositionLinkUrl").val(linkUrl);
+            $("#operatingPositionSort").val(sort);
+
+            $("#operatingPositionImgNo").val(imgNo);
+            if (sort.length == 0) { //新增
+                $("#operatingPositionPreviewImg").attr("src", "").hide(); //预览图
+                $("#operatingPositionSort").removeAttr("readonly");
+                $("#hidAddOrUpdateTag").val("add"); //标记是新增还是修改
+            }
+            else { //修改
+                $("#operatingPositionSort").attr("readonly", "readonly");
+                $("#operatingPositionPreviewImg").attr("src", "/ReadPic/GetPic.ashx?width=0&height=0&pictureFileNo=" + imgNo + "&type=2").show(); //预览图
+                $("#hidAddOrUpdateTag").val("update");
+            }
+            //清空图片上传file
+            var file = $("#operatingPositionImgfile").val("");
+            $("#operatingPositionErrorInfo").text("");
+            
+            $("body").append('<div id="windownBG" style="height:' + $(document).height() + 'px;opacity:0.5;z-index: 99;display:block;left:0px;top:0px;position:absolute;width:100%;background: none repeat scroll 0 0 #000000;"></div>');
+            $("#regionEditeOperatingPosition").css({ 'top': ($(window).height() / 2) - ($("#regionEditeOperatingPosition").height() / 2) + $(window).scrollTop(), 'left': ($(window).width() / 2) - ($("#regionEditeOperatingPosition").width() / 2), 'display': 'block', 'z-index': '99999' });
+        }
+        var saveOperatingPosition = function (formId) {
+            $("#operatingPositionLinkUrl").val($.trim($("#operatingPositionLinkUrl").val()));
+            if ($("#operatingPositionLinkUrl").val().length == 0) {
+                $("#operatingPositionErrorInfo").text("链接地址不能为空");
+                return;
+            }
+            if ($("#operatingPositionImgfile").val().length == 0 && $("#operatingPositionImgNo").val().length == 0) {
+                $("#operatingPositionErrorInfo").text("请选择图片");
+                return;
+            }
+
+            //新增时检测填的位置号是否已存在
+            $("#operatingPositionErrorInfo").text("");
+            saveImg(formId, $("#operatingPositionLinkUrl").val());           
+        }
+        var saveImg = function (formId) {
+            $("#" + formId).ajaxSubmit({
+                type: "post",
+                success: function (data) {
+                    data = jQuery.parseJSON(data);
+                    if (data.status == 1) {
+                        alert(data.message);
+                        return;
+                    }
+
+                    $('.dispalayRegion').hide(); $('#windownBG').remove();
+                    alert("保存成功！");
+                    window.location.reload();
+                }
+            });
+        }
+        //改变排序
+        var changeSortValue = function (id, sort) {
+            $.get("/shangpin/appindexmamager/EditePositionSort?id="+id+"&sort="+sort, function (data) {
+                if (data == 0) {
+                    alert("修改排序值异常");
+                }
+            });
+        }
+    </script>
+}
+@section hiddendiv{
+    <input type="hidden" id="hidAddOrUpdateTag" />
+<div id="regionEditeOperatingPosition" class="dispalayRegion">
+    <form action="/Shangpin/AppIndexMamager/AddOperatingPosition" method="post" enctype="multipart/form-data" id="formOperatingPosition" accept-charset="utf-8">
+        <table border="0">
+            <tr style="display:none;">
+                <td width="70" style="color:red">位置:</td>
+                <td><input type="text" id="operatingPositionSort" name="operatingPositionSort" value="0"></td>
+            </tr>
+            <tr>
+                <td width="70" style="color:red">链接地址:</td>
+                <td><input type="text" id="operatingPositionLinkUrl" name="operatingPositionLinkUrl" maxlength="200" size="80"></td>
+            </tr>
+            <tr id="imgobj">
+                <td style="color:red">运营图片:</td>
+                <td>
+                    <img src="" id="operatingPositionPreviewImg" width="400" height="143" />
+                    <input type="file" name="operatingPositionImgfile" id="operatingPositionImgfile" />尺寸:等待UI  限制JPG、png、GIF 小于100K
+                    <input type="hidden" id="imgWidth" name="imgWidth" value="0" />
+                    <input type="hidden" id="imgHeight" name="imgHeight" value="0" />
+                    <input type="hidden" id="imgLength" name="imgLength" value="102400" />
+                    <input type="hidden" id="operatingPositionImgNo" name="picno" />
+                </td>
+            </tr>
+            <tr><td colspan="2" align="center" style="color:red"><label id="operatingPositionErrorInfo"></label></td></tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="button" value="保存" class="opratorbutton" onclick="saveOperatingPosition('formOperatingPosition');" />
+                    <input type="button" value="取消" onclick="$('.dispalayRegion').hide();$('#windownBG').remove();" class="opratorbutton" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+}
+    <h1>
+        <a href="index">APP内容管理</a> &gt; 搜索页运营位列表<span style="color:Red;">
+            <a type="button" id="okButtonTs" style="display:none;">清除搜索</a> <a type="button" style="display:none;" id="okButton" onclick="subjectListRedisCache(0,1)">清除全部</a>
+    </h1>
+    <div style="text-align:right; padding-right:40px">
+        <button class="button" type="submit" id="seachact" style="margin: 5px; padding: 3px 10px; border-color: #1c8ede; cursor:pointer; background-color: #4d90fe; box-shadow: 0 0 8px rgba(82, 168, 236, 0.6); color: #fff; " onclick="showDivOperatingPosition('0', '', '')">
+            新&nbsp;增
+        </button>
+    </div>
+    <table class="mx-table">
+        <thead>
+            <tr>
+                <th width="250">
+                    运营图片
+                </th>
+                <th>
+                    链接地址
+                </th>
+                <th>排序值</th>
+                <th width="200">
+                    操作
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    
+                    <td><img id="" src="/ReadPic/GetPic.ashx?width=150&height=35&pictureFileNo=@(item.PicNo)&type=2" /></td>
+                    <td align="left">
+                    @if (!string.IsNullOrEmpty(item.LinkUrl))
+                    {
+                        if (item.LinkUrl.Length>50)
+                        {
+                            @item.LinkUrl.Substring(0,40)
+                        } else
+	                    {
+                            @item.LinkUrl
+	                    }
+                    }
+                    </td>
+                    <td><input type="text" value="@item.Sort" onblur="changeSortValue(@item.OperatingPositionId,this.value)"/></td>
+                    <td>
+                        <a class="button" href="javascript:void(0)" onclick="showDivOperatingPosition('@item.PicNo','@item.LinkUrl','@(item.OperatingPositionId)')">编辑</a>
+                        <a class="button" href="javascript:void(0)" onclick="deleteData(@item.OperatingPositionId.ToString())" style=" margin-top:5px;">删除</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="spPage">
+        @Html.Raw(Html.PagerX("page", pageIndex, pageSize, totalCount))
+    </div>
+

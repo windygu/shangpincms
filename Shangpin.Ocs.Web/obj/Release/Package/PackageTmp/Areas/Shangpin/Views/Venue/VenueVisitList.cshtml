@@ -1,0 +1,212 @@
+﻿@model IEnumerable<Shangpin.Ocs.Entity.Extenstion.ShangPin.SwfsVenueVisitInfoExtends>
+@using Shangpin.Ocs.Web.Infrastructure;
+@{
+    Shangpin.Ocs.Entity.Extenstion.ShangPin.SwfsVenueVisitInfoExtends obj1 = null;
+    Shangpin.Ocs.Entity.Extenstion.ShangPin.SwfsVenueVisitInfoExtends obj2 = null;
+    ViewBag.Title = "会场数据统计";
+    Layout = "~/Areas/Shangpin/Views/Shared/_VenueLayout.cshtml";
+    //int pageIndex = string.IsNullOrEmpty(Request.QueryString["pageIndex"]) ? 1 : int.Parse(Request.QueryString["pageIndex"]);
+    //int totalCount = ViewBag.totalCount;
+}
+ @section HeadScript{
+ <script src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript" charset="utf-8"></script>
+ }
+<h1>
+    OCS > 尚品 > 会场数据统计
+</h1>
+<form action="/Shangpin/Venue/VenueVisitList" method="get">
+<div style="padding: 5px;">
+    查询日期: <input type="radio" value="1" name="timeregion" @(Request.QueryString["timeregion"] == "1" ? "checked=checked" : null)/>今天&nbsp;&nbsp;
+              <input type="radio" value="2" name="timeregion" @(Request.QueryString["timeregion"] == "2" ? "checked=checked" : null)/>昨天&nbsp;&nbsp;
+              <input type="radio" value="3" name="timeregion" @(Request.QueryString["timeregion"] == "3" ? "checked=checked" : null)/>本周&nbsp;&nbsp;
+              <input type="radio" value="4" name="timeregion" @(Request.QueryString["timeregion"] == "4" ? "checked=checked" : null)/>本月&nbsp;&nbsp;
+              <input type="radio" value="5" name="timeregion" @((Request.QueryString["timeregion"] == "5" || string.IsNullOrEmpty(Request.QueryString["timeregion"])) ? "checked=checked" : null)/>全部时间&nbsp;&nbsp;
+              <input type="radio" value="6" name="timeregion" @(Request.QueryString["timeregion"] == "6" ? "checked=checked" : null)/>自定义&nbsp;&nbsp;
+              <input id="StartDate" name="StartDate" class="Wdate" type="text" style=" width:150px;" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'EndDate\')||\'2020-10-01\'}'})" readonly="readonly" onclick="WdatePicker()" value=""  />&nbsp;-&nbsp;
+              <input id="EndDate" name="EndDate" class="Wdate" type="text" style=" width:150px;" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'StartDate\')}',maxDate:'2020-10-01'})" readonly="readonly" onclick="WdatePicker()" value=""  />&nbsp;&nbsp;
+              <input type="hidden" name="MeetingNO" value="@(Request.QueryString["MeetingNO"])"/>
+              &nbsp;&nbsp;区块ID:&nbsp;<input type="text" name="ClickRegionID" value="" />
+              <input type="submit" />
+</div>
+</form>
+<div>网站访问信息</div>
+<table class="mx-table" border="0">
+    <thead>
+        <tr>
+            <th>日期</th>
+            <th>PV</th>
+            <th>UV</th>
+            <th>普通会员</th>
+            <th>黄金会员</th>
+            <th>白金会员</th>
+            <th>钻石会员</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count(p => p.ClickRegionID == null && p.MobileOrWeb == 1) == 2)
+        {
+            obj1 = Model.Where(p => p.ClickRegionID == null && p.MobileOrWeb == 1).ElementAt(0);
+            obj2 = Model.Where(p => p.ClickRegionID == null && p.MobileOrWeb == 1).ElementAt(1);
+            <tr>
+                <td>@obj1.DateStatistics.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                <td>
+                    @if (obj1.PV > obj2.PV)
+                    {
+                        @(obj1.PV - obj2.PV)
+                    }
+                    else
+                    {
+                        @(obj2.PV - obj1.PV)
+                    }
+                </td>
+                <td>
+                    @if (obj1.UV > obj2.UV)
+                    {
+                        @(obj1.UV - obj2.UV)
+                    }
+                    else
+                    {
+                        @(obj2.UV - obj1.UV)
+                    }
+                </td>
+                <td>@obj1.VIP</td>
+                <td>@obj1.GoldenVIP</td>
+                <td>@obj1.PlatinaVIP</td>
+                <td>@obj1.DiamondVIP</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>移动端访问信息</div>
+<table class="mx-table" border="0">
+    <thead>
+        <tr>
+            <th>日期</th>
+            <th>PV</th>
+            <th>UV</th>
+            <th>普通会员</th>
+            <th>黄金会员</th>
+            <th>白金会员</th>
+            <th>钻石会员</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count(p => p.ClickRegionID == null && p.MobileOrWeb == 0) == 2)
+        {
+            obj1 = Model.Where(p => p.ClickRegionID == null && p.MobileOrWeb == 0).ElementAt(0);
+            obj2 = Model.Where(p => p.ClickRegionID == null && p.MobileOrWeb == 0).ElementAt(1);
+            <tr>
+                <td>@obj1.DateStatistics.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                <td>
+                    @if (obj1.PV > obj2.PV)
+                    {
+                        @(obj1.PV - obj2.PV)
+                    }
+                    else
+                    {
+                        @(obj2.PV - obj1.PV)
+                    }
+                </td>
+                <td>
+                    @if (obj1.UV > obj2.UV)
+                    {
+                        @(obj1.UV - obj2.UV)
+                    }
+                    else
+                    {
+                        @(obj2.UV - obj1.UV)
+                    }
+                </td>
+                <td>@obj1.VIP</td>
+                <td>@obj1.GoldenVIP</td>
+                <td>@obj1.PlatinaVIP</td>
+                <td>@obj1.DiamondVIP</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>web端运营位信息</div>
+<table class="mx-table" border="0">
+    <thead>
+        <tr>
+            <th>日期</th>
+            <th>标识</th>
+            <th>PV</th>
+            <th>UV</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count(p => p.ClickRegionID != null && p.MobileOrWeb == 1) == 2)
+        {
+            obj1 = Model.Where(p => p.ClickRegionID != null && p.MobileOrWeb == 1).ElementAt(0);
+            obj2 = Model.Where(p => p.ClickRegionID != null && p.MobileOrWeb == 1).ElementAt(1);
+            <tr>
+                <td>@obj1.DateStatistics</td>
+                <td>@obj1.MeetingNO+"__"@obj1.ClickRegionID</td>
+                <td>
+                    @if (obj1.PV > obj2.PV)
+                    {
+                        @(obj1.PV - obj2.PV)
+                    }
+                    else
+                    {
+                        @(obj2.PV - obj1.PV)
+                    }
+                </td>
+                <td>
+                    @if (obj1.UV > obj2.UV)
+                    {
+                        @(obj1.UV - obj2.UV)
+                    }
+                    else
+                    {
+                        @(obj2.UV - obj1.UV)
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>移动端运营位信息</div>
+<table class="mx-table" border="0">
+    <thead>
+        <tr>
+            <th>日期</th>
+            <th>标识</th>
+            <th>PV</th>
+            <th>UV</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count(p => p.ClickRegionID != null && p.MobileOrWeb == 0) == 2)
+        {
+            obj1 = Model.Where(p => p.ClickRegionID != null && p.MobileOrWeb == 0).ElementAt(0);
+            obj2 = Model.Where(p => p.ClickRegionID != null && p.MobileOrWeb == 0).ElementAt(1);
+            <tr>
+                <td>@obj1.DateStatistics</td>
+                <td>@obj1.MeetingNO+"__"@obj1.ClickRegionID</td>
+                <td>
+                    @if (obj1.PV > obj2.PV)
+                    {
+                        @(obj1.PV - obj2.PV)
+                    }
+                    else
+                    {
+                        @(obj2.PV - obj1.PV)
+                    }
+                </td>
+                <td>
+                    @if (obj1.UV > obj2.UV)
+                    {
+                        @(obj1.UV - obj2.UV)
+                    }
+                    else
+                    {
+                        @(obj2.UV - obj1.UV)
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

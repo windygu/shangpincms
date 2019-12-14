@@ -1,0 +1,421 @@
+﻿<script src="/Areas/Outlet/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+@using Shangpin.Entity.Wfs
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin
+@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+
+    List<SWfsBrandModule> brandModuleList = new List<SWfsBrandModule>();
+    string brandIndexId = ViewBag.BrandIndexID;
+
+    //处理逻辑为【品牌首页管理】,如果各值为空，false那么走【国际时尚品牌】
+    bool moduleType = false;
+    string _brandView = Request["BrandView"];
+    string _typeId = Request["TypeId"];
+
+
+    SWfsBrandIndexInfo brandIndexModel = (SWfsBrandIndexInfo)ViewBag.BrandIndexModel;
+    if (brandIndexModel == null)
+    {
+        brandIndexModel = new SWfsBrandIndexInfo();
+        brandModuleList = ViewBag.BrandModuleList;
+
+        if (!string.IsNullOrEmpty(_brandView))
+        {
+            moduleType = true;
+        }
+    }
+    else
+    {
+        if (brandIndexModel.BrandView == 1 || brandIndexModel.BrandView == 0)
+        {
+            brandModuleList = ViewBag.BrandModuleList;
+        }
+        else
+        {
+            moduleType = true;
+        }
+    }
+}
+@section HeadStyle{
+    <link href="/Areas/Shangpin/Content/css/page/rightcontent/brandcontent.css" rel="stylesheet"
+          type="text/css" charset="utf-8" />
+}
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/plug/comm.js" charset="utf-8" type="text/javascript"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/plug/ERPBrand.js"></script>
+    <script type="text/javascript">
+        (function (window, $, undefined) {
+            $(function () {
+                var _brandView = $("#hidCreateBrandView").val();
+                var _typeId = $("#hidCreateTypeId").val();
+                if (_brandView == "" || _brandView == "0" || _brandView == "1") {
+                    $("#module").change(function () {
+                        var tdid = $(this).attr("value");
+                        var qtype = $('select[name="moduleName"] option[value="' + tdid + '"]').attr("type");
+                        if (qtype != "1") {
+                            $("#brandLogo").show();
+                            $("#form1").show();
+                            $("#form2").hide();
+                        } else {
+                            $("#brandLogo").hide();
+                            $("#form1").show();
+                            $("#form2").hide();
+                        }
+                        $("#type1").attr("checked", true);
+                    });
+                    //默认加载判断显示和选中
+
+
+                    var tdid = $("#module").attr("value");
+                    var qtype = $('select[name="moduleName"] option[value="' + tdid + '"]').attr("type");
+                    if (qtype != "1") {
+                        $("#brandLogo").show();
+                    } else {
+                        $("#brandLogo").hide();
+                        $("#type1").attr("checked", true);
+                    }
+
+                    if ($("#type1").prop("checked")) {
+                        $("#form1").show();
+                        $("#form2").hide();
+                    } else if ($("#type2").prop("checked")) {
+                        $("#form1").hide();
+                        $("#form2").show();
+                    }
+
+
+                    //选择不同类型对应divform切换
+                    $(".mx-brandcontent-msgbox input[name='Type']").change(function () {
+                        if ($("#type1").prop("checked")) {
+                            $("#form1").show();
+                            $("#form2").hide();
+                        } else if ($("#type2").prop("checked")) {
+                            $("#form1").hide();
+                            $("#form2").show();
+                        }
+                    });
+                }
+                else if (_brandView == "2") {
+                    if (_typeId == "1") {
+                        $("#spPrompt").html("尺寸：235*140 格式JPG 大小：100K以下");
+                        $("#form1").show();
+                        $("#form2").hide();
+                    }
+                    else {
+                        $("#form1").hide();
+                        $("#form2").hide();
+                    }
+                }
+                else {
+                    $("#form1").hide();
+                    $("#form2").hide();
+                }
+
+            });
+        })(window, jQuery);
+    </script>
+}
+@{
+    if (!moduleType)
+    {
+        if (string.IsNullOrEmpty(brandIndexId))
+        {
+            <h1>
+                OCS > 尚品 > <a href="#">国际时尚品牌管理</a> ><a href="/Shangpin/Brand/BrandsList.html"> 品牌索引</a> > 新建
+            </h1>
+        }
+        else
+        {
+            <h1>
+                OCS > 尚品 > <a href="#">国际时尚品牌管理</a> ><a href="/Shangpin/Brand/BrandsList.html"> 品牌索引</a> > 编辑
+            </h1>
+        }
+    }
+    else   //处理逻辑为【品牌首页管理】中各个品牌，旗舰店的处理
+    {
+        string TitPrompt = string.Empty;
+        if (_brandView == "2" && _typeId == "2")
+        {
+            TitPrompt = "热门品牌";
+        }
+        else if (_brandView == "2" && _typeId == "1")
+        {
+            TitPrompt = "官方旗舰店";
+        }
+
+        if (string.IsNullOrEmpty(brandIndexId))
+        {
+            <h1>
+                OCS > 尚品 > 品牌管理 > <a href="/shangpin/brandindex/index">品牌首页管理</a> > <a href="/Shangpin/Brand/BrandsList.html?BrandView=@(_brandView)&TypeId=@(_typeId)"> @(TitPrompt)</a> > 新建
+            </h1>
+        }
+        else
+        {
+            <h1>
+                OCS > 尚品 > 品牌管理 > <a href="/shangpin/brandindex/index">品牌首页管理</a> > <a href="/Shangpin/Brand/BrandsList.html?BrandView=@(_brandView)&TypeId=@(_typeId)"> @(TitPrompt)</a> > 编辑
+            </h1>
+        }
+    }
+}
+<div class="mx-brandcontent-msgbox">
+    <form id="formAddBrandIndex" action="/shangpin/brand/BrandIndexSave.html" method="post"
+          enctype="multipart/form-data">
+        @if (!moduleType)
+        {
+            <dl>
+                <dt style=" color:Red;">模块：</dt>
+                <dd>
+                    @{
+            if (brandModuleList.Count > 0)
+            {
+                <select id="module" name="moduleName">
+                    @foreach (var module in brandModuleList)
+                    {
+
+                        <option value='@module.ModuleNo' type='@module.ModuleType' @(module.ModuleNo == brandIndexModel.ModuleNo ? "selected" : "")>@module.ModuleName</option>
+                    }
+                </select>
+            }
+                    }
+                </dd>
+            </dl>
+            <dl>
+                <dt style=" color:Red;">位置：</dt>
+                <dd>
+                    <input type="radio" name="Type" id="type1" value="1" @(brandIndexModel.TypeId == 1 ? "checked" : "") /><label for="weizhi1">广告位</label>
+                    <span id="brandLogo" style="display: none;">
+                        <input type="radio" name="Type" id="type2" value="2" @(brandIndexModel.TypeId == 2 ? "checked" : "") /><label for="weizhi2">LOGO墙</label>
+                    </span>
+                </dd>
+            </dl>
+        }
+        <dl>
+            <dt style=" color:Red;">选择品牌：</dt>
+            <dd>
+                @{
+                    string brandName1 = brandIndexModel.BrandEnName;
+                    if (string.IsNullOrEmpty(brandName1))
+                    {
+                        <input type="text" name="BrandName" id="BrandName" style="width: 220px; color: #666;
+                        font-size: 12px;" value="请选择品牌" onfocus="if(this.value == this.defaultValue) this.value = ''"
+                               onblur="if(this.value == '') this.value = this.defaultValue"></input>
+                    }
+                    else
+                    {
+                        <input type="text" name="BrandName" id="BrandName" style="width: 220px; color: #666;
+                    font-size: 12px;" value="@brandName1" onfocus="if(this.value == this.defaultValue) this.value = ''"
+                               onblur="if(this.value == '') this.value = this.defaultValue"></input>
+                    }
+                }
+                <input id="BrandNo" name="BrandNo" type="hidden" value="@brandIndexModel.BrandNo" />
+                <script type="text/javascript" language="javascript">
+                    $(document).ready(function () {
+                        //$("#AddType").val("1");
+                        //品牌选择
+                        $("#BrandName").selectBrand('BrandNo', 'BrandName', false, '', '');
+
+                    });
+                    function setValue() {
+                        // alert("1");
+                        document.getElementById('BrandNoo').value = document.getElementById('BrandNo').value;
+
+                        ///
+                    }
+
+                </script>
+            </dd>
+        </dl>
+
+        <div id="form1">
+            <dl>
+                <dt>品牌名称：</dt>
+                <dd>
+                    <input id="BrandIndexName" type="text" name="BrandIndexName" value="@brandIndexModel.BrandShowName" maxlength="30" />
+                </dd>
+            </dl>
+            <dl>
+                <dt style=" color:Red;">图片上传：</dt>
+                <dd>
+                    <input type="file" id="BrandIndexPicUp" name="BrandIndexPic" />&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span id="spPrompt" style="display:inline;">要求：316*190，小于50K的JPG图片</span>
+                    <input type="hidden" value="@brandIndexModel.BrandPic" id="imageNO" />
+                    <br />
+                    @if (!string.IsNullOrEmpty(brandIndexModel.BrandPic))
+                    {
+                        <img alt="" src="/ReadPic/GetPic.ashx?width=316&height=190&pictureFileNo=@brandIndexModel.BrandPic&type=2" />
+                    }
+                    <span id="spanBrandIndexPicUp" style="color: Red" />
+                </dd>
+            </dl>
+            <dl>
+                <dt>链接地址：</dt>
+                <dd>
+                    @if (moduleType)
+                    {
+                        //string _brandAddr = string.Empty;
+                        //if (brandIndexModel != null)
+                        //{
+                        //    _brandAddr = brandIndexModel.BrandAddr;
+                        //    if (!string.IsNullOrEmpty(_brandAddr) && _brandAddr.StartsWith("http://"))
+                        //    {
+                        //        _brandAddr = _brandAddr.Replace("http://", "");
+                        //    }
+                        //}
+                        <input id="BrandIndexLink" type="text" name="BrandIndexLink" style="width:300px;" value="@brandIndexModel.BrandAddr" placeholder="请输入文本..." />
+                        <span> 格式如：http://www.baidu.com 或 http://www.baidu.com/type/  </span>
+                    }
+                    else
+                    {
+                        <input id="BrandIndexLink" type="text" name="BrandIndexLink" style="width:300px;" value="@brandIndexModel.BrandAddr" placeholder="请输入文本..." />
+                    }
+                </dd>
+            </dl>
+        </div>
+        <div id="form2" style="display: none;">
+            @if (!string.IsNullOrEmpty(brandIndexModel.BrandLogo))
+            {
+                <dl>
+                    <dt>品牌图片：</dt>
+                    <dd>
+                        <img id="brandImg" alt="" src="/ReadPic/GetPic.ashx?width=155&height=74&pictureFileNo=@brandIndexModel.BrandLogo&type=2" />
+
+                    </dd>
+                </dl> }
+
+        </div>
+        <dl>
+            <dt style=" color:Red;">状态：</dt>
+            <dd>
+                <input type="radio" name="BrandVisible" id="BrandVisible1" @(string.IsNullOrEmpty(brandIndexId) ? "checked" : "") @(!string.IsNullOrEmpty(brandIndexId) && brandIndexModel.Status == 1 ? "checked" : "") value="1" /><label for="visible1">显示</label><input type="radio" name="BrandVisible" id="BrandVisible2" @(!string.IsNullOrEmpty(brandIndexId) && brandIndexModel.Status == 0 ? "checked" : "")
+                                                                                                                                                                                                                                                                            value="0" /><label for="visible2">隐藏</label>
+            </dd>
+        </dl>
+        <dl>
+            <dt>&nbsp;</dt>
+            <dd>
+                <input type="hidden" id="brandIndexId" value="@brandIndexId" name="brandIndexId" />
+                <button type="button" id="" name="" value="" class="secondary" onclick="return SaveBrandIndex();">
+                    确 定
+                </button>
+                <button type="button" id="" name="" value="" onclick="window.location.href = '/Shangpin/Brand/BrandsList.html?BrandView=@(_brandView)&TypeId=@(_typeId)'">
+                    取 消
+                </button>
+            </dd>
+        </dl>
+        <input type="hidden" name="hidBrandView" id="hidBrandView" value="@(brandIndexModel.BrandView)">
+        <input type="hidden" name="hidCreateBrandView" id="hidCreateBrandView" value="@(_brandView)">
+        <input type="hidden" name="hidCreateTypeId" id="hidCreateTypeId" value="@(_typeId)">
+        <input type="hidden" name="hidpageIndex" id="hidpageIndex" value="@(Request.QueryString["pageindex"])">
+    </form>
+</div>
+<!-- 编辑活动 end -->
+<script type="text/javascript">
+    function SaveBrandIndex() {
+        //        if (typeVal == "1") {
+        //            if ($("#BrandIndexName").val().length == 0) {
+        //                //alert("请输入品牌名称！");
+        //                //return false;
+        //            }
+        //            if ($("#BrandIndexLink").val().length == 0) {
+        //                //alert("请输入品牌链接！");
+        //                //return false;
+        //            }
+        //        } else {
+        //            if ($("#BrandNo").val().length == 0) {
+        //                alert("请选择品牌！");
+        //                return false;
+        //            }
+        //}
+
+        var _brandView = $("#hidCreateBrandView").val();
+        var _typeId = $("#hidCreateTypeId").val();
+        if (_brandView == "" || _brandView == "0" || _brandView == "1") {
+
+            var typeVal = $("input[name='Type']:checked").val();
+            //判断图片是否为空
+            if (typeVal == 1) {
+                if ($("#BrandIndexPicUp").val() == "") {
+                    if ($("#imageNO").val() == "") {
+                        alert("请选择图片！");
+                        return false;
+                    }
+                }
+            } else if (typeVal == 2) {
+                if ($("#BrandNo").val() == "") {
+                    alert("请选择品牌！");
+                    return false;
+                }
+            }
+        }
+        else if (_brandView == "2") {
+            if (_typeId == "2") {
+                if ($("#BrandNo").val() == "") {
+                    alert("请选择品牌！");
+                    return false;
+                }
+            }
+            else if (_typeId == "1") {
+                if ($("#BrandNo").val() == "") {
+                    alert("请选择品牌！");
+                    return false;
+                }
+                if ($("#BrandIndexPicUp").val() == "") {
+                    if ($("#imageNO").val() == "") {
+                        alert("请选择图片！");
+                        return false;
+                    }
+                }
+                var biL = $("#BrandIndexLink").val();
+                if (biL != null && biL != "") {
+                    if (biL.substring(0, 7) != "http://" && biL.substring(0, 7) != "HTTP://") {
+                        alert("链接地址格式输入有误");
+                        return false;
+                    }
+                }
+            }
+        }
+        else { }
+
+        $('#formAddBrandIndex').ajaxSubmit({
+            success: function (html) {
+                if (typeof (html) == "string") {
+                    var rs = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+                    data = eval("(" + rs + ")");
+                }
+                else {
+                    data = html;
+                }
+                if (data.result != "1") {
+                    $("#span" + data.result).html(data.message);
+                    alert(data.message);
+                    return false;
+                }
+                else if (data.result == "1") {
+                    if (data.message != null && data.message != "") {
+                        alert(data.message);
+                    }
+                    else {
+                        if ($("#brandIndexId").val() != null && $("#brandIndexId").val() != "") {
+                            alert("品牌修改成功！");
+                        }
+                        else {
+                            alert("品牌添加成功！");
+                        }
+                      
+                    }
+                    var pageIndex = $("#hidpageIndex").val();
+                    if (pageIndex != null && pageIndex != "") {
+                        window.location.href = "/Shangpin/Brand/BrandsList?TypeId=" + _typeId + "&BrandView=" + _brandView + "&pageIndex=" + pageIndex + "&" + gettimestamp();
+
+                    }
+                    else {
+                        window.location.href = "/Shangpin/Brand/BrandsList?TypeId=" + _typeId + "&BrandView=" + _brandView + "&" + gettimestamp();
+                    }
+
+                    return true;
+                }
+            }
+        });
+
+    }
+</script>

@@ -1,0 +1,97 @@
+﻿@model IList<Shangpin.Entity.Wfs.SwfsSkillGroup>
+@using Shangpin.Ocs.Web.Infrastructure
+@{
+    ViewBag.Title = "促销商品组管理";
+    Layout = "~/Areas/Shangpin/Views/Shared/_VenueLayout.cshtml";
+    int page = ViewBag.pageIndex != null ? (int)ViewBag.pageIndex : 1;
+    int pageSize = ViewBag.PageSize != null ? (int)ViewBag.PageSize : 20;
+    int totalCount = ViewBag.TotalCount != null ? (int)ViewBag.TotalCount : 0;
+    
+}
+
+<script type="text/javascript">
+    function deleteGroup(id) {
+        if (confirm("确定要删除吗？")) {
+            $.ajax({
+                url: "/shangpin/Venue/DeleteSkillGroup",
+                type: "POST",
+                data: { groupId: id },
+                dataType: "json",
+                success: function (obj) {
+                    if (obj.result > 0)
+                        alert("删除成功");
+                    else if (obj.result == -1) {
+                        alert("删除失败");
+                    }
+                    else
+                        alert("删除失败");
+                    window.location.reload();
+                }
+
+            });
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+<h1>
+    OCS > 尚品 >促销商品组管理
+</h1>
+<table cellpadding="1" cellspacing="1" class="mx-table">
+    <thead>
+        <tr>
+            <th colspan="2">
+                促销商品组
+            </th>
+        </tr>
+    </thead>
+    @if (Model != null && Model.Count() > 0)
+    {
+        var flag = 0;
+        foreach (var group in Model)
+        {
+            flag = flag + 1;
+            string style = flag % 2 == 0 ? "border:#ccc 0px solid;width:100%; background-color:#f0f0f0;" : "border:#ccc 0px solid;width:100%;";
+        <tbody style="@style">
+            <tr>
+                <td width="30%" style="text-align: left; padding-left: 10px;">
+                    商品组名称：@group.SkillGroupName
+                </td>
+                <td width="42%" style="text-align: left; font-weight: bold;">
+                    时间：@Html.Raw(group.StartTime.ToString("yyyy-MM-dd HH:mm:ss") + " 至 " + group.EndTime.ToString("yyyy-MM-dd HH:mm:ss"))
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: left; padding-left: 10px;">
+                    商品组状态：@(group.IsVoid == 0 ? "关闭" : "开启")
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" style="text-align: right;">
+                    <a class="button" href="/shangpin/venue/SkillProductList?skillgroupid=@group.Id&meetingId=@(Request.QueryString["meetingId"])">管理商品 </a><a class="button" href="/shangpin/Venue/SkillGroupManager?meetingId=@(group.MeetingID)&groupId=@group.Id" name="child">
+                        编辑 </a><a id="" class="button" onclick="deleteGroup(@group.Id)" name="child">删除
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+
+        }
+    }
+</table>
+@if (totalCount > 0 && totalCount > pageSize)
+{
+    <div class="spPage">
+        @Html.Raw(@Html.PagerX("page", page, pageSize, totalCount))
+    </div>
+}
+<div class="clr" id="mx-rightcontent-fixbar">
+    <a id="mx-btn-add" href="/Shangpin/Venue/SkillGroupManager?meetingId=@ViewBag.MeetingId&groupId=0" title="添加促销商品组">
+    </a>@*<a id="mx-btn-del" href="#"></a><a id="mx-btn-search"
+        href="#"></a>
+        <a id="mx-btn-folder" href="#"></a>
+        <a id="mx-btn-edit" href="#">
+    </a>*@
+</div>

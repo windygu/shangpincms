@@ -1,0 +1,238 @@
+﻿@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Entity.Wfs;
+@using Shangpin.Ocs.Entity.Extenstion.Outlet;
+@model SWfsPictureManager
+@{
+    ViewBag.Title = ((null != Model && !Model.PictureManageId.Equals(0)) ? "编辑广告图" : "新建广告图") + "|尚品OCS管理系统";
+}
+@section HeadStyle
+{
+    <style type="text/css">
+        .gernalTclass {
+            margin-top: 20px;
+        }
+
+            .gernalTclass td {
+                padding: 5px;
+            }
+    </style>
+}
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script src="/Areas/Outlet/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+    <script src="/Areas/Outlet/Scripts/plug/checkStr.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function gettimestamp() {
+            var unix_time = Math.round(new Date().getTime() / 1000);
+            return "timestamp=" + unix_time;
+        }
+        $(function () {
+            //提交
+            $("#submitBtn").bind("click", function () {
+
+                //频道验证
+                var gender = $("#gender").val();
+                if (gender == "-1") {
+                    alert("请选择频道！");
+                    return false;
+                }
+                //位置验证
+                var Position = $("#Position").val();
+
+                if (Position == "0") {
+                    alert("请选择广告位置！");
+                    return false;
+                }
+                //验证开始时间和结束时间
+                var Tbegin = $("#DateBegin").val();
+                var Tend = $("#DateEnd").val();
+                if (Tbegin == "") {
+                    alert("开始时间不能为空！");
+                    return false;
+                }
+                if (Tend == "") {
+                    alert("结束时间不能为空！");
+                    return false;
+                }
+
+                var begin = new Date(Tbegin.replace(/-/g, "/"));
+                var end = new Date(Tend.replace(/-/g, "/"));
+                if (begin - end > 0) {
+                    alert("结束时间不能小于开始时间！");
+                    return false;
+                }
+
+                //保证新增的时候验证图片
+                var tempPictureManageId = $("#PictureManageId").val();
+                if (tempPictureManageId == "0" || tempPictureManageId == "") {
+                    //图片验证
+                    if ($("#PicFile").val() == "") {
+                        alert("请上传广告图片！");
+                        return false;
+                    }
+                }
+
+                $("#submitForm").ajaxSubmit({
+                    //                    beforeSubmit: function () {
+                    //                        $("#submitBtn").hide();
+                    //                    },
+                    success: function (html, status) {
+                        var data;
+                        if (typeof (html) == "string") {
+                            html = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+                            data = eval("(" + html + ")");
+                        }
+                        else {
+                            data = html;
+                        }
+                        if (data.reslut == "success") {
+                            alert(data.msg);
+                            window.location.href = "/outlet/indexad/index?" + gettimestamp();
+                        }
+                        else {
+                            alert(data.msg);
+                            //window.location.href = $("#fromUrl").val();
+                        }
+                    }
+                });
+            });
+
+            //取消
+            $("#cancleBtn").bind("click", function () {
+                window.location.href = "/outlet/indexad/index";
+            });
+        });
+
+        function SelectDes() {
+            var position = $("#Position").val();
+            switch (position) {
+                case "1":
+                case "2":
+                case "3":
+                case "4":
+                case "5":
+                    $("#spanBanner").text("(备注：请上传尺寸1680*390小于300K的jpg gif格式图片)");
+                    break;
+                case "10":
+                    $("#spanBanner").text("(备注：请上传尺寸300*620小于150K的jpg gif格式图片)");
+                    break;
+                case "11":
+                case "12":
+                case "13":
+                    $("#spanBanner").text("(备注：请上传尺寸220*460小于150K的jpg gif格式图片)");
+                    break;
+                case "14":
+                case "15":
+                    $("#spanBanner").text("(备注：请上传尺寸460*220小于150K的jpg gif格式图片)");
+                    break;
+
+            }
+        }
+
+        $(function () {
+
+            SelectDes();
+
+        });
+    </script>
+}
+<h1>
+    <a href="/outlet/indexad/index">尚品OCS管理系统</a> > @(!string.IsNullOrEmpty(Model.PictureName) ? Model.PictureName + ">" : "")
+    @((null != Model && !Model.PictureManageId.Equals(0)) ? "编辑广告图" : "新建广告图")
+</h1>
+<form action="/outlet/indexad/manager" method="post" enctype="multipart/form-data"
+      id="submitForm" name="submitForm">
+    <input type="hidden" value="@Model.PictureManageId" name="PictureManageId" id="PictureManageId" />
+    <table class="gernalTclass" width="100%">
+        <tr>
+            <td>
+                图片名称
+            </td>
+            <td>
+                <input type="text" title="PictureName" style="width: 300px" maxlength="100" name="PictureName"
+                       value="@(Model.PictureName ?? "")">
+                <br />(备注：系统自动截取最多不超过100个字符)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                副标题
+            </td>
+            <td>
+                <input type="text" title="SubTitle" style="width: 300px" maxlength="50" name="SubTitle"
+                       value="@(Model.SubTitle ?? "")">
+                <br />(备注：系统自动截取最多不超过50个字符)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                链接地址
+            </td>
+            <td>
+                <input type="text" title="LinkAddress" style="width: 300px" maxlength="150" name="LinkAddress"
+                       value="@(Model.LinkAddress ?? "")"><br />
+                (备注：请输入绝对链接地址如：http://www.aolai.com/xxx)
+            </td>
+        </tr>
+        <tr>
+            <td style="color: Red">
+                所属频道
+            </td>
+            <td>
+                <select name="gender" id="gender" style="width: 120px;" onchange="SelectDes()">
+                    <option value="-1">请选择频道</option>
+                    <option value="3" @(Model.Gender == 3 ? "selected" : "")>首页</option>
+                    <option value="0" @(Model.Gender == 0 ? "selected" : "")>女士</option>
+                    <option value="1" @(Model.Gender == 1 ? "selected" : "")>男士</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td style="color: Red" width="15%">
+                选择位置
+            </td>
+            <td width="85%">
+                <select name="Position" id="Position" style="width: 120px;" onchange="SelectDes()">
+                    <option value="0">请选择广告位置</option>
+                    @{
+                        List<AD> adlist = IndexAD.ADList();
+                        foreach (var item in adlist)
+                        {
+                            <option value="@item.Position" @(null != Model && Model.Position == item.Position ? "selected" : "")>@item.Name</option>
+                        }
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td style="color: Red">开始时间</td>
+            <td><input id="DateBegin" name="DateBegin" class="Wdate" value="@(Model.DateBegin ==Convert.ToDateTime("1900-1-1") ? "":Model.DateBegin.ToString())" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" readonly="readonly"></td>
+        </tr>
+        <tr>
+            <td style="color: Red">结束时间</td>
+            <td><input id="DateEnd" name="DateEnd" class="Wdate" value="@(Model.DateEnd == Convert.ToDateTime("1900-1-1") ? "" : Model.DateEnd.ToString())" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" readonly="readonly"></td>
+        </tr>
+        <tr>
+            <td style="color: Red;" valign="top">
+                广告图片
+            </td>
+            <td>
+                <input type="file" id="PicFile" name="PicFile">
+                <span id="spanBanner"></span>
+                @{
+                    if (null != Model && !string.IsNullOrEmpty(Model.PictureFileNo))
+                    {
+                        <br />
+                        <img src="/ReadPic/GetPic.ashx?width=100&height=100&pictureFileNo=@Model.PictureFileNo&type=2" />
+                    }
+                }
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <a class="sumit_btn" id="submitBtn" href="###">确 定</a>
+                <a id="cancleBtn" class="cancle_btn" href="###">取 消</a>
+            </td>
+        </tr>
+    </table>
+</form>

@@ -1,0 +1,33 @@
+.through520 {
+    /*background: url(/images/page/520/bg.gif) repeat 0 0;*/
+    background: #f6f6f6;
+}
+
+.box520 {
+    width: 950px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.mgt24 {
+    position: relative;
+}
+.bank_img {
+    height:300px;
+	width:950px;
+	display:block;
+}
+.bank_img2 {
+    height:335px;
+	width:950px;
+	display:block;
+}
+.bank_logo {position:absolute; top:20px; left:40px;}
+.bank_text {position:absolute; bottom:19px; left:40px;}
+.bank_til {position:absolute; top:5px; left:200px;}
+.bank_hot {position:absolute; top:244px; left:598px;}
+.bank_rule {position:absolute; top:89px; left:214px;}
+.bank_til,.bank_rule dt {font-size:16px; font-family:"微软雅黑";}
+.bank_rule dd {font-size:14px; font-family:"微软雅黑"; line-height:24px; width:540px;}
+.bank_rule dt,.bank_rule dd {text-indent:-13.5px;}
+.bank_rule dd,.bank_hot {font-size:14px; font-family:"微软雅黑"; }
+.bank_col { color:#f00669;}

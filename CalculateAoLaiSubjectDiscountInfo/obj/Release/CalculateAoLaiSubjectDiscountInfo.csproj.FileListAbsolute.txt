@@ -1,0 +1,8 @@
+D:\workObject\cms\CalculateAoLaiSubjectDiscountInfo\bin\Release\CalculateAoLaiSubjectDiscountInfo.exe.config
+D:\workObject\cms\CalculateAoLaiSubjectDiscountInfo\bin\Release\CalculateAoLaiSubjectDiscountInfo.exe
+D:\workObject\cms\CalculateAoLaiSubjectDiscountInfo\bin\Release\CalculateAoLaiSubjectDiscountInfo.pdb
+D:\workObject\cms\CalculateAoLaiSubjectDiscountInfo\bin\Release\log4net.dll
+D:\workObject\cms\CalculateAoLaiSubjectDiscountInfo\obj\Release\CalculateAoLaiSubjectDiscountInfo.ProjectInstaller.resources
+D:\workObject\cms\CalculateAoLaiSubjectDiscountInfo\obj\Release\CalculateAoLaiSubjectDiscountInfo.csproj.GenerateResource.Cache
+D:\workObject\cms\CalculateAoLaiSubjectDiscountInfo\obj\Release\CalculateAoLaiSubjectDiscountInfo.exe
+D:\workObject\cms\CalculateAoLaiSubjectDiscountInfo\obj\Release\CalculateAoLaiSubjectDiscountInfo.pdb

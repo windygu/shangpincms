@@ -1,0 +1,92 @@
+﻿@model Shangpin.Entity.Wfs.SWfsSpChannelTemplate
+@using Shangpin.Ocs.Service.Common
+@{
+    ViewBag.Title = "编辑模板";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+@section HeadStyle{
+    <link href="/Areas/Shangpin/Content/css/page/rightcontent/brandcontent.css" rel="stylesheet" type="text/css" charset="utf-8" />
+}
+<h1>
+    OCS > 尚品 > <a href="/Shangpin/Channel/TemplateList">模板列表</a> > 编辑模板
+</h1>
+
+<div class="mx-brandcontent-msgbox">
+    <form action="/Shangpin/Channel/EditeTemplate" method="post">
+        <dl>
+            <dt>
+                模板编号:
+            </dt>
+            <dd>
+                @Html.HiddenFor(model=>model.TemplateID)
+                @Html.TextBoxFor(model => model.TemplateNO, new { @readonly = "readonly", maxlength = "100" })
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                模板名称:
+            </dt>
+            <dd>
+                @Html.TextBoxFor(model => model.TemplateName, new { maxlength = "30" })
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                模板路径:
+            </dt>
+            <dd>
+                @Html.TextBoxFor(model => model.TemplatePath, new { @style="width:500px;",maxlength="100"})
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                OCSCssPath:
+            </dt>
+            <dd>
+                @Html.TextAreaFor(model => model.OcsCssPath, new { @rows = "3", cols="100" })
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                OcsJsPath:
+            </dt>
+            <dd>
+                @Html.TextAreaFor(model => model.OcsJsPath, new { @rows = "3", cols = "100" })
+            </dd>
+        </dl>
+         <dl>
+            <dt>
+                CssPath:
+            </dt>
+            <dd>
+                @Html.TextAreaFor(model => model.CssPath, new { @rows = "3", cols = "100" })
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                JsPath:
+            </dt>
+            <dd>
+                @Html.TextAreaFor(model => model.JsPath, new { @rows = "3", cols = "100" })
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                模板描述:
+            </dt>
+            <dd>
+                @Html.TextAreaFor(model => model.TemplateDirection, new { @rows = "3", cols = "100" })
+            </dd>
+        </dl>
+        <dl>
+            <dt>&nbsp;&nbsp;</dt>
+            <dd>
+                <input type="submit" value="保存" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;"/>
+                <input type="button" value="取消" style="width: 90px; height: 27px; background-color: #4D90FE; border: 1px solid #3079ED;
+                            color: #FFFFFF; cursor: pointer;" onclick="window.location.href='/Shangpin/channel/TemplateList'"/>
+            </dd>
+        </dl>
+    </form>
+</div>
+@ViewData["tip"]

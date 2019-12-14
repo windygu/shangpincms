@@ -1,0 +1,271 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.ShangPin
+@{
+    Layout = null;
+    //IList<SWfsBrandExtendList> list = (IList<SWfsBrandExtendList>)ViewBag.List;
+    IList<SWfsBrandExtendList> list = ViewBag.List;
+
+    //Dictionary<string, string> dic = new Dictionary<string, string>();
+}
+
+<div>
+    @{
+        Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+        int totalCount = ViewBag.TotalCount;
+        int currentPage = ViewBag.PageIndex;
+        int pageSize = ViewBag.PageSize;
+
+        ViewBag.Title = "精品旗舰店管理";
+    }
+    @using Shangpin.Ocs.Web.Infrastructure;
+    @section HeadScript{
+        <script type="text/javascript" src="/Areas/outlet/Scripts/page/index/popDiv.js"></script>
+        <script type="text/javascript">
+            //修改导航类型
+            var oldvalue = 0;
+            var isAuto = function (obj, brandNo) {
+                if (!confirm("您确定修改导航吗？")) {
+                    $(obj).val($("#navtypeid_" + brandNo).val());
+                    return;
+                }
+                $("#navtypeid_" + brandNo).val($(obj).val());
+                $.post("/Shangpin/Brand/IsAuto.html", { 'BNo': $(obj).attr("name"), 'isAuto': $(obj).val() }, function (data) {
+                    if (data > 0) {
+                        alert("导航修改成功");
+                        //window.location.reload();
+                        if ($(obj).val() == 1 || $(obj).val() == 2) {
+                            $("#bianji_" + brandNo).attr("href", "/Shangpin/Brand/NavigateList.html?brandNO=" + brandNo + "&brandName=" + $(obj).attr("title") + "&storetype=" + $(obj).val());
+                            $("#bianji_" + brandNo).text("导航编辑");
+                        } else {
+                            $("#bianji_" + brandNo).attr("href", "");
+                            $("#bianji_" + brandNo).text("");
+                        }
+
+                        //window.location.href = gettimestampurl(window.location.href);
+                    } else {
+                        alert("导航修改失败");
+                    }
+                });
+            }
+            //修改店铺类型
+            var changeShopType = function (obj) {
+                if (!confirm("您确定修改店铺吗？")) {
+                    if ($(obj)[0].selectedIndex == 0) {
+                        $(obj)[0].selectedIndex = 1;
+                    } else {
+                        $(obj)[0].selectedIndex = 0;
+                    }
+                    return;
+                }
+                $.post("/Shangpin/Brand/Shop.html", { 'BNo1': $(obj).attr("name"), 'isAuto1': $(obj).val() }, function (data) {
+                    if (data > 0) {
+                        alert("店铺修改成功");
+
+                    } else {
+                        alert("店铺修改失败");
+                    }
+                });
+            }
+        </script>
+
+        <script type="text/javascript">
+            //店铺状态
+            $(document).ready(function () {
+                var ss = $("#bian").val();
+                if (ss == 1) {
+                    $("#bianji").removeClass();
+                    return true;
+                }
+                else {
+                    $("#bianji").text;
+                    return false;
+                }
+
+                if ($("#BrandTypeId").val() == "-1") {
+                    $("#storestatus").attr("disabled", true);
+                }
+                $("#BrandTypeId").change(function () {
+                    //alert($("#BrandTypeId").val());
+                    if ($(this).val() == "-1") {
+                        $("#storestatus").attr("disabled", true);
+                    } else {
+                        $("#storestatus").attr("disabled", false);
+                        if ($("#BrandTypeId").val() == "1") {
+                            document.getElementById("storestatus").disabled = false;
+                        }
+                        else {
+                            $("#zhuanmai").attr("disabled", false);
+
+                        }
+                    }
+                });
+            });
+        </script>
+    }
+    <h1>
+        OCS > 尚品 > <a href="#">品牌管理</a> > 精品旗舰店
+    </h1>
+    <form action="/Shangpin/Flagship/FlagshipList.html" method="get">
+        <div style=" width:769px; height:27px; border:1px solid Black; border-left:none; border-right:none; height:inherit;">
+            <a style=" color:Red; font-size:17px; color:Blue;">全部:</a><a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=A' style=" font-size:14px; margin-left:5px; color:Blue;">A</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=B' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;;">B</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=C' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">C</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=D' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">D</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=E' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">E</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=F' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">F</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=G' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">G</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=H' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">H</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=I' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">I</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=J' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">J</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=K' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">K</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=L' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">L</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=M' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">M</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=N' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">N</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=O' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">O</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=P' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">P</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=Q' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">Q</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=R' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">R</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=S' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">S</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=T' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">T</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=U' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">U</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=V' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">V</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=W' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">W</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=X' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">X</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=Y' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">Y</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?enName=Z' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">Z</a>
+            <a href='/Shangpin/Brand/AIIBrandsSelect.html?ZeroToNine=0-9' style=" font-size:14px; margin-left:5px; margin-top:8px; margin-bottom:8px; color:Blue;">0-9</a>
+        </div>
+
+        <div>
+            <input type="text" name="BrandCnName" placeholder="请输入品牌名称或品牌编号" value="@ViewBag.KeyWord" style="width: 160px; color: #666; font-size: 12px;">
+            <select name="Status">
+                <option value=''>品牌状态</option>
+                <option value='1' @(Request.Params["Status"] == "1" ? "selected='selected'" : "")>显示</option>
+                <option value='0' @(Request.Params["Status"] == "2" ? "selected='selected'" : "")>不显示</option>
+            </select>
+            <select id="storestatus" name="storestatus" style="display:none;">
+                <option value='-1' @(Request.Params["BrandTypeId"] == "-1" ? "selected='selected'" : "")>店铺状态</option>
+                <option value='0' @(Request.Params["storestatus"] == "0" ? "selected='selected'" : "")>未发布</option>
+                <option value='1' @(Request.Params["storestatus"] == "1" ? "selected='selected'" : "")>已发布</option>
+            </select>
+            @*<select name="NaviTypeId">
+                     <option value='-1'>导航类型</option>
+                     <option value='0' @(Request.Params["NaviTypeId"] == "0" ? "selected='selected'" : "")>
+                         自动
+                     </option>
+                     <option value='1' @(Request.Params["NaviTypeId"] == "1" ? "selected='selected'" : "")>
+                         手动
+                     </option>
+                     <option value='2' @(Request.Params["NaviTypeId"] == "2" ? "selected='selected'" : "")>
+                         自动+手动
+                     </option>
+                 </select>
+                <select name="BrandTypeId" id="BrandTypeId">
+                         <option value='-1'>品牌店类型</option>
+                         <option value='0' @(Request.Params["BrandTypeId"] == "0" ? "selected='selected'" : "")>
+                             专卖店
+                         </option>
+                         <option value='1' @(Request.Params["BrandTypeId"] == "1" ? "selected='selected'" : "")>
+                             旗舰店
+                         </option>
+                         <option value='2' @(Request.Params["BrandTypeId"] == "2" ? "selected='selected'" : "")>
+                             精品旗舰店
+                         </option>
+                     </select>*@
+
+            <button type="submit">
+                提交查询
+            </button>
+            @*<a href="/Shangpin/Brand/InitialData.html">导入品牌数据</a>*@
+        </div>
+    </form>
+    <input type="hidden" id="CurSordName" name="CurSordName" />
+    <table class="mx-table">
+        <thead>
+            <tr>
+                <th width="7%">
+                    品牌编号
+                </th>
+                <th width="10%">
+                    英文名称
+                </th>
+                <th width="9%">
+                    中文名称
+                </th>
+                <th width="4%">
+                    品牌状态
+                </th>
+                @*<th width="8%">
+                        店铺状态
+                    </th>*@
+                <th width="7%">
+                    导航类型
+                </th>
+                <th width="9%">
+                    品牌店类型
+                </th>
+                <th width="18%">
+                    操作
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (null != list && list.Count > 0)
+            {
+                var flag = 0;
+                foreach (var item in list)
+                {
+                    flag = flag + 1;
+                    <tr class="@(flag % 2 == 0 ? "cross" : "")">
+                        <td>
+                            @item.BrandNo
+                        </td>
+                        <td>
+                            @item.BrandEnName
+                        </td>
+                        <td>
+                            @item.BrandCnName
+                        </td>
+                        <td>
+                            @(item.Status == 1 ? "显示" : "不显示")
+                        </td>
+                        @*<td>
+                                @(item.Status1 == 1 ? "已发布" : "未发布")
+                            </td>*@
+                        <td>
+                            手动
+                        </td>
+                        <td>
+                            精品旗舰店
+                        </td>
+                        <td style="text-align:left;">
+                            @{switch (item.BrandTypeId)
+                            {
+                                case 0:
+                                    <a class="button" href="/Shangpin/Brand/BrandSpecialityStoreEdit.html?brandNo=@item.BrandNo" name="brand">店铺编辑</a>
+                                    break;
+                                case 1:
+                                <a class="button" href="/Shangpin/Brand/FlagShipStore.html?brandNO=@item.BrandNo" name="brand">店铺编辑</a>
+                                    break;
+                                case 2:
+                                <a class="button" href="/Shangpin/Flagship?brandNo=@item.BrandNo" name="brand">店铺编辑</a>
+                                    break;
+                                default:
+                                    break;
+                            }}
+                            @{if ((item.NaviTypeId == 1 || item.NaviTypeId == 2))
+                            {
+                                <a class="button" id="bianji_@item.BrandNo" href="/Shangpin/Brand/NavigateList.html?brandNO=@item.BrandNo&brandname=@item.BrandEnName&storetype=@item.BrandTypeId" style=" width:60px;">导航编辑</a>
+                            }}
+                        </td>
+
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <div class="spPage">@Html.Raw(Html.PagerX("page", currentPage, pageSize, totalCount))</div>
+</div>
+@{
+    ViewBag.List = null;
+    list = null;
+}

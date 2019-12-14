@@ -1,0 +1,708 @@
+﻿@using Shangpin.Ocs.Web.Infrastructure;
+@model Shangpin.Ocs.Web.Areas.Shangpin.Controllers.AppIndexParams
+@{
+    ViewBag.Title = "尚品-内容管理APP";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+@section HeadStyle{
+    <style type="text/css">
+        .mx-table {
+            font-size: 12px;
+        }
+
+        .dispalayRegion {
+            display: none;
+            position: absolute;
+            width: 600px;
+            background-color: White;
+            height: auto;
+            top: 0px;
+            left: 0px;
+            font-size: 12px;
+        }
+
+            .dispalayRegion td {
+                padding: 10px;
+            }
+
+        .opratorbutton {
+            width: 90px;
+            height: 27px;
+            background-color: #4D90FE;
+            border: 1px solid #3079ED;
+            color: #FFFFFF;
+            cursor: pointer;
+        }
+        .operatingPositionLinkUrl div {
+            margin-top: 10px;
+        }
+    </style>
+}
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/Venue/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        // 搜索页商城分类 ****** begin ******
+        $(function ($) {
+            $.post("/Shangpin/AppIndexMamager/GetCategoryListString", { parentNo: 'ROOT', selectedNo: '' }, function (data) {
+                $("#shopCategoryNo1").append(data);
+
+                $("#shopCategoryNo1_1").append(data);
+                $("#shopCategoryNo2_1").append(data);
+                $("#shopCategoryNo3_1").append(data);
+                $("#shopCategoryNo4_1").append(data);
+                $("#shopCategoryNo5_1").append(data);
+                $("#shopCategoryNo6_1").append(data);
+                $("#shopCategoryNo7_1").append(data);
+                $("#shopCategoryNo8_1").append(data);
+                $("#shopCategoryNo9_1").append(data);
+            });
+        });
+        //弹出层-搜索页商城分类
+        var showDivShopCategory = function (imgId) {
+            $("#currentPicId").val(imgId);
+            //加载分类
+            var categoryNo = $("#" + imgId).attr("param");
+            if (categoryNo.length > 0) {
+                $("#shopCategoryNo1").val(categoryNo.substr(0, 3));//当前选择框的值                
+                if (categoryNo.length > 3) {
+                    oneChange(categoryNo.substr(0, 3), categoryNo.substr(0, 6));
+                    if (categoryNo.length > 6) {
+                        twoChange(categoryNo.substr(0, 6), categoryNo.substr(0, 9));
+                        if (categoryNo.length > 9) {
+                            threeChange(categoryNo.substr(0, 9), categoryNo.substr(0, 12));
+                            fourChange(categoryNo.substr(0, 12));
+                        }
+                        else {
+                            threeChange(categoryNo.substr(0, 9), "");
+                        }
+                    }
+                    else {
+                        twoChange(categoryNo.substr(0, 6), "");
+                    }
+                }
+                else {
+                    oneChange(categoryNo.substr(0, 3), "");
+                }
+            }
+            else {
+                oneChange(0, "");
+                $("#shopCategoryNo1").val("");
+            }
+
+            $("#shopCategorySort").val($("#" + imgId).attr("sort"));
+            var imgNo = $("#" + imgId).attr("imgno");
+            $("#shopCategoryImgNo").val(imgNo);
+            if (imgNo.length == 0) {
+                $("#shopCategoryPreviewImg").attr("src", "").hide(); //预览图
+            }
+            else {
+                $("#shopCategoryPreviewImg").attr("src", "/ReadPic/GetPic.ashx?width=0&height=0&pictureFileNo=" + imgNo + "&type=2").show(); //预览图
+            }
+            //清空图片上传file
+            var file = $("#shopCategoryImgfile");
+            file.after(file.clone().val(""));
+            file.remove();
+            $("#shopCategoryErrorInfo").text("");
+
+            $("body").append('<div id="windownBG" style="height:' + $(document).height() + 'px;opacity:0.5;z-index: 99;display:block;left:0px;top:0px;position:absolute;width:100%;background: none repeat scroll 0 0 #000000;"></div>');
+            $("#regionEditeShopCategory").css({ 'top': ($(window).height() / 2) - ($("#regionEditeShopCategory").height() / 2) + $(window).scrollTop(), 'left': ($(window).width() / 2) - ($("#regionEditeShopCategory").width() / 2), 'display': 'block', 'z-index': '99999' });
+        }
+        var showDivShopCategory_2 = function (imgId) {
+            $("#currentPicId").val(imgId);
+            //加载分类
+            var categoryNoStr = $("#" + imgId).attr("param");
+            bindShopCategorySelect(categoryNoStr);
+
+            var imgNo = $("#" + imgId).attr("imgno");
+            $("#shopCategoryImgNo_2").val(imgNo);
+            if (imgNo.length == 0) {
+                $("#shopCategoryPreviewImg_2").attr("src", "").hide(); //预览图
+            }
+            else {
+                $("#shopCategoryPreviewImg_2").attr("src", "/ReadPic/GetPic.ashx?width=0&height=0&pictureFileNo=" + imgNo + "&type=2").show(); //预览图
+            }
+            //清空图片上传file
+            var file = $("#shopCategoryImgfile_2");
+            file.after(file.clone().val(""));
+            file.remove();
+            $("#shopCategoryErrorInfo_2").text("");
+
+            $("body").append('<div id="windownBG" style="height:' + $(document).height() + 'px;opacity:0.5;z-index: 99;display:block;left:0px;top:0px;position:absolute;width:100%;background: none repeat scroll 0 0 #000000;"></div>');
+            $("#regionEditeShopCategory_2").css({ 'top': ($(window).height() / 2) - ($("#regionEditeShopCategory_2").height() / 2) + $(window).scrollTop(), 'left': ($(window).width() / 2) - ($("#regionEditeShopCategory_2").width() / 2), 'display': 'block', 'z-index': '99999' });
+        }
+        var bindShopCategorySelect = function (categoryNoStr) {
+            if (categoryNoStr.length == 0) {
+                $("#categoryCount6").attr("checked", "checked");
+            }
+            else {
+                var arrNo = categoryNoStr.split(';');                
+                for (var i = 0; i < arrNo.length; i++) {
+                    var idTag = "shopCategoryNo" + (i + 1).toString()
+                    var categoryNo = arrNo[i];
+                    if (categoryNo.length > 0) {
+                        $("#shopCategoryNo"+(i+1).toString()+"_1").val(categoryNo.substr(0, 3));//当前选择框的值                
+                        if (categoryNo.length > 3) {
+                            oneChange_2(categoryNo.substr(0, 3), categoryNo.substr(0, 6), idTag);
+                            if (categoryNo.length > 6) {
+                                twoChange_2(categoryNo.substr(0, 6), categoryNo.substr(0, 9), idTag);
+                                if (categoryNo.length > 9) {
+                                    threeChange_2(categoryNo.substr(0, 9), categoryNo.substr(0, 12), idTag);
+                                    fourChange_2(categoryNo.substr(0, 12), idTag);
+                                }
+                                else {
+                                    threeChange_2(categoryNo.substr(0, 9), "", idTag);
+                                }
+                            }
+                            else {
+                                twoChange_2(categoryNo.substr(0, 6), "", idTag);
+                            }
+                        }
+                        else {
+                            oneChange_2(categoryNo.substr(0, 3), "", idTag);
+                        }
+                    }
+                    else {
+                        oneChange_2(0, "", idTag);
+                        $("#shopCategoryNo" + (i + 1).toString() + "_1").val("");
+                    }
+
+                    if (i == 8) {
+                        break;
+                    }
+                }
+                var selectCount = arrNo.length > 6 ? 9 : 6;
+                if (selectCount == 9) {
+                    $("#tdCategorySelect div[tag='more']").show();
+                }
+                else {
+                    $("#tdCategorySelect div[tag='more']").hide();
+                }
+                $("#categoryCount" + selectCount).attr("checked", "checked");
+            }
+        }
+        var saveShopCategory = function (formId) {
+            $("#shopCategoryNo").val($("#CategoryNo").val());
+            if ($("#shopCategoryNo1").val() == "0") {
+                $("#shopCategoryErrorInfo").text("请选择分类");
+                return;
+            }
+            if ($("#shopCategoryImgfile").val().length == 0 && $("#shopCategoryImgNo").val().length==0) {
+                $("#shopCategoryErrorInfo").text("请选择图片");
+                return;
+            }
+
+            $("#shopCategoryErrorInfo").text("");
+            saveImg(formId, $("#shopCategoryNo").val());
+            //$('.dispalayRegion').hide(); $('#windownBG').remove();
+        }
+        var saveShopCategory_2 = function (formId) {
+            var categoryStr = "";//格式：分类编号1;分类编号2;分类编号3;分类编号4
+            var checkCount = $("#" + formId + ' input:radio[name="categoryCount"]:checked').val();
+            for (var i = 1; i <= checkCount; i++) {
+                categoryStr += $("#hidshopCategoryNo" + i.toString()).val()+";";
+                if($("#shopCategoryNo" + i.toString()+"_1").val() == "0"){
+                    $("#shopCategoryErrorInfo_2").text("分类" + i.toString() + "没有选择");
+                    return;
+                }
+            }
+            if ($("#shopCategoryImgfile_2").val().length == 0 && $("#shopCategoryImgNo_2").val().length == 0) {
+                $("#shopCategoryErrorInfo_2").text("请选择图片");
+                return;
+            }
+
+            categoryStr = categoryStr.substr(0, categoryStr.length - 1);
+            $("#shopCategoryErrorInfo_2").text("");
+            saveImg(formId, categoryStr);
+            //$('.dispalayRegion').hide(); $('#windownBG').remove();
+        }
+        
+        // 搜索页运营位 ****** begin ******
+        //弹出层-搜索页运营位
+        var showDivOperatingPosition = function (imgId) {
+            $("#currentPicId").val(imgId);
+            $("#operatingPositionLinkUrl").val($("#" + imgId).attr("param"));
+            $("#operatingPositionSort").val($("#" + imgId).attr("sort"));
+
+            var imgNo = $("#" + imgId).attr("imgno");
+            $("#operatingPositionImgNo").val(imgNo);
+            if (imgNo.length == 0) {
+                $("#operatingPositionPreviewImg").attr("src", "").hide(); //预览图
+            }
+            else {
+                $("#operatingPositionPreviewImg").attr("src", "/ReadPic/GetPic.ashx?width=0&height=0&pictureFileNo=" + imgNo + "&type=2").show(); //预览图
+            }
+            //清空图片上传file
+            var file = $("#operatingPositionImgfile"); 
+            file.after(file.clone().val("")); 
+            file.remove();
+            $("#operatingPositionErrorInfo").text("");
+
+            $("body").append('<div id="windownBG" style="height:' + $(document).height() + 'px;opacity:0.5;z-index: 99;display:block;left:0px;top:0px;position:absolute;width:100%;background: none repeat scroll 0 0 #000000;"></div>');
+            $("#regionEditeOperatingPosition").css({ 'top': ($(window).height() / 2) - ($("#regionEditeOperatingPosition").height() / 2) + $(window).scrollTop(), 'left': ($(window).width() / 2) - ($("#regionEditeOperatingPosition").width() / 2), 'display': 'block', 'z-index': '99999' });
+        }
+        var showDivOperatingPosition_2 = function (imgId) {
+            $("#currentPicId").val(imgId);
+            bindOperatingPositionUrl($("#" + imgId).attr("imgno"));
+            $("#operatingPositionImgNo_2").val($("#" + imgId).attr("imgno"));
+            //清空图片上传file
+            var file = $("#operatingPositionImgfile_2");
+            file.after(file.clone().val(""));
+            file.remove();
+            $("#operatingPositionErrorInfo_2").text("");
+
+            $("body").append('<div id="windownBG" style="height:' + $(document).height() + 'px;opacity:0.5;z-index: 99;display:block;left:0px;top:0px;position:absolute;width:100%;background: none repeat scroll 0 0 #000000;"></div>');
+            $("#regionEditeOperatingPosition_2").css({ 'top': ($(window).height() / 2) - ($("#regionEditeOperatingPosition_2").height() / 2) + $(window).scrollTop(), 'left': ($(window).width() / 2) - ($("#regionEditeOperatingPosition_2").width() / 2), 'display': 'block', 'z-index': '99999' });
+        }
+        //加载搜索页运营位的url
+        var bindOperatingPositionUrl = function (imgNo) {
+            $("#tdLinkUrl").html("");
+            if (imgNo.length == 0) { //表中还没有数据
+                $("#operatingPositionPreviewImg_2").attr("src", "").hide(); //预览图
+                for (var i = 1; i <= 9; i++) {
+                    if (i > 6) {
+                        $("#tdLinkUrl").append('<div id="divLinkUrl' + i.toString() + '" tag="more" style="display:none"">' + i + '：<input type="text" id="linkUrl' + i + '" name="linkUrl' + i + '" maxlength="400" size="75"></div>');
+                    }
+                    else {
+                        $("#tdLinkUrl").append('<div id="divLinkUrl' + i.toString() + '">' + i + '：<input type="text" id="linkUrl' + i + '" name="linkUrl' + i + '" maxlength="400" size="75"></div>');
+                    }
+                    $("#linkCount6").attr("checked", "checked");
+                }
+            }
+            else {
+                $("#operatingPositionPreviewImg_2").attr("src", "/ReadPic/GetPic.ashx?width=0&height=0&pictureFileNo=" + imgNo + "&type=2").show(); //预览图
+                $.post("/Shangpin/AppIndexMamager/GetOperatingPositionListString", function (data) {
+                    $("#tdLinkUrl").append(data.list);
+                    $("#linkCount" + data.count).attr("checked", "checked");
+                });
+            }
+        }
+        //改变所需的分类数量
+        var changeCategoryCount = function (count) {
+            if (count == "6") {
+                $("#tdCategorySelect div[tag='more']").hide();
+            }
+            else {
+                $("#tdCategorySelect div[tag='more']").show();
+            }
+        }
+        //改变所需的linkUrl数量
+        var changeLinkUrlCount = function (count) {
+            if (count == "6") {
+                $("#tdLinkUrl div[tag='more']").hide();
+            }
+            else {
+                $("#tdLinkUrl div[tag='more']").show();
+            }
+        }
+        var saveOperatingPosition = function (formId) {
+            $("#operatingPositionLinkUrl").val($.trim($("#operatingPositionLinkUrl").val()));
+            if ($("#operatingPositionLinkUrl").val().length == 0) {
+                $("#operatingPositionErrorInfo").text("链接地址不能为空");
+                return;
+            }
+            //else {//检查网址格式
+            //    var reg = /^(http|https):\/\/[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+).*/i;
+            //    if (!reg.test($("#operatingPositionLinkUrl").val())) {
+            //        $("#operatingPositionErrorInfo").text("链接地址格式不正确");
+            //        return;
+            //    }
+            //}
+            if ($("#operatingPositionImgfile").val().length == 0 && $("#operatingPositionImgNo").val().length==0) {
+                $("#operatingPositionErrorInfo").text("请选择图片");
+                return;
+            }
+
+            $("#operatingPositionErrorInfo").text("");
+            saveImg(formId, $("#operatingPositionLinkUrl").val());
+            //$('.dispalayRegion').hide(); $('#windownBG').remove();
+        }
+        var saveOperatingPosition_2 = function (formId) {
+            var checkCount = $("#"+formId + ' input:radio[name="linkCount"]:checked').val();
+            for (var i = 1; i <= checkCount; i++) {
+                $("#linkUrl" + i.toString()).val($.trim($("#linkUrl" + i.toString()).val()));
+                if ($("#linkUrl" + i.toString()).val().length == 0) {
+                    $("#linkUrl" + i.toString()).focus();
+                    $("#operatingPositionErrorInfo_2").text("链接地址"+i.toString()+"不能为空");
+                    return;
+                }
+                //else {//检查网址格式
+                //    var reg = /^(http|https):\/\/[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+).*/i;
+                //    if (!reg.test($("#linkUrl" + i.toString()).val())) {
+                //        $("#operatingPositionErrorInfo_2").text("链接地址格式不正确");
+                //        $("#linkUrl" + i.toString()).focus();
+                //        return;
+                //    }
+                //}
+            }
+
+            if ($("#operatingPositionImgfile_2").val().length == 0 && $("#operatingPositionImgNo_2").val().length==0) {
+                $("#operatingPositionErrorInfo_2").text("请选择图片");
+                return;
+            }
+
+            $("#operatingPositionErrorInfo_2").text("");
+            saveImg(formId, "");
+            //$('.dispalayRegion').hide(); $('#windownBG').remove();
+        }
+
+        // 异步保存(搜索页商城分类 和 搜索页运营位)
+        var saveImg = function (formId, param) {
+            $("#" + formId).ajaxSubmit({
+                type: "post",
+                success: function (data) {
+                    data = jQuery.parseJSON(data);
+                    if (data.status == 1) {
+                        alert(data.message);
+                        return;
+                    }
+                    $("#" + $("#currentPicId").val()).attr("src", "/ReadPic/GetPic.ashx?width=0&height=0&pictureFileNo=" + data.message + "&type=2");
+                    $("#" + $("#currentPicId").val()).attr("param", param);
+                    $("#" + $("#currentPicId").val()).attr("imgno", data.message);
+                    $('.dispalayRegion').hide(); $('#windownBG').remove();
+                }
+            });
+        }
+
+        // 搜索页商城分类中的品类选择。
+        //objvalue为当前分类选择的值，nextCategorySelectedValue为下一分类选定的值（可以为空，为空时下一分类没有选定）
+        var oneChange = function (objvalue, nextCategorySelectedValue) {
+            $("#shopCategoryNo2").html("<option value='0'>二级分类</option>");
+            $("#shopCategoryNo3").html("<option value='0'>三级分类</option>");
+            $("#shopCategoryNo4").html("<option value='0'>四级分类</option>");
+            if (objvalue == 0) {
+                $("#CategoryNo").val("");
+                return;
+            }            
+            $("#CategoryNo").val(objvalue);
+            $.post("/Shangpin/AppIndexMamager/GetCategoryListString", { 'parentNo': objvalue, selectedNo: nextCategorySelectedValue }, function (data) {
+                $("#shopCategoryNo2").append(data);                
+            });
+        }
+        var oneChange_2 = function (objvalue, nextCategorySelectedValue,idTag) {
+            $("#" + idTag + "_2").html("<option value='0'>二级分类</option>");
+            $("#" + idTag + "_3").html("<option value='0'>三级分类</option>");
+            $("#" + idTag + "_4").html("<option value='0'>四级分类</option>");
+            if (objvalue == 0) {
+                $("#hid" + idTag).val("");
+                return;
+            }
+            $("#hid" + idTag).val(objvalue);
+            $.post("/Shangpin/AppIndexMamager/GetCategoryListString", { 'parentNo': objvalue, selectedNo: nextCategorySelectedValue }, function (data) {
+                $("#" + idTag + "_2").append(data);
+            });
+        }
+        var twoChange = function (objvalue, nextCategorySelectedValue) {
+            $("#shopCategoryNo3").html("<option value='0'>三级分类</option>");
+            $("#shopCategoryNo4").html("<option value='0'>四级分类</option>");
+            if (objvalue == 0) {
+                $("#CategoryNo").val($("#CategoryNo").val().substr(0, 3));
+                return;
+            }            
+            $("#CategoryNo").val(objvalue);
+            $.post("/Shangpin/AppIndexMamager/GetCategoryListString", { 'parentNo': objvalue, selectedNo: nextCategorySelectedValue }, function (data) {
+                $("#shopCategoryNo3").append(data);
+            });            
+        }
+        var twoChange_2 = function (objvalue, nextCategorySelectedValue, idTag) {
+            $("#" + idTag + "_3").html("<option value='0'>三级分类</option>");
+            $("#" + idTag + "_4").html("<option value='0'>四级分类</option>");
+            if (objvalue == 0) {
+                $("#hid" + idTag).val($("#hid" + idTag).val().substr(0, 3));
+                return;
+            }
+            $("#hid" + idTag).val(objvalue);
+            $.post("/Shangpin/AppIndexMamager/GetCategoryListString", { 'parentNo': objvalue, selectedNo: nextCategorySelectedValue }, function (data) {
+                $("#" + idTag + "_3").append(data);
+            });
+        }
+        var threeChange = function (objvalue, nextCategorySelectedValue) {
+            $("#shopCategoryNo4").html("<option value='0'>四级分类</option>");
+            if (objvalue == 0) {
+                $("#CategoryNo").val($("#CategoryNo").val().substr(0, 6));
+                return;
+            }            
+            $("#CategoryNo").val(objvalue);
+            $.post("/Shangpin/AppIndexMamager/GetCategoryListString", { 'parentNo': objvalue, selectedNo: nextCategorySelectedValue }, function (data) {
+                $("#shopCategoryNo4").append(data);
+            });
+        }
+        var threeChange_2 = function (objvalue, nextCategorySelectedValue, idTag) {
+            $("#" + idTag + "_4").html("<option value='0'>四级分类</option>");
+            if (objvalue == 0) {
+                $("#hid" + idTag).val($("#hid" + idTag).val().substr(0, 6));
+                return;
+            }
+            $("#hid" + idTag).val(objvalue);
+            $.post("/Shangpin/AppIndexMamager/GetCategoryListString", { 'parentNo': objvalue, selectedNo: nextCategorySelectedValue }, function (data) {
+                $("#" + idTag + "_4").append(data);
+            });
+        }
+        var fourChange = function (objvalue) {
+            if (objvalue == 0) {                
+                $("#CategoryNo").val($("#CategoryNo").val().substr(0, 9));
+                return;
+            }
+            $("#CategoryNo").val(objvalue);
+        }
+        var fourChange_2 = function (objvalue, idTag) {
+            if (objvalue == 0) {
+                $("#hid" + idTag).val($("#hid" + idTag).val().substr(0, 9));
+                return;
+            }
+            $("#hid" + idTag).val(objvalue);
+        }
+    </script>
+}
+@section hiddendiv{
+<input type="hidden" id="currentPicId" />  
+<input type="hidden" id="CategoryNo" name="CategoryNo">      
+<div id="regionEditeShopCategory" class="dispalayRegion">
+    <form action="/Shangpin/AppIndexMamager/AddShopCategory" method="post" enctype="multipart/form-data" id="formShopCategory" accept-charset="utf-8">
+        <table border="0">
+            <tr>
+                <td width="70" style="color:red">选择分类:</td>
+                <td>
+                    <select id="shopCategoryNo1" onchange="oneChange(this.value);" name="shopCategoryNo1"><option value='0'>一级分类</option></select>
+                    <select id="shopCategoryNo2" onchange="twoChange(this.value);" name="shopCategoryNo2"><option value='0'>二级分类</option></select>
+                    <select id="shopCategoryNo3" onchange="threeChange(this.value);" name="shopCategoryNo3"><option value='0'>三级分类</option></select>
+                    <select id="shopCategoryNo4" onchange="fourChange(this.value)" name="shopCategoryNo4"><option value='0'>四级分类</option></select>
+                    <input id="shopCategoryNo" type="hidden" name="shopCategoryNo">
+                </td>
+            </tr>
+            <tr id="imgobj">
+                <td style="color:red">分类图片:</td>
+                <td>
+                    <img src="" id="shopCategoryPreviewImg" width="97" height="50" /><br />
+                    <input type="file" name="shopCategoryImgfile" id="shopCategoryImgfile" />尺寸:等待UI  限制JPG、png、GIF 小于100K
+                    <input type="hidden" id="imgWidth" name="imgWidth" value="0" />
+                    <input type="hidden" id="imgHeight" name="imgHeight" value="0" />
+                    <input type="hidden" id="imgLength" name="imgLength" value="102400" />
+                    <input type="hidden" id="shopCategorySort" name="shopCategorySort" />
+                    <input type="hidden" id="shopCategoryImgNo" name="picno" />
+                </td>
+            </tr>
+            <tr><td colspan="2" align="center" style="color:red"><label id="shopCategoryErrorInfo"></label></td></tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="button" value="保存" class="opratorbutton" onclick="saveShopCategory('formShopCategory')" />
+                    <input type="button" value="取消" onclick="$('.dispalayRegion').hide();$('#windownBG').remove();" class="opratorbutton" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="regionEditeShopCategory_2" class="dispalayRegion">
+    <form action="/Shangpin/AppIndexMamager/AddShopCategory2" method="post" enctype="multipart/form-data" id="formShopCategory_2" accept-charset="utf-8">
+        <table border="0">
+            <tr>
+                <td colspan="2" align="center"><input type="radio" value="6" name="categoryCount" id="categoryCount6" checked="checked" onclick="changeCategoryCount('6')" />6个分类<input type="radio" value="9" name="categoryCount" id="categoryCount9" style="margin-left:20px" onclick="changeCategoryCount('9')" />9个分类</td>
+            </tr>
+            <tr>
+                <td width="70" style="color:red">选择分类:</td>
+                <td id="tdCategorySelect" class="operatingPositionLinkUrl">
+                    <div>
+                        1：<select id="shopCategoryNo1_1" onchange="oneChange_2(this.value,'', 'shopCategoryNo1');"><option value='0'>一级分类</option></select>
+                        <select id="shopCategoryNo1_2" onchange="twoChange_2(this.value,'', 'shopCategoryNo1');"><option value='0'>二级分类</option></select>
+                        <select id="shopCategoryNo1_3" onchange="threeChange_2(this.value,'', 'shopCategoryNo1');"><option value='0'>三级分类</option></select>
+                        <select id="shopCategoryNo1_4" onchange="fourChange_2(this.value, 'shopCategoryNo1')"><option value='0'>四级分类</option></select>
+                        <input id="hidshopCategoryNo1" type="hidden" name="shopCategoryNo1">
+                    </div>
+                    <div>
+                        2：<select id="shopCategoryNo2_1" onchange="oneChange_2(this.value,'', 'shopCategoryNo2');"><option value='0'>一级分类</option></select>
+                        <select id="shopCategoryNo2_2" onchange="twoChange_2(this.value,'', 'shopCategoryNo2');"><option value='0'>二级分类</option></select>
+                        <select id="shopCategoryNo2_3" onchange="threeChange_2(this.value,'', 'shopCategoryNo2');"><option value='0'>三级分类</option></select>
+                        <select id="shopCategoryNo2_4" onchange="fourChange_2(this.value, 'shopCategoryNo2')"><option value='0'>四级分类</option></select>
+                        <input id="hidshopCategoryNo2" type="hidden" name="shopCategoryNo2">
+                    </div>
+                    <div>
+                        3：<select id="shopCategoryNo3_1" onchange="oneChange_2(this.value,'', 'shopCategoryNo3');"><option value='0'>一级分类</option></select>
+                        <select id="shopCategoryNo3_2" onchange="twoChange_2(this.value,'', 'shopCategoryNo3');"><option value='0'>二级分类</option></select>
+                        <select id="shopCategoryNo3_3" onchange="threeChange_2(this.value,'', 'shopCategoryNo3');"><option value='0'>三级分类</option></select>
+                        <select id="shopCategoryNo3_4" onchange="fourChange_2(this.value, 'shopCategoryNo3')"><option value='0'>四级分类</option></select>
+                        <input id="hidshopCategoryNo3" type="hidden" name="shopCategoryNo3">
+                    </div>
+                    <div>
+                        4：<select id="shopCategoryNo4_1" onchange="oneChange_2(this.value,'', 'shopCategoryNo4');"><option value='0'>一级分类</option></select>
+                        <select id="shopCategoryNo4_2" onchange="twoChange_2(this.value,'', 'shopCategoryNo4');"><option value='0'>二级分类</option></select>
+                        <select id="shopCategoryNo4_3" onchange="threeChange_2(this.value,'', 'shopCategoryNo4');"><option value='0'>三级分类</option></select>
+                        <select id="shopCategoryNo4_4" onchange="fourChange_2(this.value, 'shopCategoryNo4')"><option value='0'>四级分类</option></select>
+                        <input id="hidshopCategoryNo4" type="hidden" name="shopCategoryNo4">
+                    </div>
+                    <div>
+                        5：<select id="shopCategoryNo5_1" onchange="oneChange_2(this.value,'', 'shopCategoryNo5');"><option value='0'>一级分类</option></select>
+                        <select id="shopCategoryNo5_2" onchange="twoChange_2(this.value,'', 'shopCategoryNo5');"><option value='0'>二级分类</option></select>
+                        <select id="shopCategoryNo5_3" onchange="threeChange_2(this.value,'', 'shopCategoryNo5');"><option value='0'>三级分类</option></select>
+                        <select id="shopCategoryNo5_4" onchange="fourChange_2(this.value, 'shopCategoryNo5')"><option value='0'>四级分类</option></select>
+                        <input id="hidshopCategoryNo5" type="hidden" name="shopCategoryNo5">
+                    </div>
+                    <div>
+                        6：<select id="shopCategoryNo6_1" onchange="oneChange_2(this.value,'', 'shopCategoryNo6');"><option value='0'>一级分类</option></select>
+                        <select id="shopCategoryNo6_2" onchange="twoChange_2(this.value,'', 'shopCategoryNo6');"><option value='0'>二级分类</option></select>
+                        <select id="shopCategoryNo6_3" onchange="threeChange_2(this.value,'', 'shopCategoryNo6');"><option value='0'>三级分类</option></select>
+                        <select id="shopCategoryNo6_4" onchange="fourChange_2(this.value, 'shopCategoryNo6')"><option value='0'>四级分类</option></select>
+                        <input id="hidshopCategoryNo6" type="hidden" name="shopCategoryNo6">
+                    </div>
+                    <div style="display:none" tag="more">
+                        7：<select id="shopCategoryNo7_1" onchange="oneChange_2(this.value,'', 'shopCategoryNo7');"><option value='0'>一级分类</option></select>
+                        <select id="shopCategoryNo7_2" onchange="twoChange_2(this.value,'', 'shopCategoryNo7');"><option value='0'>二级分类</option></select>
+                        <select id="shopCategoryNo7_3" onchange="threeChange_2(this.value,'', 'shopCategoryNo7');"><option value='0'>三级分类</option></select>
+                        <select id="shopCategoryNo7_4" onchange="fourChange_2(this.value, 'shopCategoryNo7')"><option value='0'>四级分类</option></select>
+                        <input id="hidshopCategoryNo7" type="hidden" name="shopCategoryNo7">
+                    </div>
+                    <div style="display:none" tag="more">
+                        8：<select id="shopCategoryNo8_1" onchange="oneChange_2(this.value,'', 'shopCategoryNo8');"><option value='0'>一级分类</option></select>
+                        <select id="shopCategoryNo8_2" onchange="twoChange_2(this.value,'', 'shopCategoryNo8');"><option value='0'>二级分类</option></select>
+                        <select id="shopCategoryNo8_3" onchange="threeChange_2(this.value,'', 'shopCategoryNo8');"><option value='0'>三级分类</option></select>
+                        <select id="shopCategoryNo8_4" onchange="fourChange_2(this.value, 'shopCategoryNo8')"><option value='0'>四级分类</option></select>
+                        <input id="hidshopCategoryNo8" type="hidden" name="shopCategoryNo8">
+                    </div>
+                    <div style="display:none" tag="more">
+                        9：<select id="shopCategoryNo9_1" onchange="oneChange_2(this.value,'', 'shopCategoryNo9');"><option value='0'>一级分类</option></select>
+                        <select id="shopCategoryNo9_2" onchange="twoChange_2(this.value,'', 'shopCategoryNo9');"><option value='0'>二级分类</option></select>
+                        <select id="shopCategoryNo9_3" onchange="threeChange_2(this.value,'', 'shopCategoryNo9');"><option value='0'>三级分类</option></select>
+                        <select id="shopCategoryNo9_4" onchange="fourChange_2(this.value, 'shopCategoryNo9')"><option value='0'>四级分类</option></select>
+                        <input id="hidshopCategoryNo9" type="hidden" name="shopCategoryNo9">
+                    </div>
+                </td>
+            </tr>
+            <tr id="imgobj">
+                <td style="color:red">分类图片:</td>
+                <td>
+                    <img src="" id="shopCategoryPreviewImg_2" width="97" height="50" /><br />
+                    <input type="file" name="shopCategoryImgfile" id="shopCategoryImgfile_2" />尺寸:等待UI  限制JPG、png、GIF 小于100K
+                    <input type="hidden" id="imgWidth" name="imgWidth" value="0" />
+                    <input type="hidden" id="imgHeight" name="imgHeight" value="0" />
+                    <input type="hidden" id="imgLength" name="imgLength" value="102400" />
+                    <input type="hidden" id="shopCategoryImgNo_2" name="picno" />
+                </td>
+            </tr>
+            <tr><td colspan="2" align="center" style="color:red"><label id="shopCategoryErrorInfo_2"></label></td></tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="button" value="保存" class="opratorbutton" onclick="saveShopCategory_2('formShopCategory_2')" />
+                    <input type="button" value="取消" onclick="$('.dispalayRegion').hide();$('#windownBG').remove();" class="opratorbutton" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="regionEditeOperatingPosition" class="dispalayRegion">
+    <form action="/Shangpin/AppIndexMamager/AddOperatingPosition" method="post" enctype="multipart/form-data" id="formOperatingPosition" accept-charset="utf-8">
+        <table border="0">
+            <tr>
+                <td width="70" style="color:red">链接地址:</td>
+                <td><input type="text" id="operatingPositionLinkUrl" name="operatingPositionLinkUrl" maxlength="400" size="80"></td>
+            </tr>
+            <tr id="imgobj">
+                <td style="color:red">运营图片:</td>
+                <td>
+                    <img src="" id="operatingPositionPreviewImg" width="400" height="143" />
+                    <input type="file" name="operatingPositionImgfile" id="operatingPositionImgfile" />尺寸:等待UI  限制JPG、png、GIF 小于100K
+                    <input type="hidden" id="imgWidth" name="imgWidth" value="0" />
+                    <input type="hidden" id="imgHeight" name="imgHeight" value="0" />
+                    <input type="hidden" id="imgLength" name="imgLength" value="102400" />
+                    <input type="hidden" id="operatingPositionSort" name="operatingPositionSort" />
+                    <input type="hidden" id="operatingPositionImgNo" name="picno" />
+                </td>
+            </tr>
+            <tr><td colspan="2" align="center" style="color:red"><label id="operatingPositionErrorInfo"></label></td></tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="button" value="保存" class="opratorbutton" onclick="saveOperatingPosition('formOperatingPosition');" />
+                    <input type="button" value="取消" onclick="$('.dispalayRegion').hide();$('#windownBG').remove();" class="opratorbutton" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="regionEditeOperatingPosition_2" class="dispalayRegion">
+    <form action="/Shangpin/AppIndexMamager/AddOperatingPosition2" method="post" enctype="multipart/form-data" id="formOperatingPosition_2" accept-charset="utf-8">
+        <table border="0">
+            <tr>
+                <td colspan="2" align="center"><input type="radio" value="6" name="linkCount" id="linkCount6" checked="checked" onclick="changeLinkUrlCount('6')" />6条链接地址<input type="radio" value="9" name="linkCount" id="linkCount9" style="margin-left:20px" onclick="changeLinkUrlCount('9')" />9条链接地址</td>
+            </tr>
+            <tr>
+                <td width="70" style="color:red">链接地址:</td>
+                <td id="tdLinkUrl" class="operatingPositionLinkUrl"></td>
+            </tr>
+            <tr id="imgobj">
+                <td style="color:red">运营图片:</td>
+                <td>
+                    <img src="" id="operatingPositionPreviewImg_2" width="400" height="143" />
+                    <input type="file" name="operatingPositionImgfile" id="operatingPositionImgfile_2" />尺寸:等待UI  限制JPG、png、GIF 小于100K
+                    <input type="hidden" id="imgWidth" name="imgWidth" value="0" />
+                    <input type="hidden" id="imgHeight" name="imgHeight" value="0" />
+                    <input type="hidden" id="imgLength" name="imgLength" value="102400" />                    
+                    <input type="hidden" id="operatingPositionImgNo_2" name="picno" />
+                </td>
+            </tr>
+            <tr><td colspan="2" align="center" style="color:red"><label id="operatingPositionErrorInfo_2"></label></td></tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="button" value="保存" class="opratorbutton" onclick="saveOperatingPosition_2('formOperatingPosition_2');" />
+                    <input type="button" value="取消" onclick="$('.dispalayRegion').hide();$('#windownBG').remove();" class="opratorbutton" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+}
+<div >
+    <dl style="width:400px;padding:5px;">
+        <dd style="float:left;width:50%;font-size:15px;">新品轮播图管理</dd>
+        <dd style="text-align:right;font-size:15px;"><a href="/shangpin/AppIndexMamager/AlterPicList?AlterType=0">轮播图列表</a></dd>
+    </dl>
+    <div style="width:400px;height:190px;">
+        <a href="/Shangpin/AppIndexMamager/AlterPicEdit?AlterType=0"><img src="/ReadPic/GetPic.ashx?width=0&height=0&pictureFileNo=@Model.HomeAlterPic[0]&type=2" width="400px" height="190px" alt="点击创建轮播图"/></a>
+    </div>
+</div>
+<div>
+    <dl style="width:400px;padding:5px;">
+        <dd style="float:left;width:50%;font-size:15px;">搜索页轮播图管理</dd>
+        <dd style="text-align:right;font-size:15px;"><a href="/shangpin/AppIndexMamager/AlterPicList?AlterType=1">轮播图列表</a></dd>
+    </dl>
+    <div style="width:400px;height:190px;">
+        <a href="/Shangpin/AppIndexMamager/AlterPicEdit?AlterType=1"><img src="/ReadPic/GetPic.ashx?width=0&height=0&pictureFileNo=@Model.HomeAlterPic[1]&type=2" width="400px" height="190px" alt="点击创建轮播图"/></a>
+    </div>
+</div>
+<div>
+    <h2 style="font-size: 15px; margin: 5px">搜索页商城分类</h2>
+    <div>
+        <div style="width: 400px; background-color:#eeeeee">
+            @{
+    for (int i = 1; i < 2; i++)
+    {
+        string imgId = "shopCategoryImg2_" + i.ToString();
+        if (Model.ShopCategoryList.Where(p => p.Sort == i).Count() == 1)
+        {
+            string categoryNoStr = string.Empty;//格式：分类编号1;分类编号2;分类编号3;分类编号4
+            foreach (var item in Model.ShopCategoryList)
+            {
+                categoryNoStr += item.CategoryNo + ";";
+            }
+            categoryNoStr = categoryNoStr.Substring(0, categoryNoStr.Length - 1);
+            Shangpin.Entity.Wfs.SWfsAppShopCategory model = Model.ShopCategoryList.Where(p => p.Sort == i).FirstOrDefault();
+            <img src="/ReadPic/GetPic.ashx?width=0&height=0&pictureFileNo=@(model.PicNo)&type=2" width="400" height="142" onclick="showDivShopCategory_2('@(imgId)')" sort="@i.ToString()" param="@(categoryNoStr)" imgno="@(model.PicNo)" id="@imgId" style="cursor:pointer" />
+        }
+        else
+        {
+            <img src="" width="400" height="142" onclick="showDivShopCategory_2('@(imgId)')" sort="@i.ToString()" param="" imgno="" id="@imgId" style="cursor:pointer" />
+        }
+    }
+}
+        </div>
+    </div> 
+    <h2 style="font-size: 15px; margin:5px">搜索页运营位</h2>
+    <div>
+        <div style="width:400px; background-color:#eeeeee">
+            @if (Model.OperatingPositionOne!= null)
+            {
+                <a href="/shangpin/AppIndexMamager/OperatingPositionList"><img src="/ReadPic/GetPic.ashx?width=0&height=0&pictureFileNo=@(Model.OperatingPositionOne.PicNo)&type=2" width="400px" height="142px" /></a>
+            }
+            else
+            {
+                <a href="/shangpin/AppIndexMamager/OperatingPositionList"><img src="" width="400px" height="142px" /></a>
+            }
+        </div>
+    </div>
+</div>

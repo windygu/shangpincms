@@ -1,0 +1,27 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="/Areas/Shangpin/Content/css/init.css" rel="stylesheet" type="text/css"
+        charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/core.css" rel="stylesheet" type="text/css"
+        charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/layout/header.css" rel="stylesheet" type="text/css"
+        charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/layout/body.css" rel="stylesheet" type="text/css"
+        charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/page/leftmenu/leftmenu.css" rel="stylesheet"
+        type="text/css" charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/page/rightcontent/rightcontent.css" rel="stylesheet"
+        type="text/css" charset="utf-8" />
+    @RenderSection("HeadStyle", false)
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/lib/jquery.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/plug/leftMenu.js"></script>
+    @RenderSection("HeadScript", false)
+</head>
+<body>
+    @RenderBody()
+</body>
+@RenderSection("hiddendiv", false)
+</html>

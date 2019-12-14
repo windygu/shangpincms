@@ -1,0 +1,907 @@
+
+/* 购物车公共样式 */
+*{
+	word-wrap:break-word;
+	word-break:break-all;
+	word-break: normal;
+}
+#alLogoBox {
+	height:36px;
+}
+/*购物流程*/
+.alCart_Step{
+	overflow:hidden;
+	border-radius:.2em;
+	-webkit-border-radius:.2em;
+}
+.alCart_Step li{
+	width:240px;
+	float:left;
+	height:36px;
+	background-color:#f1f1f1;
+	color:#333;
+	position:relative;
+}
+.alCart_Step li.cur{
+	background-color:#e6e6e6;
+}
+.alCart_Step li p{
+	width:130px;
+	margin:0 auto;
+	height:36px;
+	line-height:36px;
+	font-size:14px;
+	text-align:left;
+}
+.alCart_Step li.last_step p{
+	width:80px;
+}
+.alCart_Step li span, .alCart_Step li.cur span, .alCart_Step li.next span, .alCart_total .submit_btn, .alCart_total .submit_btn:hover, .alCart_total .continue_btn, .alCart_total .continue_btn em, .alCart_total .continue_btn:hover, .alCart_total .continue_btn:hover em, .alCart_total .manage_btn, .alCart_total .manage_btn em, .alCart_total .manage_btn:hover, .alCart_total .manage_btn:hover em, .alOrder_success dt, .alOrder_fail dt, .active_block a em, .active_block a.cur em, .alCart_proList dl.proNone .buy_btn, .alCart_proList dl.proNone .buy_btn em, .alCart_proList dl.proNone .buy_btn:hover, .alCart_proList dl.proNone .buy_btn:hover em, .alOrder_Consignee h2 .Tbpay, .addr_form dd p i, .addr_form .form_succeed{
+	background:url(/images/page/order/order_icon.gif) no-repeat;
+}
+.alCart_Step li p em {
+	display:block;
+	float:left;
+	width:22px;
+	height:22px;
+	line-height:22px;
+	font-size:14px;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align:center;
+	margin:8px 8px 0 0;
+	overflow:hidden;
+}
+.alCart_Step li.cur p em {
+	background-position:0 -170px;
+}
+.alCart_Step li span {
+	display:block;
+	width:22px;
+	height:36px;
+	position:absolute;
+	right:-11px;
+	top:0;
+	z-index:10;
+	background-position:0 -25px;
+}
+.alCart_Step li.cur span {
+	background-position:0 -65px;
+}
+.alCart_Step li.next span {
+	background-position:0 -105px;
+}
+
+.virtual_Step li{
+	width:320px;
+}
+.vCard_Step li{
+	width:480px;
+}
+
+.alCart_notice {
+	height:30px;
+	line-height:30px;
+	color:#aeaeae;
+	margin:15px auto;
+}
+
+/* 赠品清单 */
+.alCart_giftList{
+	margin:10px auto;
+	width:100%;
+	color:#333;
+}
+.alCart_giftList span{
+	position:relative;
+	display:inline-block;
+	cursor:pointer;
+	*z-index:10;
+}
+.alCart_giftList span p{
+	width:210px;
+	height:280px;
+	border:1px solid #cdcdcd;
+	position:absolute;
+	left:68px;
+	top:60px;
+	z-index:9999;
+}
+.alCart_giftList .giftImg{
+	vertical-align:middle;
+	width:60px;
+	height:80px;
+}
+.alCart_giftList em{
+	color:#c00;
+	font-weight:700;
+	font-family:Arial;
+}
+.alCart_giftList i{
+	text-decoration:line-through;
+	color:#aeaeae;
+}
+.alCart_giftList a:link, .alCart_giftList a:visited{
+	color:#005AA0;
+}
+.alCart_giftList a:active, .alCart_giftList a:hover{
+	text-decoration:underline;
+}
+
+.alCart_gift, .alCart_couponList h3, .alCart_couponList span, .alCart_proList, .alCart_proList dl, .olPayment_line{
+	background:url(/images/page/order/box_line.gif) repeat-x;
+}
+.alCart_gift{
+	padding:30px 55px 39px;
+	background-position:left bottom;
+	color:#aeaeae;
+}
+.alCart_gift span{
+	color:#060;
+}
+/* 赠品清单 */
+
+/*删除提示*/
+#spOrder_delpro_window {
+	display:none;
+}
+.spOrder_window_text {
+	font-size:14px;
+	text-align:center;
+	margin-bottom:15px;
+}
+.spOrder_window_btn2 .spOrder_window_submit {
+	margin-left:25px;
+}
+.spOrder_window_btn2 .spOrder_window_delbtn {
+	margin-right:23px;
+}
+
+
+
+/*订单总价*/
+.alCart_total {
+	padding:15px 0 0 0;
+	text-align:right;
+	color:#aeaeae;
+	line-height:30px;
+	position:relative;
+	height:80px;
+	*height:auto;
+}
+.alCart_total div{
+	line-height:30px;
+}
+.hasprod, .noprod{
+	height:65px;
+	padding:0 0 10px 0;
+}
+.noprod{
+	display:none;
+}
+.alCart_total span {
+	display:block;
+	color:#333;
+	height:30px;
+	line-height:30px;
+	margin:0 0 15px;
+	width:100%;
+	float:left;
+	_float:none;
+}
+.alCart_total .couponPrice{
+	display:none;
+}
+.alCart_total span b {
+	font-size:14px;
+	font-family:Arial;
+	color:#c00;
+}
+.alCart_total span b i{
+	font-weight:700;
+}
+.alCart_total .submit_btn {
+	width:70px;
+	height:30px;
+	line-height:27px;
+	display:block;
+	float:right;
+	padding:0 30px 0 0;
+	overflow:hidden;
+	border:none;
+	font-size:16px;
+	color:#fff;
+	margin:0 0 0 10px;
+	background-position:0 -200px;
+}
+.alCart_total .submit_btn:link, .alCart_total .submit_btn:visited {
+	color:#fff;
+	text-decoration:none;
+}
+.alCart_total .submit_btn:hover {
+	background-position:0 -240px;
+	text-decoration:none;
+}
+.alCart_total .continue_btn {
+	display:block;
+	float:right;
+	margin:0 0 0 10px;
+	background-position:0 -200px;
+}
+.alCart_total .continue_btn em {
+	display:block;
+	width:85px;
+	height:30px;
+	line-height:27px;
+	padding:0 30px 0 0;
+	overflow:hidden;
+	font-size:16px;
+	color:#fff;
+	background-position:15px -200px;
+}
+.alCart_total .continue_btn:hover {
+	background-position:0 -240px;
+	text-decoration:none;
+}
+.alCart_total .continue_btn:hover em {
+	background-position:15px -240px;
+}
+.alCart_total .manage_btn {
+	display:block;
+	float:right;
+	margin:0 0 0 10px;
+	background-position:0 -200px;
+}
+.alCart_total .manage_btn em {
+	display:block;
+	width:115px;
+	height:30px;
+	line-height:27px;
+	padding:0 30px 0 0;
+	overflow:hidden;
+	font-size:16px;
+	color:#fff;
+	background-position:0 -200px;
+}
+.alCart_total .manage_btn:hover {
+	background-position:15px -240px;
+	text-decoration:none;
+}
+.alCart_total .manage_btn:hover em {
+	background-position:15px -240px;
+}
+.alCart_total p {
+	float:right;
+	display:block;
+	font-size:14px;
+	color:#c00;
+	font-family:Arial;
+	line-height:30px;
+	margin:0 0 0 10px;
+}
+.alCart_total p b {
+	font-size:24px;
+	font-weight:400;
+}
+.alCart_total dd{
+	display:block;
+	color:#c00;
+	padding:10px 20px 10px 0;
+}
+
+.alCart_total a:link, .alCart_total a:visited {
+	color:#005aa0;
+}
+.alCart_total a:hover, .alCart_total a:active {
+	color:#005aa0;
+	text-decoration:underline;
+}
+
+.alCart_totalNotice{
+	width:500px;
+	text-align:left;
+	color:#aeaeae;
+	position:absolute;
+	left:0;
+	top:10px;
+	line-height:30px;
+}
+.alCart_ativeImg{
+	width:520px;
+	height:95px;
+	position:absolute;
+	left:0;
+	top:10px;
+}
+.alCart_coupon{
+	width:400px;
+	float:left;
+	text-align:left;
+	margin:0 0 0 55px;
+	position:relative;
+	top:-65px;
+	line-height:30px;
+}
+.alCart_coupon span{
+	margin:0;
+}
+.alCart_coupon span em{
+	color:#c00;
+	display:none;
+	margin:0 0 0 10px;
+}
+.alCart_coupon span i{
+	color:#c00;
+}
+.alCart_coupon input{
+	vertical-align:middle;
+	position:relative;
+	top:-1px;
+}
+.alCart_coupon p{
+	float:left;
+	color:#333333;
+	font-size:12px;
+	border:2px solid #cdcbcb;
+	padding:0 14px;
+	margin:0 0 10px;
+	width:92%;
+	line-height:180%;
+	text-align:center;
+}
+.alCart_coupon p.end{
+	width:auto;
+}
+.alCart_coupon p.end em{
+	font-weight:700;
+	color:#c00;
+}
+
+/*激活优惠券*/
+.alCart_total .toActivate_container {
+	height:35px;
+	width:100%;
+	float:left;
+	line-height:35px;
+	text-align:right;
+}
+
+#active {
+	width:250px;
+	float:right;
+	margin:0;
+	display:none;
+	position:relative;
+}
+
+#active .zom{
+	float:right;
+}
+#active .zom label{
+	*margin:5px 0 0 0;
+}
+
+#active_code { 
+    width:136px; 
+	height:20px; 
+	line-height:20px; 
+	border:1px solid #ccc; 
+	border-color:#b2b2b2 #e1e1e1 #e1e1e1 #b2b2b2;
+	vertical-align:middle;
+	color:#333;
+	padding-left:4px;
+	margin-right:12px;
+
+}
+#active_tipsbox {
+	width:168px;
+	text-align:center;
+	color:#e52332;
+	position:absolute;
+	left:40px;
+	bottom:30px;
+	z-index:20;
+	background:#FED016;
+	padding:2px;
+	display:none;
+}
+#active_closebtn {
+	position:absolute;
+	right:3px;
+	top:0px;
+	_top:3px;
+	cursor:pointer;
+	z-index:10;
+	text-decoration:none;
+	font:14px Verdana, Geneva, sans-serif;
+	color:#333 !important;
+}
+#active_tipsbox i{ 
+	position:absolute; 
+	left:46%; 
+	bottom:-12px;
+	width:0;
+	height:0;
+	font-size:0;
+	border-width:6px;
+	border-color:#FED016 transparent transparent;
+	border-style:solid dashed dashed;
+	overflow:hidden;
+	line-height:0;
+}
+#txtTipsbox{
+	line-height:160%;
+	padding:8px 16px;
+	background-color:#fff;
+}
+#txtTipsbox.succeed{
+	color:#333;
+}
+#txtTipsbox.succeed em{
+	color:#e52332;
+	font-weight:700;
+}
+
+.toActivate {
+	width:120px;
+	color:#B9966A !important;
+	font-size:12px;
+}
+#active_btn, #couponCode_active_btn{
+	background:url(/images/page/account/coupon_bg.png) repeat-x;
+}
+#active_btn {
+	display:inline-block;
+	zoom:1;
+	vertical-align:middle;
+	width:60px;
+	text-align:center;
+	color:#fff;
+	font-size:13px;
+	height:20px;
+	line-height:20px;
+	border:1px solid #000;
+	text-decoration:none;
+}
+
+.toActivate_container .coupon_ajax, #couponCode_container .coupon_ajax, .alCart_total .data_ajax, .window_ajax{
+	background:url(/images/plug/loader/l2.gif) no-repeat;
+}
+
+.toActivate_container .coupon_ajax{
+	float:right;
+	display:none;
+	line-height:25px;
+	padding:0 5px 0 25px;
+	background-position:left center;
+	color:#aeaeae;
+}
+/*激活优惠券*/
+
+/*激活优惠码*/
+#couponCode_container {
+	height:40px;
+	width:93%;
+	float:left;
+	line-height:40px;
+	text-align:right;
+	color:#333;
+	display:none;
+}
+.couponCode_txt{
+	float:left;
+	padding-left:20px;
+}
+#couponCode_active {
+	width:220px;
+	float:right;
+	margin:6px 0 0 0;
+	position:relative;
+}
+
+#couponCode_active .zom{
+	float:right;
+	/*margin:5px 0 0 0;*/
+	*margin:0;
+	text-align:left;
+}
+#couponCode_active .zom label{
+	*margin:5px 0 0 0;
+}
+
+#couponCode_code {
+    width:136px; 
+	height:20px; 
+	line-height:20px; 
+	border:1px solid #ccc; 
+	border-color:#b2b2b2 #e1e1e1 #e1e1e1 #b2b2b2;
+	vertical-align:middle;
+	color:#333;
+	padding-left:4px;
+	margin-right:12px;
+
+}
+#couponCode_tipsbox {
+	width:168px;
+	text-align:center;
+	color:#e52332;
+	position:absolute;
+	left:5px;
+	bottom:30px;
+	z-index:20;
+	background:#FED016;
+	padding:2px;
+	display:none;
+}
+#couponCode_tipsbox i{ 
+	position:absolute; 
+	left:46%; 
+	bottom:-12px;
+	width:0;
+	height:0;
+	font-size:0;
+	border-width:6px;
+	border-color:#FED016 transparent transparent;
+	border-style:solid dashed dashed;
+	overflow:hidden;
+	line-height:0;
+}
+#couponCode_txtTipsbox{
+	line-height:160%;
+	padding:8px 16px;
+	background-color:#fff;
+}
+
+#couponCode_closebtn {
+	position:absolute;
+	right:3px;
+	top:0px;
+	_top:3px;
+	cursor:pointer;
+	z-index:10;
+	text-decoration:none;
+	font:14px Verdana, Geneva, sans-serif;
+	color:#333 !important;
+}
+
+#couponCode_active_btn {
+	display:inline-block;
+	zoom:1;
+	vertical-align:middle;
+	width:60px;
+	text-align:center;
+	color:#fff;
+	font-size:13px;
+	height:20px;
+	line-height:20px;
+	border:1px solid #000;
+	text-decoration:none;
+}
+
+#couponCode_container .coupon_ajax{
+	float:right;
+	display:none;
+	line-height:25px;
+	padding:0 5px 0 25px;
+	background-position:left center;
+	color:#aeaeae;
+}
+#couponCodeNotice{
+	color:#c00;
+	width:95%;
+	float:left;
+	text-align:left;
+	padding-left:20px;
+	line-height:20px;
+}
+/*激活优惠码*/
+
+.alCart_couponList{
+	border:2px solid #cdcbcb;
+	padding:0 14px;
+	float:left;
+	width:92%;
+	margin:0 0 10px 0;
+	display:none;
+}
+.alCart_couponList h3{
+	color:#333;
+	line-height:35px;
+	height:35px;
+	overflow:hidden;
+	background-position:left 33px;
+}
+.alCart_couponList table{
+	width:100%;
+}
+.alCart_couponList table tr.cur:hover{
+	/*background:#f0f0f0;*/
+}
+.alCart_couponList table tr.over{
+	background:#f0f0f0;
+}
+.alCart_couponList table th, .alCart_couponList table td{
+	height:40px;
+	text-align:center;
+}
+.alCart_couponList table td{
+	color:#333;
+}
+.alCart_couponList table td i{
+	display:block;
+	width:36px;
+	height:16px;
+	line-height:16px;
+	margin:0 auto;
+	border-radius:.2em;
+	-webkit-border-radius:.2em;
+	border:1px solid #cdcdcd;
+	cursor:pointer;
+	position:relative;
+	background:url(/images/page/order/info_btnBg.gif) repeat-x;
+}
+.alCart_couponList table td i em{
+	display:none;
+	background:#fff;
+	color:#c00;
+	font-size:12px;
+	border:2px solid #fed016;
+	padding:5px 10px;
+	line-height:120%;
+	text-align:left;
+	margin:10px 0 0 0;
+	width:165px;
+	position:absolute;
+	bottom:20px;
+	left:-125px;
+	z-index:10;
+}
+.alCart_couponList table td i.over em{
+	display:block;
+}
+.alCart_couponList table td a.use_btn{
+	width:38px;
+	height:22px;
+	line-height:22px;
+	color:#fff;
+	text-decoration:none;
+	margin:0 auto;
+	border-radius:.2em;
+	-webkit-border-radius:.2em;
+	background:url(/images/page/order/use_btnBg.gif) repeat-x;
+	display:none;
+}
+.alCart_couponList table tr.over td a.use_btn{
+	display:block;
+}
+.alCart_couponNotice, .mulit_proList, .olOrder_payInfo{
+	background:url(/images/page/order/box_btmline.gif) repeat-x;
+}
+.alCart_couponNotice{
+	color:#c00;
+	background-position:left top;
+}
+
+.alCart_couponList span{
+	color:#c00;
+	height:40px;
+	line-height:40px;
+	background-position:left -7px;
+}
+.alCart_total .data_ajax{
+	float:right;
+	display:none;
+	line-height:30px;
+	margin:0 0 0 10px;
+	padding:0 0 0 25px;
+	background-position:left center;
+}
+
+/*购物车完成*/
+.alOrder_container {
+	width:895px;
+	margin:72px 0 200px;
+	text-align:center;
+}
+.alOrder_success {
+	padding-bottom:20px;
+}
+.alOrder_fail {
+	padding-bottom:0;
+}
+.alOrder_success dt {
+	width:56px;
+	height:56px;
+	vertical-align:top;
+	margin-right:10px;
+	background-position:-140px -135px;
+}
+.alOrder_fail dt {
+	height:82px;
+	background-position:-140px -202px;
+}
+.alOrder_success dd {
+	vertical-align:top;
+}
+.alOrder_success dd h4 {
+	font-size:14px;
+	color:#f00;
+	font-weight:bold;
+	padding-bottom:20px;
+}
+.alOrder_fail dd h4 {
+	padding-top:8px;
+}
+.alOrder_look {
+	padding-bottom:20px;
+}
+.alOrder_look a {
+	color:#005aa0;
+}
+.alOrder_goonbuy{
+	padding:40px 0 0 60px;
+}
+.redComm_btn {
+	display:inline-block;
+	width:227px;
+	height:36px;
+	line-height:35px;
+	text-align:center;
+	font-size:16px;
+	color:#666 !important;
+	background:url(/images/page/order/newComm_btn_bg.png) repeat-x;
+}
+.redComm_btn:hover {
+	background:url(/images/page/order/newComm_btn_hover.png) repeat-x;
+}
+/**提示新增**/
+.bigFont28 {
+	font-size:28px !important;
+}
+.padLeft {
+	padding-left:0 !important;
+}
+.txtSize_160 { 
+	min-width:160px; 
+	_width:160px; 
+}
+.alOrder_fail dd h4.bigFont28 {
+	padding-top:3px;
+}
+/*电话*/
+.buyStyle_tel {
+	overflow:hidden;
+}
+.buyStyle_tel .wp4 {
+	padding:8px 0;
+	border:1px solid #BABABA;
+	color:#333;
+	margin:40px auto 10px;
+	width:520px;
+}
+
+.buyStyle_lakla table {
+	width:620px;
+	color:#fff;
+	margin:0 auto 15px;
+}
+.buyStyle_lakla table td {
+	text-align:center;
+	height:30px;
+	border:1px solid #ccc;
+	background:#999;
+}
+
+.buyStyle_comm p {
+	padding-bottom:15px;
+	line-height:1.6;
+}
+.buyStyle_comm p i{
+	display:inline-block;
+	width:18px;
+	height:23px;
+	vertical-align:middle;
+	margin:0 5px;
+	background:url(/images/page/account/account_icon.gif) no-repeat -183px -102px;
+}
+.buyStyle_comm p a {
+	color:#005AA0;
+}
+.buyStyle_comm .ativeTxt{
+	padding:6px 0 12px;
+	border:1px solid #BABABA;
+	color:#333;
+	margin:20px auto 0;
+	width:600px;
+}
+.buyStyle_comm .ativeTxt span{
+	color:#f00;
+	font-size:14px;
+	line-height:30px;
+}
+
+.alOrder_look {
+	padding-top:20px;
+}
+.wspan1 {
+	font-weight:bold;
+}
+.wspan2 {
+	font-family:"微软雅黑";
+}
+/*商品尺码+颜色选择*/
+.proColor_block {
+	margin:0 0 0 15px;
+}
+
+.proChima_block {
+	margin:0 0 0 15px;
+}
+.window_ajax{
+	height:65px;
+	text-align:center;
+	background-position:80px 0;
+}
+.window_fail{
+	height:65px;
+	text-align:center;
+	color:#f00;
+	display:none;
+}
+.spDetail_lt {
+	width:auto;
+	color: #333;
+	line-height:24px;
+	margin:0 0 5px 0;
+}
+
+.spDetail_lchima {
+	width:auto;
+}
+.spDetail_limg{
+	width:235px;
+}
+
+#spOrder_protype_window {
+	display:none;
+}
+.spOrder_window_btn {
+	margin:5px 0 15px 0;
+}
+.proNumber_block {
+	margin:10px 0 0 15px;
+	font-size:14px;
+}
+.proNumber_block input {
+	width:30px;
+	height:18px;
+	float:left;
+	text-align:center;
+	border:1px solid #ababab;
+	margin:0 10px;
+}
+.proNumber_block a {
+	float:left;
+	display:block;
+	width:19px;
+	height:19px;
+	overflow:hidden;
+	
+}
+.proNumber_block a.add, .proNumber_block a.cut{
+	background:url(/images/public/sp.gif) no-repeat;
+}
+.proNumber_block a.add {
+	background-position:-1px -903px;
+}
+.proNumber_block a.cut {
+	background-position:4px -933px;
+}
+.proNumber_block span {
+	display:block;
+	line-height:24px;
+	color:#b51111;
+	clear:both;
+	padding-left:46px;
+	_padding-left:10px;
+	height:20px;
+}

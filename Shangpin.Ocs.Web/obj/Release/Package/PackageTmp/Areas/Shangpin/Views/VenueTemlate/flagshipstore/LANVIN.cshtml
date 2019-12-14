@@ -1,0 +1,97 @@
+﻿@{
+    Layout = null;
+    Shangpin.Entity.Wfs.SWfsBrandFlagShipStoreRegion obj = null;
+    Dictionary<int, string> stylelist = new Dictionary<int, string>();
+    stylelist.Add(1, "data-type=\"subject\" data-subjectno=\"{0}\" data-subjectname=\"{1}\" ");
+    stylelist.Add(2, "data-type=\"detail\" data-productid=\"{0}\" ");
+    stylelist.Add(3, "data-type=\"navigation\" data-brandno=\"" + Request.QueryString["brandNO"] + "\" data-brandname=\"" + Request.QueryString["brandname"] + "\" data-navno=\"{0}\" data-navname=\"{1}\" ");
+    stylelist.Add(4, "data-type=\"link\" data-url=\"{0}\" ");
+}
+@using Shangpin.Framework.WebMvc
+@model IEnumerable<Shangpin.Entity.Wfs.SWfsBrandFlagShipStoreRegion>
+<div class="brand_imgList clr">
+    @for (int i = 1; i <= 6; i++)
+    {
+        if (Model.Count(p => p.RegionID == i) == 1)
+        {
+            obj = Model.Single(p => p.RegionID == i);
+            switch (i)
+            {
+                case 1:
+                    <a style="width:200px; height:160px;" opratorRegion="@i" relationtype="@obj.RelationType" @(Html.Raw(string.Format(stylelist[obj.RelationType],obj.RelationContent,obj.Direction)))>
+                        <img width="200" height="160" lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 400, 320))" data-lazy-uid="0_1388630005753" style="opacity: 1;">
+<span>WOMEN 女装</span>
+                    </a>
+                                                        break;
+                case 2:
+                    <a style="width:119px; height:160px;" opratorRegion="@i" relationtype="@obj.RelationType" @(Html.Raw(string.Format(stylelist[obj.RelationType],obj.RelationContent,obj.Direction)))>
+                        <img width="119" height="160" lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 238, 320))" data-lazy-uid="0_1388630005753" style="opacity: 1;">
+<span>JEWELRY 配饰</span>                    
+</a>
+                                                        break;
+                case 3:
+                    <a style="width:119px; height:160px;" opratorRegion="@i" relationtype="@obj.RelationType"  @(Html.Raw(string.Format(stylelist[obj.RelationType],obj.RelationContent,obj.Direction)))>
+                        <img width="119" height="160" lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 238, 320))" style="opacity: 1;">
+<span>BAGS 箱包</span>                    
+</a>
+                                                        break;
+                case 4:
+                    <a style="width:200px; height:160px;" opratorRegion="@i" relationtype="@obj.RelationType"  @(Html.Raw(string.Format(stylelist[obj.RelationType],obj.RelationContent,obj.Direction)))>
+                        <img width="200" height="160" lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 400, 320))" data-lazy-uid="0_1388630005753" style="opacity: 1;">
+<span>MEN 男装</span>                    
+</a>
+                                                        break;
+                case 5:
+                    <a style="width:320px; height:160px;" opratorRegion="@i" relationtype="@obj.RelationType"  @(Html.Raw(string.Format(stylelist[obj.RelationType],obj.RelationContent,obj.Direction)))>
+                        <img width="320" height="160" lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 640, 320))" data-lazy-uid="0_1388630005753" style="opacity: 1;">
+<span>SHOES 鞋靴</span>                    
+</a>
+                                                        break;
+                case 6:
+                        <img width="320" height="330" opratorRegion="@i" relationtype="1" lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 640, 660))" data-lazy-uid="0_1388630005753" style="opacity: 1;">
+                                                                                                                                                    break;
+            }
+        }
+        else
+        {
+            switch (i)
+            {
+                case 1:
+                    <a style="width:200px; height:160px;" opratorRegion="@i" relationtype="1" data-type="" data-subjectno="" data-subjectname="">
+                        <img width="200" height="160"  data-lazy-uid="0_1388630005753" style="opacity: 1;">
+<span>WOMEN 女装</span>
+                    </a>
+                                                        break;
+                case 2:
+                    <a style="width:119px; height:160px;" opratorRegion="@i" relationtype="1" data-type="" data-subjectno="" data-subjectname="">
+                        <img width="119" height="160"  data-lazy-uid="0_1388630005753" style="opacity: 1;">
+<span>JEWELRY 配饰</span> 
+                    </a>
+                                                        break;
+                case 3:
+                    <a style="width:119px; height:160px;" opratorRegion="@i" relationtype="1" data-type="" data-subjectno="" data-subjectname="">
+                        <img width="119" height="160"  style="opacity: 1;">
+<span>BAGS 箱包</span>
+                    </a>
+                                                        break;
+                case 4:
+                    <a style="width:200px; height:160px;" opratorRegion="@i" relationtype="1" data-type="" data-subjectno="" data-subjectname="">
+                        <img width="200" height="160"  data-lazy-uid="0_1388630005753" style="opacity: 1;">
+<span>MEN 男装</span>  
+                    </a>
+                                                        break;
+                case 5:
+                    <a style="width:320px; height:160px;" opratorRegion="@i" relationtype="1" data-type="" data-subjectno="" data-subjectname="">
+                        <img width="320" height="160"  data-lazy-uid="0_1388630005753" style="opacity: 1;">
+<span>SHOES 鞋靴</span> 
+                    </a>
+                                                        break;
+                case 6:
+                    <a style="width:320px; height:330px;" opratorRegion="@i" relationtype="1" data-type="" data-subjectno="" data-subjectname="">
+                        <img width="320" height="330"  data-type=""  data-lazy-uid="0_1388630005753" style="opacity: 1;">
+                    </a>
+                                                                break;
+            }
+        }
+    }
+</div>

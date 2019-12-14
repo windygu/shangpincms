@@ -1,0 +1,118 @@
+/*  ============== Member coupon ==============  */
+
+.member_menu{
+	margin-top:28px;
+}
+
+
+/*激活优惠券*/
+#member_right .couponActive{
+	position:relative;
+	margin:20px 0;
+}
+.couponActive span{
+	display:inline-block;
+}
+.couponActive a.txtBtn{
+	vertical-align:middle;
+	padding:0 15px;
+}
+
+#active_code { 
+    width:198px; 
+	height:20px; 
+	line-height:20px; 
+	border:1px solid #e4e4e4;
+	vertical-align:middle;
+	color:#333;
+	padding:4px 0 4px 3px;
+	margin:0 10px;
+
+}
+#active_tipsbox {
+	width:172px;
+	text-align:center;
+	color:#e52332;
+	padding-bottom:8px;
+	text-align:center;
+	position:absolute;
+	left:96px;
+	top:-37px;
+	z-index:200;
+	background:#FED016;
+	padding:2px;
+	display:none;
+	zoom:1;
+}
+#txtTipsbox {
+	padding:6px 14px;
+	background:#fff;
+} 
+
+#active_tipsbox p.succeed{
+	color:#333;
+}
+#active_tipsbox p.succeed em{
+	color:#e52332;
+	font-weight:700;
+}
+#active_closebtn {
+	position:absolute;
+	right:5px;
+	top:2px;
+	cursor:pointer;
+	z-index:10;
+	font:14px Verdana, Geneva, sans-serif;
+}
+#active_tipsbox i { 
+	position:absolute; 
+	left:46%; 
+	bottom:-11px;
+	width:0; 
+	height:0; 
+	font-size:0; 
+	border-width:6px; 
+	border-color:#FED016 transparent transparent; 
+	border-style:solid dashed dashed;
+	overflow:hidden;
+}
+
+
+/*优惠券列表*/
+.couponList .red{
+	color:#ea1616;
+}
+.couponList span.red{
+	display:block;
+}
+.couponList td span.info{
+	color:#333;
+	display:block;
+	position:relative;
+	z-index:0;
+}
+.couponList td span.info .couponsTips{
+	background:#fff;
+    border:2px solid #b0b0b0;
+    line-height: 22px;
+    margin-left: -100px;
+    margin-top: 13px;
+    padding: 5px;
+    position: absolute;
+    text-align: left;
+	font-weight:normal;
+    width: 200px;
+    z-index: 999;
+	left:50%;
+	top:-10px;
+	display:none;
+}
+
+#member_right .couponTxt{
+	margin-top:20px;
+}
+#member_right .couponTxt p a{
+	display:inline-block;
+	margin-right:30px;
+	line-height:30px;
+}

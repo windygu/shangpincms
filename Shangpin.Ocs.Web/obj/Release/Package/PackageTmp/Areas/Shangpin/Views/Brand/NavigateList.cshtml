@@ -1,0 +1,307 @@
+﻿@{
+    ViewBag.Title = "导航编辑";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+@model Shangpin.Entity.Wfs.SWfsBrandNavigation
+@section HeadStyle{
+    <link charset="utf-8" type="text/css" rel="stylesheet" href="/Areas/Shangpin/Content/css/page/rightcontent/brandcontent.css" />
+}
+@section HeadScript{
+    <script src="~/Areas/Shangpin/Scripts/plug/comm.js"></script>
+    <script type="text/javascript">
+        var addChild = function (pid, isrelation) {
+            if (isrelation > 0) {
+                alert("该类别已经设置关联——不能新建子分类");
+                return;
+            }
+            //显示层
+            $("#mx-rightcontent-fixbarbg").css({ 'height': '312px', 'overflow-y': 'scroll' });
+            //记录父类ID
+            $("#ParentId").val(pid);
+        }
+        var EditeName = function (pid, name) {
+            //显示层
+            $("#mx-rightcontent-fixbarbg").css({ 'height': '312px', 'overflow-y': 'scroll' });
+            //记录父类ID
+            $("#ParentId").val(pid);
+            $("#NavigationName").val(name);
+            $("#NavInfo").attr("action", "/Shangpin/Brand/EditeNavigate.html");
+        }
+        var hiddenNav = function (id, obj) {
+            var isShow = 0;
+            if ($(obj).text() == "隐藏") {
+                isShow = 0;
+            } else {
+                isShow = 1;
+            }
+            $.post("/Shangpin/Brand/IsShow.html", { 'NavNo': id, 'isShow': isShow }, function (data) {
+                if (data >= 0) {
+                    if (data == 1) {
+                        $(obj).text("隐藏");
+                        $("#Show" + id).text("显示");
+                    } else {
+                        $(obj).text("显示");
+                        $("#Show" + id).text("隐藏");
+                    }
+                } else {
+                    alert("操作失败");
+                }
+            });
+        }
+        var delNav = function (id) {
+            if (!confirm('同时删除子类是否继续')) {
+                return;
+            }
+            $.post("/Shangpin/Brand/DelNav.html", { 'NavNo': id }, function (data) {
+                if (data > 0) {
+                    alert("删除成功");
+                    window.location.href = gettimestampurl(window.location.href);
+                    //window.location.reload();
+                } else {
+                    alert("删除失败");
+                }
+            });
+        }
+        //移动位置
+        var movePosition = function (id1, sort1, id2, sort2) {
+            $.post("/Shangpin/Brand/MoveNavPosition.html", { 'NavNo1': id1, 'sort1': sort1, 'NavNo2': id2, 'sort2': sort2 }, function (data) {
+                if (data > 0) {
+                    window.location.href = gettimestampurl(window.location.href);
+                    //window.location.reload();
+                } else {
+                    alert("操作失败");
+                }
+            });
+        }
+        //设置关联
+        var setRelationShip = function (pid, obj) {
+            if ($(obj).parent().parent().children("ul").length > 0) {
+                alert("该类下有子分类请删除子分类再关联");
+                return;
+            }
+            window.location.href = "/Shangpin/Brand/AboutRelationShip.html?navno=" + pid + "&brandName=@(ViewBag.BrandName)&brandNO=@(Model.BrandNo)";
+        }
+        $(document).ready(function () {
+            $(".tree_menu p").mouseover(function () {
+                $(".tree_menu span").hide();
+                $(this).next().show();
+            });
+        });
+        var hidediv = function () {
+            $("#mx-rightcontent-fixbarbg").css({ "height": 79, "overflow-y": "hidden" });
+        }
+        $(document).ready(function () {
+            $(".tree_menu li").click(function (event) {
+                event.stopPropagation();
+                if ($(this).children().filter("ul:first").is(':hidden')) {
+                    $(this).addClass("curr");
+                    $(this).children().filter("ul:first").show();
+                } else {
+                    $(this).removeClass("curr");
+                    $(this).children().filter("ul:first").hide();
+                }
+            });
+            $(".trer_button").click(function (event) {
+                event.stopPropagation(); //阻止冒泡
+            });
+        });
+    </script>
+}
+<h1>
+    OCS > 尚品 ><a href="@(Request.QueryString["storetype"] == "0" ? "/Shangpin/Brand/StoresList.html" : "/Shangpin/Brand/Flagshipstorelist.html")">@(Request.QueryString["storetype"] == "0" ? "专卖店" : Request.QueryString["storetype"] == "1" ? "旗舰店" : Request.QueryString["storetype"] == "2" ? "精品旗舰店" : "")</a> > 导航编辑
+    <a class="sumit_btn" href="@(Request.UrlReferrer==null?"history.back(-1)":Request.UrlReferrer.ToString())">返回</a>
+</h1>
+<div class="tree_menu">
+    @ViewData["htmlcode"]
+    @{
+        IEnumerable<Shangpin.Entity.Wfs.SWfsBrandNavigation> list = ViewBag.NavList;
+        IEnumerable<Shangpin.Entity.Wfs.SWfsBrandNavigation> childone = null;
+        IEnumerable<Shangpin.Entity.Wfs.SWfsBrandNavigation> childtwo = null;
+    //IEnumerable<Shangpin.Entity.Wfs.SWfsBrandNavigation> childthree = null;
+    }
+    <ul>
+        <li class="curr">
+            <p class="tree_link">@ViewBag.BrandName</p>
+            <span class="trer_button">
+                <a class="sumit_btn" href="javascript:addChild(0,0)">新建子类</a>
+                <a class="cancle_btn" href="javascript:;">修改名称</a>
+                <a class="cancle_btn" href="javascript:;">隐藏</a>
+                <a class="cancle_btn" href="javascript:;">删除</a>
+                <a class="cancle_btn" href="javascript:;">上移</a>
+                <a class="cancle_btn" href="javascript:;">下移</a>
+                <a class="cancle_btn" href="javascript:;">设置关联</a>
+                <a class="cancle_btn" href="javascript:;">更改从属</a>
+            </span>
+            @if (list.Count(p => p.ParentId == 0) > 0)
+            {
+                childone = list.Where(p => p.ParentId == 0);
+                <ul>
+                    @for (int i = 0; i < childone.Count(); i++)
+                    {
+                        <li @(list.Count(p => p.ParentId == childone.ElementAt(i).NavigationId) > 0 ? null : "class=arrow")>
+                            <p class="tree_link">@(childone.ElementAt(i).NavigationName) &nbsp;&nbsp;&nbsp;&nbsp;<lable style="color:Red;">@(childone.ElementAt(i).RefType == 1 ? "已关联OCS分类" : (childone.ElementAt(i).RefType == 2 ? "已关联商品" : (childone.ElementAt(i).RefType == 3 ? "已关联链接" : null)))</lable>&nbsp;(<label style="color:Red;" id="@("Show" + childone.ElementAt(i).NavigationId)">@(childone.ElementAt(i).VisibleStatus == 0 ? "隐藏" : "显示")</label>)</p>
+                            @{if (childone.ElementAt(i).RefContent.Contains("new") || childone.ElementAt(i).RefContent.Contains("all"))
+                            {
+                                <span class="trer_button">
+                                    <a class="sumit_btn" href="javascript:EditeName('@childone.ElementAt(i).NavigationId','@childone.ElementAt(i).NavigationName')">修改名称</a>
+                                    <a class="@(i == 0 ? "cancle_btn" : "sumit_btn")" href="@(i == 0 ? "javascript:;" : "javascript:movePosition('" + childone.ElementAt(i).NavigationId + "','" + (childone.ElementAt(i).Sort) + "','" + childone.ElementAt(i - 1).NavigationId + "','" + childone.ElementAt(i-1).Sort + "')")">上移</a>
+                                    <a class="@(i == (childone.Count() - 1) ? "cancle_btn" : "sumit_btn")" href="@(i == (childone.Count() - 1) ? "javascript:;" : "javascript:movePosition('" + childone.ElementAt(i).NavigationId + "','" + (childone.ElementAt(i).Sort) + "','" + childone.ElementAt(i + 1).NavigationId + "','" + childone.ElementAt(i + 1).Sort + "')")">下移</a>
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="trer_button">
+                                    <a class="sumit_btn" href="javascript:addChild(@childone.ElementAt(i).NavigationId,@childone.ElementAt(i).RefType)">新建子类</a>
+                                    <a class="sumit_btn" href="javascript:EditeName('@childone.ElementAt(i).NavigationId','@childone.ElementAt(i).NavigationName')">修改名称</a>
+                                    <a class="sumit_btn" onclick="hiddenNav('@childone.ElementAt(i).NavigationId',this)">@(childone.ElementAt(i).VisibleStatus == 0 ? "显示" : "隐藏")</a>
+                                    <a class="sumit_btn" href="javascript:delNav('@childone.ElementAt(i).NavigationId');">删除</a>
+                                    <a class="@(i == 0 ? "cancle_btn" : "sumit_btn")" href="@(i == 0 ? "javascript:;" : "javascript:movePosition('" + childone.ElementAt(i).NavigationId + "','" + (childone.ElementAt(i).Sort) + "','" + childone.ElementAt(i - 1).NavigationId + "','" + childone.ElementAt(i-1).Sort + "')")">上移</a>
+                                    <a class="@(i == (childone.Count() - 1) ? "cancle_btn" : "sumit_btn")" href="@(i == (childone.Count() - 1) ? "javascript:;" : "javascript:movePosition('" + childone.ElementAt(i).NavigationId + "','" + (childone.ElementAt(i).Sort) + "','" + childone.ElementAt(i + 1).NavigationId + "','" + childone.ElementAt(i + 1).Sort + "')")">下移</a>
+                                    <a class="sumit_btn" href="javascript:;" onclick="setRelationShip(@childone.ElementAt(i).NavigationId,this)">设置关联</a>
+                                    <a class="sumit_btn" href="/ShangPin/Brand/ChangeRelationShip.html?id=@childone.ElementAt(i).NavigationId&brandNo=@(childone.ElementAt(i).BrandNo)&storetype=@(Request.QueryString["storetype"])&brandName=@(Request.QueryString["brandName"])">更改从属</a>
+                                </span>
+                            }
+                            }
+
+                            @if (list.Count(p => p.ParentId == childone.ElementAt(i).NavigationId && p.ParentId != 0) > 0)
+                            {
+                                <ul style="display:none;">
+                                    @{childtwo = list.Where(p => p.ParentId == childone.ElementAt(i).NavigationId);
+                                    for (int j = 0; j < childtwo.Count(); j++)
+                                    {
+                                        <li class="arrow">
+                                            <p class="tree_link">@(childtwo.ElementAt(j).NavigationName)  &nbsp;&nbsp;&nbsp;&nbsp;<lable style="color:Red;">@(childtwo.ElementAt(j).RefType == 1 ? "已关联OCS分类" : (childtwo.ElementAt(j).RefType == 2 ? "已关联商品" : (childtwo.ElementAt(j).RefType == 3 ? "已关联链接" : null)))</lable>&nbsp;(<label style="color:Red;" id="@("Show" + childtwo.ElementAt(j).NavigationId)">@(childtwo.ElementAt(j).VisibleStatus == 0 ? "隐藏" : "显示")</label>)</p>
+                                            <span class="trer_button">
+                                                <a class="sumit_btn" href="javascript:;">新建子类</a>
+                                                <a class="sumit_btn" href="javascript:EditeName('@childtwo.ElementAt(j).NavigationId','@childtwo.ElementAt(j).NavigationName')">修改名称</a>
+                                                <a class="sumit_btn" onclick="hiddenNav('@childtwo.ElementAt(j).NavigationId',this)">@(childtwo.ElementAt(j).VisibleStatus == 0 ? "显示" : "隐藏")</a>
+                                                <a class="sumit_btn" href="javascript:delNav('@childtwo.ElementAt(j).NavigationId')">删除</a>
+                                                <a class="@(j == 0 ? "cancle_btn" : "sumit_btn")" href="@(j == 0 ? "javascript:;" : "javascript:movePosition('" + childtwo.ElementAt(j).NavigationId + "','" + (childtwo.ElementAt(j).Sort) + "','" + childtwo.ElementAt(j - 1).NavigationId + "','" + childtwo.ElementAt(j - 1).Sort + "')")">上移</a>
+                                                <a class="@(j == (childtwo.Count() - 1) ? "cancle_btn" : "sumit_btn")" href="@(j == (childtwo.Count() - 1) ? "javascript:;" : "javascript:movePosition('" + childtwo.ElementAt(j).NavigationId + "','" + (childtwo.ElementAt(j).Sort) + "','" + childtwo.ElementAt(j + 1).NavigationId + "','" + childtwo.ElementAt(j + 1).Sort + "')")">下移</a>
+                                                <a class="sumit_btn" href="javascript:;" onclick="setRelationShip(@childtwo.ElementAt(j).NavigationId,this)">设置关联</a>
+                                                <a class="sumit_btn" href="/ShangPin/Brand/ChangeRelationShip.html?id=@childtwo.ElementAt(j).NavigationId&brandNo=@(childtwo.ElementAt(j).BrandNo)&storetype=@(Request.QueryString["storetype"])&brandName=@(Request.QueryString["brandName"])">更改从属</a>
+                                            </span>
+                                        </li>
+                                    }
+                                    }
+                                </ul>
+                            }
+                        </li>
+                    }
+                </ul>
+            }
+        </li>
+    </ul>
+</div>
+<div id="mx-rightcontent-fixbarbg">
+    <div class="fixbarcontent">
+        <!-- 添加订单 start -->
+        <div id="mx-rightcontent-addbox" class="mx-rightcontent-msgbox">
+            <!--h1>添加数据<a href="#" id="mx-rightcontent-addbox-close" class="close">×</a></h1-->
+            @using (Html.BeginForm("AddNavigate", "Brand", FormMethod.Post, new { @id = "NavInfo", name = "NavInfo" }))
+            {
+                <dl>
+                    <dt>导航名称：</dt>
+                    <dd>
+                        @Html.TextBoxFor(model => model.NavigationName, new { @maxlength = 20 })
+                        @Html.HiddenFor(model => model.ParentId)
+                        @Html.HiddenFor(model => model.BrandNo)
+                        <input type="hidden" value="@ViewBag.BrandName" name="brandName" />
+                        <input type="hidden" value="" name="VisibleStatus" id="hide_VisibleStatus" />
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>&nbsp;</dt>
+                    <dd>
+                        <button type="submit" value="" class="secondary">
+                            确 定
+                        </button>
+                        <button type="button" id="" name="" value="" onclick="hidediv()">
+                            取 消
+                        </button>
+                    </dd>
+                </dl>
+            }
+        </div>
+        <!-- 添加订单 end -->
+        <!-- 删除订单 start -->
+        <div id="mx-rightcontent-delbox" class="mx-rightcontent-msgbox">
+            <div class="delcontent">
+                <p>
+                    是否删除已选订单数据？
+                </p>
+                <button type="submit" id="" name="" value="" class="secondary">
+                    确 定
+                </button>
+                <button type="button" id="" name="" value="">
+                    取 消
+                </button>
+            </div>
+        </div>
+        <!-- 删除订单 end -->
+        <!-- 搜索订单 start -->
+        <div id="mx-rightcontent-searchbox" class="mx-rightcontent-msgbox">
+            <form>
+                <dl>
+                    <dt>订单号：</dt>
+                    <dd>
+                        <input id="" type="text" name="" value="" />
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>订单商品：</dt>
+                    <dd>
+                        <input id="" type="text" name="" value="" />
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>下单人：</dt>
+                    <dd>
+                        <input id="" type="text" name="" value="" />
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>下单时间：</dt>
+                    <dd>
+                        <select id="" name="">
+                            <option value="">下单时间</option>
+                            <option value="">下单时间</option>
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>订单详情：</dt>
+                    <dd>
+                        <textarea id="" cols="50" rows="5" name="" value=""></textarea>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>&nbsp;</dt>
+                    <dd>
+                        <button type="submit" id="" name="" value="" class="secondary">
+                            搜 索
+                        </button>
+                        <button type="button" id="" name="" value="">
+                            取 消
+                        </button>
+                    </dd>
+                </dl>
+            </form>
+        </div>
+        <!-- 搜索订单 end -->
+        <!-- 打开文件 start -->
+        <div id="mx-rightcontent-folderbox" class="mx-rightcontent-msgbox">
+            打开文件
+        </div>
+        <div style="position:absolute;display:none;" id="changePosition">
+
+        </div>
+        <!-- 打开文件 end -->
+    </div>
+</div>
+<div id="mx-rightcontent-fixbar" class="clr">
+    <a href="javascript:;" id="mx-btn-add"></a><a href="#" id="mx-btn-del"></a><a href="#" id="mx-btn-search">
+    </a><a href="#" id="mx-btn-folder"></a><a href="#" id="mx-btn-edit"></a><a href="#"
+                                                                               id="mx-btn-close"></a><a href="#" id="mx-btn-refresh"></a>
+</div>
+@ViewData["tip"]

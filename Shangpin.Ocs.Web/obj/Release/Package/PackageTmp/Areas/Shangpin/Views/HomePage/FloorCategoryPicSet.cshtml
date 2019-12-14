@@ -1,0 +1,155 @@
+﻿@using Shangpin.Framework.Configuration;
+@using Shangpin.Ocs.Web.Infrastructure;
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>广告图分类</title>
+    <link href="/Areas/Shangpin/Content/css/init.css" rel="stylesheet" type="text/css"
+          charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/core.css" rel="stylesheet" type="text/css"
+          charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/page/rightcontent/rightcontent.css" rel="stylesheet"
+          type="text/css" charset="utf-8" />
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/lib/jquery.js" charset="utf-8"></script>
+    <script language="javascript" type="text/javascript">
+        $(function () {
+            getCategory("");
+            $("select[CategoryNo]").live({
+                change: function () {
+                    if ($(this).index() == 3) return;
+                    if ($(this).val().length == 0) {
+                        if ($(this).next("select").length > 0) {
+                            $(this).next("select").val('');
+                            $(this).next("select").find("option:not(:first)").remove();
+                        }
+                        else
+                            $(this).after(renderSelect(null), "");
+                        $(this).next("select").change();
+                    } else {
+                        $(this).attr("readonly", "readonly");
+                        getCategory($(this).val(), this);
+                    }
+                }
+            })
+        });
+        function getCategory(ParentNo, obj) {
+            if (obj) { $(obj).attr("readonly", "readonly"); }
+            $.ajax({
+                url: "/shangpin/homepage/GetSWfsCategoryByParentNo",
+                data: { ParentNo: ParentNo },
+                success: function (result) {
+                    $(obj).nextAll("select").remove();
+                    $("#select_content select[readonly]").removeAttr("readonly");
+                    var selectStr = renderSelect(result, ParentNo);
+                    $("#select_content").append(selectStr);
+                    $("#select_content select").last().change();
+                }
+            })
+        }
+        function renderSelect(result, ParentNo) {
+            $("select[CategoryNo]").removeAttr("readonly");
+            var title = "";
+            var cateCount = $("select[CategoryNo]").length;
+            switch (cateCount) {
+                case 0: { title = "一级分类"; }; break;
+                case 1: { title = "二级分类"; }; break;
+                case 2: { title = "三级分类"; }; break;
+                case 3: { title = "四级分类"; }; break;
+                case 4: { return ""; }; break;
+            }
+            var html = "<select style='width:120px;' CategoryNo='" + ParentNo + "'>";
+            html += "<option value='' selected='selected'>" + title + "</option>";
+            if (result && result.data && result.data.length > 0) {
+                for (var i = 0; i < result.data.length; i++) {
+                    html += "<option value='" + result.data[i]["CategoryNo"] + "'>" + result.data[i]["CategoryName"] + "</option>";
+                }
+            }
+            html += "</select>";
+            return html;
+        }
+        function closeWin() {
+            if (parent)
+                parent.$("#windown-close").click();
+        }
+        function saveCategory() {
+            var CategoryNo = "";
+            var CategoryName = "";
+            var selectLevel = 0;
+            $("select[CategoryNo]").each(function (i, n) {
+                if ($(n).val().length > 0) {
+                    selectLevel = i;
+                    CategoryNo = $(n).val();
+                    CategoryName = $(n).find("option:selected").text();
+                }
+            })
+            if (selectLevel < 2) {
+                return;
+            }
+            $.ajax({
+                url: "/shangpin/homepage/InsertOrUpdateLink",
+                data: { CategoryName: CategoryName, CategoryNo: CategoryNo, LinkId: $("#LinkId").val(), SortId: $("#SortId").val(), ModuleId: $("#ModuleId").val() },
+                success: function (result) {
+                    if (result.status == 1) {
+                        alert("保存成功");
+                        if (parent)
+                            parent.windowCallBack(result.LinkId, CategoryNo, CategoryName);
+                        closeWin();
+                    } else {
+                        alert("操作失败请稍后再试");
+                    }
+                }
+            })
+        }
+    </script>
+    <style type="text/css">
+        table.mx-table a.clearBtn {
+            background-color: #4d90fe;
+            border: 1px solid #3079ed;
+            color: #fff;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            font-size: 14px;
+            display: inline-block;
+            padding: 5px 10px;
+            *padding: 3px 0px 0;
+            position: relative;
+            text-decoration: none;
+            -webkit-transition: border-color 0.218s ease 0s;
+            -moz-transition: border-color 0.218s ease 0s;
+            -o-transition: border-color 0.218s ease 0s;
+            transition: border-color 0.218s ease 0s;
+            cursor: pointer;
+            margin: 0 15px 0 0;
+            *zoom: 1;
+        }
+
+            table.mx-table a.clearBtn:hover {
+                border-color: #1c8ede;
+                -webkit-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+                -moz-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+                box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+            }
+    </style>
+</head>
+<body>
+    <input type="hidden" id="SortId" name="SortId" value="@ViewBag.SortId" />
+    <input type="hidden" id="LinkId" name="LinkId" value="@ViewBag.LinkId" />
+    <input type="hidden" id="ModuleId" name="ModuleId" value="@ViewBag.ModuleId" />
+    <span style="color:gray;">提示:只有选择三级及三级以上分类才能提交</span>
+    <table class="mx-table" border="0">
+        <tbody><tr><td id="select_content"></td></tr></tbody>
+    </table>
+    <table class="mx-table" border="0">
+        <tr>
+            <td>
+                <a class="clearBtn enterBtn" href="javascript:saveCategory();" style="margin: 0 0 0 0;">确定</a>&nbsp;&nbsp;&nbsp;<a class="clearBtn closeBtn" href="javascript:closeWin();" style="margin: 0 0 0 0;">关闭</a>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

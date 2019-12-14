@@ -1,0 +1,122 @@
+﻿@model Shangpin.Ocs.Entity.Extenstion.ProductFlat.XMLReturnClassLists
+@using Shangpin.Ocs.Entity.Extenstion.ProductFlat
+@using Shangpin.Ocs.Service.Shangpin.ProductSort
+@using Shangpin.Ocs.Web.Infrastructure;
+@{
+    ViewBag.Title = "尚品排序";
+    Layout = "~/Areas/ProductFlat/Views/Shared/ProductSortLayout.cshtml";
+}
+ @section HeadStyle{
+    <link type="text/css" rel="stylesheet" href="~/Areas/ProductFlat/Content/CSS/ProductIndex.css" />
+ }
+@section HeadScript{
+    <script type="text/javascript" src="~/Areas/ProductFlat/Content/Js/AllProduct.js"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+}
+
+<div id="ProductIndexTitle">
+    <a class ="CurTitle" href="~/ProductFlat/Product/Index">全部商品(<font id="fontAllCount">1387</font>)</a>
+    <a href="@Url.Action("SortProductIndex", "Product", new { OcsCategoryNo ="A00112"})">排序(<font id="fontSortCount">187</font>)</a>
+</div>
+<div class="MoudleTitle">商品查询</div>
+<div id="SearchPara">
+    <div class="SearchItem">
+        <input type="text" name="ProductName" id="ProductName" placeholder="商品编号/名称/批量" />
+        <select id="SelBrand"></select>
+        <select id="SelSubType"></select>
+        <select id="SelColor"></select>
+    </div>
+    <div class="SearchItem">
+        商品价格：<input type="text" id="TxtMinPrice" class="SearchInput" placeholder="最小价格" maxlength="15" name="MinPrice" />~
+        <input type="text" id="TxtMaxPrice" placeholder="最大价格" class="SearchInput" maxlength="15" name="MaxPrice" />
+        库存深度：<input type="text" class="SearchInput" placeholder="最小库存" id="TxtMinStock" maxlength="15" name="MinStock" />~
+        <input type="text" placeholder="最大库存" class="SearchInput" id="TxtMaxStock" maxlength="15" name="MaxStock" />
+        折扣：<input type="text" class="SearchInput" placeholder="最低折扣" id="TxtMinDiscountRate" maxlength="15" name="MinDiscountRate" />~
+        <input type="text" placeholder="最高折扣" class="SearchInput" id="TxtMaxDiscountRate" maxlength="15" name="MaxDiscountRate" />
+    </div>
+    <div class="SearchItem">
+        上架时间：<input type="radio" name="shelfType" checked="checked" />新上架
+        <input type="radio" name="shelfType" />自定义上架时间
+        <input type="text" class="Wdate" id="ShelfDate" name="ShelfDate" placeholder="请输入上架时间" readonly="readonly" onclick="WdatePicker()"
+                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'ShelfDate\')||\'2020-10-01\'}'})" />
+    </div>
+    <div class="SearchItem">
+        <input type="button" class="ProductSortBtn" value="查询" id="BtnSearch" />
+        <input type="button" id="BtnReset" class="ProductSortBtn" value="重置" />
+    </div>
+</div>
+<div class="MoudleTitle">商品列表</div>
+<div id="ProductList">
+    @for (int i = 0; i < Model.ListProducts.Count; i++)
+    {
+        <div class="ProductListItem" productlistindex="@i">
+            <div class="ProductListItemChk">
+                <input class="ChkProductItem" type="checkbox" name="" value="@Model.ListProducts.ElementAt(i).ProductNo" />
+            </div>
+            <div class="ProductListItemImg">
+                <img src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@Model.ListProducts.ElementAt(i).ProductPicFile&type=1" />
+            </div>
+            <div class="ProductListItemDetail">
+                <ul style="width:240px;">
+                    <li><font class="ItemBold">商品编号: </font>@Model.ListProducts.ElementAt(i).ProductNo</li>
+                    <li><font class="ItemBold">商品货号: </font>@Model.ListProducts.ElementAt(i).GoodsNo</li>
+                    <li title="@Model.ListProducts.ElementAt(i).ProductName"><font class="ItemBold">商品名称: </font>@Model.ListProducts.ElementAt(i).ProductName</li>
+                    <li><font class="ItemBold">所属品牌: </font>@Model.ListProducts.ElementAt(i).BrandCnName</li>
+                </ul>
+                <ul style="width:120px;">
+                    <li><font class="ItemBold">可用库存: </font>@Model.ListProducts.ElementAt(i).stock</li>
+                    <li><font class="ItemBold">库龄: </font>0</li>
+                    <li><font class="ItemBold">累计销售: </font>0</li>
+                </ul>
+                <ul style="width:140px;">
+                    <li><font class="ItemBold">市场价: </font>@Model.ListProducts.ElementAt(i).MarketPrice</li>
+                    <li><font class="ItemBold">尚品价: </font>@Model.ListProducts.ElementAt(i).LimitedPrice</li>
+                    <li><font class="ItemBold">促销价: </font>@Model.ListProducts.ElementAt(i).PromotionPrice</li>
+                    <li><font class="ItemBold">折扣: </font>@Model.ListProducts.ElementAt(i).DiscountRate</li>
+                </ul>
+                <ul style="width:160px;">
+                    <li><font class="ItemBold">季节: </font></li>
+                    <li><font class="ItemBold">色系: </font><font class="ColorNo">@Model.ListProducts.ElementAt(i).ProductPrimaryColor</font></li> 
+                    <li><font class="ItemBold">上市: </font></li>
+                </ul>
+                <ul style="width:200px;">
+                    <li><font class="ItemBold">销售类型: </font></li>
+                    <li><font class="ItemBold">仓储分类: </font></li>
+                    <li><font class="ItemBold">上架日期: </font>@Model.ListProducts.ElementAt(i).DateShelf</li>
+                </ul>
+            </div>
+            <div class="ProductListItemJoin"><input class="JoinToSort" type="button" value="加入排序" /></div>
+        </div>
+    }
+</div>
+<div id="NoProduct">没有查找到任何商品, 请更换搜索条件再次尝试, 谢谢！</div>
+<div id="ProductListBar">
+    <div id="ChkCtrl">
+        <input type="button" id="BtnAllSelect" class="ProductSortBtn" value="全选/取消" /> 
+        <input type="button" id="BtnMulityJoin" class="ProductSortBtn" value="加入排序" />
+    </div>
+    <div class="spPage">
+        @{
+            int index = 1;
+            string pageIndex = Request.QueryString["pageindex"];
+            if (!string.IsNullOrEmpty(pageIndex))
+            {
+                index = Convert.ToInt32(pageIndex);
+            }
+        }
+        @Html.Raw(@Html.PagerX("page", index, 10, Model.docCount))
+    </div> 
+</div>
+@{
+    SearchSortService sss=new SearchSortService();
+    string jsonProduct = sss.ListToJsonString<InterfaceProductInfo>(Model.ListProducts);
+    string jsonBrand = sss.ListToJsonString<SearchResultBrands>(Model.ListBrands);
+    string jsonColor = sss.ListToJsonString<ProductPrimaryColors>(Model.ListColors);
+    string jsonCategory = sss.ListToJsonString<SearchResultCategorys>(Model.ListCategorys);
+}
+<div id="HiddenProductList" class="HiddenField">@jsonProduct</div>
+<div id="HiddenBrandList" class="HiddenField">@jsonBrand</div>
+<div id="HiddenColorList" class="HiddenField">@jsonColor</div>
+<div id="HiddenCategoryList" class="HiddenField">@jsonCategory</div>
+<div id="HiddenSortedProductInfo" class="HiddenField">@Model.SortedProductInfo</div>
+<div id="HiddenProductCount" class="HiddenField">@Model.docCount</div>

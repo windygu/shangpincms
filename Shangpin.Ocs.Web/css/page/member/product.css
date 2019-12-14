@@ -1,0 +1,53 @@
+/*  ============== Member address ==============  */
+#member_right .member_remind{
+	margin:20px 0;
+}
+
+.member_content{
+	border-width:1px 1px 0 1px;
+}
+
+.prodList th.txtLeft, .prodList td.txtLeft{
+	text-align:left;
+}
+.prodList td img{
+	width:60px;
+	height:80px;
+	display:block;
+}
+.prodList .prodTxt{
+	text-align:left;
+	padding-left:40px;
+}
+.prodList .prodTxt span{
+	height:18px;
+	line-height:18px;
+	display:inline-block;
+	width:150px;
+	overflow:hidden;
+	white-space: nowrap;
+	-o-text-overflow: ellipsis; /*--4 opera--*/
+	text-overflow: ellipsis;
+}
+.prodList .prodTxt a:hover span, .prodList .prodTxt a:active span{
+	text-decoration:underline;
+}
+
+.prodList td.red{
+	color:#ea1616;
+}
+
+#member_right .delAll{
+	margin:10px 0;
+	padding-left:25px;
+}
+.delAll input{
+	vertical-align:middle;
+	margin-right:10px;
+}
+.delAll .delLink{
+	margin-left:10px;
+}
+.delLink:hover, .delLink:active{
+	text-decoration:underline;
+}

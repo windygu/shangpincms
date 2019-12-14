@@ -1,0 +1,26 @@
+div.sp_brfs_wrapper {
+    display: block;
+    padding:0;
+	width: 956px;
+    background: #fff;
+}
+
+div.sp_brfs_inner {
+    display: block;
+    position: relative;
+}
+
+div.sp_brfs_inner span {
+    position: absolute;
+    background: #ddd;
+    text-align: center;
+}
+
+i.sp_brfs_listnum {
+    padding: 0 10px;
+    border-radius: 20px;
+    background: #fff;
+    color: #ddd;
+    font-size: 32px;
+    font-family: Verdana;
+}

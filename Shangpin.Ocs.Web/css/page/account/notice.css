@@ -1,0 +1,115 @@
+/* CSS Document */
+
+/* ============== Account notice ============== */
+
+.spAccount_notice {
+	width:100%;
+	margin:10px 0 0 0;
+	padding:15px 0 0 0;
+	border-top:1px solid #f0f0f0;
+}
+.spAccount_notice .noticeTabs_menu {
+	border-bottom:1px solid #cccccc;
+}
+.spAccount_notice .noticeTabs_menu li {
+	cursor: pointer;
+	background:#f7f7f7;
+	border-color:#cccccc;
+	border-style:solid;
+	border-width:1px 1px 0;
+	color:#666;
+	float: left;
+	height: 24px;
+	line-height:24px;
+	margin:3px 5px 0 0;
+	overflow: hidden;
+	text-align: center;
+	padding:0 20px;
+}
+.spAccount_notice .noticeTabs_menu li.hover {
+	background:#fff;
+	color:#333;
+	font-weight:700;
+	position:relative;
+	bottom:-1px;
+	height:27px;
+	line-height:27px;
+	margin:0 5px 0 0;
+}
+.spAccount_notice .noticeTabs_content {
+	padding:15px 0 0 0;
+	margin:0 0 5px 0;
+}
+.spAccount_notice .noticeList {
+	width:100%;
+}
+.noticeList th {
+	height:20px;
+	background:#d0d0d0;
+	color:#fff;
+	text-align:left;
+}
+.noticeList td {
+	border-top:1px solid #f0f0f0;
+	padding:15px 5px;
+	text-align:center;
+	color:#666;
+	line-height:180%;
+}
+.noticeList .notice_type {
+	display:block;
+	width:40px;
+	height:41px;
+	overflow:hidden;
+	vertical-align:middle;
+	text-indent:-9999px;
+	margin:0 auto;
+	background-image:url(/images/page/account/account_icon.gif);
+	background-repeat: no-repeat;
+}
+.noticeList .type_sale {
+	background-position: -40px -90px;
+}
+.noticeList .type_time {
+	background-position: -125px -90px;
+}
+.noticeList .type_event {
+	background-position: 3px -90px;
+}
+.noticeList .type_system {
+	background-position: -80px -90px;
+}
+.noticeList td.notice_info {
+	text-align:left;
+}
+.noticeList td.notice_info a {
+	text-decoration:underline !important;
+}
+/*2012-09-12 新加样式*/
+.noticeTabs_content {
+/* overflow:hidden */
+}
+#spTabs_content {
+	padding:5px 5px 0;
+	margin:0 auto;
+	border:1px solid #cccccc;
+	border-top:none;
+}
+.fc_red {
+	color:#e5323a
+}
+.notice_info {
+	border-right:1px solid #f0f0f0
+}
+.view_link {
+	width:70px;
+	display:block;
+	margin:0 10px;
+	color:#b9966a !important
+}
+.view_link:hover {
+	text-decoration:underline
+}
+.noticeList {
+	margin-bottom:-1px;
+}

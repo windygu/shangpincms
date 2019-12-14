@@ -1,0 +1,352 @@
+h1 , h2{
+	font-size: 18px;
+	font-family:'微软雅黑','黑体',Hei,'宋体';
+	font-weight: 700;
+	padding:10px 0;
+	color:#666;
+	text-shadow: 1px 1px 2px #ddd;
+}
+h2{
+	font-size: 18px;
+	padding-left:5px;
+	margin-bottom:10px !important;
+}
+h3{ color: #666;}
+
+h1 i{
+	padding:0 12px 0 0;
+}
+
+.hide{
+	display:none;
+}
+
+
+
+/*顶部滚动图片*/
+#spBrand_index_sco{
+	margin:10px auto;
+	width:960px;
+	overflow: hidden;
+}
+
+#spBrand_index_sco ul{
+	height:150px;
+	overflow: hidden;
+	clear: both;
+}
+
+#spBrand_index_sco ul li{
+	width:240px;
+	height:150px;
+	float: left;
+	position: relative;
+	text-align:center;
+}
+#spBrand_index_sco ul li img{
+	width:235px;
+	height:150px;
+}
+
+#spBrand_imgroll_wrapper{
+	overflow: hidden;
+}
+
+.bx_wrap a.prev ,.bx_wrap a.next{
+    background-image: url("/images/page/brand/spBrand.png");
+    background-repeat:no-repeat;
+    background-position:left top;
+    display: block;
+    height: 150px;
+    position: absolute;
+    text-indent: -9999px;
+    width: 24px;
+    z-index: 1;
+    filter:alpha(opacity=60);
+    -moz-opacity:0.6;
+    -khtml-opacity: 0.6;
+    opacity: 0.6;
+}
+
+.bx_wrap a.next {
+    background-position:-24px top;
+    margin-left:936px;
+}
+
+/*品牌列表*/
+#spList_left h6{
+	font-size: 14px;
+	padding:12px;
+	border-bottom:1px solid #bbb;
+	border-top: 1px solid #bbb;
+	position: relative;
+}
+#spBrand_logoList{
+	overflow: hidden;
+}
+#spBrand_logoList ul{
+	width:990px;
+	margin-left:2px;
+}
+#spBrand_logoList ul li{
+	height:60px;
+	float: left;
+	margin: 5px 3px 0 0;
+	border:1px solid #ddd;
+}
+
+/*全部品牌*/
+.letterBox{ width:250px; overflow:hidden; padding:10px; margin-top:30px;}
+.letterBox h3{ font-size:24px; font-family:Arial, Helvetica, sans-serif; font-weight:normal; padding-bottom:8px;}
+.letterBox li{ padding-top:5px;}
+.letterBox li a{ font-size:12px; font-family:Arial, Helvetica, sans-serif;}
+.letterBox li a:hover{ font-weight:bold; text-decoration:underline;}
+.letterL1{ width:255px; overflow:hidden; float:left;}
+.letterL2{  float:left;width:180px; overflow:hidden;}
+
+#spBrands_tab li{
+	float: left;
+	margin:10px 5px 0 0;
+	padding:0 10px 0 3px;
+	border-right:1px solid #ccc;
+}
+#spBrands_tab li a{
+	display: inline-block;
+	padding:3px 8px;
+	font-size:13px;
+}
+#spBrands_tab li a:hover , .spBrand_tabed{
+	background:#333;
+	color:#fff !important;
+}
+
+
+/*品牌列表页*/
+#spList_select_brand a.cur {background:#666; color:#fff; font-weight:bold;}
+.spList_ppda{
+	height:111px;
+	border-top:1px solid #ccc;
+	background: url("/images/page/brand/spBrand.png") -73px top no-repeat;
+}
+.spList_ppda a{
+	display: block;
+	height:111px;
+	width:200px;
+}
+.spList_topLogo{
+	width:177px;
+	margin:15px auto;
+	text-align:center;
+}
+.brandLogo{
+	height:55px;
+}
+.brandLogo img{
+	vertical-align:middle;
+}
+#spList_at{
+	margin-bottom:20px;
+	text-align:center;
+}
+#spList_at span{
+	color: #CA7A12;
+}
+#spList_at a.spList_add , #spList_at a.spList_remove{
+	display: block;
+	width:100px;
+	height:29px;
+	margin:20px auto 10px;
+	text-indent:-2000px;
+	background-image: url("/images/page/brand/spBrand.png");
+	background-position:-285px top;
+	background-repeat:no-repeat;
+}
+#spList_at a.spList_remove{
+	background-position:-285px -37px;
+}
+
+/* 选择品牌商品按钮 */
+.spList_ppChoose{
+	text-align:center;
+	padding:20px 0;
+	height:87px;
+	*height:85px !important;
+	_height:86px;
+}
+.spList_ppChoose a{
+	display: block;
+	width:105px;
+	height:31px;
+	margin:20px auto 10px;
+	text-indent:-2000px;
+	background-image: url("/images/page/brand/spBrand.png");
+	background-position:-284px -75px;
+	background-repeat:no-repeat;
+	overflow:hidden;
+}
+
+
+/*品牌档案*/
+#spList_right .imgPrmA{
+	width:740px;
+	height:30px;
+	padding-top:18px;
+	color: #fff;
+	text-align:center;
+	margin-bottom:20px;
+	background:url(/images/page/detail/spDetail_main.gif) left -235px no-repeat;
+}
+
+
+/*品牌终端页*/
+.spDetail_topImg{
+	padding:10px;
+	border:1px solid #ccc;
+}
+
+#spBrand_decon{
+	padding: 0 10px;
+	width:700px;
+	margin: 0 auto 20px;
+}
+#spBrand_decon .spBrand_info{
+	overflow: hidden;
+}
+
+#spBrand_decon p{
+	color: #666;
+	text-indent:24px;
+	line-height:22px;
+	margin-bottom:5px;
+}
+
+.spBrand_more{
+	margin-top:5px;
+	float: right;
+}
+
+.spBrand_buyerMore{
+	position: absolute;
+	right:0;
+	margin-top:3px;
+}
+.spBrand_buyerMore a{
+	font-size:14px;
+	font-weight:normal;
+}
+
+/*品牌详情顶部滚动样式*/
+.brandScroll{ width:700px; overflow:hidden; border:1px solid #ccc; padding:19px;}
+.brandScroll .imgWarp{ width:700px; height:400px; overflow:hidden;} /*2012-5-23-2*/
+.brandScroll .imgWarp ul{ overflow: hidden;
+	clear: both;
+	position: relative;}
+.brandScroll .imgWarp ul li{
+	height:400px;
+	width:700px;
+	float: left;
+	overflow: hidden;
+	text-align:center;}
+.brandScroll .prev,.brandScroll .next{position:absolute;z-index:101; margin-top:40px;} /*2012-5-23*/
+.brandScroll .prev{}
+.brandScroll .next{ margin-left:676px;}
+
+/* 品牌展示 */
+.brandShow{padding:20px 20px 40px 20px;}
+.brandShow img{margin-bottom:20px; display:block;}
+.brandShow h4{
+	background: url("/images/page/brand/spBrand.png") no-repeat -70px -125px ;
+    height: 68px;
+    overflow: hidden;
+    text-indent: -9999px;
+    width: 340px;
+	margin:15px auto 20px;
+}
+.brandShow p{
+	color: #666666;
+    line-height: 180%;
+    text-align: justify;
+    text-indent: 2em;
+}
+
+.brand_prod h4{
+	background:url("/images/page/brand/spBrand.png") no-repeat -70px -210px ;
+    height: 55px;
+    overflow: hidden;
+    text-indent:-9999px;
+    width: 223px;
+	margin:0 auto 10px;
+	*margin:20px auto 10px !important;
+	_margin:0 auto 10px;
+}
+.brand_prod p.brandMore{
+	margin-bottom:10px;
+	height:12px;
+	line-height:12px;
+}
+.brand_prod p.brandMore a{
+	width:44px;
+	height:12px;
+	display:block;
+	float:right;
+    text-indent:-9999px;
+	overflow:hidden;
+	background:url("/images/page/brand/spBrand.png") no-repeat -700px top ;
+}
+
+.brand_prod .brandrecommend{
+	border:1px solid #ccc;
+	border-right:none;
+	float:left;
+}
+.brand_prod .brandrecommend li{
+	width:238.75px;
+	height:370px;
+	padding:15px 0;
+	float:left;
+	position:relative;
+	border-right:1px solid #ccc;
+}
+.brand_prod .brandrecommend p{
+	width:210px;
+	margin:0 auto;
+}
+.brand_prod .brandrecommend p span{
+	margin:15px 0 0 10px;
+	display:block;
+	line-height:21px;
+	color:#000;
+}
+.brand_prod .brandrecommend p span a:link, .brand_prod .brandrecommend p span a:visited{
+	color:#000;
+}
+.brand_prod .brandrecommend p span a:hover, .brand_prod .brandrecommend p span a:active{
+	color:#000;
+	text-decoration:underline;
+}
+.brand_prod .brandrecommend p span em a:link, .brand_prod .brandrecommend p span em a:visited{
+	color:#666;
+}
+.brand_prod .brandrecommend p span em a:hover, .brand_prod .brandrecommend p span em a:active{
+	color:#000;
+	text-decoration:underline;
+}
+.brand_prod .brandrecommend p span em{
+	display:block;
+}
+
+.brandActive{margin-top:20px;}
+.brandActive_left, .brandActive_right{
+	border:1px solid #ccc;
+	padding:14px;
+	height:210px;
+	float:left;
+	overflow:hidden;
+}
+.brandActive_left{
+	width:280px;
+}
+.brandActive_right{
+	width:600px;
+	margin-left:20px;
+}

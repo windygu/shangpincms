@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <!--查询保存规则后的商品列表-->
+  <statement id="ComBeziWfs_SWfsSortProduct_GetSorProductList">
+    SELECT [PkId]
+    ,[RuleId]
+    ,[ProductNo]
+    ,[Sort]
+    ,[DateCreate]
+    ,[OperatorUserId]
+    ,[OcsCategoryNo]
+    FROM [SWfsSortProduct](nolock) WHERE OcsCategoryNo=@OcsCategoryNo
+  </statement>
+  <!--查询保存规则后的商品列表按商品编号查询-->
+  <statement id="ComBeziWfs_SWfsSortProduct_GetSorProductByProductNo">
+    SELECT
+    [ProductNo]
+    FROM [SWfsSortProduct](nolock) WHERE ProductNo=@ProductNo and OcsCategoryNo=@OcsCategoryNo
+  </statement>
+  <!--查询保存规则后的色系 品牌 价格规则-->
+  <statement id="ComBeziWfs_SWfsSortRule_GetSortRuleByCategoryNo">
+    SELECT [RuleId]
+    ,[OcsCategoryNo]
+    ,[ParentId]
+    ,[RuleObjectNo]
+    ,[RuleObjectName]
+    ,[Sort]
+    ,[RuleType]
+    ,[DateCreate]
+    ,[OperatorUserId]
+    FROM [SWfsSortRule](nolock) WHERE OcsCategoryNo=@OcsCategoryNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSortProduct_GetProductMinSortByCategoryNoAndRuleId">
+    select min(Sort) as Sort from SWfsSortProduct(nolock) where RuleId=@RuleId and OcsCategoryNo=@OcsCategoryNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSortProduct_GetProductMinSortByCategoryNo">
+    select min(Sort) as Sort from SWfsSortProduct (nolock) where OcsCategoryNo=@OcsCategoryNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSortProduct_GetProductMaxSortByCategoryNo">
+    select max(Sort) as Sort from SWfsSortProduct (nolock) where OcsCategoryNo=@OcsCategoryNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSortRule_GetRuleInfoByCategoryNo">
+    select RuleId,ParentId,RuleObjectNo,RuleObjectName,RuleType from SWfsSortRule where OcsCategoryNo=@OcsCategoryNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSortOcsCategory_GetOcsCategoryInfoByCategoryNo">
+    select CategoryNo,CategoryName,IsApplyRule,AutolastFlag,DateUpdate from SWfsSortOcsCategory where CategoryNO=@CategoryNO
+  </statement>
+  <statement id="ComBeziWfs_SWfsSortOcsCategory_GetOcsCategoryInfoByAll">
+    select CategoryNo,CategoryName,IsApplyRule,AutolastFlag,DateUpdate from SWfsSortOcsCategory where CategoryType=2
+  </statement>
+  
+  <statement id="ComBeziWfs_SWfsSortOcsCategory_UpdateSortOcsCategoryLastFlagByCategoryNo">
+    update SWfsSortOcsCategory set AutolastFlag=@AutolastFlag where CategoryNO=@CategoryNO
+  </statement>
+  <statement id="ComBeziWfs_SWfsSortOcsCategory_UpdateSortOcsCategoryUpdateTimeByCategoryNo">
+    update SWfsSortOcsCategory set DateUpdate=@DateUpdate,AutoLastFlag=@AutoLastFlag,IsApplyRule=@IsApplyRule where CategoryNO=@CategoryNO
+  </statement>
+  <statement id="ComBeziWfs_SWfsSortProduct_DeleteSWfsSortProductByCategoryNo">
+    delete from SWfsSortProduct where OcsCategoryNO=@OcsCategoryNO
+  </statement>
+  <statement id="ComBeziWfs_SWfsSortRule_DeleteSortRuleByCategoryNo">
+    delete from SWfsSortRule where OcsCategoryNO=@OcsCategoryNO
+  </statement>
+  <statement id="ComBeziWfs_SWfsSortRule_AddSortRule">
+    insert SWfsSortRule(OcsCategoryNo,ParentId,RuleObjectNo,RuleObjectName,Sort,RuleType,OperatorUserId) values(@OcsCategoryNo,@ParentId,@RuleObjectNo,@RuleObjectName,@Sort,@RuleType,@OperatorUserId)
+    select cast(@@IDENTITY as varchar(50))
+  </statement>
+  <statement id="ComBeziWfs_SWfsSortProduct_IsRepeatCategoryNo">
+    select * from SWfsSortProduct where OcsCategoryNo=@OcsCategoryNo and ProductNo=@ProductNo
+  </statement>
+  <statement id="ComBeziWfs_SWfsSortProduct_GetSotedProduct">
+    select OcsCategoryNo,ProductNo from SWfsSortProduct where OcsCategoryNo=@OcsCategoryNo
+  </statement>
+  
+  
+  <statement id="ComBeziWfs_Brand_Sort_List">
+    Select BrandNo,BrandCnName,BrandEnName from spbrand (NOLOCK) order by BrandEnName
+  </statement>
+  <statement id="ComBeziWfs_WfsCategory_CategoryByParentNO">
+    select CategoryNo,CategoryCName as CategoryName,ParentCategoryNo as ParentNo from SpfShopCategory(nolock) where [Status]=1 and ParentCategoryNo=@ParentNo
+  </statement>
+  <!--用来判断是否有子节点-->
+  <statement id="ComBeziWfs_WfsCategory_CategoryByIsParent">
+    SELECT Count(0) from SpfShopCategory (nolock) Where ParentCategoryNo=@ParentNo
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsSortHistory_Select">
+    SELECT top 10 Id,SearchUrl,Direction,CreateDate,UserId from SWfsSortHistory (nolock) order by CreateDate desc
+  </statement>
+  <!--清除历史-->
+  <statement id="ComBeziWfs_SWfsSortHistory_DeleteSortHistoryByUserId">
+    delete SWfsSortHistory where UserId=@UserId
+  </statement>
+
+
+
+
+  <!--集成测试用-->
+  <statement id="ComBeziWfs_SwfsCategory_getCategoryAll">
+    select * from swfscategory(nolock)
+  </statement>
+  <statement id="ComBeziWfs_WfsproductAttr_getProductAttrbyproductNO">
+    select * from wfsproductattr(nolock) where productno=@productno
+  </statement>
+  <statement id="ComBeziWfs_WfsProduct_GetBrandNoByProductNo">
+    select BrandNo from WfsProduct(nolock) where productNo=@productNo
+  </statement>
+  
+  <!--按商品编号查询商品热度-->
+  <statement id="ComBeziWfs_SWfsProductHot_GetProductHotValue">
+    select ProductNo
+    ,ProductHotValue
+    ,ProductSevenHotValue from SWfsProductHot(nolock) where ProductNo=@ProductNo
+  </statement>
+  <!--按商品编号修改商品热度-->
+  <statement id="ComBeziWfs_SWfsProductHot_EditeProductHotValue">
+    Update SWfsProductHot set ProductHotValue+=@ProductHotValue where ProductNo=@ProductNo
+  </statement>
+  <!--按商品编号修改7日商品热度-->
+  <statement id="ComBeziWfs_SWfsProductHot_EditeSevenProductHotValue">
+    Update SWfsProductHot set ProductSevenHotValue+=@ProductSevenHotValue where ProductNo=@ProductNo
+  </statement>
+  <!--添加商品热度-->
+  <statement id="ComBeziWfs_SWfsProductHot_AddProductHotValue">
+    Insert into SWfsProductHot(ProductNo,ProductHotValue,ProductSevenHotValue) values(@ProductNo,@ProductHotValue,@ProductSevenHotValue)
+  </statement>
+  <!--按商品编号查询修改后的商品-->
+  <statement id="ComBeziWfs_SWfsProductHot_GetProductListByProductNoList">
+    select ProductNo
+    ,ProductHotValue
+    ,ProductSevenHotValue from SWfsProductHot(nolock) where ProductNo in @ProductNoList
+  </statement>
+</statements>

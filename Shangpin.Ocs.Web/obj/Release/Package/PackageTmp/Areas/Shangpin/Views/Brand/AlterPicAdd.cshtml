@@ -1,0 +1,138 @@
+﻿@model Shangpin.Entity.Wfs.SWfsAlterPic
+@{
+    ViewBag.Title = "轮播图编辑";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+<html>
+<script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script src="/Areas/Shangpin/Scripts/plug/comm.js" type="text/javascript"></script>
+<script type="text/javascript" src="/Areas/outlet/Scripts/page/index/popDiv.js"></script>
+<head>
+    
+    <script type="text/javascript">
+        var getTypeName = function (data) {
+            if (data == 1) {
+                $("#SpecialityStoreType").val($("#beforeName").val() + $("#storeName").val());
+
+            } else {
+                $("#SpecialityStoreType").val("");
+                //alert($("#SpecialityStoreType").val());
+            }
+
+        }
+    </script>
+    
+    
+</head>
+   <h1> CMS > 尚品 > <a href="/shangpin/Brand/BrandSpecialityStoreEdit.html">品牌管理</a> > 轮播图管理 > 编辑</h1>
+@using (Html.BeginForm("AlterPicAdd", "Brand", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+    <table class="mx-table">
+        <thead>
+            <tr style=" height:50px">
+                <td width="13%" style=" font-size:15px; color:Red;">
+                    页面:
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.AlterPicView, new List<SelectListItem>() { new SelectListItem { Value = "0", Text = "国际时尚品牌" }, new SelectListItem { Value="1",Text="国际高端品牌"} })
+                </td>
+            </tr>
+            <tr style=" height:50px;">
+                <td width="13%" style=" font-size:15px; color:Red;">
+                    位置:
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.AlterPicPosition, new List<SelectListItem>() { new SelectListItem { Value = "1", Text = "轮播图一" }, new SelectListItem { Value = "2", Text = "轮播图二" }, new SelectListItem { Value = "3", Text = "轮播图三" }, })
+                </td>
+            </tr>
+            <tr style=" height:50px;">
+                <td width="13%" style=" font-size:15px;">
+                    轮播图名称:
+                </td>
+                <td>
+                <input type="text" id="@(Model.AlterPicName)" value="@(Model.AlterPicName)" name="AlterPicName"/>
+                </td>
+            </tr>
+            <tr style=" height:50px;">
+                <td width="13%" style=" font-size:15px; color:Red;">
+                    图片上传:
+                </td>
+                <td>
+                    <p><input type="file" id="imgfileUp" name="imgfile" />&nbsp;&nbsp;要求:960x250 小于100K的JPG图片</p>
+                    @Html.HiddenFor(model=>model.AlterPicNo)
+                    @if (Model!=null)
+                    {
+                        if (!string.IsNullOrEmpty(Model.AlterPicNo))
+                        {
+                            <img src="/ReadPic/GetPic.ashx?width=960&height=250&pictureFileNo=@(Model.AlterPicNo)&type=2" />
+                        }
+                    }
+                </td>
+            </tr>
+            <tr style=" height:50px;">
+                <td width="14%" style=" font-size:15px;">
+                    链接地址:
+                </td>
+                <td>
+                <input type="text" id="@(Model.AlterPicAddr)" value="@(Model.AlterPicAddr)" name="AlterPicAddr" style=" width:300px;" placeholder="请输入文本...."/>
+                </td>
+            </tr>
+            <tr>
+                <td style=" font-size:15px; color:Red;">
+                    状态:
+                </td>
+                <td>
+                    <input type="radio" name="Status" id="ww"  value="0" checked="true" @(Model.Status == 0 ? "checked" : null) />显示
+                    <input type="radio" name="Status" id="qq"  value="1" @(Model.Status == 1 ? "checked" : null) style=" margin:5px;"/>隐藏
+                </td>
+            </tr>
+            <tr>
+                <td style=" font-size:15px; color:Red;">
+                    显示时间:
+                </td>
+                <td>
+                    @*@Html.TextBoxFor(model => model.StartDate) 至 @Html.TextBoxFor(model => model.EndDate)*@
+                    <input id="startdate" name="StartDate" class="Wdate" value="@Model.StartDate.ToString("yyyy-MM-dd HH:mm:ss")" type="text" onclick="WdatePicker()" readonly="readonly" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'enddate\')||\'2020-10-01\'}'})" style=" width:150px;"/>至
+                    <input id="enddate" name="EndDate" class="Wdate" value="@Model.EndDate.ToString("yyyy-MM-dd HH:mm:ss")" type="text" onclick="WdatePicker()" readonly="readonly" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'startdate\')}',maxDate:'2020-10-01'})" style=" width:150px;"/>
+                </td>
+            </tr>
+            <tr style=" height:50px;">
+                <td width="8%" style=" font-size:15px;">
+                    操作:
+                </td>
+                <td>
+                    @Html.HiddenFor(model => model.AlterPicId)
+                    <input type="submit" value="保存" onclick="return bao();" style=" width:60px; height:30px;"/>
+                    @Html.ActionLink("返回列表", "AlterPicList")
+                    
+                </td>
+            </tr>
+        </thead>
+    </table>
+    
+    
+}
+@ViewData["tip"]
+</html>
+<script type="text/javascript">
+    function bao() {
+        //判断图片是否为空
+        if ($("#imgfileUp").val()=="") {
+            if ($("#AlterPicNo").val() == "") {
+                alert("请选择图片！");
+                return false;
+            }
+        }
+        //判断是否选择了开始时间
+        if ($("#startdate").val() == "") {
+            alert("请选择开始时间！");
+            return false;
+        }
+        //判断是否选择了停止时间
+        if ($("#enddate").val() == "") {
+            alert("请选择停止时间！");
+            return false;
+        }
+    }
+</script>

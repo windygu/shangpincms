@@ -1,0 +1,52 @@
+@model IEnumerable<Shangpin.Entity.Wfs.SWfsMeetingTemplateInfo>
+@using Shangpin.Ocs.Web.Infrastructure;
+@{
+    ViewBag.Title = "创建模板文件";
+    Layout = "~/Areas/Shangpin/Views/Shared/_VenueLayout.cshtml";
+   
+}
+
+<h1>
+    OCS > 尚品 > 创建模板文件
+</h1>
+
+<form action="/Shangpin/Venue/SaveTemplateOrCssContent" method="post">
+    <dl>
+        <dt>文件路径:</dt>
+        <dd>
+            <input type="text" style="width:500px;" name="filePath" id="filePath"/>
+        </dd>
+    </dl>
+    <dl>
+        <dt>文件内容:</dt>
+        <dd>
+            <textarea cols="150" rows="20" name="fileText" id="fileText">
+                
+            </textarea>
+        </dd>
+    </dl>
+    <dl>
+        <dt>&nbsp;</dt>
+        <dd>
+            <a href="javascript:getTempContent();">获取文件</a>&nbsp;&nbsp;<a class="button" href="javascript:SaveTemplateContent();">保存</a>
+        </dd>
+    </dl>
+</form>
+<!---弹出层编辑模板内容-->
+
+<script type="text/javascript">
+    function getTempContent() {
+        $.get("/Shangpin/Venue/GetTemplateOrCssContent", { 'filePath': $("#filePath").val() }, function (data) {
+            $("#fileText").html(data);
+        });
+    }
+    function SaveTemplateContent(objID) {
+        $.post("/Shangpin/Venue/SaveTemplateOrCssContent", { 'filePath': $("#filePath").val(), 'fileText': $("#fileText").val() }, function (data) {
+            if (data>0) {
+                alert("保存成功");
+            } else {
+                alert("保存成失败");
+            }
+        });
+    }
+</script>

@@ -1,0 +1,930 @@
+﻿@{
+    Layout = null;
+    Shangpin.Ocs.Entity.Extenstion.ShangPin.SWfsMeetingRelationRegionContent obj = null;
+    string ShangpinActiveHrefUrlShow = "http://www.shangpin.com/women/subject/{0}?MeetingNO={1}&ClickRegionID={2}";
+    string AoLaiActiveHrefUrlShow = "http://www.aolai.com/subject/index/{0}/0?MeetingNO={1}&ClickRegionID={2}";
+    string AoLaiSpecialHrefUrlShow = "http://www.aolai.com/topic/index/{0}?MeetingNO={1}&ClickRegionID={2}";
+                        //string VenueHrefUrlShow = "http://www.shangpin.com/Venue/Index/{0}?MeetingNO={1}&ClickRegionID={2}";
+    int index = 0;
+                        }
+@using Shangpin.Framework.WebMvc
+@model IEnumerable<Shangpin.Ocs.Entity.Extenstion.ShangPin.SWfsMeetingRelationRegionContent>
+<style type="text/css">
+body {
+	_background-image: url(about:blank);
+	_background-attachment: fixed;
+}
+
+
+/*页面上部背景 start*/
+.sp_banner{
+	width:100%;
+	height:645px;
+	overflow:hidden;
+	position:relative;
+	
+}
+.sp_banner img{
+	width:1900px;
+	height:auto;
+	position:absolute;
+	margin-left:-950px;
+	left:50%;
+	display: block;
+}
+.sp_banner img.banner_top{
+	top:0;
+	_height:300px;
+}
+.sp_banner img.banner_bottom{
+	top:300px;
+	_height:345px;
+}
+
+.sp_banner div{
+	width:956px;
+	margin:0 auto;
+	
+	position:relative;
+	top:420px;
+	z-index:1000000;
+
+}
+.sp_banner div a{
+	display: inline-block;
+	position: relative;
+	top: 0;
+	left: 410px;
+	
+}
+.sp_banner div a, .sp_banner div a img{
+	width: 140px;
+	height: 26px;
+}
+.sp_banner div a img{
+	margin: 0;
+	position: absolute;
+	top: 0;
+	left:0;
+	display: block;
+}
+/*页面上部背景 end*/
+
+
+/*倒计时 start*/
+.sp_top_time{
+	width: 960px;
+	height:70px;
+	margin: 0 auto;
+	padding: 30px 0 0;
+}
+#curdatetime_108{
+	position: relative;
+	width:960px;
+	height:55px;
+}
+#leftdays_108, #lefthours_108, #leftminutes_108, #leftseconds_108, #left_millisecond {
+	display: block;
+	width: 44px;
+	position: absolute;
+	font-size: 22px;
+	text-align: center;
+	font-family: "微软雅黑", "Microsoft YaHei", "黑体", "Tahoma", "宋体";
+	font-weight: 700;
+	color: #db3b17;
+	_top: 4px;
+	left: 332px;
+	line-height: 50px;
+	padding-bottom:5px;
+}
+#leftdays_108 {
+	left: 466px;
+}
+#lefthours_108 {
+	left: 528px;
+}
+#leftminutes_108 {
+	left: 619px;
+}
+#leftseconds_108 {
+	left: 692px;
+}
+#left_millisecond {
+	left: 768px;
+}
+/*倒计时End*/
+
+/*标题区域start*/
+h3.title{
+	width: 924px;
+	height:40px;
+	text-align: center;
+	background:#e2f5ec;
+	margin:15px 17px 28px 17px;
+	display:inline-block;
+}
+h3.title img{
+	float:left;
+}
+
+
+
+/*标题区域end*/
+
+/*更多区域start*/
+.sp_more{
+	width:100%;
+	text-align:center;
+	padding-bottom:35px;
+	height:84px;
+
+}
+
+.sp_more a{
+	font-family: "微软雅黑", "Microsoft YaHei", "黑体", "Tahoma", "宋体";
+	display:inline-block;
+	height:84px;
+	text-decoration:none;
+	background-repeat:repeat-x;
+}
+.sp_more a:link, .sp_more a:visited{
+	background-position:0 0;
+}
+.sp_more a:hover, .sp_more a:active{
+	background-position:0 -46px;
+}
+.sp_more a.small{
+	font-size:18px;
+	padding:0 10px;
+}
+/*更多区域end*/
+
+.sp_activity{
+	background:#f4f4f4;
+	padding:10px 0;
+}
+/*列表显示区域 start*/
+.sp_list .box{width:938px;}
+.sp_list li span, .sp_list_scattered ul.woman li span,.sp_list_scattered li span {
+	display: none;
+	position: absolute;
+	width:536px;
+	height:275px;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	background: url(@Html.ResolveContentCdnUrl("/shangpin/images/page/20140716memberday/hover_notext_bg.png")) repeat center;
+	border: none;
+	padding: 0;
+	_background: url(@Html.ResolveContentCdnUrl("/shangpin/images/page/20140716memberday/hover_notext_ie6_bg.png")) repeat center;
+	_filter: alpha(opacity = 60);
+	text-align: center;
+}
+.sp_list li span h4, .sp_list_scattered ul.woman li span h4,.sp_list_scattered li span h4{
+	width: 536px;
+	margin: 0 auto;
+	color: #fff;
+	font-size: 24px;
+	font-family: "微软雅黑", "Microsoft YaHei", "黑体", "Tahoma", "宋体";
+	padding-bottom: 20px;
+}
+.sp_list{
+	width:958px;
+	margin:0 auto 10px;
+	background-color:#fff;
+	border:1px solid #7bd0a9;
+}
+.sp_list .box {
+	background:none;
+
+}
+.sp_list ul{
+	width:960px;
+	*padding-bottom:20px;
+}
+.sp_list li {
+	width: 220px;
+	height: 320px;
+	overflow: hidden;
+	margin: 0 20px 20px 0;
+	float: left;
+	background-color: #fff;
+	position:relative;
+	
+}
+.sp_list li img{
+	width:220px;
+	height:320px;
+}
+
+.sp_list li span{
+	height: 320px;
+	width: 220px;
+}
+.sp_list li span h4{
+	width: 220px;
+	height: 320px;
+	line-height:320px;
+}
+.sp_list_scattered{
+	width: 980px;
+	padding-bottom: 10px;
+	margin: 0 auto;
+}
+.sp_list_scattered h3{
+	background-color:#00e3e9;
+	height:60px;
+	padding:0;
+}
+
+.sp_list_scattered .box{
+	width:980px;
+	float:left;
+}
+.sp_list_scattered ul{
+	width:1000px;
+}
+.sp_list_scattered ul li{
+	width:316px;
+	float:left;
+	margin-right:17px;
+	margin-top:17px;
+	position:relative;
+}
+.sp_list_scattered ul li.small_img{
+	width:232px;
+	float:left;
+	margin-right:18px;
+}
+.sp_list_scattered li span{
+	height: 316px;
+	width: 316px;
+}
+.sp_list_scattered li span h4{
+	width: 316px;
+	height: 316px;
+	line-height:316px;
+}
+.sp_list_scattered li.small_img span{
+	width:232px;
+	height:317px;
+}
+.sp_list_scattered li.small_img span h4{
+	width:232px;
+	height:317px;
+	line-height: 317px;
+}
+.sp_list_scattered ul.woman{
+	width:979px;
+	border-left:1px solid #d9d9d1;
+	padding:0;
+}
+.sp_list_scattered ul.woman li{
+	float:left;
+	width:487px;
+	height:401px;
+	border-right:1px solid #d9d9d1;
+	border-bottom: 1px solid #d9d9d1;
+	margin:0;
+}
+.sp_list_scattered ul.woman li.list02{
+	width:490px;
+	height:401px;
+}
+.sp_list_scattered ul.woman li.list03{
+	width:340px;
+	height:394px;
+}
+.sp_list_scattered ul.woman li.list04{
+	width:295px;
+	height:296px;
+}
+.sp_list_scattered ul.woman li.list05{
+	width:341px;
+	height:296px;
+}
+.sp_list_scattered ul.woman li.list06{
+	width:637px;
+	height:299px;
+}
+.sp_list_scattered ul.woman li.list07{
+	width: 340px;
+	height: 201px;
+	position: relative;
+	top: -202px;
+	margin-bottom: -202px;
+}
+.sp_list_scattered ul.woman li span{
+	width: 487px;
+	height:401px;
+}
+
+.sp_list_scattered ul.woman li span h4{
+	width: 487px;
+	height:401px;
+	line-height:401px;
+}
+.sp_list_scattered ul.woman li.list02 span{
+	width: 490px;
+	height:401px;
+}
+.sp_list_scattered ul.woman li.list02 span h4{
+	width: 490px;
+	line-height:401px;
+}
+.sp_list_scattered ul.woman li.list03 span{
+	width: 340px;
+	height:394px;
+}
+.sp_list_scattered ul.woman li.list03 span h4{
+	width: 340px;
+	line-height:394px;
+}
+.sp_list_scattered ul.woman li.list04 span{
+	width: 295px;
+	height:296px;
+}
+.sp_list_scattered ul.woman li.list04 span h4{
+	width: 295px;
+	line-height:296px;
+}
+.sp_list_scattered ul.woman li.list05 span{
+	width: 341px;
+	height:296px;
+}
+.sp_list_scattered ul.woman li.list05 span h4{
+	width: 341px;
+	line-height:296px;
+}
+.sp_list_scattered ul.woman li.list06 span{
+	width: 637px;
+	height:299px;
+}
+.sp_list_scattered ul.woman li.list06 span h4{
+	width: 637px;
+	line-height:299px;
+}
+.sp_list_scattered ul.woman li.list07 span{
+	width: 340px;
+	height:201px;
+}
+.sp_list_scattered ul.woman li.list07 span h4{
+	width: 340px;
+	line-height:201px;
+}
+.sp_list li a, .sp_list_scattered ul li a, .sp_list li img, .sp_list_scattered ul li img{
+	display:block;
+}
+
+/*列表显示区域 end*/
+
+
+/*右侧滚动 start*/
+.activity_right_box {
+	display:none;
+	position: fixed;
+	bottom: 100px;
+	left: 50%;
+	margin-left: 492px;
+	background:#8ecab0 url(@Html.ResolveContentCdnUrl("/shangpin/images/page/20140716memberday/bg_right.jpg")) 0 0 no-repeat;
+	width: 106px;
+	padding:15px 0 0;
+	_position:absolute;
+	_bottom:auto;
+	_top:expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight-this.offsetHeight-(parseInt(this.currentStyle.marginTop,10)||0)-(parseInt(this.currentStyle.marginBottom,10)+100||0)));
+
+}
+.activity_right_box ul{
+	padding:0 10px;
+}
+.activity_right_box li{
+	width:86px;
+	height:auto;
+	line-height:30px;
+	margin:0 auto;
+	margin-bottom:3px;
+}
+.activity_right_box li.cur{
+	background:#61c897;
+}
+.activity_right_box li a {
+	display: block;
+	height: auto;
+	line-height: 30px;
+	text-align: left;
+	font-family: "Microsoft yahei", "微软雅黑";
+	font-size: 16px;
+	padding:0px 2px;
+	border-bottom:1px solid #90b59d;
+	color:#fff;
+}
+
+.activity_right_box a.ifc_backtop {
+	display: block;
+	height:69px;
+	background: url(@Html.ResolveContentCdnUrl("/shangpin/images/page/20140716memberday/bg_back_top.gif")) 0 0 no-repeat;
+	margin:0 auto;
+	width:106px;
+	text-indent: -3000px;
+	overflow: hidden;
+
+}
+
+/*右侧滚动 end*/
+
+
+</style>
+    <!--头部大图片start-->
+    <div class="sp_banner">
+        <div>
+            <a id="openPop" href="#"><img src="@Html.ResolveContentCdnUrl("/shangpin/images/e.gif")" lazy="@Html.ResolveContentCdnUrl("/shangpin/images/page/20140707/pic_dot.gif")" /></a>
+        </div>
+        <img opratorRegion="100" relationtype="3" class="banner_top" src="@Html.ResolveContentCdnUrl("/shangpin/images/e.gif")" lazy="@(Model.Count(p => p.RegionID == 100) == 1 ? ServicePic.ResolveUGCImage("2", Model.Single(p => p.RegionID == 100).ImgNO, 1900, 300) :Html.ResolveContentCdnUrl("/shangpin/images/page/20140716memberday/banner01.jpg"))" width="1900" height="300">
+        <img opratorRegion="101" relationtype="3" class="banner_bottom" src="@Html.ResolveContentCdnUrl("/shangpin/images/e.gif")" lazy="@(Model.Count(p => p.RegionID == 101) == 1 ? ServicePic.ResolveUGCImage("2", Model.Single(p => p.RegionID == 101).ImgNO, 1900, 345) : Html.ResolveContentCdnUrl("/shangpin/images/page/20140716memberday/banner02.jpg"))" width="1900" height="345">
+
+    </div>
+    <!--头部大图片end-->
+    <div class="sp_activity" page="index">
+        <div id="sp_content">
+            <!--服饰 start-->
+            <div class="sp_list">
+                <a name="spclothing" id="spclothing" navtitle="服饰" href="#"></a>
+                
+            	<h3 class="title title_woman" opratorRegion="102" relationtype="3">
+                    <img  src="@Html.ResolveContentCdnUrl("/shangpin/images/e.gif")" lazy="@(Model.Count(p => p.RegionID == 102) == 1 ? ServicePic.ResolveUGCImage("2", Model.Single(p => p.RegionID == 102).ImgNO, 350, 40) : Html.ResolveContentCdnUrl("/shangpin/images/page/20140716memberday/pic_tit01.gif"))" width="350" height="40">
+                </h3>
+                <div class="box"> 
+                    <ul class="clr">
+                @for (int i = 1; i <= 8; i++)
+                {
+                    index++;
+                    if (Model.Count(p => p.RegionID == index) == 1)
+                    {
+                        obj = Model.Single(p => p.RegionID == index);
+                    <li opratorRegion="@index" relationtype="@obj.RelationType">
+                        @switch (obj.RelationType)
+                        {
+                            case 2:
+                                if (obj.WebSite == 1)
+                                {
+                            <a target="_blank" href="@(string.Format(ShangpinActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, index))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                }
+                                else
+                                {
+                                    if (obj.IsActive == 0)
+                                    {
+                            <a target="_blank" href="@(string.Format(AoLaiSpecialHrefUrlShow, obj.ActiveNO, obj.MettingNO, index))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                    }
+                                    else
+                                    {
+                            <a target="_blank" href="@(string.Format(AoLaiActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, index))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                    }
+                                }
+                                break;
+                            case 3:
+                            <a target="_blank" href="@(obj.RelationContent)">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                       break;
+                            default:
+                            <a target="_blank" href="">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                       break;
+                        }
+                    </li>
+                    }
+                    else
+                    {
+                    <li opratorRegion="@index" relationtype="3"><img width="220" height="320"/></li>
+                    }
+                }
+            </ul>
+                </div>
+            </div>
+            <!--服饰 end-->
+            
+            <!--箱包 start-->
+            <div class="sp_list">
+                <a name="spbags" id="spbags" navtitle="箱包" href="#"></a>
+            	<h3 class="title title_man" opratorRegion="103" relationtype="3">
+                    <img  src="@Html.ResolveContentCdnUrl("/shangpin/images/e.gif")" lazy="@(Model.Count(p => p.RegionID == 103) == 1 ? ServicePic.ResolveUGCImage("2", Model.Single(p => p.RegionID == 103).ImgNO, 350, 40) : Html.ResolveContentCdnUrl("/shangpin/images/page/20140716memberday/pic_tit02.gif"))" width="350" height="40">
+                </h3>
+                <div class="box"> 
+                    <ul class="clr">
+                @for (int i = 1; i <= 4; i++)
+                {
+                    index++;
+                    if (Model.Count(p => p.RegionID == index) == 1)
+                    {
+                        obj = Model.Single(p => p.RegionID == index);
+                    <li opratorRegion="@index" relationtype="@obj.RelationType">
+                        @switch (obj.RelationType)
+                        {
+                            case 2:
+                                if (obj.WebSite == 1)
+                                {
+                            <a target="_blank" href="@(string.Format(ShangpinActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, index))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                }
+                                else
+                                {
+                                    if (obj.IsActive == 0)
+                                    {
+                            <a target="_blank" href="@(string.Format(AoLaiSpecialHrefUrlShow, obj.ActiveNO, obj.MettingNO, index))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                    }
+                                    else
+                                    {
+                            <a target="_blank" href="@(string.Format(AoLaiActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, index))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                    }
+                                }
+                                break;
+                            case 3:
+                            <a target="_blank" href="@(obj.RelationContent)">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                       break;
+                            default:
+                            <a target="_blank" href="">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                       break;
+                        }
+                    </li>
+                    }
+                    else
+                    {
+                    <li opratorRegion="@index" relationtype="3"><img width="220" height="320"/></li>
+                    }
+                }
+            </ul>
+                </div>
+            </div>
+            <!--箱包 end-->
+            
+            <!--鞋靴 start-->
+            <div class="sp_list">
+            	<a name="spshoes" id="spshoes" navtitle="鞋靴" href="#"></a>
+                <h3 class="title title_bags" opratorRegion="104" relationtype="3">
+                    <img src="@Html.ResolveContentCdnUrl("/shangpin/images/e.gif")" lazy="@(Model.Count(p => p.RegionID == 104) == 1 ? ServicePic.ResolveUGCImage("2", Model.Single(p => p.RegionID == 104).ImgNO, 350, 40) : Html.ResolveContentCdnUrl("/shangpin/images/page/20140716memberday/pic_tit03.gif"))" width="350" height="40">
+                </h3>
+                <div class="box"> 
+                    <ul class="clr">
+                @for (int i = 1; i <= 4; i++)
+                {
+                    index++;
+                    if (Model.Count(p => p.RegionID == index) == 1)
+                    {
+                        obj = Model.Single(p => p.RegionID == index);
+                    <li opratorRegion="@index" relationtype="@obj.RelationType">
+                        @switch (obj.RelationType)
+                        {
+                            case 2:
+                                if (obj.WebSite == 1)
+                                {
+                            <a target="_blank" href="@(string.Format(ShangpinActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, index))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                }
+                                else
+                                {
+                                    if (obj.IsActive == 0)
+                                    {
+                            <a target="_blank" href="@(string.Format(AoLaiSpecialHrefUrlShow, obj.ActiveNO, obj.MettingNO, index))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                    }
+                                    else
+                                    {
+                            <a target="_blank" href="@(string.Format(AoLaiActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, index))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                    }
+                                }
+                                break;
+                            case 3:
+                            <a target="_blank" href="@(obj.RelationContent)">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                       break;
+                            default:
+                            <a target="_blank" href="">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                       break;
+                        }
+                    </li>
+                    }
+                    else
+                    {
+                    <li opratorRegion="@index" relationtype="3"><img width="225" height="330"/></li>
+                    }
+                }
+            </ul>
+                </div>
+            </div>
+            <!--鞋靴 end-->
+            
+            <!--配饰，手表 start-->
+            <div class="sp_list">
+            	<a name="spaccessories" id="spaccessories" navtitle="配饰/手表/眼镜" href="#"></a>
+                <h3 class="title title_shoes" opratorRegion="105" relationtype="3">
+                    <img src="@Html.ResolveContentCdnUrl("/shangpin/images/e.gif")" lazy="@(Model.Count(p => p.RegionID == 105) == 1 ? ServicePic.ResolveUGCImage("2", Model.Single(p => p.RegionID == 105).ImgNO, 350, 40) : Html.ResolveContentCdnUrl("/shangpin/images/page/20140716memberday/pic_tit04.gif"))" width="350" height="40">
+                </h3>
+                <div class="box"> 
+                    <ul class="clr">
+                @for (int i = 1; i <= 4; i++)
+                {
+                    index++;
+                    if (Model.Count(p => p.RegionID == index) == 1)
+                    {
+                        obj = Model.Single(p => p.RegionID == index);
+                    <li opratorRegion="@index" relationtype="@obj.RelationType">
+                        @switch (obj.RelationType)
+                        {
+                            case 2:
+                                if (obj.WebSite == 1)
+                                {
+                            <a target="_blank" href="@(string.Format(ShangpinActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, index))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                }
+                                else
+                                {
+                                    if (obj.IsActive == 0)
+                                    {
+                            <a target="_blank" href="@(string.Format(AoLaiSpecialHrefUrlShow, obj.ActiveNO, obj.MettingNO, index))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                    }
+                                    else
+                                    {
+                            <a target="_blank" href="@(string.Format(AoLaiActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, index))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                    }
+                                }
+                                break;
+                            case 3:
+                            <a target="_blank" href="@(obj.RelationContent)">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                       break;
+                            default:
+                            <a target="_blank" href="">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                       break;
+                        }
+                    </li>
+                    }
+                    else
+                    {
+                    <li opratorRegion="@index" relationtype="3"><img width="225" height="330"/></li>
+                    }
+                }
+            </ul>
+                </div>
+            </div>
+            <!--配饰，手表 end-->
+            
+            <!--美妆，家居 start-->
+            <div class="sp_list">
+                <a name="sphome" id="sphome" navtitle="美妆/家居" href="#"></a>
+                <h3 class="title title_shoes" opratorRegion="106" relationtype="3">
+                    <img src="@Html.ResolveContentCdnUrl("/shangpin/images/e.gif")" lazy="@(Model.Count(p => p.RegionID == 106) == 1 ? ServicePic.ResolveUGCImage("2", Model.Single(p => p.RegionID == 106).ImgNO, 350, 40) : Html.ResolveContentCdnUrl("/shangpin/images/page/20140716memberday/pic_tit05.gif"))" width="350" height="40">
+                </h3>
+                <div class="box"> 
+                    <ul class="clr">
+                @for (int i = 1; i <= 4; i++)
+                {
+                    index++;
+                    if (Model.Count(p => p.RegionID == index) == 1)
+                    {
+                        obj = Model.Single(p => p.RegionID == index);
+                    <li opratorRegion="@index" relationtype="@obj.RelationType">
+                        @switch (obj.RelationType)
+                        {
+                            case 2:
+                                if (obj.WebSite == 1)
+                                {
+                            <a target="_blank" href="@(string.Format(ShangpinActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, index))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                }
+                                else
+                                {
+                                    if (obj.IsActive == 0)
+                                    {
+                            <a target="_blank" href="@(string.Format(AoLaiSpecialHrefUrlShow, obj.ActiveNO, obj.MettingNO, index))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                    }
+                                    else
+                                    {
+                            <a target="_blank" href="@(string.Format(AoLaiActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, index))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                    }
+                                }
+                                break;
+                            case 3:
+                            <a target="_blank" href="@(obj.RelationContent)">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                       break;
+                            default:
+                            <a target="_blank" href="">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                       break;
+                        }
+                    </li>
+                    }
+                    else
+                    {
+                    <li opratorRegion="@index" relationtype="3"><img width="225" height="330"/></li>
+                    }
+                }
+            </ul>
+                    
+                </div>
+            </div>
+            <!--美妆，家居 end-->
+
+
+            <!--奥莱 start-->
+            <div class="sp_list">
+                <a name="spaolai" id="spaolai" navtitle="尚品奥莱" href="#"></a>
+                <h3 class="title title_shoes" opratorRegion="107" relationtype="3">
+                    <img src="@Html.ResolveContentCdnUrl("/shangpin/images/e.gif")" lazy="@(Model.Count(p => p.RegionID == 107) == 1 ? ServicePic.ResolveUGCImage("2", Model.Single(p => p.RegionID == 107).ImgNO, 350, 40) : Html.ResolveContentCdnUrl("/shangpin/images/page/20140716memberday/pic_tit06.gif"))" width="350" height="40">
+                </h3>
+                <div class="box"> 
+                    <ul class="clr">
+                @for (int i = 1; i <= 4; i++)
+                {
+                    index++;
+                    if (Model.Count(p => p.RegionID == index) == 1)
+                    {
+                        obj = Model.Single(p => p.RegionID == index);
+                    <li opratorRegion="@index" relationtype="@obj.RelationType">
+                        @switch (obj.RelationType)
+                        {
+                            case 2:
+                                if (obj.WebSite == 1)
+                                {
+                            <a target="_blank" href="@(string.Format(ShangpinActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, index))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                }
+                                else
+                                {
+                                    if (obj.IsActive == 0)
+                                    {
+                            <a target="_blank" href="@(string.Format(AoLaiSpecialHrefUrlShow, obj.ActiveNO, obj.MettingNO, index))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                    }
+                                    else
+                                    {
+                            <a target="_blank" href="@(string.Format(AoLaiActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, index))">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                    }
+                                }
+                                break;
+                            case 3:
+                            <a target="_blank" href="@(obj.RelationContent)">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                       break;
+                            default:
+                            <a target="_blank" href="">
+                                <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                <span>
+                                    <h4>点击进入&gt;&gt;</h4>
+                                </span>
+                            </a>
+                                       break;
+                        }
+                    </li>
+                    }
+                    else
+                    {
+                    <li opratorRegion="@index" relationtype="3"><img width="225" height="330"/></li>
+                    }
+                }
+            </ul>
+                </div>
+            </div>
+            <!--奥莱 end-->
+        </div>
+    </div>
+
+
+
+    <script type="text/javascript">
+        // JavaScript Document
+        loader = SP.core
+        .using("@Html.ResolveScriptUrl("~/shangpin/Scripts/live/dev/page/20140716memberday/index/js")")
+        .excute()
+    </script>
+

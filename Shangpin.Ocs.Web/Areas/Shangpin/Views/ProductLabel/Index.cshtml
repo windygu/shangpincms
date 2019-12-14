@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Shangpin/Views/Shared/_LayoutProduct.cshtml";
+}
+@using Shangpin.Ocs.Web.Infrastructure;
+<h2>Index</h2>
+@section HeadStyle{
+    
+    
+    }
+@section HeadScript{
+    
+    }
+
+@for (int i = 0; i < 10; i++)
+{
+    
+}
+<div class="spPage">@Html.Raw(Html.PagerX("page", 1, 10, 100))</div>

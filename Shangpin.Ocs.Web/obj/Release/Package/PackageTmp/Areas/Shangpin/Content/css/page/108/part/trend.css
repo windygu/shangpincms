@@ -1,0 +1,24 @@
+.sp_ifc_bags {
+	background: url(/images/page/ifc/trend/main_bg.jpg) no-repeat center top;
+}
+.sp_bagstitle_tab a {
+	width: 191px;
+}
+.sp_bagstitle_tab a.cur {
+	background: url(/images/page/ifc/trend/title_tab_icon.png) no-repeat center top;
+	border-color: #511465;
+}
+.sp_ifc_bagscn li a span ins {
+	color: #b031ae;
+}
+.sp_ifc_bagscn .blogger {
+	width:472px;
+	height:306xp;
+}
+.sp_ifc_bagscn .blog_list {
+	width:310px;
+	height:306xp;
+}
+.ifc_right_box h3 {
+	background-image:url(/images/page/ifc/trend.png);
+}

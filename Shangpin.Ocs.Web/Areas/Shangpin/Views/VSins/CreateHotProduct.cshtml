@@ -1,0 +1,87 @@
+﻿
+@using Shangpin.Entity.Wfs;
+@{
+    ViewBag.Title = "";
+    Layout = "~/Areas/Shangpin/Views/Shared/_VenueLayout.cshtml";  
+}
+<script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script src="/Areas/Shangpin/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+<div id="mx-rightcontent-addbox" class="mx-rightcontent-msgbox">
+   <form method="post" id="form1" action="/shangpin/vsins/SaveVsinsHotProducts" enctype="multipart/form-data">
+    
+    <dl>
+        <dt>关联商品：</dt>
+        <dd>
+        @{
+            var disable = Model.ProductNo != "" ? "readonly='true'" : "";
+            }
+        <input type="text" id="productNo" name="productNo" @disable  value="@(Model.ProductNo != "" ? Model.ProductNo : "请输入8位商品编号")" onfocus="if(this.value == '请输入8位商品编号') this.value = ''" onblur="if(this.value == '') this.value = this.defaultValue"  maxlength="8"  />
+        </dd>
+    </dl>
+    <dl>
+        <dt>状态：</dt>
+        <dd>
+        @{
+            var showStr = Model.ProductNo != "" && Model.Status == 1 ? "checked='true'" : "";
+            var showStr1 = Model.ProductNo != "" && Model.Status == 0? "checked='true'" : "";
+        }
+        <input type="radio" name="status" value="1" checked="checked" @showStr/>显示
+        <input type="radio" name="status" value="0" @showStr1 />隐藏
+        </dd>
+    </dl>
+    <dl>
+        <dt>可购买时间：</dt>
+        <dd>
+        <input id="dateBegin" name="dateBegin" class="Wdate" value="@(Model.ProductNo != "" ? Model.StartDate.ToString("yyyy-MM-dd hh:mm:ss") : "")" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" readonly="readonly" style=" width:150px;"/>-
+        <input id="dateEnd" name="dateEnd" class="Wdate" value="@(Model.ProductNo != "" ? Model.EndDate.ToString("yyyy-MM-dd hh:mm:ss") : "")" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" readonly="readonly" style=" width:150px;"/>
+        </dd>
+    </dl>
+    <dl>
+        <dt>上传图片：</dt>
+        <dd>
+        <span id="showImg"><img src="/ReadPic/GetPic.ashx?width=640&height=0&pictureFileNo=@Model.PicFileNo&type=2" alt="" /></span>
+        <input type="hidden" name="imgNo" value="@Model.PicFileNo" />
+        @*<input type="file" id="imgupfile" name="imgfile" />*@
+        <input type="file" id="imgfileUp" name="imgfile"/>
+        </dd>
+    </dl>
+    <dl>
+        <dt>文字说明：</dt>
+        <dd>
+        <textarea id="description" rows="5" style="width: 630px; height: 130px;" name="description">@Model.Description</textarea>
+        </dd>
+    </dl>
+    <dl>
+     <dt>&nbsp;</dt>
+        <dd>
+        <input type="hidden" name="hotProductId" value="@Model.HotProductId"  />
+            <button type="button" id="btnSave" name="" value="" class="secondary" onclick="formSubmit()">
+                保 存</button>
+                 <button type="button" id="btnCancle" name="" class="secondary" onclick="location.href='/shangpin/vsins/vsinslist.html'" >
+                取 消</button>
+  </dd>
+    </dl>
+    </form>
+</div>
+
+<script type="text/javascript">
+    function formSubmit() {
+        //表单验证
+        if ($("#productNo").val().length == 0) {
+            alert("请确认商品编号不为空"); return;
+        }
+        if ($("#dateBegin").val().length == 0 || $("#dateEnd").val().length == 0) {
+            alert("请确认开始时间或者结束时间不为空"); return;
+        }
+        $("#form1").ajaxSubmit(function (data) {
+            data = eval("(" + data + ")");
+            if (data.result == "error") {
+                alert(data.msg); return;
+            }
+            if (data.result == "success") {
+                alert("保存成功");
+                location.href = "/shangpin/vsins/vsinslist.html";
+            }
+        });
+    }
+</script>

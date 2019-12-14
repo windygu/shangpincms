@@ -1,0 +1,214 @@
+﻿@model List<ProductInfoShoes>
+@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Entity.Wfs;
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@{
+    ViewBag.Title = "商品管理";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    string newarrivalid = Request.QueryString["id"];
+    string tagFloor = Request.QueryString["TagFloor"];
+    string moduleId = Request.QueryString["ModuleId"];
+    string pageNo = Request.QueryString["PageNo"];
+    string url = "/Shangpin/newchannels/ShoesNewProductList?TagFloor=" + tagFloor + "&ModuleId=" + moduleId + "&PageNo=" + pageNo;
+}
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/plug/jquery-ui-1.10.3.custom.min.js" charset="utf-8"></script>
+    <script type="text/javascript">
+        //加载事件
+        $(function () {
+            $("[name='ProductNoCheckBox']").click(function () {
+                var pidStr = "";
+                $("[name='ProductNoCheckBox']").each(function () {
+                    if (this.checked)
+                        pidStr += $(this).val() + ",";
+                });
+                $("#ProductNoStr").val(pidStr);
+            });
+        });
+
+        //全选复选框
+        function checkAll(obj) {
+            var pidStr = "";
+            if (obj.checked) {
+                $("[name='ProductNoCheckBox']").each(function () {
+                    $(this).attr("checked", "true");
+                    pidStr += $(this).val() + ",";
+                });
+            }
+            else {
+                $("[name='ProductNoCheckBox']").each(function () {
+                    $(this).removeAttr("checked");
+                    pidStr = "";
+                });
+            }
+            $("#ProductNoStr").val(pidStr);
+        }
+        function DeleteProduct() {//删除操作
+            var nid = $("#NewArrivalId").val();
+            var idStr = $("#ProductNoStr").val();
+            var fr = $("#TagFloor").val();
+            var pno = $("#PageNo").val();
+            if (idStr == "") {
+                return alert("请先选择你要删除的商品");
+            }
+            if (fr == "") {
+                if ($("#sortable").children().length - $("#sortable input[name='ProductNoCheckBox']:checked").length < 10) {
+                    return alert("商品不能低于10个");
+                }
+            }
+            else {
+                if ($("#sortable").children().length - $("#sortable input[name='ProductNoCheckBox']:checked").length < 6) {
+                    return alert("商品不能低于6个");
+                }
+            }
+            $.post("@Url.Action("DelShoesNewProductList", "NewChannels")", { idStr: idStr }, function (data) {
+                if (data.result == "success") {
+                    alert(data.message);
+                    var id = $("#ModuleId").val()
+                    window.location.href = "/shangpin/newchannels/NewProductManage?id=" + nid + "&TagFloor=" + fr + "&ModuleId=" + id + "&PageNo=" + pno;
+
+                } else {
+                    alert(data.message);
+                }
+            }, "json");
+        }
+    </script>
+}
+<h1 style="display:inline;">
+    OCS > 尚品 > <a href="@url">上新商品列表</a> > 商品管理
+</h1>
+<table cellpadding="0" cellspacing="0" border="0" class="mx-table">
+    <tr><td>
+        <a class="button" href="@Url.Action("AddShoesNewProductList", "NewChannels", new { NewArrivalId = newarrivalid, TagFloor = tagFloor, ModuleId = moduleId, pageNo = pageNo })">添加商品</a>
+        </td></tr>
+</table>
+<table class="mx-table" border="0">
+    <thead>
+        <tr>
+            <th>
+                <input type="checkbox" onclick="checkAll(this)" />
+            </th>
+            <th>
+            </th>
+            <th>商品信息</th>
+            <th>库存状况</th>
+            <th>商品价格</th>
+        </tr>
+    </thead>
+    <tbody id="sortable">
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                decimal MinMarketPrice = 0;//最小市场价
+                decimal MaxMarketPrice = 0;//最大市场价
+                decimal MinLimitedPrice = 0;//最小尚品价
+                decimal MaxLimitedPrice = 0;//最大尚品价
+                decimal MinSellPrice = 0;//最小黄金价
+                decimal MaxSellPrice = 0;//最大黄金价
+                decimal MinPlatinumPrice = 0;//最小白金价
+                decimal MaxPlatinumPrice = 0;//最大白金价
+                decimal MinDiamondPrice = 0;//最小钻石价
+                decimal MaxDiamondPrice = 0;//最大钻石价
+                decimal MinPromotionPrice = 0;//最小促销价
+                decimal MaxPromotionPrice = 0;//最大促销价
+                List<ProductInfoShoes> skulist = new Shangpin.Ocs.Service.Shangpin.NewsChannelsSservice().GetSkuPriceListByProductNo(item.ProductNo);
+                if (skulist != null && skulist.Count() > 0)
+                {
+                    MinMarketPrice = skulist.Select(a => a.MarketPrice).Min();
+                    MaxMarketPrice = skulist.Select(a => a.MarketPrice).Max();
+                    MinLimitedPrice = skulist.Select(a => a.LimitedPrice).Min();
+                    MaxLimitedPrice = skulist.Select(a => a.LimitedPrice).Max();
+                    MinSellPrice = skulist.Select(a => a.SellPrice).Min();
+                    MaxSellPrice = skulist.Select(a => a.SellPrice).Max();
+                    MinPlatinumPrice = skulist.Select(a => a.PlatinumPrice).Min();
+                    MaxPlatinumPrice = skulist.Select(a => a.PlatinumPrice).Max();
+                    MinDiamondPrice = skulist.Select(a => a.DiamondPrice).Min();
+                    MaxDiamondPrice = skulist.Select(a => a.DiamondPrice).Max();
+                    MinPromotionPrice = skulist.Select(a => a.PromotionPrice).Min();
+                    MaxPromotionPrice = skulist.Select(a => a.PromotionPrice).Max();
+                }
+                <tr>
+                    <td>
+                        <input type="hidden" name="NewArrivalId" id="NewArrivalId" value="@Request.QueryString["id"]" />
+                        <input type="hidden" name="TagFloor" id="TagFloor" value="@Request.QueryString["TagFloor"]" />
+                        <input type="hidden" name="ModuleId" id="ModuleId" value="@Request.QueryString["ModuleId"]" />
+                        <input type="hidden" name="PageNo" id="PageNo" value="@Request.QueryString["PageNo"]" />
+                        <input type="checkbox" value="@item.NewArrivalProductListId" sort="@item.SortValue" name="ProductNoCheckBox" />
+                    </td>
+                    <td>
+                        <input type="hidden" value="@item.ProductPicFile" />
+                        <img width="70" height="107" src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@item.ProductPicFile&type=1" />
+                    </td>
+                    <td class="lt">
+                        商品编号：@item.ProductNo<br />
+                        商品货号：@item.GoodsNo<br />
+                        商品名称：@item.ProductName<br />
+                        所属品牌：@item.BrandEnName (@item.BrandCnName)<br />
+
+                    </td>
+                    <td class="lt">
+                        可用库存：@item.Quantity<br />
+                        锁定库存：@item.LockQuantity
+                    </td>
+                    <td class="lt">
+                        市场价:@MinMarketPrice~@MaxMarketPrice<br />
+                        尚品价:@MinLimitedPrice~@MaxLimitedPrice<br />
+                        黄金价:@MinSellPrice~@MaxSellPrice<br />
+                        白金价:@MinPlatinumPrice~@MaxPlatinumPrice<br />
+                        钻石价:@MinDiamondPrice~@MaxDiamondPrice<br />
+                        <span style="color:Red;">促销价:@MinPromotionPrice~@MaxPromotionPrice </span>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+
+</table>
+<table cellpadding="0" cellspacing="0" border="0" class="mx-table">
+    <tr>
+        <td>
+            <input type="hidden" id="ProductNoStr" />
+            <a class="button" id="okButton" href="javascript:;" onclick="DeleteProduct()">删除所选</a>
+            <a class="button" href="javascript:;" onclick="btnReturn()">返回</a>
+            <a class="button" href="javascript:;" onclick="return saveSortVale()">保存排序</a>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#sortable").sortable();
+        $("#sortable tr").disableSelection();
+    });
+
+    //保存排序
+    function saveSortVale() {
+        var idStr = "";
+        var sortStr = "";
+        if ($("#sortable input[name='ProductNoCheckBox']").length > 0) {
+            $("#sortable input[name='ProductNoCheckBox']").each(function () {
+                idStr += $(this).val() + ",";
+                sortStr += $(this).attr("sort") + ",";
+            });
+        }
+        idStr = idStr.substr(0, idStr.length - 1);
+        sortStr = sortStr.substr(0, sortStr.length - 1);
+        $.post("/shangpin/newchannels/UpdateSortValue", { "idList": idStr, "sortList": sortStr }, function (data) {
+            alert(data.message);
+        });
+        return false;
+    }
+
+    function btnReturn() {
+        var fr = $("#TagFloor").val();
+        var id = $("#ModuleId").val();
+        var pno = $("#PageNo").val();
+        window.location.href = "/shangpin/newchannels/ShoesNewProductList?TagFloor=" + fr + "&ModuleId=" + id + "&PageNo=" + pno;
+    }
+</script>
+
+
+
+
+
+

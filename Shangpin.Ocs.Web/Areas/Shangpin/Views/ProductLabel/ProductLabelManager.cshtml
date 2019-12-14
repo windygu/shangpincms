@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Shangpin/Views/Shared/_LayoutProduct.cshtml";
+}
+@model IEnumerable<Shangpin.Entity.Wfs.SWfsProductLabel>
+@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Entity.Wfs
+@section HeadStyle{
+    <link type="text/css" rel="stylesheet" href="/Areas/Shangpin/Content/css/page/Label/Label.css" />
+    }
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/page/Label/artDialog/jquery.artDialog.js?skin=blue"></script>
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/page/Label/Label.js"></script>
+    }
+<div id="LabelIcon"></div>
+<div id="SearchLabel">
+    <div id="SearchLabelName">标签名称</div>  
+    <input type="text" id="TxtSearchName" class="SearchInput" maxlength="10" />
+    <input type="button" id="BtnSearchName" class="SearchBtn" style="margin-left:10px;" value="搜 索" />
+    <input type="button" id="AddLabelType" class="SearchBtn" style="margin-left:10px;" value="添加标签类" />
+</div>
+
+<div id="NoProductLabel">没有找到任何标签, 请先添加标签</div>
+<table id="ProductLabelList" cellpadding="0" cellspacing="0">
+    <tr id="ProductLabelListTr">
+        <td width="180" class="ProductLabelListHead">标签类</td>
+        <td width="100" class="ProductLabelListHead">常规项</td>
+        <td class="ProductLabelListHead">标签</td>
+    </tr>
+    @{
+        IEnumerable<SWfsProductLabel> parentList = Model.Where(p => p.ParentNo.ToLower() == "root");
+    }
+    @foreach (var item in parentList)
+    {
+    <tr class="ProductLabelListItem">
+        <td labelType="@item.LabelType" labelID="@item.LabelId" labelNo="@item.LabelNo" labelName="@item.LabelName" labelNiceName="@item.LabelNickName">
+            <span class="EditLabelFst" title="点击修改">@item.LabelName</span>
+        </td>
+        <td labelType="@item.LabelType">@(item.LabelType.ToString()=="1"?"是":"否")</td>
+        <td style="text-align:left;">
+            @{
+        IEnumerable<SWfsProductLabel> childList = Model.Where(p => p.ParentNo == item.LabelNo);
+            }
+            @foreach (var key in childList)
+            {
+            <div class="ProductLabelSpan" labelid="@key.LabelId" labelno="@key.LabelNo" parentNo="@item.LabelNo">
+                <span class="EditSndLabel" title="点击修改">@key.LabelName</span>
+            </div>
+            }
+            <span class="LabelAdd" title="添加标签" labelName="@item.LabelName" labelno="@item.LabelNo"></span>
+        </td>
+    </tr>
+    }
+</table>

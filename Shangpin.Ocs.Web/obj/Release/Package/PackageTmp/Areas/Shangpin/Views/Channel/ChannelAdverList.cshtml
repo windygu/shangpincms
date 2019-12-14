@@ -1,0 +1,125 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.ShangPin
+@using Shangpin.Entity.Wfs
+@using Shangpin.Ocs.Web.Infrastructure;
+@model IEnumerable<SWfsSpChannelAdver>
+@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    //int totalCount = 10;
+    //int currentPage = 1;
+    IList<SWfsSpChannelAdver> list = ViewBag.list;
+    int totalCount = ViewBag.totalcount;
+    int currentPage = ViewBag.PageIndex;
+    int pageSize = 20;
+    ViewBag.Title = "列表页头图管理";
+    IEnumerable<SelectListItem> manchanneloption = new List<SelectListItem>()
+    {
+        new SelectListItem{Text="服饰CLOTHING",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["MenClothing"]},
+        new SelectListItem{Text="箱包BAGS",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["MenBags"]},
+        new SelectListItem{Text="鞋靴SHOES",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["MenShoes"]},
+        new SelectListItem{Text="配饰ACCESSORIES",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["MenAccessories"]},
+        new SelectListItem{Text="腕表眼镜WATCHES",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["MenWatches"]},
+        new SelectListItem{Text="美妆BEAUT",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["MenBeauty"]},
+        new SelectListItem{Text="家居HOME",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["MenHomes"]},
+    };
+    IEnumerable<SelectListItem> womanchanneloption = new List<SelectListItem>()
+    {
+        new SelectListItem{Text="服饰CLOTHING",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["WomenClothing"]},
+        new SelectListItem{Text="箱包BAGS",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["WomenBags"]},
+        new SelectListItem{Text="鞋靴SHOES",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["WomenShoes"]},
+        new SelectListItem{Text="配饰ACCESSORIES",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["WomenAccessories"]},
+        new SelectListItem{Text="腕表眼镜WATCHES",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["WomenWatches"]},
+        new SelectListItem{Text="美妆BEAUT",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["WomenBeauty"]},
+        new SelectListItem{Text="家居HOME",Value=Shangpin.Ocs.Service.Common.AppSettingManager.AppSettings["WomenHomes"]},
+    };
+                    
+}
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/lib/jquery.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function sou(objvalue) {
+
+            $.post("/shangpin/List/CategoryByManOrWomanChange.html", { 'aa': objvalue }, function (data) {
+                $("#Category").html(data);
+
+            });
+        }
+    </script>
+}
+<h1>
+    OCS > 尚品 > <a href="ChannelList.html">频道头图管理</a> >频道头图列表</h1>
+<form action="/Shangpin/Channel/ChannelAdverList.html" method="get">
+<div>
+    <input type="hidden" name="channelno" id="channelno" value="@Request.QueryString["channelno"]" />
+    <input type="text" id="AdverName" name="AdverName" placeholder="请输入公告名称" value="@ViewBag.KeyWord"  style="width: 140px; color: #666; font-size: 12px;" />
+    <button type="submit">
+        提交查询</button>
+    <button type="button" onclick="window.location.href='/Shangpin/Channel/ChannelAdverCreate.html?channelno=@Request.QueryString["channelno"]'">
+        新建</button>
+</div>
+</form>
+<table class="mx-table" style="height: 100px;">
+    <thead>
+        <tr>
+            <th width="8%">
+                预览图片
+            </th>
+            <th width="7%">
+                公告名称
+            </th>
+            <th width="7%">
+                创建时间
+            </th>
+            <th width="6%">
+                所属
+            </th>
+            <th width="15%">
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (null != list && list.Count > 0)
+        {
+            var flag = 0;
+            foreach (var item in list)
+            {
+
+                flag = flag + 1;
+            <tr class="@(flag % 2 == 0 ? "cross" : "")">
+                <td>
+                    <img src="/ReadPic/GetPic.ashx?width=150&height=65&pictureFileNo=@(item.ImgNO)&type=2"/>
+                </td>
+                <td>
+                    @(item.AdverName)
+                </td>
+                <td>
+                    @(item.CreateDate)
+                </td>
+                <td>
+                    @if (item.ChannelNO.IndexOf("A01") == 0)
+                    {
+                        @Html.Raw("女士 > " + womanchanneloption.Single(p => p.Value == item.ChannelNO).Text)
+                        <br />
+                        <a href="http://www.shangpin.com/"></a>                                                                                                    
+                    }
+                    else if (item.ChannelNO.IndexOf("A02") == 0)
+                    {
+                        @Html.Raw("男士 > " + manchanneloption.Single(p => p.Value == item.ChannelNO).Text)
+                    }
+                </td>
+                <td>
+                    <a class="button" href="/shangpin/Channel/ChannelAdverCreate.html?adverId=@item.AdverID">
+                        编辑</a> <a id="@item.AdverID" class="button" href="/shangpin/Channel/ChannelAdverStatus.html?adverId=@item.AdverID&status=@(item.Status == 1 ? 0 : 1)&channelno=@(item.ChannelNO)" onclick="return confirm('您确定开启吗？要是开启其他同品类下的状态全部未关闭')">@(item.Status == 0 ? "开启" : "关闭")</a>
+                    <a class="button" href="/shangpin/Channel/ChannelAdverDelete.html?adverId=@item.AdverID&channelno=@(item.ChannelNO)" onclick="return confirm('您确定删除吗?')" style=" margin-top:5px;">
+                        删除</a>
+                </td>
+            </tr>
+            }
+        }
+    </tbody>
+</table>
+<div class="spPage">@Html.Raw(Html.PagerX("page", currentPage, pageSize, totalCount))</div>
+<div class="clr" id="mx-rightcontent-fixbar">
+    <a id="mx-btn-add" href="/Shangpin/Channel/ChannelAdverCreate.html?channelno=@Request.QueryString["channelno"]">
+    </a>
+</div>

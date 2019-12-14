@@ -1,0 +1,30 @@
+/*  ============== Member refund ==============  */
+
+.member_menu {
+    margin-top: 28px;
+}
+
+#member_right .refund_txt{
+	color:#333
+}
+
+.refundList .pord_txt img{
+	border:1px solid #dddcdc;
+	vertical-align:middle;
+	margin-right:10px;
+	float:left;
+}
+.refundList .pord_txt p{
+	text-align:left;
+	line-height:18px;
+}
+.refundList .pord_txt span{
+	height:18px;
+	line-height:18px;
+	display:block;
+	width:225px;
+	overflow:hidden;
+	white-space: nowrap;
+	-o-text-overflow: ellipsis; /*--4 opera--*/
+	text-overflow: ellipsis;
+}

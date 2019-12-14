@@ -1,0 +1,569 @@
+
+/*******
+*payment start
+*******/
+
+
+/*订单支付商品列表*/
+.alOrder_payment {
+	margin:30px auto 0;
+	color:#333;
+	width:905px;
+}
+.alOrder_payment h2 {
+	width:100%;
+	height:16px;
+	line-height:16px;
+	margin:15px 0;
+	background:url(/images/page/order/title_line.gif) repeat-x left top;
+}
+.alOrder_payment h2 span {
+	display:block;
+	float:left;
+	background:#fff;
+	padding:0 10px 0 0;
+	color:#000;
+	font-size:14px;
+	font-weight:700;
+}
+.alOrder_payment h2 span em {
+	color:#aeaeae;
+	font-size:12px;
+}
+
+.olOrder_payInfo {
+	width:93%;
+	margin:0 auto;
+	padding:0 0 10px 0;
+	background-position:left bottom;
+}
+.olOrder_payInfo dd {
+	line-height:25px;
+	margin:5px 0;
+	color:#333;
+}
+.olOrder_payInfo dd p{
+	color:#AEAEAE;
+}
+.olOrder_payInfo dd a:link,.olOrder_payInfo dd a:visited{
+	color:#b9966a;
+}
+.olOrder_payInfo dd a:hover,.olOrder_payInfo dd a:link:active{
+	color:#c91d1d;
+}
+.payProd_list {
+	background:none;
+	padding:0;
+}
+.payProd_list dd {
+	width:20%;
+	float:left;
+	margin:10px 0 0 0;
+	text-align:center;
+}
+.payProd_list dd.title {
+	width:60%;
+	text-align:left;
+	height:25px;
+	overflow:hidden;
+}
+.payProd_list dd.title em {
+	font-weight:700;
+	font-family:Arial;
+}
+.payProd_list dd.multi_price{
+	position:relative;
+	top:-15px;
+}
+.payTotal {
+	padding:0;
+	background:none;
+}
+.payTotal dd {
+	padding:10px 90px 0 0;
+	text-align:right;
+	font-weight:700;
+}
+.payTotal dd i{
+	font-weight:700;
+}
+
+
+/*支付方式*/
+.olPayment_select_box{
+	border:1px solid #c1c1c1;
+	padding-bottom:20px;
+}
+.olPayment_select_tit2{
+	color:#333;
+	font-weight:700;
+	border-bottom:1px solid #ccc;
+	padding:8px 0 8px 20px;
+}
+.olPayment_select_con{
+	margin:15px 20px 0;
+}
+.olPayment_line{
+	background-position:left -7px;
+	padding-top:15px;
+}
+.olPayment_select_style label{
+	color:#333;
+	cursor:pointer;
+	font-weight:700;
+}
+.olPayment_select_style label i{
+	font-weight:700;
+}
+.olPayment_select_style input{
+	position:relative;
+	top:0px;
+	+top:0px;
+	vertical-align:middle;
+	margin:0 10px 0 0;
+}
+.olPayment_select_style label span{
+	color:#aeaeae;
+	font-weight:400;
+}
+.olPayment_select_style label span em{
+	color:#333;
+}
+.olPayment_select_bank{
+	width:800px;
+	margin:5px 0 17px 25px;
+}
+.normal_block{
+	width:100%;
+	float:left;
+}
+.olPayment_bankbox{
+	display:none;
+}
+.olPayment_bankbox .szpa_tips{
+	color:#666;
+	line-height:34px;
+	font-size:12px;
+	border:1px solid #aaa;
+	padding:0 10px 0 35px;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;
+	border-radius:3px;
+	background:url(/images/page/order/order_icon.gif) no-repeat -175px -87px;
+	overflow:hidden;
+}
+.olPayment_select_style_hov{
+	font-weight:bold;
+}
+
+.olPayment_select_bank li{
+	float:left;
+	margin:20px 0 0 40px;
+	width:145px;
+	height:34px;
+	line-height:34px;
+	position:relative;
+}
+.olPayment_select_bank li.active_block{
+	width:300px;
+	position:relative;
+}
+.olPayment_select_bank li span{
+	position:absolute;
+	top:-25px;
+	left:-25px;
+	z-index:100;
+	width:220px;
+	color:#f00;
+	line-height:160%;
+}
+.olPayment_select_bank li span.sandTxt{
+	color:#aeaeae;
+	left: 25px;
+	top: 40px;
+    width: 400px;
+}
+.active_block a{
+	float:left;
+	color:#333;
+	font-size:14px;
+	margin:0 0 0 15px;
+}
+.active_block a em{
+	display:inline-block;
+	width:8px;
+	margin:0 0 0 10px;
+	background-position:0 -271px;
+}
+.active_block a.cur em{
+	background-position:0 -285px;
+}
+
+.active_block p {
+    bottom: -25px;
+    color: #FF0000;
+    display: block;
+    left: 25px;
+    line-height: 25px;
+    position: absolute;
+}
+
+.olPayment_select_bank li p.pabTxt{
+	text-align:center;
+	padding-left:20px;
+}
+
+
+.olPayment_select_bank li.alipay_box{
+	margin:20px 0 15px;
+}
+.olPayment_select_bank li input{
+	position:relative;
+	top:13px;
+	_top:30px;
+	vertical-align:middle;
+	float:left;
+}
+.olPayment_select_bank li label, .olPayment_phoneicon, .olPayment_select_lklicon{
+	background:url(/images/page/order/bank.jpg) no-repeat;
+}
+.olPayment_select_bank li label{
+	display:block;
+	margin:0 0 0 10px;
+	float:left;
+	border:1px solid #ccc;
+	width:120px;
+	height:32px;
+	cursor:pointer;
+}
+.olPayment_select_bank li label.hover{
+	border:1px solid #dd0017;
+}
+.olPayment_select_bank_info{
+	/*display:none;*/
+}
+.olPayment_select_bank_info table{
+	width:730px;
+	color:#333;
+	margin:25px 0 0 50px;
+	border-left:1px solid #ccc;
+	border-top:1px solid #ccc;
+}
+.olPayment_select_bank_info td{
+	border:1px solid #ccc;
+	padding:2px 8px;
+	color:#333;
+	text-align:center;
+	line-height:20px;
+}
+.olPayment_select_bank_info .wthead1 td{
+	background:#f8f8f8;
+}
+.olPayment_table_bg{
+	background:#f8f8f8;
+}
+.olPayment_select_phone{
+	margin:0 0 15px 0;
+	line-height:31px;
+}
+.olPayment_select_phone label{
+	float:left;
+	padding-right:5px;
+	line-height:31px;
+	font-size:14px;
+}
+.olPayment_select_phone label.error{
+	color:#c00;
+	margin-left:10px;
+}
+.olPayment_select_phone input{
+	width:250px;
+	height:31px;
+	line-height:31px;
+	color:#333;
+	border:1px solid #ccc;
+	padding:0 5px;
+	float:left;
+	font-size:14px;
+}
+.olPayment_select_fillphone{
+	margin:10px 0 0 25px;
+	padding:15px 0;
+	color:#666;
+	line-height:31px;
+}
+.olPayment_select_lkl{
+	margin:20px 0 0 50px;
+	padding:15px;
+	width:700px;
+	color:#333;
+}
+.olPayment_select_lkl img{
+	vertical-align:middle;
+}
+.olPayment_errorprm{
+	text-align:center;
+	padding:10px 0;
+	color:#c00;
+}
+.olPayment_submit{
+	text-align:center;
+}
+.olPayment_timeprm{
+	text-align:center;
+	color:#666;
+	margin:10px 0;
+	font-size:14px;
+}
+.olPayment_timeprm em{
+	color:#b51111;
+}
+/*银行图片*/
+.olPayment_select_bank li label.olPayment_CMB{
+	background-position:left -453px;
+}
+.olPayment_select_bank li label.olPayment_ICBC{	
+	background-position:left -412px;
+}
+.olPayment_select_bank li label.olPayment_CCB{	
+	background-position:left -495px;
+}
+.olPayment_select_bank li label.olPayment_ABC{	
+	background-position:left -536px;
+}
+.olPayment_select_bank li label.olPayment_BOCCOMM{	
+	background-position:left -783px;
+}
+.olPayment_select_bank li label.olPayment_CEB{	
+	background-position:left -618px;
+}
+.olPayment_select_bank li label.olPayment_CPSRB{	
+	background-position:left top;
+}
+.olPayment_select_bank li label.olPayment_CIB{	
+	background-position:left -577px;
+}
+.olPayment_select_bank li label.olPayment_GDB{	
+	background-position:left -165px;
+}
+.olPayment_select_bank li label.olPayment_DBOC{	
+	background-position:left -41px;
+}
+.olPayment_select_bank li label.olPayment_BOBJ{	
+	background-position:left -742px;
+}
+.olPayment_select_bank li label.olPayment_CITIC{	
+	background-position:left -659px;
+}
+.olPayment_select_bank li label.olPayment_CMBC{	
+	background-position:left -912px;
+}
+.olPayment_select_bank li label.olPayment_SDB{	
+	background-position:left -824px;
+}
+.olPayment_select_bank li label.olPayment_BJRCB{	
+	background-position:left -288px;
+}
+.olPayment_select_bank li label.olPayment_SPDB{	
+	background-position:left -124px;
+}
+.olPayment_select_bank li label.olPayment_BOS{	
+	background-position:left -82px;
+}
+.olPayment_select_bank li label.olPayment_HCCB{	
+	background-position:left -330px;
+}
+.olPayment_select_bank li label.olPayment_CBCB{	
+	background-position:left -247px;
+}
+.olPayment_select_bank li label.olPayment_PAB{	
+	background-position:left -206px;
+}
+.olPayment_select_bank li label.olPayment_HXB{	
+	background-position:left -866px;
+}
+.olPayment_select_bank li label.olPayment_alipay{	
+	background-position:left -957px;
+}
+.olPayment_select_bank li label.olPayment_unionpay{	
+	background-position:left -1165px;
+}
+.olPayment_select_bank li label.olPayment_CEB2{	
+	background-position:left -371px;
+}
+.olPayment_select_bank li label.olPayment_sandpay{	
+	background-position:left -1125px;
+}
+.olPayment_select_bank li label.olPayment_prepaidpay{	
+	background-position:left -1085px;
+}
+.olPayment_phoneicon{	
+	width:40px;
+	height:40px;
+	float:left;
+	background-position:left -1035px;
+	padding-right:15px;
+}
+.olPayment_select_cash{
+	line-height:40px;
+}
+.olPayment_select_lklicon{	
+	width:96px;
+	height:38px;
+	float:left;
+	background-position:left -998px;
+	padding-right:15px;
+}
+
+
+/*礼品卡支付*/
+.olPayment_giftsCard{
+	margin:15px 20px 0;
+}
+.olPayment_giftsCard h3{
+	font-size:14px;
+	font-weight:700;
+	line-height:24px;
+	position:relative;
+	color:#000;
+}
+.olPayment_giftsCard h3 input.gifts_checkBox{
+	position:relative;
+	left:0;
+	top:3px;
+	*top:1px;
+}
+.olPayment_giftsCard h3 span{
+	position:absolute;
+	right:35px;
+	top:0;
+	line-height:24px;
+	font-size:12px;
+	font-weight:400;
+}
+em.redTxt{
+	color:#c00;
+	font-size:14px;
+	font-weight:700;
+}
+em.redTxt i{
+	font-weight:700;
+}
+.giftsCard_disabled h3{
+	color:#ccc;
+}
+
+.olPayment_giftsCard .gifts_content{
+	width:730px;
+	margin:0 auto;
+	display:none;
+}
+.gifts_content .giftsList{
+	width:100%;
+	color:#333;
+	margin:35px 0 0 0;
+	border-left:1px solid #ccc;
+	border-top:1px solid #ccc;
+}
+
+.gifts_content .giftsList th{
+	background:#f8f8f8;
+	line-height:30px;
+	border:1px solid #ccc;
+	text-align:center;
+}
+.gifts_content .giftsList td{
+	border:1px solid #ccc;
+	padding:2px 8px;
+	color:#333;
+	text-align:center;
+	line-height:55px;
+}
+
+.gifts_active h4{
+	font-size:14px;
+	height:30px;
+	line-height:30px;
+	padding-top:10px;
+}
+#gift-activebox td{
+	padding:10px 0 0 0;
+	vertical-align:2px;
+	*vertical-align:baseline;
+}
+#gift-activebox td.bigTd{
+	width:190px;
+}
+#gift-activebox td.midTd{
+	width:135px;
+}
+#gift-activebox td.bigTd .active_tips, #gift-activebox td.midTd .active_tips{
+	display:block;
+	visibility:visible;
+	height:25px;
+	line-height:25px;
+	padding:0;
+}
+#gift-activebox td.activeTd{
+	width:95px;
+}
+#gift-activebox .errorMsg td{
+	padding:0;
+	color:#B51111;
+	line-height:25px;
+}
+.txtright{
+	text-align:right;
+}
+.gifts-input{
+	width:140px;
+}
+.active_btn:link,.active_btn:visited{
+	height:23px;
+	line-height:23px;
+	width:75px;
+	display:block;
+	border:1px solid #505050;
+	background:url(/images/public/new_active.png) repeat-x;
+	background-position:0 0;
+	text-align:center;
+	color:#ccc;
+}
+.active_btn:hover,.active_btn:active{
+	color:#fff;
+}
+
+.gifts_pwd{
+	padding:20px 20px 0;
+}
+.gifts_pwd em{
+	font-family:"宋体";
+	color:#f00;
+}
+.gifts_pwd a:link, .gifts_pwd a:visited{
+	font-family:"宋体";
+	color:#AC8C48;
+}
+.gifts_pwd a:hover, .gifts_pwd a:active{
+	font-family:"宋体";
+	color:#c91d1d;
+}
+.gifts_pwd .gifts_pwdErrorMsg{
+	display:block;
+	color:#f00;
+	line-height:25px;
+	padding:0 0 0 130px;
+	display:none;
+}
+.gifts_pay{
+	text-align:right;
+	font-weight:700;
+	line-height:45px;
+}
+.gifts_pay i{
+	font-weight:700;
+}
+
+/*******
+*payment end
+*******/

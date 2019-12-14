@@ -1,0 +1,180 @@
+﻿@model IEnumerable<Shangpin.Ocs.Entity.Extenstion.ShangPin.SkillProductExtends>
+@using Shangpin.Ocs.Web.Infrastructure;
+@{
+    ViewBag.Title = "秒杀产品管理";
+    Layout = "~/Areas/Shangpin/Views/Shared/_VenueLayout.cshtml";
+    int SkillGroupId = 0;
+    if (!string.IsNullOrEmpty(Request.QueryString["skillgroupid"]))
+    {
+        SkillGroupId=int.Parse(Request.QueryString["skillgroupid"]);
+    }
+}
+<h1>
+    OCS > 尚品 > <a href="/shangpin/venue/SkillManager?meetingId=@(Request.QueryString["meetingId"])">促销商品组管理</a> > 促销商品管理
+</h1>
+<input type="button" value="批量添加" onclick="$('#addProductListAreas').show('slow')"/>
+<div id="addProductListAreas" style="display:none;">
+    <textarea id="addProductListText" cols="95" rows="5" ></textarea>注:多个产品编号用逗号隔开(逗号用英文输入法)
+    <div>
+        <input type="button" value="确定" onclick="addProductNoList()"/>
+        <input type="button" value="取消" onclick="$('#addProductListAreas').hide('slow')"/>
+    </div>
+</div>
+<form id="idlistform" action="/shangpin/venue/DeleteSkillProductByIdList?skillgroupid=@(Request.QueryString["skillgroupid"])&meetingId=@(Request.QueryString["meetingId"])" method="post">
+<table class="mx-table" border="0">
+    <thead>
+        <tr>
+            <th><input type="checkbox" onclick="GetCheckAll(this)"/></th>
+            <th colspan="5">商品信息</th>   
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <input type="checkbox" value="@item.Id" name="objID"/>
+                        </td>
+                        <td>
+                            <img width="100" height="100" style="cursor:pointer;"  skillid="@item.Id" imgno="@item.ProductFileNo" src="/ReadPic/GetPic.ashx?width=100&height=100&pictureFileNo=@item.ProductFileNo&type=2" alt="上传图片"/>
+                        </td>
+                        <td class="lt">
+                            商品编号：@item.ProductNo<br/>
+                            商品货号：@item.GoodsNo<br/>
+                            商品名称：@item.ProductName<br/>
+                        </td>
+                        <td class="lt">
+                            市场价:@item.MarketPriceRegion<br/>
+                            尚品价:@item.StandardPriceRegion<br />
+                            黄金价:@item.GoldPriceRegion<br />
+                            白金价:@item.PlatinumPriceRegion<br/>
+                            钻石价:@item.DiamondPriceRegion<br/>
+                            <span style="color:Red;">促销价:@item.PromotionPriceRegion </span>
+                        </td>
+                        <td>
+                            <input type="text" objid="@item.Id" value="@item.SortValue" style="width:50px;" maxlength="6" onblur="updateSortValue(this)"/>
+                        </td>
+                        <td>
+                            <a class="button" href="javascript:removeProduct(@item.Id)">移除</a>
+                        </td>
+                    </tr>
+                }
+        }
+        <tr>
+            <td colspan="2"><a class="button" href="javascript:deleteSkillProduct();">删除所选</a></td>
+            <td colspan="4"></td>
+        </tr>
+    </tbody>
+</table>
+</form>
+<div id="mx-rightcontent-fixbar" class="clr">
+<a id="mx-btn-add" title="添加促销商品" href="/Shangpin/Venue/AboutSkillProductList?skillgroupid=@(Request.QueryString["skillgroupid"])&meetingId=@(Request.QueryString["meetingId"])"></a>
+</div>
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/Venue/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        var imgobj = "";
+        function removeProduct(objid) {
+            if (confirm("是否移除商品")) {
+                $.get("/shangpin/venue/DeleteSkillProduct/" + objid, function (data) {
+                    if (data > 0) {
+                        alert("移除成功");
+                        window.location.reload();
+                    } else {
+                        alert("移除失败");
+                    }
+                });
+            }
+        }
+        //隐藏层
+        function hidendiv() {
+            $('#windownBG').remove();
+            $('#upSkillImg').hide();
+        }
+
+        $(document).ready(function () {
+            $("tr img").click(function () {
+                imgobj = $(this);
+                $("body").append('<div id="windownBG" style="height:' + $(document).height() + 'px;opacity:0.5;z-index: 9999;display:block;left:0px;top:0px;position:absolute;width:100%;background: none repeat scroll 0 0 #000000;"></div>');
+                $("#upimg").attr("src", "/ReadPic/GetPic.ashx?width=200&height=200&pictureFileNo=" + $(this).attr("imgno") + "&type=2");
+                $("#imgNO").val($(this).attr("imgno"));
+                $("#skillId").val($(this).attr("skillid"));
+                $("#upSkillImg").css({ 'top': ($(window).height() / 2) - 200 + $(window).scrollTop(), 'left': ($(window).width() / 2) - 410, 'display': 'block', 'z-index': '99999' });
+            });
+        });
+        //异步上传图片
+        function upimgfile() {
+            //$("#upimgform").attr("action", "/shangpin/venue/UpSkillProductImg");
+
+            $("#upimgform").ajaxSubmit(function (data) {
+                data = eval("(" + data + ")");
+                if (data.status == 0) {
+                    alert(data.message);
+                } else {
+                    $('#windownBG').remove();
+                    $('#upSkillImg').hide();
+                    imgobj.attr("src", "/ReadPic/GetPic.ashx?width=200&height=200&pictureFileNo=" + data.message + "&type=2");
+                    imgobj.attr("imgno",data.message);
+                    $("#imgfile").val("");
+                }
+            });
+        }
+        //批量添加商品编号
+        function addProductNoList() {
+            if (document.getElementById("addProductListText").value.trim().length <= 0) {
+                alert("请输入产品编号");
+                return;
+            }
+            $.post("/Shangpin/venue/AddSkillProductNOList", { 'groupid': '@SkillGroupId', 'productNO': document.getElementById("addProductListText").value }, function (data) {
+                if (data > 0) {
+                    alert("添加成功");
+                    document.getElementById("addProductListText").value = "";
+                    window.location.reload();
+                } else {
+                    alert("添加失败");
+                }
+            });
+        }
+        //更新排序
+        function updateSortValue(obj) {
+            $.get("/shangpin/venue/SaveSkillProductSort", { "id": $(obj).attr("objid"), "sortValue": $(obj).val() }, function (data) {
+                if (data > 0) {
+                    //alert("更新排序成功");
+                } else {
+                    alert("更新排序失败");
+                }
+            });
+        }
+        //全选
+        function GetCheckAll(obj) {
+            $(".mx-table input:checkbox[name='objID']").attr("checked",obj.checked);
+        }
+        //批量删除
+        var deleteSkillProduct = function () {
+            if ($(".mx-table input:checkbox[name='objID'][checked='checked']").length > 0) {
+                $('#idlistform').submit();
+            } else {
+                alert("请选择产品");
+            }
+        }
+    </script>
+}
+
+ @section hiddendiv{
+    <div id="upSkillImg" style="width:500px;height:300px;background-color:White;display:none;position:absolute;">
+        <div style="text-align:right;"><a href="javascript:hidendiv();">关闭</a></div>
+        <form action="/shangpin/venue/UpSkillProductImg" method="post" id="upimgform" enctype="multipart/form-data">
+            <div style="width:200; height:100">
+                <img src="" id="upimg"  width="100" height="100"/>
+            </div>
+            <br />
+            <input type="file" name="imgfile" id="imgfile"/>&nbsp;&nbsp;
+            <input type="button" value="确定" onclick="upimgfile()"/>
+            <input type="hidden" name="imgNO" id="imgNO"/>
+            <input type="hidden" name="skillId" id="skillId"/>
+        </form>
+    </div>
+ }
+

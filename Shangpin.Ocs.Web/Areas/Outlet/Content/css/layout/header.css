@@ -1,0 +1,47 @@
+#mx-header {
+    position: relative;
+    z-index: 9999;
+}
+
+#mx-header-logo-wrapper {
+    height: 60px;
+    background: #f1f5f8;
+}
+
+#mx-header-logo {
+    height: 40px;
+    padding: 12px 0 0;
+}
+
+#mx-header-nav-wrapper {
+    height: 48px;
+    background: url(/areas/Outlet/images/layout/header-bg.png) repeat-x 0 -0.5px;
+}
+
+#mx-header-nav li {
+    float: left;
+    padding-left: 20px;
+}
+
+#mx-header-nav li.cur {
+    background: url(/areas/Outlet/images/layout/selected-bg-left.png) no-repeat 0 1px;
+}
+
+#mx-header-nav a:link, #mx-header-nav a:visited {
+    display: block;
+    height: 48px;
+    line-height: 48px;
+    padding-right: 20px;
+    font-size: 14px;
+    color: #fff;
+}
+
+#mx-header-nav a:hover, #mx-header-nav a:active {
+    text-shadow: 1px 1px 3px #666;
+}
+
+#mx-header-nav li.cur a:link, #mx-header-nav li.cur a:hover,
+#mx-header-nav li.cur a:active, #mx-header-nav li.cur a:visited {
+    color: #fff;
+    background: url(/areas/Outlet/images/layout/selected-bg-right.png) no-repeat right 1px;
+}

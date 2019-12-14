@@ -1,0 +1,178 @@
+﻿@model IEnumerable<Shangpin.Entity.Wfs.SWfsProductTemplate>
+@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Entity.Wfs;
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>商品</title>
+    <link href="/Areas/Shangpin/Content/css/init.css" rel="stylesheet" type="text/css"
+          charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/core.css" rel="stylesheet" type="text/css"
+          charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/page/rightcontent/rightcontent.css" rel="stylesheet"
+          type="text/css" charset="utf-8" />
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/lib/jquery.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/page/Label/refLabel.js"></script>
+    <style type="text/css">
+        #tbLabel select {
+            width: 100px;
+        }
+
+        .deleteImg {
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+        }
+    </style>
+    <style type="text/css">
+        table.mx-table a.clearBtn {
+            background-color: #4d90fe;
+            border: 1px solid #3079ed;
+            color: #fff;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            font-size: 14px;
+            display: inline-block;
+            padding: 5px 10px;
+            *padding: 3px 0px 0;
+            position: relative;
+            text-decoration: none;
+            -webkit-transition: border-color 0.218s ease 0s;
+            -moz-transition: border-color 0.218s ease 0s;
+            -o-transition: border-color 0.218s ease 0s;
+            transition: border-color 0.218s ease 0s;
+            cursor: pointer;
+            margin: 0 15px 0 0;
+            *zoom: 1;
+        }
+
+            table.mx-table a.clearBtn:hover {
+                border-color: #1c8ede;
+                -webkit-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+                -moz-box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+                box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+            }
+    </style>
+</head>
+<body>
+    @Html.Hidden("productNo", ViewData["ProductNo"])
+    @*<input type="hidden" pid="聚会" value="聚会1,聚会2,聚会3,聚会4,聚会5||ID1,ID2,ID3,ID4,ID5" normal="1" labeled="ID1,ID2,ID5" />
+        <input type="hidden" pid="生活" value="生活1,生活2,生活3,生活4,生活5||ID1,ID2,ID3,ID4,ID5" labeled="ID3,ID2,ID4" />
+        <input type="hidden" pid="时尚" value="时尚1,时尚2,时尚3,时尚4,时尚5||ID1,ID2,ID3,ID4,ID5" />*@
+
+    @{
+        IEnumerable<SWfsProductLabel> allLabels = ViewData["allLabels"] as IEnumerable<SWfsProductLabel>;
+        IEnumerable<SWfsProductRefLabel> productLabels = ViewData["productLabels"] as IEnumerable<SWfsProductRefLabel>;
+        IEnumerable<string> picList=ViewBag.PicList;
+        foreach (SWfsProductLabel item in allLabels.Where(a => a.ParentNo.ToLower() == "root").OrderByDescending(b => b.LabelType))
+        {
+            IEnumerable<SWfsProductLabel> children = allLabels.Where(b => b.ParentNo == item.LabelNo);
+            if (children.Count() > 0)
+            {
+                string names = children.Select(a => a.LabelName).Aggregate((b, c) => b + "," + c);
+                string ids = children.Select(a => a.LabelNo).Aggregate((b, c) => b + "," + c);
+                string labeled = "";
+                IEnumerable<SWfsProductRefLabel> labeleds = productLabels.Where(a => a.RefLabelParentNo == item.LabelNo);
+                if (labeleds.Count() > 0)
+                {
+                    labeled = labeleds.OrderBy(o => o.Weight).Select(a => a.RefLabelNo).Aggregate((a, b) => a + "," + b);
+                }
+                string value = "";
+                if (names.Length > 0 && ids.Length > 0) { value = names + "||" + ids; }
+                @Html.Hidden(item.LabelId.ToString(), value, new
+                    {
+                        pid = item.LabelNo,
+                        normal = item.LabelType,
+                        labeled = labeled
+                    })
+            }
+        }
+
+    }
+
+
+    <div id="productContent">
+        <table class="mx-table" border="0">
+            <thead>
+                <tr>
+                    <th style="text-align:left;font-weight:bold;font-size:16px;" colspan="3">
+                        &nbsp;&nbsp;商品
+                    </th>
+
+                </tr>
+
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="lt " id="picContent">
+                        
+                    </td>
+                    <td class="lt " id="picContent">
+                        @for (int i = 0; i < picList.Count(); i++)
+                        {
+                            <img src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@picList.ElementAt(i)&type=1" />
+                        }
+                    </td>
+                    <td class="lt" id="productInfo">
+                        商品编号：01238521<br>
+                        商品货号：0001<br>
+                        商品名称：女士T<br>
+                        所属品牌: 3.1 PHILLIP LIM (菲利林)<br>
+                        未上架
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="labelInfo">
+        <table class="mx-table" border="0" id="tbLabel">
+            <thead>
+                <tr>
+                    <th style="text-align:left;font-weight:bold;font-size:16px;" colspan="3">
+                        &nbsp;&nbsp;关联标签
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr> 
+                    <td width="100px" style="height:15px;font-weight:bold;">标签类</td>
+                    <td width="*" style="height: 15px; font-weight: bold;">标签</td>
+                </tr>
+                <tr class="cross"> 
+                    <td class="lt">
+                        <select id="allLabel" style="width: 100px;" onchange="addLabelParnet(this);">
+                            <option value="">请选择新标签类</option>
+                            @foreach (SWfsProductLabel item in allLabels.Where(a => a.ParentNo.ToLower() == "root"))
+                            {
+                                if (allLabels.Any(a => a.ParentNo == item.LabelNo))
+                                {
+                                    <option value="@item.LabelNo"> @item.LabelName</option>
+                                }
+                            }
+                        </select>
+                    </td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <table class="mx-table" border="0">
+        <tr>
+            <td>
+                <a class="clearBtn" href='javascript:saveAndCloseWin();' style="margin: 0 0 0 0;">保存</a>
+                <a class="clearBtn" href='javascript:CloseWin();' style="margin: 0 0 0 0;">取消</a>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

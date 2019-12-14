@@ -1,0 +1,41 @@
+@charset "utf-8";
+/* CSS Document */
+
+header{background-color:#fff;}
+
+.clr:after, .clearfix:after {
+	content: "";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden
+}
+
+.topFix{
+	position:fixed;
+	left:50%;
+	top:0px;
+	z-index:10;
+	margin-left:-160px;
+	width:320px;
+}
+.topFix section{
+	display:block;
+	font-size:0;
+	position:absolute;
+}
+
+.spTop{width:320px;height:150px;margin:0 auto;overflow:hidden;}
+
+.sp11Box{width:320px; margin:0 auto;}
+.sp11Box h2{height:40px; width:100%;}
+.sp11Box h3{padding:0 10px; height:45px; line-height:45px; color:#c01179; font-size:20px;}
+.sp11Box h3 em{font-size:30px;}
+
+.sp11Tag{width:320px; margin:10px auto 0; letter-spacing:-4px;}
+.sp11Tag a{margin:0 0 10px 10px; width:88px; height:28px; line-height:28px; text-align:center; color:#000; display:inline-block; overflow:hidden; letter-spacing:normal; background-color:#f4f4f4; border:1px solid #e2e2e2;}
+
+.sp11List{width:100%;}
+.sp11List li{width:145px;height:210px;vertical-align:top;margin:0 0 10px 10px;float:left;overflow:hidden; background-color:#ccc;}
+.sp11List li a{display:block;}
+.sp11List li img{width:145px; height:210px;}

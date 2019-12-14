@@ -1,0 +1,537 @@
+﻿@{
+    Layout = null;
+    Shangpin.Ocs.Entity.Extenstion.ShangPin.SWfsMeetingRelationRegionContent obj = null;
+    string ShangpinActiveHrefUrlShow = "http://www.shangpin.com/women/subject/{0}?MeetingNO={1}&ClickRegionID={2}";
+    string AoLaiActiveHrefUrlShow = "http://www.aolai.com/subject/index/{0}/0?MeetingNO={1}&ClickRegionID={2}";
+    string AoLaiSpecialHrefUrlShow = "http://www.aolai.com/topic/index/{0}?MeetingNO={1}&ClickRegionID={2}";
+    //string VenueHrefUrlShow = "http://www.shangpin.com/Venue/Index/{0}?MeetingNO={1}&ClickRegionID={2}";
+}
+@using Shangpin.Framework.WebMvc
+@model IEnumerable<Shangpin.Ocs.Entity.Extenstion.ShangPin.SWfsMeetingRelationRegionContent>
+
+
+<div class="top_nav">
+    	<div class="top_nav_bg">
+            <div class="top_nav_box">
+                <ul class="clr">
+                	<li class="aolai"><a href="#aolai"></a></li>
+                    <li class="bags"><a href="#bags"></a></li>
+                    <li class="women"><a href="#women"></a></li>
+                    <li class="men"><a href="#men"></a></li>
+                    <li class="footwear"><a href="#footwear"></a></li>
+                    <li class="watch"><a href="#watch"></a></li>
+                    <li class="beauty"><a href="#beauty"></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+<div class="main_box">
+    <a id="aolai" name="aolai"></a>
+    <div class="box aolai_box">
+        <h3>
+            <img lazy="@Html.ResolveContentCdnUrl("/shangpin/images/page/blackfriday/title_img_01.png")" width="934"
+                height="75" usemap="#Map" border="0">
+            <map name="Map">
+                <area shape="rect" coords="511,47,592,69" href="http://www.aolai.com/Topic/Index/20131125052"
+                    target="_blank">
+                <area shape="rect" coords="600,47,684,70" href="http://www.aolai.com/Topic/Index/20131125051"
+                    target="_blank">
+                <area shape="rect" coords="691,47,762,69" href="http://www.aolai.com/Topic/Index/20131125048"
+                    target="_blank">
+                <area shape="rect" coords="772,46,842,70" href="http://www.aolai.com/Subject/Index/31125785"
+                    target="_blank">
+                <area shape="rect" coords="848,47,925,70" href="http://www.aolai.com/Subject/Index/31125786"
+                    target="_blank">
+            </map>
+        </h3>
+        <ul class="clr">
+            @for (int i = 1; i <= 8; i++)
+            {
+                if (Model.Count(p => p.RegionID == i) == 1)
+                {
+                    obj = Model.Single(p => p.RegionID == i);
+                    <li opratorRegion="@i" relationtype="@obj.RelationType">
+                        @switch (obj.RelationType)
+                        {
+                            case 2:
+                                if (obj.WebSite == 1)
+                                {
+                                    <a target="_blank" href="@(string.Format(ShangpinActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))">
+                                        <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                    </a>
+                                }
+                                else
+                                {
+                                    if (obj.IsActive==0)
+                                    {
+                                        <a target="_blank" href="@(string.Format(AoLaiSpecialHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))">
+                                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a target="_blank" href="@(string.Format(AoLaiActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))">
+                                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                        </a>
+                                    }
+                                }
+                                break;
+                            case 3:
+                                <a target="_blank" href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + i)">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                </a>
+                                break;
+                            default:
+                                <a target="_blank" href="">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                </a>
+                                break;
+                        }
+                    </li>
+                }
+                else 
+                {
+                    <li opratorRegion="@i" relationtype="3"></li>
+                }
+            }
+        </ul>
+        <p class="btn_box">
+            <a href="http://www.aolai.com/" target="_blank">
+                <img  lazy="@Html.ResolveContentCdnUrl("/shangpin/images/page/blackfriday/title_btn_01.png")" width="222" height="39">
+            </a>
+        </p>
+    </div>
+    <a id="bags" name="bags"></a>
+    <div class="box">
+        <h3>
+            <img lazy="@Html.ResolveContentCdnUrl("/shangpin/images/page/blackfriday/title_img_02.png")" width="934"
+                height="75" usemap="#Map2" border="0">
+            <map name="Map2">
+                <area shape="rect" target="_blank" coords="566,48,621,71" href="http://www.shangpin.com/women/list/bags/shoutibao">
+                <area shape="rect" target="_blank" coords="630,47,700,70" href="http://www.shangpin.com/women/list/bags/changkuanqianjia">
+                <area shape="rect" target="_blank" coords="709,46,764,70" href="http://www.shangpin.com/women/list/bags/danjianbao">
+                <area shape="rect" target="_blank" coords="772,47,861,70" href="http://www.shangpin.com/men/list/bags/A02B01C01-0-0-0-0-1">
+                <area shape="rect" target="_blank" coords="869,45,923,69" href="http://www.shangpin.com/women/list/bags/shounabao">
+            </map>
+        </h3>
+        <ul class="clr">
+            @for (int i = 9; i <= 16; i++)
+            {
+                if (Model.Count(p => p.RegionID == i) == 1)
+                {
+                    obj = Model.Single(p => p.RegionID == i);
+                    <li opratorRegion="@i" relationtype="@obj.RelationType">
+                        @switch (obj.RelationType)
+                        {
+                            case 2:
+                                if (obj.WebSite == 1)
+                                {
+                                    <a target="_blank" href="@(string.Format(ShangpinActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))">
+                                        <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                    </a>
+                                }
+                                else
+                                {
+                                    if (obj.IsActive==0)
+                                    {
+                                        <a target="_blank" href="@(string.Format(AoLaiSpecialHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))">
+                                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a target="_blank" href="@(string.Format(AoLaiActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))">
+                                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                        </a>
+                                    }
+                                }
+                                break;
+                            case 3:
+                                <a target="_blank" href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + i)">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                </a>
+                                break;
+                            default:
+                                <a target="_blank" href="">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                </a>
+                                break;
+                        }
+                    </li>
+                }
+                else 
+                {
+                    <li opratorRegion="@i" relationtype="3"></li>
+                }
+            }
+        </ul>
+        <p class="btn_box">
+            <a href="http://www.shangpin.com/women/list/bags/" target="_blank">
+                <img  lazy="@Html.ResolveContentCdnUrl("/shangpin/images/page/blackfriday/title_btn_02.png")" width="222"
+                    height="39"></a> <a href="http://www.shangpin.com/men/list/bags/" target="_blank">
+                        <img lazy="@Html.ResolveContentCdnUrl("/shangpin/images/page/blackfriday/title_btn_03.png")" width="222"
+                            height="39"></a>
+        </p>
+    </div>
+    <a id="women" name="women"></a>
+    <div class="box">
+        <h3>
+            <img lazy="@Html.ResolveContentCdnUrl("/shangpin/images/page/blackfriday/title_img_03.png")" width="934"
+                height="75" usemap="#Map3" border="0">
+            <map name="Map3">
+                <area shape="rect" target="_blank" coords="643,47,685,69" href="http://www.shangpin.com/women/list/clothing/waitao">
+                <area shape="rect" target="_blank" coords="693,48,750,69" href="http://www.shangpin.com/women/list/clothing/niuzaiku">
+                <area shape="rect" target="_blank" coords="758,48,812,70" href="http://www.shangpin.com/women/list/clothing/lianyiqun">
+                <area shape="rect" target="_blank" coords="820,47,878,71" href="http://www.shangpin.com/women/list/clothing/yundongzhuang">
+                <area shape="rect" target="_blank" coords="883,48,925,70" href="http://www.shangpin.com/women/list/clothing/neiyi">
+            </map>
+        </h3>
+        <ul class="clr">
+            @for (int i = 17; i <= 24; i++)
+            {
+                if (Model.Count(p => p.RegionID == i) == 1)
+                {
+                    obj = Model.Single(p => p.RegionID == i);
+                    <li opratorRegion="@i" relationtype="@obj.RelationType">
+                        @switch (obj.RelationType)
+                        {
+                            case 2:
+                                if (obj.WebSite == 1)
+                                {
+                                    <a target="_blank" href="@(string.Format(ShangpinActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))">
+                                        <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                    </a>
+                                }
+                                else
+                                {
+                                    if (obj.IsActive==0)
+                                    {
+                                        <a target="_blank" href="@(string.Format(AoLaiSpecialHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))">
+                                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a target="_blank" href="@(string.Format(AoLaiActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))">
+                                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                        </a>
+                                    }
+                                }
+                                break;
+                            case 3:
+                                <a target="_blank" href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + i)">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                </a>
+                                break;
+                            default:
+                                <a target="_blank" href="">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                </a>
+                                break;
+                        }
+                    </li>
+                }
+                else 
+                {
+                    <li opratorRegion="@i" relationtype="3"></li>
+                }
+            }
+        </ul>
+        <p class="btn_box">
+            <a href="http://www.shangpin.com/women/list/clothing/" target="_blank">
+                <img lazy="@Html.ResolveContentCdnUrl("/shangpin/images/page/blackfriday/title_btn_04.png")" width="222"
+                    height="39"></a>
+        </p>
+    </div>
+    <a id="men" name="men"></a>
+    <div class="box">
+        <h3>
+            <img lazy="@Html.ResolveContentCdnUrl("/shangpin/images/page/blackfriday/title_img_04.png")" width="934"
+                height="75" usemap="#Map4" border="0">
+            <map name="Map4">
+                <area shape="rect" target="_blank" coords="664,46,717,70" href="http://www.shangpin.com/men/list/clothing/A02B02C28-0-0-0-0-1">
+                <area shape="rect" target="_blank" coords="725,45,767,70" href="http://www.shangpin.com/men/list/clothing/A02B02C30-0-0-0-0-1">
+                <area shape="rect" target="_blank" coords="774,46,816,69" href="http://www.shangpin.com/men/list/clothing/A02B02C23D05-0-0-0-0-1">
+                <area shape="rect" target="_blank" coords="824,45,879,71" href="http://www.shangpin.com/men/list/clothing/A02B02C03D05-0-0-0-0-1">
+                <area shape="rect" target="_blank" coords="887,45,925,71" href="http://www.shangpin.com/men/list/clothing/A02B02C33-0-0-0-0-1">
+            </map>
+        </h3>
+        <ul class="clr">
+            @for (int i = 25; i <= 32; i++)
+            {
+                if (Model.Count(p => p.RegionID == i) == 1)
+                {
+                    obj = Model.Single(p => p.RegionID == i);
+                    <li opratorRegion="@i" relationtype="@obj.RelationType">
+                        @switch (obj.RelationType)
+                        {
+                            case 2:
+                                if (obj.WebSite == 1)
+                                {
+                                    <a target="_blank" href="@(string.Format(ShangpinActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))">
+                                        <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                    </a>
+                                }
+                                else
+                                {
+                                    if (obj.IsActive==0)
+                                    {
+                                        <a target="_blank" href="@(string.Format(AoLaiSpecialHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))">
+                                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a target="_blank" href="@(string.Format(AoLaiActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))">
+                                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                        </a>
+                                    }
+                                }
+                                break;
+                            case 3:
+                                <a target="_blank" href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + i)">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                </a>
+                                break;
+                            default:
+                                <a target="_blank" href="">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                </a>
+                                break;
+                        }
+                    </li>
+                }
+                else 
+                {
+                    <li opratorRegion="@i" relationtype="3"></li>
+                }
+            }
+        </ul>
+        <p class="btn_box">
+            <a href="http://www.shangpin.com/men/list/clothing/" target="_blank">
+                <img lazy="@Html.ResolveContentCdnUrl("/shangpin/images/page/blackfriday/title_btn_05.png")" width="222"
+                    height="39"></a>
+        </p>
+    </div>
+    <a id="footwear" name="footwear"></a>
+    <div class="box">
+        <h3>
+            <img lazy="@Html.ResolveContentCdnUrl("/shangpin/images/page/blackfriday/title_img_05.png")" width="934"
+                height="75" usemap="#Map5" border="0">
+            <map name="Map5">
+                <area shape="rect" target="_blank" coords="629,46,685,68" href="http://www.shangpin.com/women/list/shoes/xuedixue">
+                <area shape="rect" target="_blank" coords="693,45,751,68" href="http://www.shangpin.com/women/list/shoes/jihuaixue">
+                <area shape="rect" target="_blank" coords="758,43,813,69" href="http://www.shangpin.com/women/list/shoes/jiqixue">
+                <area shape="rect" target="_blank" coords="819,44,864,69" href="http://www.shangpin.com/men/list/shoes/A02B03C05-0-0-0-0-1">
+                <area shape="rect" target="_blank" coords="871,44,925,68" href="http://www.shangpin.com/men/list/shoes/0-0-0-0-0-1">
+            </map>
+        </h3>
+        <ul class="clr">
+            @for (int i = 33; i <= 40; i++)
+            {
+                if (Model.Count(p => p.RegionID == i) == 1)
+                {
+                    obj = Model.Single(p => p.RegionID == i);
+                    <li opratorRegion="@i" relationtype="@obj.RelationType">
+                        @switch (obj.RelationType)
+                        {
+                            case 2:
+                                if (obj.WebSite == 1)
+                                {
+                                    <a target="_blank" href="@(string.Format(ShangpinActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))">
+                                        <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                    </a>
+                                }
+                                else
+                                {
+                                    if (obj.IsActive==0)
+                                    {
+                                        <a target="_blank" href="@(string.Format(AoLaiSpecialHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))">
+                                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a target="_blank" href="@(string.Format(AoLaiActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))">
+                                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                        </a>
+                                    }
+                                }
+                                break;
+                            case 3:
+                                <a target="_blank" href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + i)">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                </a>
+                                break;
+                            default:
+                                <a target="_blank" href="">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                </a>
+                                break;
+                        }
+                    </li>
+                }
+                else 
+                {
+                    <li opratorRegion="@i" relationtype="3"></li>
+                }
+            }
+        </ul>
+        <p class="btn_box">
+            <a href="http://www.shangpin.com/women/list/shoes/" target="_blank">
+                <img lazy="@Html.ResolveContentCdnUrl("/shangpin/images/page/blackfriday/title_btn_06.png")" width="222"
+                    height="39"></a> <a href="http://www.shangpin.com/men/list/shoes/" target="_blank">
+                        <img lazy="@Html.ResolveContentCdnUrl("/shangpin/images/page/blackfriday/title_btn_07.png")" width="222"
+                            height="39"></a>
+        </p>
+    </div>
+    <a id="watch" name="watch"></a>
+    <div class="box">
+        <h3>
+            <img lazy="@Html.ResolveContentCdnUrl("/shangpin/images/page/blackfriday/title_img_06.png")" width="934"
+                height="75" usemap="#Map6" border="0">
+            <map name="Map6">
+                <area shape="rect" target="_blank" coords="645,45,689,69" href="http://www.shangpin.com/men/list/watches/">
+                <area shape="rect" target="_blank" coords="696,44,766,70" href="http://www.shangpin.com/men/list/accessories/">
+                <area shape="rect" target="_blank" coords="774,45,816,70" href="http://www.shangpin.com/women/list/accessories/xianglian">
+                <area shape="rect" target="_blank" coords="820,45,879,70" href="http://www.shangpin.com/women/list/accessories/taiyangjing">
+                <area shape="rect" target="_blank" coords="884,44,928,71" href="http://www.shangpin.com/women/list/accessories/jingjia">
+            </map>
+        </h3>
+        <ul class="clr">
+            @for (int i = 41; i <= 48; i++)
+            {
+                if (Model.Count(p => p.RegionID == i) == 1)
+                {
+                    obj = Model.Single(p => p.RegionID == i);
+                    <li opratorRegion="@i" relationtype="@obj.RelationType">
+                        @switch (obj.RelationType)
+                        {
+                            case 2:
+                                if (obj.WebSite == 1)
+                                {
+                                    <a target="_blank" href="@(string.Format(ShangpinActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))">
+                                        <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                    </a>
+                                }
+                                else
+                                {
+                                    if (obj.IsActive==0)
+                                    {
+                                        <a target="_blank" href="@(string.Format(AoLaiSpecialHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))">
+                                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a target="_blank" href="@(string.Format(AoLaiActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))">
+                                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                        </a>
+                                    }
+                                }
+                                break;
+                            case 3:
+                                <a target="_blank" href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + i)">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                </a>
+                                break;
+                            default:
+                                <a target="_blank" href="">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                </a>
+                                break;
+                        }
+                    </li>
+                }
+                else 
+                {
+                    <li opratorRegion="@i" relationtype="3"></li>
+                }
+            }
+        </ul>
+        <p class="btn_box">
+            <a href="http://www.shangpin.com/women/list/watches/" target="_blank">
+                <img lazy="@Html.ResolveContentCdnUrl("/shangpin/images/page/blackfriday/title_btn_08.png")" width="222"
+                    height="39"></a> <a href="http://www.shangpin.com/women/list/accessories/" target="_blank">
+                        <img lazy="@Html.ResolveContentCdnUrl("/shangpin/images/page/blackfriday/title_btn_09.png")" width="222"
+                            height="39"></a>
+        </p>
+    </div>
+    <a id="beauty" name="beauty"></a>
+    <div class="box">
+        <h3>
+            <img lazy="@Html.ResolveContentCdnUrl("/shangpin/images/page/blackfriday/title_img_07.png")" width="934"
+                height="75" usemap="#Map7" border="0">
+            <map name="Map7">
+                <area shape="rect" target="_blank" coords="596,42,639,67" href="http://www.shangpin.com/women/subject/31104030">
+                <area shape="rect" target="_blank" coords="645,42,686,68" href="http://www.shangpin.com/women/subject/31107153">
+                <area shape="rect" target="_blank" coords="693,42,766,67" href="http://www.shangpin.com/women/subject/31108320">
+                <area shape="rect" target="_blank" coords="774,42,845,68" href="http://www.shangpin.com/women/list/homes/chuangpinjiantao">
+                <area shape="rect" target="_blank" coords="854,43,927,68" href="http://www.shangpin.com/women/list/homes/beizichuangdian">
+            </map>
+        </h3>
+        <ul class="clr">
+            @for (int i = 49; i <= 56; i++)
+            {
+                if (Model.Count(p => p.RegionID == i) == 1)
+                {
+                    obj = Model.Single(p => p.RegionID == i);
+                    <li opratorRegion="@i" relationtype="@obj.RelationType">
+                        @switch (obj.RelationType)
+                        {
+                            case 2:
+                                if (obj.WebSite == 1)
+                                {
+                                    <a target="_blank" href="@(string.Format(ShangpinActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))">
+                                        <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                    </a>
+                                }
+                                else
+                                {
+                                    if (obj.IsActive==0)
+                                    {
+                                        <a target="_blank" href="@(string.Format(AoLaiSpecialHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))">
+                                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a target="_blank" href="@(string.Format(AoLaiActiveHrefUrlShow, obj.ActiveNO, obj.MettingNO, i))">
+                                            <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                        </a>
+                                    }
+                                }
+                                break;
+                            case 3:
+                                <a target="_blank" href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + i)">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                </a>
+                                break;
+                            default:
+                                <a target="_blank" href="">
+                                    <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 220, 320))" width="220" height="320"/>
+                                </a>
+                                break;
+                        }
+                    </li>
+                }
+                else 
+                {
+                    <li opratorRegion="@i" relationtype="3"></li>
+                }
+            }
+        </ul>
+        <p class="btn_box">
+            <a href="http://www.shangpin.com/women/list/beauty/" target="_blank">
+                <img lazy="@Html.ResolveContentCdnUrl("/shangpin/images/page/blackfriday/title_btn_10.png")" width="222"
+                    height="39"></a> <a href="http://www.shangpin.com/women/list/homes/" target="_blank">
+                        <img lazy="@Html.ResolveContentCdnUrl("/shangpin/images/page/blackfriday/title_btn_11.png")" width="222"
+                            height="39"></a>
+        </p>
+    </div>
+    <div class="box last_box">
+        <a href="http://account.shangpin.com/account/invite" target="_blank">
+            <img src="@Html.ResolveContentCdnUrl("/shangpin/images/e.gif")" lazy=@Html.ResolveContentCdnUrl("/shangpin/images/page/newyears/bottom_img.jpg")" width="960" height="186">
+        </a>
+    </div>
+</div>

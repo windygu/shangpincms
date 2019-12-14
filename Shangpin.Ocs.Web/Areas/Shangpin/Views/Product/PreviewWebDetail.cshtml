@@ -1,0 +1,1462 @@
+﻿@{
+    IEnumerable<string> picList = ViewBag.PicList;
+    Shangpin.Ocs.Entity.Extenstion.ShangPin.Product pObj= ViewBag.ProductInfo;
+    if (pObj == null)
+    {
+        pObj = new Shangpin.Ocs.Entity.Extenstion.ShangPin.Product { ProductTitle = "商品预览" };
+    }
+    }
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    
+<title>@(pObj.ProductTitle)_尚品网ShangPin.com</title>
+    <link rel="shortcut icon" href="http://pic11.shangpin.com/shangpin/images/logo/favicon.ico" />
+    <link rel="Bookmark" href="http://pic11.shangpin.com/shangpin/images/logo/favicon.ico" />
+    <link href="http://js11.shangpin.com/ResourceHandler.ashx?f=~/shangpin/content/css/core/css&amp;v=20140815081823" rel="stylesheet" type="text/css" />
+    <link href="http://js11.shangpin.com/ResourceHandler.ashx?f=~/shangpin/content/css/core.common/css&amp;v=20140815081823" rel="stylesheet" type="text/css" />
+    <!-- 自定义script-->
+    <style type="text/css">
+            .lzjindexhead_content .lzjindexhead_operate{ Z-INDEX: 10; POSITION: relative;	margin: 0 auto;  height: 24px; width: 958px; font-size:12px;}
+ 
+            #site-nav-bg{position:absolute;height:24px;width:100%;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAYCAMAAAD08pwfAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACRQTFRF8vLy6+vr6Ojo7+/v+fn59fX17e3t5ubm+/v79/f3+vr69PT0x8cYKwAAADRJREFUeNqUyqcRADAQxMBzfIf++zXTPDngRQJShxZ0oDRs6EIDOX80mJzIWWCywmTgCTAAQ0sDozlmKfgAAAAASUVORK5CYII=) repeat-x #f2f2f2;*filter:progid:DXImageTransform.Microsoft.gradient(startColorstr = #fffafafa,endColorstr = #ffe6e6e6);border-bottom:1px solid #d2d2d2;left:0;top:0;}
+            /*#site-nav-bg A{color:#666;}
+        #site-nav-bg A:hover{color:#999;}
+        */
+            .lzjindexhead_content .lzjindex_head_little_navi_left{ float: left; padding-top: 4px; line-height:20px;}
+            .lzjindexhead_content .lzjindex_head_little_navi{ float: left; text-align: left; /*width: 300px;*/ padding-left:4px;padding-top:4px; height: 20px; line-height:20px; 
+
+}
+            .lzjindexhead_content .lzjindex_head_little_navi_left img{ display: block; float: left; margin-right:5px;}
+            .lzjindexhead_content .little_right{ float: left; position: relative; padding-top: 1px; padding-left: 2px; }
+        </style>
+    <!-- head css -->
+    
+
+ <link href="http://js11.shangpin.com/ResourceHandler.ashx?f=~/shangpin/content/css/page/new_detail/css&amp;v=20140815081823" rel="stylesheet" type="text/css" />
+ <link rel="canonical" href="http://www.shangpin.com/women/product/03443532" />
+ <script type="text/javascript" src="/Areas/Shangpin/Scripts/lib/jquery.js" charset="utf-8"></script>   
+ <script type="text/javascript">
+     $(document).ready(function () {
+         $("img[lazy]").each(function () {
+             $(this).attr("src", $(this).attr("lazy")).removeAttr("lazy");
+         });
+     });
+ </script>
+</head>
+<body id="brandbodyID">
+    <input type="hidden" id="NewShangpinLoginDomainUrl" value="http://login.shangpin.com" />
+    <input type="hidden" id="NewShangpinTradeDomainUrl" value="http://trade.shangpin.com" />
+    <input type="hidden" id="NewShangpinDomainUrl" value="http://www.shangpin.com" />
+    <input type="hidden" id="NewShangpinAccountDomainUrl" value="http://account.shangpin.com" />
+    <input type="hidden" id="NewAoLaiTradeDomainUrl" value="http://trade.aolai.com" />
+    <!--页头倒计时-->
+    <input type="hidden" id="IndexCmsContentAD" name="IndexCmsContentAD" value="" />
+
+<div id="sp_newHeader" class="box">
+    <div style="width: 960px; margin: 0 auto" class="clr" id="sp_newHeader_topLink">
+        <ul class="frt" id="sp_newHeader_loginForm">
+        </ul>
+    </div>
+    <!--sp-header-midbar begin-->
+    <div id="sp-header-midbar" class="clr">
+        <div class="logowrap flt">
+            <a href="http://www.shangpin.com/" title="尚品网-轻奢时尚">
+                <img width="185" height="38" src="http://pic13.shangpin.com/shangpin/images/logo/logo_v2.jpg" alt="尚品网-轻奢时尚"></a></div>
+        <div id="sp-newHeader-search" class="frt">
+            <div>
+                <input type="text" phdata="请输入搜索关键字" id="sp-newHeader-searchTxt" class="">
+                <input type="button" phdata="" title="搜索" id="sp-newHeader-searchSb">
+            </div>
+        </div>
+        <div id="sp-header-topbar" class="frt">
+            <ul class="clr">
+                <li><a href="http://www.shangpin.com/women">女士</a> </li>
+                <li><a href="http://www.shangpin.com/men">
+                    男士</a> </li>
+                <li><a href="http://www.shangpin.com/women/brand/highend"  title="旗舰店&nbsp;&#8226;&nbsp;品牌">
+                    旗舰店&nbsp;&#8226;&nbsp;品牌</a> </li>
+                <li><a href="http://www.aolai.com" target="_blank" title="尚品奥莱">尚品奥莱</a> </li>
+               
+                <li><a href="http://www.shangpin.com/giftcard">礼品卡</a> </li>
+                <li><a href="http://www.shangpin.com/stars" class="hot">公益星设计</a> </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+    <!--sp-header-midbar end-->
+    <!--sp-header-navbar begin-->
+        <div id="sp-header-navbar">
+            <ul class="clr">
+                    <li id="spMenu_newarrivals"><a href="http://www.shangpin.com/women/list/new/">最新<i>
+                        NEW</i></a></li>
+                    <li id="spMenu_cloths"><a href="http://www.shangpin.com/women/list/clothing/">服饰<i>
+                        CLOTHING</i></a></li>
+                    <li id="spMenu_bags"><a href="http://www.shangpin.com/women/list/bags/">箱包<i> BAGS</i></a></li>                
+                    <li id="spMenu_shoes"><a href="http://www.shangpin.com/women/list/shoes/">鞋靴<i>
+                        SHOES</i></a></li>
+                    <li id="spMenu_accessories"><a href="http://www.shangpin.com/women/list/accessories/">
+                        配饰<i> ACCESSORIES</i></a></li>
+                    <li id="spMenu_watches"><a href="http://www.shangpin.com/women/list/watches/">腕表眼镜<i>
+                        WATCHES&GLASSES</i></a></li>
+                    <li id="spMenu_beauty"><a href="http://www.shangpin.com/women/list/beauty/">美妆<i>
+                        BEAUTY</i></a></li>
+                    <li id="spMenu_homes"><a href="http://www.shangpin.com/women/list/homes/">家居<i>
+                        HOME</i></a></li>
+            </ul>
+            
+        </div>
+    <!--sp-header-navbar end-->
+</div>
+<!--个人中心 begin-->
+<div id="spNewHeader_usercenter_content" class="sp-menu-NewContent clr">
+    <i class="coverLine">&nbsp;</i>
+    <dl class="flt">
+        <dd>
+            <a rel="nofollow" id="spNewHeader_order" href="http://account.shangpin.com/account/orderlist/status1/1" title="我的订单">
+                我的订单 <ins>(0)</ins></a>
+        </dd>
+        <dd>
+            <a rel="nofollow" title="物流信息" href="http://account.shangpin.com/account/OrderList/status7/1" id="spNewHeader_logistics">
+                物流信息</a>
+        </dd>
+        <dd>
+            <a rel="nofollow" id="spNewHeader_giftcard" href="http://account.shangpin.com/account/GiftCard" title="我的礼品卡" >
+                我的礼品卡</a>
+        </dd>
+        <dd>
+            <a rel="nofollow" id="spNewHeader_refund" href="http://account.shangpin.com/account/refund/status0/1" title="自助退换货">
+                自助退换货</a>
+        </dd>
+        <dd>
+            <a rel="nofollow" id="spNewHeader_coupons" href="http://account.shangpin.com/account/cashcoupons/0/1" title="优惠券">
+                优惠券 <ins>(0)</ins></a>
+        </dd>
+        <dd>
+            <a rel="nofollow" id="spNewHeader_fav" href="http://account.shangpin.com/account/favoriteproduct/1/0" title="我的收藏">
+                我的收藏</a>
+        </dd>
+        <dd>
+            <a rel="nofollow" id="spNewHeader_level" href="http://account.shangpin.com/account/member" title="会员等级">会员等级</a>
+        </dd>
+       
+        <dd>
+            <a rel="nofollow" id="spNewHeader_logout" href="http://login.shangpin.com/login/signout?ran=337791694" title="退出登录">
+                退出登录</a>
+        </dd>
+    </dl>
+</div>
+<!--导航菜单下拉 start-->
+<div id="sp-newarrivals-cont" class="sp-menu-table">
+    <div class="clr sp-menu-drop">
+        <div class="sp-menu-list sp-menu-list-right">
+                <h4>最新</h4>
+                <ul>
+                    <li><a href="http://www.shangpin.com/women/list/new/week-0-0-8-0-1-0-1">最近7天</a></li>
+                    <li><a href="http://www.shangpin.com/women/list/new/month-0-0-8-0-1-0-1">最近30天</a></li>
+                </ul>
+
+        </div>
+    </div>
+</div>
+        <div id="sp-clothing-cont" class="sp-menu-table">
+            <div class="sp-menu-drop">
+    	        <div class="sp-menu-list">
+        	        <h4>服饰品类</h4>
+                    <ul>
+                        <li><a href="/women/list/clothing/all">全部服饰</a></li>
+                        <li><a href="/women/list/clothing/shangyi">上装</a></li>
+                        <li><a href="/women/list/clothing/txuweiyi">T恤\卫衣</a></li>
+                        <li><a href="/women/list/clothing/chenshan">衬衫\雪纺衫</a></li>
+                        <li><a href="/women/list/clothing/zhenzhi">针织</a></li>
+                        <li><a href="/women/list/clothing/lianyiqun">连衣裙</a></li>
+                        <li><a href="/women/list/clothing/banshenqun">半身裙</a></li>
+                        <li><a href="/women/list/clothing/waitao">西服\外套</a></li>
+                        <li><a href="/women/list/clothing/niuzaiku">牛仔裤</a></li>
+                        <li><a href="/women/list/clothing/kuzhuang">裤装</a></li>
+                        <li><a href="/women/list/clothing/neiyi">内衣\泳装</a></li>
+                        <li><a href="/women/list/clothing/peijian">腰带\丝巾</a></li>
+                        <li><a href="/women/list/clothing/yundong">休闲运动</a></li>
+                    </ul>
+                </div>
+                                <div class="sp-menu-list sp-menu-list-right">
+        	        <h4>热门品牌</h4>
+                    <ul>
+                        <li>
+                            <a href="/women/list/clothing/all-burberry">
+                                BURBERRY 博柏利
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/clothing/all-juicycouture">
+                                JUICY COUTURE 
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/clothing/all-diesel">
+                                DIESEL 迪赛
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/clothing/all-moco">
+                                MO&CO. 摩珂
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/clothing/all-sinequanone">
+                                SINEQUANONE 
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/clothing/all-freepeople">
+                                FREE PEOPLE 
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/clothing/all-elevenparis">
+                                ELEVEN PARIS 
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/clothing/all-dvf">
+                                DIANE VON FURSTENBERG (DVF) 黛安·冯芙丝汀宝
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/clothing/all-oasis">
+                                OASIS 奥时裳
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/clothing/all-aimer">
+                                AIMER 爱慕
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/clothing/all-victoriassecret">
+                                VICTORIA'S SECRET 维多利亚的秘密
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/clothing/all-imis">
+                                IMI'S 爱美丽
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="sp-bags-cont" class="sp-menu-table">
+            <div class="sp-menu-drop">
+    	        <div class="sp-menu-list">
+        	        <h4>箱包品类</h4>
+                    <ul>
+                        <li><a href="/women/list/bags/all">全部箱包</a></li>
+                        <li><a href="/women/list/bags/shoutibao">手提包</a></li>
+                        <li><a href="/women/list/bags/jianbao">肩包</a></li>
+                        <li><a href="/women/list/bags/qianjia">钱夹/手包</a></li>
+                        <li><a href="/women/list/bags/xiaoxingpeijian">小型配件</a></li>
+                        <li><a href="/women/list/bags/lvxingxiangbao">旅行箱包</a></li>
+                    </ul>
+                </div>
+                                <div class="sp-menu-list sp-menu-list-right">
+        	        <h4>热门品牌</h4>
+                    <ul>
+                        <li>
+                            <a href="/women/list/bags/all-prada">
+                                PRADA 普拉达
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/bags/all-gucci">
+                                GUCCI 古驰
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/bags/all-coach">
+                                COACH 蔻驰
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/bags/all-salvatoreferragamo">
+                                SALVATORE FERRAGAMO 菲拉格慕
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/bags/all-chanel">
+                                CHANEL 香奈儿
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/bags/all-burberry">
+                                BURBERRY 博柏利
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/bags/all-dior">
+                                DIOR 迪奥
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/bags/all-miumiu">
+                                MIU MIU 缪缪
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/bags/all-michaelkors">
+                                MICHAEL KORS 迈克·柯尔
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/bags/all-louisvuitton">
+                                LOUIS VUITTON 路易·威登
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/bags/all-tods">
+                                TOD'S 托德斯
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/bags/all-lanvin">
+                                LANVIN 浪凡
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="sp-shoese-cont" class="sp-menu-table">
+            <div class="sp-menu-drop">
+    	        <div class="sp-menu-list">
+        	        <h4>鞋靴品类</h4>
+                    <ul>
+                        <li><a href="/women/list/shoes/all">全部鞋靴</a></li>
+                        <li><a href="/women/list/shoes/liangxie">凉鞋</a></li>
+                        <li><a href="/women/list/shoes/pingdixie">平底鞋</a></li>
+                        <li><a href="/women/list/shoes/gaogenxie">高跟鞋</a></li>
+                        <li><a href="/women/list/shoes/baleiwuxie">芭蕾舞鞋</a></li>
+                        <li><a href="/women/list/shoes/xiuxianxie">休闲鞋</a></li>
+                        <li><a href="/women/list/shoes/zhongdigenxie">中低跟鞋</a></li>
+                        <li><a href="/women/list/shoes/pogenxie">坡跟鞋</a></li>
+                        <li><a href="/women/list/shoes/xuezi">靴子</a></li>
+                        <li><a href="/women/list/shoes/tongxie">童鞋</a></li>
+                    </ul>
+                </div>
+                                <div class="sp-menu-list sp-menu-list-right">
+        	        <h4>热门品牌</h4>
+                    <ul>
+                        <li>
+                            <a href="/women/list/shoes/all-salvatoreferragamo">
+                                SALVATORE FERRAGAMO 菲拉格慕
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/shoes/all-prada">
+                                PRADA 普拉达
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/shoes/all-prettyballerinas">
+                                PRETTY BALLERINAS 
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/shoes/all-ash">
+                                ASH 艾熙
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/shoes/all-stellaluna">
+                                STELLA LUNA 
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/shoes/all-stevemadden">
+                                STEVE MADDEN 史蒂夫·马登
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/shoes/all-toryburch">
+                                TORY BURCH 汤丽柏琦
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/shoes/all-dolcevita">
+                                DOLCE VITA 
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/shoes/all-chaussurelapin">
+                                CHAUSSURE LAPIN 
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/shoes/all-havaianas">
+                                HAVAIANAS 哈瓦那
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/shoes/all-ninewest">
+                                NINE WEST 玖熙
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/shoes/all-jeffreycampbell">
+                                JEFFREY CAMPBELL 
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="sp-accessories-cont" class="sp-menu-table">
+            <div class="sp-menu-drop">
+    	        <div class="sp-menu-list">
+        	        <h4>配饰品类</h4>
+                    <ul>
+                        <li><a href="/women/list/accessories/all">全部配饰</a></li>
+                        <li><a href="/women/list/accessories/zhubao">高级珠宝</a></li>
+                        <li><a href="/women/list/accessories/shoushi">时尚首饰</a></li>
+                        <li><a href="/women/list/accessories/xianglian">项链</a></li>
+                        <li><a href="/women/list/accessories/ershi">耳饰</a></li>
+                        <li><a href="/women/list/accessories/shoulianshouzhuo">手链/手镯</a></li>
+                        <li><a href="/women/list/accessories/jiezhi">戒指</a></li>
+                        <li><a href="/women/list/accessories/toushi">头饰</a></li>
+                        <li><a href="/women/list/accessories/xiongzhen">胸针</a></li>
+                        <li><a href="/women/list/accessories/san">伞</a></li>
+                        <li><a href="/women/list/accessories/xqita">配件 礼品</a></li>
+                    </ul>
+                </div>
+                                <div class="sp-menu-list sp-menu-list-right">
+        	        <h4>热门品牌</h4>
+                    <ul>
+                        <li>
+                            <a href="/women/list/accessories/all-tiffanyco">
+                                TIFFANY & CO. 蒂芙尼
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/accessories/all-swarovski">
+                                SWAROVSKI 施华洛世奇
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/accessories/all-fendi">
+                                FENDI 芬迪
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/accessories/all-hermes">
+                                HERMES 爱马仕
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/accessories/all-crocus">
+                                CROCUS 
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/accessories/all-gucci">
+                                GUCCI 古驰
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/accessories/all-dg">
+                                D&G 
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/accessories/all-alexandredeparis">
+                                ALEXANDRE DE PARIS 亚历山大
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/accessories/all-feiliu">
+                                FEI LIU
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/accessories/all-dior">
+                                DIOR 迪奥
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/accessories/all-ericksonbeamon">
+                                ERICKSON BEAMON 
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/accessories/all-montblanc">
+                                MONTBLANC 万宝龙
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="sp-watches-cont" class="sp-menu-table">
+            <div class="sp-menu-drop">
+    	        <div class="sp-menu-list">
+        	        <h4>腕表眼镜品类</h4>
+                    <ul>
+                        <li><a href="/women/list/watches/all">全部腕表眼镜</a></li>
+                        <li><a href="/women/list/watches/shishangshoubiao">时尚手表</a></li>
+                        <li><a href="/women/list/watches/ruishishoubiao">瑞士手表</a></li>
+                        <li><a href="/women/list/watches/A01B06C07">德国手表</a></li>
+                        <li><a href="/women/list/watches/ribenshoubiao">日本手表</a></li>
+                        <li><a href="/women/list/watches/taiyangjing">太阳镜</a></li>
+                        <li><a href="/women/list/watches/jingjia">镜架</a></li>
+                        <li><a href="/women/list/watches/gongnengyanjing">功能眼镜</a></li>
+                    </ul>
+                </div>
+                                <div class="sp-menu-list sp-menu-list-right">
+        	        <h4>热门品牌</h4>
+                    <ul>
+                        <li>
+                            <a href="/women/list/watches/all-tiffanyco">
+                                TIFFANY & CO. 蒂芙尼
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/watches/all-bvlgari">
+                                BVLGARI 宝格丽
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/watches/all-prada">
+                                PRADA 普拉达
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/watches/all-burberry">
+                                BURBERRY 博柏利
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/watches/all-tissot">
+                                TISSOT 天梭
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/watches/all-mido">
+                                MIDO 美度
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/watches/all-longines">
+                                LONGINES 浪琴
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/watches/all-omega">
+                                OMEGA 欧米茄
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/watches/all-lanvin">
+                                LANVIN 浪凡
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/watches/all-dior">
+                                DIOR 迪奥
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/watches/all-gucci">
+                                GUCCI 古驰
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/watches/all-dolcegabbana">
+                                DOLCE & GABBANA 杜嘉班纳
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="sp-beauty-cont" class="sp-menu-table">
+            <div class="sp-menu-drop">
+    	        <div class="sp-menu-list">
+        	        <h4>美妆品类</h4>
+                    <ul>
+                        <li><a href="/women/list/beauty/all">全部美妆</a></li>
+                        <li><a href="/women/list/beauty/meiyanhufu">美颜护肤</a></li>
+                        <li><a href="/women/list/beauty/mirenxiangfen">迷人香氛</a></li>
+                        <li><a href="/women/list/beauty/caizhuang">时尚彩妆</a></li>
+                        <li><a href="/women/list/beauty/gerenxihu">个人洗护</a></li>
+                        <li><a href="/women/list/beauty/meironggongju">美容工具</a></li>
+                    </ul>
+                </div>
+                                <div class="sp-menu-list sp-menu-list-right">
+        	        <h4>热门品牌</h4>
+                    <ul>
+                        <li>
+                            <a href="/women/list/beauty/all-chanel">
+                                CHANEL 香奈儿
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/beauty/all-laprairie">
+                                LA PRAIRIE 莱伯妮
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/beauty/all-lamer">
+                                LA MER 海蓝之谜
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/beauty/all-sisleyparis">
+                                SISLEY paris 希思黎
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/beauty/all-esteelauder">
+                                ESTEE LAUDER  雅诗兰黛
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/beauty/all-lancome">
+                                LANCOME 兰蔻
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/beauty/all-dior">
+                                DIOR 迪奥
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/beauty/all-guerlain">
+                                GUERLAIN 娇兰
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/beauty/all-clinique">
+                                CLINIQUE 倩碧
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/beauty/all-givenchy">
+                                GIVENCHY 纪梵希
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/beauty/all-clarins">
+                                CLARINS 娇韵诗
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/beauty/all-shiseido">
+                                SHISEIDO 资生堂
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="sp-homes-cont" class="sp-menu-table">
+            <div class="sp-menu-drop">
+    	        <div class="sp-menu-list">
+        	        <h4>家居品类</h4>
+                    <ul>
+                        <li><a href="/women/list/homes/all">全部家居</a></li>
+                        <li><a href="/women/list/homes/jiafangchaungpin">床上用品</a></li>
+                        <li><a href="/women/list/homes/chujucanju">餐具酒具</a></li>
+                        <li><a href="/women/list/homes/shishangjiashi">艺术家饰</a></li>
+                        <li><a href="/women/list/homes/jujiariyong">居家日用</a></li>
+                        <li><a href="/women/list/homes/chufangyongpin">厨房用品</a></li>
+                        <li><a href="/women/list/homes/jingpinjiadian">精品家电</a></li>
+                        <li><a href="/women/list/homes/maojinweiyu">毛巾卫浴</a></li>
+                        <li><a href="/women/list/homes/jiafangbuyi">家纺布艺</a></li>
+                    </ul>
+                </div>
+                                <div class="sp-menu-list sp-menu-list-right">
+        	        <h4>热门品牌</h4>
+                    <ul>
+                        <li>
+                            <a href="/women/list/homes/all-olivierdesforges">
+                                OLIVIER DESFORGES 奥丽丽·迪尔
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/homes/all-lovo">
+                                LOVO 罗莱LOVO
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/homes/all-wedgwood">
+                                WEDGWOOD 威基伍德
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/homes/all-lenox">
+                                LENOX 蓝纳克斯
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/homes/all-royalrose">
+                                ROYALROSE 皇室玫瑰
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/homes/all-hurom">
+                                HUROM 惠人
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/homes/all-thaiseberg">
+                                THAISEBERG 泰芝宝
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/homes/all-esteem">
+                                ESTEEM 宜庭
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/homes/all-artlab">
+                                ARTLAB
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/homes/all-fantti">
+                                FANTTI 芬缇
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/homes/all-glattrau">
+                                GLATTRAU 格拉迪奥
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/women/list/homes/all-wmf">
+                                WMF 福腾宝
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+<!--导航菜单下拉 end-->
+
+
+
+<!--ProductDetail bedin-->
+<div class="box">    
+    <input type="hidden" value="商品终端页" id="SurveyType" />
+    <input type="hidden" id="proId" value="03443532" />
+    <input type="hidden" id="gender" value="0" />
+    <input type="hidden" id="new" value="1" />  
+    <input type="hidden" id="orderType" name="orderType" value="2" />  
+    <input type="hidden" name="topicno" id="topicno" value="40422979" />
+    <input type="hidden" name="vipno" id="vipno" value="" /> 
+    <input type="hidden" id="hid_isshowflowsize" value='0' /> 
+    
+        <div class="sp_crumb"><a href="/">女士</a> &gt; <a href='/women/list/bags/'>箱包</a> &gt; <a href='/women/list/bags/qianjia'>钱夹/手包</a> &gt; <a href='/women/list/bags/changkuanqianbao'>长款钱夹</a> &gt; <a href='/women/brand/guess'>GUESS</a> &gt; <h3>女士钱包</h3></div>
+
+        <!--spDetail_imginfo begin -->
+        <div id="spDetail_main" class="clr">
+            <!-- 商品图片 begin -->
+            <div id="spDetail_imgBox" class="flt">
+                <div id="spDetail_proImg">
+                    <div id="spDetail_bigImg" class="loader">
+                        <div id="winSelector" style="display:none;"></div>
+                            
+                            <img src="/ReadPic/GetPic.ashx?width=0&height=0&pictureFileNo=@(picList.Count()>0? picList.ElementAt(0):"")&type=1" id="temploadimg"/>
+                            
+                    </div>
+                    <div id="spDetail_smImg">
+                    	<a id="btnScrollUp"><i></i></a>
+                        <div id="imageMenu"> 
+                        <ul>
+                            @for (int i = 0; i < picList.Count(); i++)
+                            {
+                                <li id=onlickImg>
+                                    <img width="60" height="80" src="/ReadPic/GetPic.ashx?width=60&height=80&pictureFileNo=@(picList.ElementAt(i))&type=1"  class="img_cursor" style="opacity: 1;" />
+                                </li>
+                            }
+                            </ul>                          
+                        </div>
+                    	<a id="btnScrollDown"><i></i></a>
+					</div>
+                </div>
+                <i class="dianqing_icon"></i>                
+            </div>
+            <!-- 商品图片 end -->
+            
+            <!-- 商品信息 begin -->            
+            <div id="spDetail_proInfo" class="frt">
+                <h2>
+                 <a target="_blank" href="/women/brand/guess">@pObj.ProductName</a>
+                </h2>
+                <h1>@pObj.ProductName</h1>
+                <div class="spDetail_proNo">商品编号 : @pObj.ProductNo</div>
+               
+               <div id="detailProdInfo">
+                <!--价格信息 start-->
+                <div class="spDetail_price_box">                		
+                        <input type="hidden" id="SP_ProdPrice" value="400" />
+                        <div class="spDetail_marketPrice">
+                            市场参考价：&yen;<del>@pObj.MarketPrice</del>
+                        </div>
+                        <div class="spDetail_spPriceBig clr">
+                            <span>尚品价：</span>
+                            <i>&yen;@pObj.LimitedPrice</i>                         
+                        </div>
+                       
+                    
+			    </div>
+                <!--价格信息 end-->
+                <!--促销推广 start-->
+                <!--促销推广 end-->
+                <!--支付配送 start-->
+                <div class="spDetail_send_box">
+                	<h3>支付：</h3>
+                    <ul class="payment clr">
+                        <li class="pay">
+                            <a href="javascript:void(0);">本商品支持招商银行信用卡分期</a>
+                        </li>
+                                                 <li class="noPay">
+                            <a href="javascript:void(0);">不支持货到付款</a>
+                        </li>
+                    </ul>                	
+                </div>
+                <!--支付配送 end-->
+                <a name="addBag"></a>
+               <!--颜色 start-->
+                 <div id="spDetail_proColor" class="spDetail_infoD clr">
+                        <p class="spDetail_lt spDetail_lt_bd">
+                            颜色：
+                            <span>
+                                    棕色
+
+                            </span>
+                        </p>
+                        <p class="spDetail_limg spDetail_limg_pd">
+                                    <span class="cmOver" no="00288490" type="1" quantity="0" value="棕色 "
+                                name="03443532_棕色" title="棕色 ">
+                                        <img src="http://pic13.shangpin.com/f/p/14/07/18/20140718160540825383-33-33.jpg"/>
+                                    </span>
+
+                        </p>
+                    </div>
+               <!--颜色 end-->
+                <!--尺码 start-->
+                <!--尺码 end-->
+                <!--数量 start-->
+                <div id="spDetail_proCont" class="spDetail_infoD clr">
+                    <p class="spDetail_lt flt">
+                        数量：</p>
+                    <div class="spDetail_lcont flt">
+                        <span class="spDetail_select_wp">
+                            <em id="emCount">1</em><i></i>
+                            <ul id="spDetail_num_cn" class="clr spDetail_select_cn">
+                                <li><a href="javascript:;">1</a></li>
+                                <li><a href="javascript:;">2</a></li>
+                                <li><a href="javascript:;">3</a></li>
+                                <li><a href="javascript:;">4</a></li>
+                                <li><a href="javascript:;">5</a></li>
+                                <li><a href="javascript:;">6</a></li>
+                                <li><a href="javascript:;">7</a></li>
+                                <li><a href="javascript:;">8</a></li>
+                                <li><a href="javascript:;">9</a></li>
+                                <li><a href="javascript:;">10</a></li>
+                            </ul>
+                        </span>
+                    </div>
+                    <!--购买提示信息-->
+                    <p id="spDetail_sb_msg" class="flt">
+                      
+                    </p>
+                    <!--收藏提示信息-->
+                    <p id="favmsg" class="sbE_col flt"></p>
+                </div>
+                <!--数量 end-->
+                <!--buy button start-->
+                <div id="spDetail_sb" class="clr">
+                               <a id="spDetail_b_buy" href="javascript:;" title="加入购物袋" class="spDetail_sb flt">加入购物袋</a>
+                               <a id="spDetail_b_sout" href="javascript:;" title="售罄" class="flt" style='display:none;'>售罄</a>
+                            <a id="spDetail_b_col" href="javascript:;" title="收藏" class="flt">收藏</a>
+                           <a id="spDetail_b_coled" href="javascript:;" title="已加入收藏" class="flt" style="display: none;">已加入收藏</a>
+                      
+                        
+                    </div>
+                <!--buy button end-->
+                <!--购买说明 start-->
+                    <div id="spDetail_des">温馨提示：<br/>
+如需退换货，需确保吊牌未拆除，相关配件（身份卡，防尘袋等）齐全，详情询售后及保养栏目。 </div>
+                <!--购买说明 end-->
+                <!--分享 start-->
+                <div id="spDetail_share" class="msh">
+                    <span>分享到：</span>
+                    <ul class="clr">
+                    <li><a href="#" class="weibo"></a></li>
+                    <li><a href="#" class="qweibo"></a></li>
+                    <li><a href="#" class="douban"></a></li>
+                    </ul>
+                </div>
+                <!--分享 end-->
+                </div>
+             </div>            
+            <!-- 商品信息 end -->
+        </div>
+        <!--spDetail_imginfo end -->
+    
+       
+    <!--spDetail_intro begin-->
+    <div id="spDetail_intro" class="spDetail_intro clr">
+        <div class="spDetail_intro_left">
+            <span id="spTabs_box"></span>
+            <ul id="spDetail_tbox" class="spTabs_menu_new clr">
+                <li class="first seled"> <a href="#tab0">商品详情</a> </li>
+                <li> <a href="#tab1">评论与咨询</a> </li>
+               
+                <li> <a href="#tab2">售后服务</a> </li>
+                <li  class="last"> <a href="#tab3">品牌故事</a> </li>
+                <!-- <li class="last"> 关于我们 </li> -->
+                <li class="addPay" id="addShoppingBag">
+                    <a href="javascript:void(0);" id="addBagBut" class="spDetail_sb"> 加入购物袋 </a>
+                </li>
+            </ul>
+            
+            <div id="spTabs_content" class="spTabs_content_new">
+                @if (!string.IsNullOrEmpty(ViewBag.DetailHTML))
+                {
+                    @Html.Raw(ViewBag.DetailHTML)
+                }
+                <!-- 商品详情 begin -->
+                @*<div class="spTabsCell">
+                    <div class="detailInfo detailSize after_sale">
+                    	<a id="tab0" name="tab0"></a>
+                        <!-- 商品属性 begin -->
+                        <dl class="detail">
+                        	<dt class="padl15">商品属性</dt>
+                            <dd class="padl15">
+                            	<table border="0" cellspacing="0" cellpadding="0" class="detailAttr">
+                                    <tr>
+                                        <td><label>商品名称：</label><span class="content">女士钱包</span></td>
+                                        <td><label>商品货号：</label><span class="content">SG452766-BRO</span></td>
+                                            </tr><tr>
+                                        <td><label>商品材质：</label><span class="content">100%PVC</span></td>
+                                        <td><label>品牌属地：</label><span class="content">美国</span></td>
+                                            </tr><tr>
+                                        <td><label>商品产地：</label><span class="content">雅加达</span></td>
+                                        <td><label>商品尺寸：</label><span class="content">19*10*3cm</span></td>
+                                            </tr><tr>
+                                        <td><label>商品细节：</label><span class="content">外部1个拉链零钱袋，1个贴袋，内置3个大钞位，1个照片位，14个卡位</span></td>
+                                        <td><label>颜色：</label><span class="content">棕色 </span></td>
+                                    </tr>
+                                
+                                
+                            	</table>
+                            </dd>
+                        </dl>
+                        <!-- 商品属性 end -->
+                       
+
+                        <!-- 编辑推荐 begin -->
+
+                        <!-- 编辑推荐 end -->
+
+                        <!-- 明星街拍 begin -->
+                        <!-- 明星街拍 end -->
+                        
+
+                        <!-- 商品指数 begin -->
+                            <dl class="detail">
+                    	        <dt>商品指数</dt>
+                                <dd class="height250">
+                        	        <div class="spDetail_size_cell clr">
+                                        <img class="commodity" width="179" height="239" src="http://pic11.shangpin.com/f/p/14/07/18/20140718160505787617-179-239.jpg"/>
+                                                <dl>
+                                	                <dt class="flt">钱夹折数</dt>
+                                	                <dd class="flt">
+                                		                <ul class="spDetail_size_detail clr">
+                                                                <li >1折<span></span></li>
+                                                                <li  class='curr' >2折<span></span></li>
+                                                                <li >3折<span></span></li>
+                                                                <li >更多<span></span></li>
+                                		                </ul>
+                                	                </dd>
+                                                </dl>
+                                                <dl>
+                                	                <dt class="flt">开袋方式</dt>
+                                	                <dd class="flt">
+                                		                <ul class="spDetail_size_detail clr">
+                                                                <li >拉链<span></span></li>
+                                                                <li  class='curr' >按钮<span></span></li>
+                                                                <li >拉链按钮<span></span></li>
+                                                                <li >魔术贴<span></span></li>
+                                                                <li >包盖式<span></span></li>
+                                                                <li >敞口<span></span></li>
+                                                                <li >挂钩<span></span></li>
+                                                                <li >其它<span></span></li>
+                                		                </ul>
+                                	                </dd>
+                                                </dl>
+                                                <dl>
+                                	                <dt class="flt">钱包款式</dt>
+                                	                <dd class="flt">
+                                		                <ul class="spDetail_size_detail clr">
+                                                                <li >卡片包<span></span></li>
+                                                                <li >硬币包<span></span></li>
+                                                                <li >钥匙包<span></span></li>
+                                                                <li >手机包<span></span></li>
+                                                                <li  class='curr' >长款钱夹<span></span></li>
+                                                                <li >短款钱夹<span></span></li>
+                                                                <li >其它<span></span></li>
+                                		                </ul>
+                                	                </dd>
+                                                </dl>
+                                                <dl>
+                                	                <dt class="flt">硬度</dt>
+                                	                <dd class="flt">
+                                		                <ul class="spDetail_size_detail clr">
+                                                                <li >较硬<span></span></li>
+                                                                <li >微硬<span></span></li>
+                                                                <li  class='curr' >适中<span></span></li>
+                                                                <li >微软<span></span></li>
+                                                                <li >超软<span></span></li>
+                                		                </ul>
+                                	                </dd>
+                                                </dl>
+                                    </div>
+                                        <p>&nbsp;</p>
+                                </dd>
+                            </dl>
+                        <!-- 商品指数 end -->
+                        
+
+                        <span id="spDetail_introCm"></span>
+                        <!-- 商品详细尺码 begin -->
+                                <dl class="detail">
+                    	            <dt>商品详细尺码（测量单位：cm）</dt>
+                                    <dd>
+                        	            <table border="0" cellspacing="0" cellpadding="0" class="sizeTab">
+
+                                                <tr>
+                                                    <th>宽</th>
+                                                    <th>高</th>
+                                                    <th>厚</th>
+                                                </tr>
+                                                    <tr>
+                                                                <td>19</td>
+                                                                <td>10</td>
+                                                                <td>3</td>
+
+                                                    </tr>
+                        	            </table>                            
+                                    </dd>
+                                    <p class="normalTxt">&nbsp;</p>
+                                </dl>
+                        
+                        <!-- 商品详细尺码 end -->
+
+                        <!--尺寸测量方法 start-->
+                       
+                                         <dl class="detail">
+                                                <dt>尺寸测量方法</dt>
+                                                <dd>                                                                   
+                                                 <img alt="尺寸测量方法" src="http://pic16.shangpin.com/f/p/14/06/07/20140607111506776977-0-0.jpg" />                                    
+                                                </dd>
+                                            </dl>                              
+                        
+                        <!--尺寸测量方法 end-->
+
+                                              
+                        <!-- 样衣试穿体验 begin -->
+                        <!-- 样衣试穿体验 end -->
+
+
+                        <!-- 洗涤说明 begin -->
+                        <!-- 洗涤说明 end -->
+                        <a id="tab1" name="tab1"></a>
+
+
+
+
+
+                        <!-- 商品评论 begin -->                        
+                        <dl class="detail">
+                            <dt>商品评论</dt>
+                            <dd>
+                            
+                                <div class="comment"><a href="http://account.shangpin.com/account/myreview" target="_blank">我要评论</a></div>
+                            </dd>
+                        </dl>
+                        <!-- 商品评论 end -->
+
+                        <!-- 商品咨询 begin -->                        
+                        <dl class="detail">
+                            <dt>商品咨询</dt>
+                            <dd>
+                                    <ul class="list">
+                                        <li class="question">尚品网的商品是正品吗？</li>
+                                        <li class="answer">尚品网信誉保证所有商品100%正品，商品均来自正规采购渠道并经过质检团队的细致检查，专业鉴定团队把控商品质量，以确保到达您手中的商品，皆以通过两轮以上严格质检。</li>
+                                    </ul>
+                                    <ul class="list">
+                                        <li class="question">尚品网的商品采用何种进货渠道？</li>
+                                        <li class="answer">尚品网严格把控采购渠道，坚持只从厂家、代理商、国内外专柜、品牌方以及资深供货商等可信渠道采购商品，同时，尚品网与LANVIN、ASH、Ray Ban等国内外多家知名品牌建立强有力合作关系，开设官方授权旗舰店，为您提供100%可靠放心的来源和品质保证。</li>
+                                    </ul>
+                                    <ul class="list">
+                                        <li class="question">尚品网如何选择品牌？</li>
+                                        <li class="answer">尚品网汇聚了全球主流和设计师多线品牌，更有专业买手团队精心分析潮流趋势，为品质客户诠释最具时尚典范的奢侈品，让您随时与国际潮流接轨。</li>
+                                    </ul>
+                                <div class="consultation"><a href="javascript:void(0);" onclick="document.getElementById('online-server').click();">我要咨询</a></div>
+                            </dd>
+                        </dl>                        
+                        <!-- 商品咨询 end -->
+
+
+                        <a id="tab2" name="tab2"></a>                        
+                        <!-- 尚品网售后保修政策 begin -->
+                        <dl class="detail">
+                    	    <dt>售后服务</dt>
+                            <dd>
+                                <p style="PADDING-BOTTOM: 0px; WIDOWS: 2; TEXT-TRANSFORM: none; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT: 12px Arial, Tahoma, 宋体; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; PADDING-TOP: 0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px"><span style="FONT: 400 12px Arial, Tahoma, 宋体"><span style="font-size:13px;">一、箱包类退换货说明</span></span></p><p style="PADDING-BOTTOM: 0px; WIDOWS: 2; TEXT-TRANSFORM: none; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT: 12px Arial, Tahoma, 宋体; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; PADDING-TOP: 0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px"><span style="font-size:13px;"><span style="font-family:Calibri;">1.</span>商品自签收之日起<span style="font-family:Calibri;">7</span>日内可申请退换货；</span></p><p style="PADDING-BOTTOM: 0px; WIDOWS: 2; TEXT-TRANSFORM: none; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT: 12px Arial, Tahoma, 宋体; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; PADDING-TOP: 0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px"><span style="font-size:13px;"><span style="font-family:Calibri;">2.</span>自签收之日起<span style="font-family:Calibri;">15</span>天内，如出现国家三包所规定的质量问题时，请您在第一时间与尚品网联系，经尚品网检验质量问题属实后，我们会为您维修或者办理换货。如超出<span style="font-family:Calibri;">15</span>天的时间，可以在保修期享受有偿维修服务；</span></p><p style="PADDING-BOTTOM: 0px; WIDOWS: 2; TEXT-TRANSFORM: none; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT: 12px Arial, Tahoma, 宋体; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; PADDING-TOP: 0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px"><span style="font-size:13px;"><span style="font-family:Calibri;">3.</span>退换货商品需确保相关配件、单据、吊牌（不能从商品上拆除）、包装、卡证等完好、齐全，不影响二次销售，否则我们将不能为您办理退换货；</span></p><p style="PADDING-BOTTOM: 0px; WIDOWS: 2; TEXT-TRANSFORM: none; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT: 12px Arial, Tahoma, 宋体; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; PADDING-TOP: 0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px"><span style="font-size:13px;"><span style="font-family:Calibri;">4.</span>如若申请办理的商品订单中含有赠品，您需要将赠品一同寄回；若申请办理的订单中开据了发票，您需要将发票一同寄回；</span></p><p style="PADDING-BOTTOM: 0px; WIDOWS: 2; TEXT-TRANSFORM: none; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT: 12px Arial, Tahoma, 宋体; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; PADDING-TOP: 0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px"><span style="font-size:13px;"><span style="font-family:Calibri;">5.</span>请务必使用外包装箱寄回商品<span style="font-family:Calibri;">；</span></span></p><p style="PADDING-BOTTOM: 0px; WIDOWS: 2; TEXT-TRANSFORM: none; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT: 12px Arial, Tahoma, 宋体; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; PADDING-TOP: 0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px"><span style="font-size:13px;"><span style="font-family:Calibri;">6.</span>请您使用普通快递寄回，请勿使用到付或平邮等邮寄方式，以免影响您的退换货效率；</span></p><p style="PADDING-BOTTOM: 0px; WIDOWS: 2; TEXT-TRANSFORM: none; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT: 12px Arial, Tahoma, 宋体; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; PADDING-TOP: 0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px"><span style="font-size:13px;">7.<span style="font-size:13px;"><span style="font-family:Calibri;">请先预付快递运费，待产品质检入库后，如因产品质量原因导致的退换货，尚品网将补给您20元现金券，每个包裹最高补贴20元，暂不接受平邮与到付方式<span style="TEXT-ALIGN: justify; TEXT-INDENT: 28px; FONT-SIZE: 14px"></span></span>；</span></span></p><p style="PADDING-BOTTOM: 0px; WIDOWS: 2; TEXT-TRANSFORM: none; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT: 12px Arial, Tahoma, 宋体; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; PADDING-TOP: 0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px"><span style="font-size:13px;"><span style="font-family:Calibri;">8.</span>若申请办理的订单中使用了优惠券，在退货过程中，优惠券将会被拆分计算，具体信息请您留意个人账户中的订单信息提示；</span></p><p style="PADDING-BOTTOM: 0px; WIDOWS: 2; TEXT-TRANSFORM: none; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT: 12px Arial, Tahoma, 宋体; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; PADDING-TOP: 0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px"><span style="font-size:13px;"><span style="font-family:Calibri;">9.</span>换货商品只能针对同一商品调换，不支持商品间换货及差价换货。</span></p><p style="PADDING-BOTTOM: 0px; WIDOWS: 2; TEXT-TRANSFORM: none; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT: 12px Arial, Tahoma, 宋体; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; PADDING-TOP: 0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px"><span style="font-family:Calibri;font-size:13px;">&nbsp;</span></p><p style="PADDING-BOTTOM: 0px; WIDOWS: 2; TEXT-TRANSFORM: none; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT: 12px Arial, Tahoma, 宋体; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; PADDING-TOP: 0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px"><span style="FONT: 400 12px Arial, Tahoma, 宋体"><span style="font-size:13px;">二、以下情况无法办理退换货</span></span></p><p style="PADDING-BOTTOM: 0px; WIDOWS: 2; TEXT-TRANSFORM: none; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT: 12px Arial, Tahoma, 宋体; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; PADDING-TOP: 0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px"><span style="font-size:13px;"><span style="font-family:Calibri;">1.</span>任何已使用过的商品，商品有质量问题除外；</span></p><p style="PADDING-BOTTOM: 0px; WIDOWS: 2; TEXT-TRANSFORM: none; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT: 12px Arial, Tahoma, 宋体; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; PADDING-TOP: 0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px"><span style="font-size:13px;"><span style="font-family:Calibri;">2.</span>任何因非正常使用及保管导致出现质量问题的商品；</span></p><p style="PADDING-BOTTOM: 0px; WIDOWS: 2; TEXT-TRANSFORM: none; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT: 12px Arial, Tahoma, 宋体; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; PADDING-TOP: 0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px"><span style="font-size:13px;"><span style="font-family:Calibri;">3.</span>任何相关配件、单据、吊牌（不能从商品上拆除）、包装、卡证、发票等缺失的商品；</span></p><p style="PADDING-BOTTOM: 0px; WIDOWS: 2; TEXT-TRANSFORM: none; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT: 12px Arial, Tahoma, 宋体; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; PADDING-TOP: 0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px"><span style="font-size:13px;"><span style="font-family:Calibri;">4.</span>对于带有安全封条商品，如安全封条拆除或破损则无法为您办理退货，请您务必保证安全封条的完整性<span style="font-family:Calibri;">；</span></span></p><p style="PADDING-BOTTOM: 0px; WIDOWS: 2; TEXT-TRANSFORM: none; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT: 12px Arial, Tahoma, 宋体; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; PADDING-TOP: 0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px"><span style="font-size:13px;"><span style="font-family:Calibri;">5.</span>客户未经尚品网办理退货申请，直接将商品寄回尚品网，尚品网不承担保管、重新发货、退款责任，必要时尚品网有权处置滞留商品。</span></p><p style="PADDING-BOTTOM: 0px; WIDOWS: 2; TEXT-TRANSFORM: none; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT: 12px Arial, Tahoma, 宋体; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; PADDING-TOP: 0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px"><span style="font-family:Calibri;font-size:13px;">&nbsp;</span></p><p style="PADDING-BOTTOM: 0px; WIDOWS: 2; TEXT-TRANSFORM: none; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT: 12px Arial, Tahoma, 宋体; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; PADDING-TOP: 0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px"><span style="FONT: 400 12px Arial, Tahoma, 宋体"><span style="font-size:13px;">温馨提示：</span></span></p><span style="color:#000000;WIDOWS: 2; TEXT-TRANSFORM: none; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; FONT: 13px Arial, Tahoma, 宋体; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; WORD-SPACING: 0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px">自箱包购买一年内，尚品为您提供一次免费的箱包保养服务。</span> 
+                            </dd>
+                        </dl>
+                        <!-- 尚品网售后保修政策 end -->
+                        
+                    </div>
+                </div>*@
+                <!-- 商品详情 end -->
+                
+            </div>
+        </div>
+    
+    
+
+    <!--右侧您可能喜欢 begin-->
+        <div class="spProduct_listbox spDetail_intro_right">
+            <h3>您可能喜欢</h3>
+            <ul class="clr">
+                
+                    <li no="03443530" class="product_list" s=0  isp="1">
+                        <a id="03443530" href="/women/product/03443530" target="_blank" class=" brank_avatar loader">
+                            <img width="174" height="232" title="女士钱包" alt="女士钱包" src="http://pic12.shangpin.com/f/p/14/07/18/20140718160345665938-174-232.jpg"/>
+                        </a>
+                        <div class="product_infomation">
+                            <h6><a href="/women/product/03443530" target="_blank" title="GUESS">GUESS</a></h6>
+                            <p><a href="/women/product/03443530" target="_blank" title="女士钱包">女士钱包</a></p>
+                                   
+                            <p class="sale_price">
+                            </p>
+                            <p class="new_price">
+                                    <strong>&yen;400</strong>
+                            </p>
+                        </div>
+                               
+                    </li>
+                    <li no="03443521" class="product_list" s=0  isp="1">
+                        <a id="03443521" href="/women/product/03443521" target="_blank" class=" brank_avatar loader">
+                            <img width="174" height="232" title="女士钱包" alt="女士钱包" src="http://pic14.shangpin.com/f/p/14/07/18/20140718155724978477-174-232.jpg"/>
+                        </a>
+                        <div class="product_infomation">
+                            <h6><a href="/women/product/03443521" target="_blank" title="GUESS">GUESS</a></h6>
+                            <p><a href="/women/product/03443521" target="_blank" title="女士钱包">女士钱包</a></p>
+                                   
+                            <p class="sale_price">
+                            </p>
+                            <p class="new_price">
+                                    <strong>&yen;400</strong>
+                            </p>
+                        </div>
+                               
+                    </li>
+                    <li no="03367198" class="product_list" s=0  isp="1">
+                        <a id="03367198" href="/women/product/03367198" target="_blank" class=" brank_avatar loader">
+                            <img width="174" height="232" title="女士印花长款钱夹" alt="女士印花长款钱夹" src="http://pic14.shangpin.com/f/p/14/04/30/20140430164355316478-174-232.jpg"/>
+                        </a>
+                        <div class="product_infomation">
+                            <h6><a href="/women/product/03367198" target="_blank" title="GUESS">GUESS</a></h6>
+                            <p><a href="/women/product/03367198" target="_blank" title="女士印花长款钱夹">女士印花长款钱夹</a></p>
+                                   
+                            <p class="sale_price">
+                            </p>
+                            <p class="new_price">
+                                    <strong>&yen;360</strong>
+                            </p>
+                        </div>
+                               
+                    </li>
+                    <li no="03443524" class="product_list" s=0  isp="1">
+                        <a id="03443524" href="/women/product/03443524" target="_blank" class=" brank_avatar loader">
+                            <img width="174" height="232" title="女士钱包" alt="女士钱包" src="http://pic16.shangpin.com/f/p/14/07/18/20140718155925223479-174-232.jpg"/>
+                        </a>
+                        <div class="product_infomation">
+                            <h6><a href="/women/product/03443524" target="_blank" title="GUESS">GUESS</a></h6>
+                            <p><a href="/women/product/03443524" target="_blank" title="女士钱包">女士钱包</a></p>
+                                   
+                            <p class="sale_price">
+                            </p>
+                            <p class="new_price">
+                                    <strong>&yen;400</strong>
+                            </p>
+                        </div>
+                               
+                    </li>
+                    <li no="03443505" class="product_list" s=0  isp="1">
+                        <a id="03443505" href="/women/product/03443505" target="_blank" class=" brank_avatar loader">
+                            <img width="174" height="232" title="女士钱包" alt="女士钱包" src="http://pic12.shangpin.com/f/p/14/07/18/20140718154914326324-174-232.jpg"/>
+                        </a>
+                        <div class="product_infomation">
+                            <h6><a href="/women/product/03443505" target="_blank" title="GUESS">GUESS</a></h6>
+                            <p><a href="/women/product/03443505" target="_blank" title="女士钱包">女士钱包</a></p>
+                                   
+                            <p class="sale_price">
+                            </p>
+                            <p class="new_price">
+                                    <strong>&yen;350</strong>
+                            </p>
+                        </div>
+                               
+                    </li>
+               
+            </ul>
+        </div>        
+     <!--右侧您可能喜欢 end-->
+
+    </div>
+    <!--spDetail_intro end-->
+
+    <!--spDetail_pordList begin-->
+    <div id="spDetail_pordList" class="spDetail_pordList clr">
+        <a id="tab3" name="tab3"></a>
+
+        <!--品牌故事 begin-->
+        <h3>品牌故事</h3>
+        <!-- 品牌简介 begin -->
+        <div class="detail_brand_banner clr">
+            <div class="flt brand_con_box">
+                <h2 id="brand_h2"><span>GUESS</span></h2>
+                <div class="brand_con" linePic="http://pic13.shangpin.com/shangpin/images/page/brand/brand_scroll_bg.gif">
+                    <p><p>由三个在法国一个充满热情文化的南方地区成长的Marciano兄弟，Georges，Maurice及Paul所创下的GUESS，是一个沾染了美国西部风味，欧洲浪漫热情及法国时款设计的品牌。出生于法国南部的Marciano兄弟由于喜爱美国的自由，于七十年代便迁往美国，并于加州展开他们的时装梦。 七十年代，服饰设计并无一个大方向，更认为牛仔裤说不上什么时装。而Marciano兄弟在1981年推出一条名为Marilyn jean的三拉链款式紧身牛仔裤于百货公司Bloomingdale销售，来证明他们的对牛仔裤的崭新设计理念，把被定义为工作服的牛仔裤变成流行时装。在几个小时内，货品立即销售一空，Marciano从此便开始建立这个充满法国情怀的美国品牌的拓展。而这个牛仔商品的新发展，亦令牛仔裤成为一个不受时间影响的时尚代表。 在Marciano兄弟， Maurice及 Paul的带领下，GUESS的产品及销售版图均有很理想的发展。 在产品方面，GUESS虽然只是生产牛仔裤起家，由于不断扩展，现时GUESS还有出售男女时装，童装，泳装，鞋履，钟表，精品配饰，手袋，眼镜，香水，行李箱等。</p></p>
+                </div>
+                <div id="brandList_guanzhu" class="clr" no="B0046">                        
+                    <div id="divConcern" class="clr">
+                        <a class="attention_btn" href="javascript:">关注该品牌店</a>
+                        </div>
+                </div>
+            </div>
+            <a class="frt" href="/women/brand/guess" target="_blank">
+                <img src="http://pic13.shangpin.com/shangpin/images/e.gif" lazy="http://pic16.shangpin.com/e/s/14/04/15/20140415161541782797-0-0.jpg" width="600" height="250" />
+            </a>
+        </div>
+        <!-- 品牌简介 end -->
+        <!-- 品牌故事 end -->                
+        
+
+
+        
+        <!--您浏览过的商品 begin-->
+        <h3>您浏览过的商品</h3>
+        <div class="commodity_list clr" id="browseH">            
+        </div>
+        <!--您浏览过的商品 end-->
+        
+        
+    
+    </div>
+    <!--spDetail_pordList end-->
+
+</div> 
+<!--proDetail end --> 
+
+    <!--Footer Start-->
+    <div id="spFooter" class="box mgt10 relt">
+        <div id="spFooter_userhelp" class="clr">
+            <dl>
+                <dt>
+                    <p>
+                        新手上路</p>
+                    <p>
+                        Tour Guide</p>
+                </dt>
+                <dd>
+                    <a rel="nofollow" href="http://as.shangpin.com/static/help/newhand1.htm" target="_blank">
+                        购物流程</a></dd>
+                <dd>
+                    <a rel="nofollow" href="http://as.shangpin.com/static/help/newhand2.htm" target="_blank">
+                        发票制度</a></dd>
+                <dd>
+                    <a rel="nofollow" href="http://as.shangpin.com/static/help/newhand3.htm" target="_blank">
+                        会员介绍</a></dd>
+                <dd>
+                    <a rel="nofollow" href="http://as.shangpin.com/static/help/newhand4.htm" target="_blank">
+                        找回密码</a></dd>
+                <dd>
+                    <a rel="nofollow" href="http://as.shangpin.com/static/help/newhand5.htm" target="_blank">
+                        订单查询</a></dd>
+                <dd>
+                    <a rel="nofollow" href="http://as.shangpin.com/static/help/newhand6.htm" target="_blank">
+                        优惠券使用</a></dd>
+            </dl>
+            <dl>
+                <dt>
+                    <p>
+                        支付方式</p>
+                    <p>
+                        Payment Methods</p>
+                </dt>
+                <dd>
+                    <a rel="nofollow" href="http://as.shangpin.com/static/help/payment1.htm" target="_blank">
+                        在线支付</a></dd>
+                <dd>
+                    <a rel="nofollow" href="http://as.shangpin.com/static/help/payment2.htm" target="_blank">
+                        货到付款</a></dd>
+               
+            </dl>
+            <dl>
+                <dt>
+                    <p>
+                        配送说明</p>
+                    <p>
+                        Shipping&nbsp;&amp;&nbsp;Delivery</p>
+                </dt>
+                <dd>
+                    <a rel="nofollow" href="http://as.shangpin.com/static/help/delivery1.htm" target="_blank">
+                        配送方式</a></dd>
+                <dd>
+                    <a rel="nofollow" href="http://as.shangpin.com/static/help/delivery3.htm" target="_blank">
+                        配送范围</a></dd>
+                <dd>
+                    <a rel="nofollow" href="http://as.shangpin.com/static/help/delivery2.htm" target="_blank">
+                        运费说明</a></dd>
+            </dl>
+            <dl>
+                <dt>
+                    <p>
+                        售后服务</p>
+                    <p>
+                        Return Policy</p>
+                </dt>
+                <dd>
+                    <a rel="nofollow" href="http://as.shangpin.com/static/help/service2.htm" target="_blank">
+                        退换货流程</a></dd>
+                <dd>
+                    <a rel="nofollow" href="http://as.shangpin.com/static/help/service1.htm" target="_blank">
+                        退换货政策</a></dd>
+                <dd>
+                    <a rel="nofollow" href="http://as.shangpin.com/static/help/service7.htm" target="_blank">
+                        售后维修</a></dd>
+                <dd>
+                    <a rel="nofollow" href="http://as.shangpin.com/static/help/service3.htm" target="_blank">
+                        退款说明</a></dd>
+            </dl>
+            <dl id="t_msgIcon" class="">
+                
+                <dd style="padding-top: 20px">
+                    <a title="尚品微信二维码帮助" rel="nofollow" href="http://as.shangpin.com/static/help/qrcode.htm"
+                        target="_blank">
+                        <img alt="微信二维码" src="http://pic11.shangpin.com/shangpin/images/page/mobile/app_code.jpg"></a></dd>
+                <dd class="t_msgtxt">
+                    加尚品为微信好友</dd>
+                <dd style="padding: 8px 0;">
+                    <a target="_blank" href="http://blog.shangpin.com/">尚品官方博客</a>
+                </dd>
+                <dd class="t_msgweibo">
+                    <a rel="nofollow" href="http://e.weibo.com/shangpin" target="_blank"><i style="display: inline-block;
+                        *display: inline; *zoom: 1; width: 16px; height: 16px; vertical-align: middle;
+                        position: relative; top: -1px; background: url(http://img.t.sinajs.cn/t35/appstyle/opent/images/app/btn_trans.gif?id=201104131414) no-repeat 0 -56px;">
+                    </i>官方微博</a>
+                </dd>
+            </dl>
+            <dl id="spFooter_userhelp_service">
+                <dd>
+                    <a rel="nofollow" href="/Main/Mobile" title="手机客户端免费下载" class="spFooter_service_app"
+                        target="_blank"></a>
+                </dd>
+                <dd id="spFooter_userhelp_service_hotline">
+                    <p>
+                        客户服务热线 Customer service hotline</p>
+                    <strong class="blk largest txtshad">4006-900-900</strong>
+                    <p>
+                        （早08:00-晚12:00）</p>
+                </dd>
+                <dd>
+                    <a rel="nofollow" class="spFooter_service_kf" title="在线客服" href="/zhitongche/desktop/"
+                        target="_blank"></a>
+                </dd>
+            </dl>
+        </div>
+        <p id="spFooter_promise">
+            <a rel="nofollow" href="http://as.shangpin.com/static/help/service4.htm" target="_blank"
+                title="奢侈品100%正品保证" class="spFooter_zp"></a><a rel="nofollow" href="http://as.shangpin.com/static/help/delivery2.htm"
+                    target="_blank" title="满499元免运费" class="spFooter_free"></a><a rel="nofollow" href="http://as.shangpin.com/static/help/service1.htm"
+                        target="_blank" title="7天退换货" class="spFooter_tui"></a>
+        </p>
+        <p id="spFooter_info">
+    <a href="http://as.shangpin.com/static/about/aboutus.htm" rel="nofollow" target="_blank" title="关于尚品">关于尚品<span>About&nbsp;Us</span></a>
+    <a href="http://as.shangpin.com/static/about/media.htm" rel="nofollow" target="_blank" title="尚品新闻">尚品新闻<span>Press&nbsp;Room</span></a>
+    <a href="http://as.shangpin.com/static/about/joinus.htm" rel="nofollow" target="_blank" title="招聘信息">招聘信息<span>Job&nbsp;Opportunities</span></a>
+    <a href="http://as.shangpin.com/static/about/business.htm" target="_blank" title="品牌招商">品牌招商<span>BD</span></a>
+    <a href="http://as.shangpin.com/static/about/help.htm" rel="nofollow" target="_blank" title="帮助中心">帮助中心<span>Help&nbsp;Center</span></a>
+    <a href="http://as.shangpin.com/static/about/contact.htm" rel="nofollow" target="_blank" title="联系我们">联系我们<span>Contact&nbsp;Us</span></a>
+    
+    <a href="/market/links" target="_blank" title="奢侈品友情链接">友情链接<span>Links</span></a>
+    <a href="/market/sitemap" target="_blank" title="奢侈品网站地图">网站地图<span>Site&nbsp;Map</span></a>
+    <a title="奢侈品搜索直通车" class="" target="_blank" href="http://www.shangpin.com/zhitongche/" style="border-right:none">搜索直通车<span>Search Result</span></a>
+    </p>﻿
+    
+    
+
+
+<p id="spFooter_record">
+    <a href="http://gawa.bjchy.gov.cn/websearch/" rel="nofollow" target="_blank">京公网安备110105001984</a>
+    <a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备09087291号-2</a>
+    <a href="http://www.miibeian.gov.cn/" rel="nofollow" target="_blank">京ICP证090703号</a><i>Copyright © 2010-2014
+            Shangpin.com All Rights Reserved</i>
+</p>
+<p id="spFooter_auth">
+<a rel="nofollow" href="http://www.ectrustprc.org.cn/certificate.id/certificateb.php?id=20020713" target="_blank"> <img src="http://pic13.shangpin.com/shangpin/images/e.gif" lazy="http://pic12.shangpin.com/shangpin/images/foot5.gif?v=809" alt="中国电子商务诚信单位" title="中国电子商务诚信单位"></a>
+<a rel="nofollow" href="http://www.alipay.com/aip/aip_validate_list.htm?trust_id=AIP11019677" target="_blank"><img src="http://pic13.shangpin.com/shangpin/images/e.gif" lazy="http://pic15.shangpin.com/shangpin/images/foot6.gif?v=809" alt="支付宝特约商家" title="支付宝特约商家"></a>
+<a rel="nofollow" href="http://search.szfw.org/cert/l/CX20120918001657001727" style="width: 62px" target="_blank"><img src="http://pic13.shangpin.com/shangpin/images/e.gif" lazy="http://pic12.shangpin.com/shangpin/images/public/cx.png" alt="诚信示范企业"  title="诚信示范企业"/></a>
+<a rel="nofollow" href="http://www.315online.com.cn/member/315110114.html" target="_blank"><img src="http://pic13.shangpin.com/shangpin/images/e.gif" lazy="http://pic13.shangpin.com/shangpin/images/foot8.gif?v=809" alt="网上交易保障中心" title="网上交易保障中心"></a>
+<a rel="nofollow" href="https://www.itrust.org.cn/yz/pjwx.asp?wm=1669117737" target="_blank"><img src="http://pic13.shangpin.com/shangpin/images/e.gif" lazy="http://pic13.shangpin.com/shangpin/images/foot10.gif" alt="中国互联网信用评价中心" title="中国互联网信用评价中心"></a>
+<a rel="nofollow" href="http://www.hd315.gov.cn/beian/view.asp?bianhao=010202012082400506" target="_blank"><img src="http://pic13.shangpin.com/shangpin/images/e.gif" lazy="http://pic14.shangpin.com/shangpin/images/foot11.gif" alt="中国电子商务诚信单位" title="中国电子商务诚信单位"></a>
+<a rel="nofollow" href="http://kuaitousu.com/union/79.html" target="_blank"><img src="http://pic13.shangpin.com/shangpin/images/e.gif" lazy="http://pic14.shangpin.com/shangpin/images/public/foot12.jpg" alt="中国网络消费者权益保护联盟" title="中国网络消费者权益保护联盟"></a>
+<a href="#" title="中国银联"><img alt="中国银联" title="中国银联" src="http://pic13.shangpin.com/shangpin/images/e.gif" lazy="http://pic12.shangpin.com/shangpin/images/foot13.gif" /></a>
+</p>
+        
+    </div>
+    <!--520 footer-->
+    
+    <!--520 footer-->
+    <!--IFC footer-->
+    
+    <!--IFC footer-->
+    <!--在线客服 begin-->
+    <dl id="right-toolbar">
+        <dt><a href="javascript:;" title="" id="tool-clickbar">&nbsp;</a></dt>
+        <dd class="online-serverbox">
+            <a href="#" rel="nofollow" title="在线客服" id="online-server"><i></i>在线客服</a></dd>
+        <dd class="toolbar-dd">
+            <img src="http://pic16.shangpin.com/shangpin/images/plug/feedTop/tool_img.jpg" id="tool-img" alt="" />
+            <a href="#" rel="nofollow" title="购买咨询" id="buy-consult">购买咨询</a> <a href="#" rel="nofollow"
+                title="售后咨询" id="after-sale">售后咨询</a> <a href="#" rel="nofollow" title="投诉建议" id="c-suggestion">
+                    投诉建议</a>
+        </dd>
+        <dd>
+            <a href="#" rel="nofollow" title="返回顶部" id="backto-top">返回顶部</a></dd>
+        <dd class="toolbar_wx">
+            <img src="http://pic11.shangpin.com/shangpin/images/plug/feedTop/tool_wx_ie6.png" alt="" /></dd>
+    </dl>
+    <!--在线客服 end-->
+    <!-- Google Code for &#20877;&#33829;&#38144;&#20195;&#30721; -->
+    <!-- Remarketing tags may not be associated with personally identifiable information or placed on pages related to sensitive categories. For instructions on adding this tag and more information on the above requirements, read the setup guide: google.com/ads/remarketingsetup -->
+    
+    <!--mediav检测代码2013-8-22-->
+
+    <!--vizury检测代码2014-5-04-->  
+</body>
+</html>
+ 
+
+ 

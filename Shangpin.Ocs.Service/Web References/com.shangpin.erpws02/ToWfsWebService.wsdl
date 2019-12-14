@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="UpdateBrandMessage">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="brandFiledXml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateBrandMessageResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateBrandMessageResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProductBuyPriceByProductNo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="productNo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProductBuyPriceByProductNoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetProductBuyPriceByProductNoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SwapOrderCreateForWfs">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="paraxml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SwapOrderCreateForWfsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SwapOrderCreateForWfsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SwapOrderDetailCancelForWfs">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ApplyOrderDetailId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ApplyOrderNo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SwapOrderDetailCancelForWfsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SwapOrderDetailCancelForWfsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReturnApplyOrderCreateForWfs">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="paraxml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReturnApplyOrderCreateForWfsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ReturnApplyOrderCreateForWfsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCashTicketNoByAmount">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ticketAmount" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCashTicketNoByAmountResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCashTicketNoByAmountResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventoryAgeByProductNos">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ticketAmount" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInventoryAgeByProductNosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInventoryAgeByProductNosResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="UpdateBrandMessageSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateBrandMessage" />
+  </wsdl:message>
+  <wsdl:message name="UpdateBrandMessageSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateBrandMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetProductBuyPriceByProductNoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetProductBuyPriceByProductNo" />
+  </wsdl:message>
+  <wsdl:message name="GetProductBuyPriceByProductNoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetProductBuyPriceByProductNoResponse" />
+  </wsdl:message>
+  <wsdl:message name="SwapOrderCreateForWfsSoapIn">
+    <wsdl:part name="parameters" element="tns:SwapOrderCreateForWfs" />
+  </wsdl:message>
+  <wsdl:message name="SwapOrderCreateForWfsSoapOut">
+    <wsdl:part name="parameters" element="tns:SwapOrderCreateForWfsResponse" />
+  </wsdl:message>
+  <wsdl:message name="SwapOrderDetailCancelForWfsSoapIn">
+    <wsdl:part name="parameters" element="tns:SwapOrderDetailCancelForWfs" />
+  </wsdl:message>
+  <wsdl:message name="SwapOrderDetailCancelForWfsSoapOut">
+    <wsdl:part name="parameters" element="tns:SwapOrderDetailCancelForWfsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ReturnApplyOrderCreateForWfsSoapIn">
+    <wsdl:part name="parameters" element="tns:ReturnApplyOrderCreateForWfs" />
+  </wsdl:message>
+  <wsdl:message name="ReturnApplyOrderCreateForWfsSoapOut">
+    <wsdl:part name="parameters" element="tns:ReturnApplyOrderCreateForWfsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCashTicketNoByAmountSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCashTicketNoByAmount" />
+  </wsdl:message>
+  <wsdl:message name="GetCashTicketNoByAmountSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCashTicketNoByAmountResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInventoryAgeByProductNosSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInventoryAgeByProductNos" />
+  </wsdl:message>
+  <wsdl:message name="GetInventoryAgeByProductNosSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInventoryAgeByProductNosResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ToWfsWebServiceSoap">
+    <wsdl:operation name="UpdateBrandMessage">
+      <wsdl:input message="tns:UpdateBrandMessageSoapIn" />
+      <wsdl:output message="tns:UpdateBrandMessageSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProductBuyPriceByProductNo">
+      <wsdl:input message="tns:GetProductBuyPriceByProductNoSoapIn" />
+      <wsdl:output message="tns:GetProductBuyPriceByProductNoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SwapOrderCreateForWfs">
+      <wsdl:input message="tns:SwapOrderCreateForWfsSoapIn" />
+      <wsdl:output message="tns:SwapOrderCreateForWfsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SwapOrderDetailCancelForWfs">
+      <wsdl:input message="tns:SwapOrderDetailCancelForWfsSoapIn" />
+      <wsdl:output message="tns:SwapOrderDetailCancelForWfsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ReturnApplyOrderCreateForWfs">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">创建退货申请单</wsdl:documentation>
+      <wsdl:input message="tns:ReturnApplyOrderCreateForWfsSoapIn" />
+      <wsdl:output message="tns:ReturnApplyOrderCreateForWfsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCashTicketNoByAmount">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">获取优惠券编号</wsdl:documentation>
+      <wsdl:input message="tns:GetCashTicketNoByAmountSoapIn" />
+      <wsdl:output message="tns:GetCashTicketNoByAmountSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInventoryAgeByProductNos">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">批量获取商品的库龄</wsdl:documentation>
+      <wsdl:input message="tns:GetInventoryAgeByProductNosSoapIn" />
+      <wsdl:output message="tns:GetInventoryAgeByProductNosSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ToWfsWebServiceSoap" type="tns:ToWfsWebServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="UpdateBrandMessage">
+      <soap:operation soapAction="http://tempuri.org/UpdateBrandMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProductBuyPriceByProductNo">
+      <soap:operation soapAction="http://tempuri.org/GetProductBuyPriceByProductNo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SwapOrderCreateForWfs">
+      <soap:operation soapAction="http://tempuri.org/SwapOrderCreateForWfs" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SwapOrderDetailCancelForWfs">
+      <soap:operation soapAction="http://tempuri.org/SwapOrderDetailCancelForWfs" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReturnApplyOrderCreateForWfs">
+      <soap:operation soapAction="http://tempuri.org/ReturnApplyOrderCreateForWfs" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCashTicketNoByAmount">
+      <soap:operation soapAction="http://tempuri.org/GetCashTicketNoByAmount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventoryAgeByProductNos">
+      <soap:operation soapAction="http://tempuri.org/GetInventoryAgeByProductNos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ToWfsWebServiceSoap12" type="tns:ToWfsWebServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="UpdateBrandMessage">
+      <soap12:operation soapAction="http://tempuri.org/UpdateBrandMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProductBuyPriceByProductNo">
+      <soap12:operation soapAction="http://tempuri.org/GetProductBuyPriceByProductNo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SwapOrderCreateForWfs">
+      <soap12:operation soapAction="http://tempuri.org/SwapOrderCreateForWfs" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SwapOrderDetailCancelForWfs">
+      <soap12:operation soapAction="http://tempuri.org/SwapOrderDetailCancelForWfs" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReturnApplyOrderCreateForWfs">
+      <soap12:operation soapAction="http://tempuri.org/ReturnApplyOrderCreateForWfs" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCashTicketNoByAmount">
+      <soap12:operation soapAction="http://tempuri.org/GetCashTicketNoByAmount" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInventoryAgeByProductNos">
+      <soap12:operation soapAction="http://tempuri.org/GetInventoryAgeByProductNos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ToWfsWebService">
+    <wsdl:port name="ToWfsWebServiceSoap" binding="tns:ToWfsWebServiceSoap">
+      <soap:address location="http://erpws02.shangpin.com/WebService/ToWfsWebService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ToWfsWebServiceSoap12" binding="tns:ToWfsWebServiceSoap12">
+      <soap12:address location="http://erpws02.shangpin.com/WebService/ToWfsWebService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

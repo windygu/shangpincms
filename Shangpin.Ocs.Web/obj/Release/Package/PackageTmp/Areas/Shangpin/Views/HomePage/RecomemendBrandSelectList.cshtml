@@ -1,0 +1,194 @@
+﻿@model IEnumerable<Shangpin.Ocs.Entity.Extenstion.ShangPin.SpHomeRecommendBrandExtends>
+@using Shangpin.Ocs.Web.Infrastructure
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@{
+    ViewBag.Title = "品牌墙管理";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    int pageIndex = ViewBag.pageIndex;
+    int pageSize = ViewBag.pageSize;
+    int totalCount = ViewBag.totalCount;
+}
+@section HeadScript{
+    <script src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/Areas/Shangpin/Scripts/plug/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+<script src="/Areas/Shangpin/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    function delBrand(id)
+    {
+        $.post("/shangpin/HomePage/DeleteHomeBrandByID", { "id": id, "PageNo": "@(Request.QueryString["PageNo"])", "PagePositionName":"@(HttpUtility.UrlEncode(Request.QueryString["PagePositionName"]))" ,"brandCount":"@(Convert.ToInt32(ViewBag.BrandCount))" ,"PagePositionNo":"@(Request.QueryString["PagePositionNo"])" }, function (data) {
+            alert(data.message);
+            location.reload();
+        });
+    }
+
+    $(document).ready(function () {
+        //$("#sortable").sortable();
+        //$("#sortable tr").disableSelection();
+        //addBrand();
+    });
+</script>
+}
+<h1>
+    OCS > 尚品 > 首页管理  > 推荐品牌 > 管理列表
+</h1>
+<div>
+    <form method="get" action="/shangpin/homepage/RecomemendBrandSelectList">
+        <input type="text" name="brandNoAndBrandName" placeholder="编号/名称" value="@(Request.QueryString["brandNoAndBrandName"])" />
+        <select name="PictureIndex" id="PictureIndex">
+            <option value="-1" selected="selected">轮播位</option>
+            <option value="0" @(ViewBag.PictureIndex == "0" ? "selected=\"selected\"" : "")>第一帧</option>
+            <option value="1" @(ViewBag.PictureIndex == "1" ? "selected=\"selected\"" : "")>第二帧</option>
+            <option value="2" @(ViewBag.PictureIndex == "2" ? "selected=\"selected\"" : "")>第三帧</option>
+        </select>
+        状态：<input type="radio" name="status" id="close" value="1" @(ViewBag.Status==1?"checked=\"checked\"":"") />开启 &nbsp;<input type="radio" name="status" id="open" value="0" @(ViewBag.Status == 0 ? "checked=\"checked\"" : "") />关闭&nbsp;&nbsp;
+        位置：<input type="radio" name="PagePositionNo" value="PopularRecommendBrand" @(ViewBag.PagePositionNo == "PopularRecommendBrand" ? "checked=\"checked\"" : "") />热门潮流 &nbsp;<input type="radio" name="PagePositionNo" value="InternationalRecommendBrand" @(ViewBag.PagePositionNo == "InternationalRecommendBrand" ? "checked=\"checked\"" : "") />国际大牌&nbsp;&nbsp;
+        添加时间:
+        <input id="starttime" name="starttime" value="@(ViewBag.StartTime)" class="Wdate" type="text" style=" width:150px;" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endtime\')||\'2020-10-01\'}'})" readonly="readonly" onclick="WdatePicker()" value="" />&nbsp;至&nbsp;
+        <input id="endtime" name="endtime" value="@(ViewBag.EndTime)" class="Wdate" type="text" style=" width:150px;" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'starttime\')}',maxDate:'2020-10-01'})" readonly="readonly" onclick="WdatePicker()" value="" />
+        <input type="hidden" value="@(Request.QueryString["PageNo"])" name="PageNo" id="PageNo" />
+        <input type="submit" value="查询" />
+        <input type="button" id="btnAdd" value="添加" style="display:none;" />
+        <input type="hidden" value="@(Request.QueryString["PagePositionName"])" name="PagePositionName" id="PagePositionName" />
+        <input type="hidden" id="brandCount" value="@(Convert.ToInt32(ViewBag.BrandCount))">
+    </form>
+</div>
+<table class="mx-table" border="0">
+    <thead>
+        <tr>
+            <th>
+                序号
+            </th>
+            <th>
+                品牌图
+            </th>
+            <th>
+                图片名称
+            </th>
+            <th>
+                品牌名称
+            </th>
+            <th>
+                品牌编号
+            </th>
+            <th>
+                开始时间
+            </th>
+            <th>
+                位置
+            </th>
+            <th>
+                帧序号
+            </th>
+            <th>
+                状态 
+            </th>
+            <th>
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody id="sortable">
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            <tr class="@(i % 2 == 0 ? "cross" : "")">
+                <td>@(i + 1)</td>
+                <td>
+                    <input type="hidden" value="@Model.ElementAt(i).RecommendBrandID" name="recommendBrandID" />
+                    <img src="/ReadPic/GetPic.ashx?width=64&height=100&pictureFileNo=@Model.ElementAt(i).PictureFileNo&type=2" />
+                </td>
+                <td>
+                    @Model.ElementAt(i).PictureFileTitle
+                </td>
+                <td>
+                    @Model.ElementAt(i).BrandEnName (@Model.ElementAt(i).BrandCnName)
+                </td>
+                <td>
+                    @Model.ElementAt(i).BrandNO
+                </td>
+                <td>
+                    @Model.ElementAt(i).DateBegin.ToString("yyyy-MM-dd HH:mm:ss")
+                </td>
+                <td>
+                    @Model.ElementAt(i).PagePositionName
+                </td>
+                <td>
+                   @{
+                        switch (Model.ElementAt(i).PictureIndex)
+                        {
+                            case 0:
+                                <text>第一帧</text>
+                                break;
+                            case 1:
+                                    <text>第二帧</text>
+                                break;
+                            case 2:
+                                    <text>第三帧</text>
+                                break;
+                            default:
+                                    <text>无</text>
+                                break;
+                        }
+                }
+               </td>
+               <td>
+                   @(Model.ElementAt(i).Status==0?"关闭":"开启")
+               </td>
+               <td>
+                    <a class="button" onclick="updateStatus('@Model.ElementAt(i).RecommendBrandID',0,@(Model.ElementAt(i).Status == 1 ? '0' : '1'),'0')">@(Model.ElementAt(i).Status == 1 ? "关闭" : "开启")</a>
+                    <a href="/shangpin/homepage/AddHomeBrand/?PageNo=index&PagePositionNo=@Model.ElementAt(i).PagePositionNo&PagePositionName=@(HttpUtility.UrlEncode(Model.ElementAt(i).PagePositionName))&edit=1&recommendBrandID=@Model.ElementAt(i).RecommendBrandID" class="button">编辑</a>
+                    <a href="javascript:;" onclick="delBrand('@(Model.ElementAt(i).RecommendBrandID)');" class="button">删除</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="spPage" style="margin:0px;padding:0; line-height:0px">
+    @if (totalCount > 0)
+    {
+        @Html.Raw(@Html.PagerX("page", pageIndex, pageSize, totalCount,false))
+    }
+</div>
+@using (Html.BeginForm("HomeRecommendBrandModify", "HomePage", FormMethod.Post, new { id = "SubjectUpdate" }))
+{
+    <input type="hidden" name="SubjectNo" id="SubjectNo" value="" />
+    <input type="hidden" name="Status" id="Status" value="" />
+    <input type="hidden" name="DelectStatus" id="DelectStatus" value="" />
+}
+<script type="text/javascript">
+    function updateStatus(subjectNo, scategoryNo, status, del) {
+        $("#SubjectNo").val(subjectNo);
+        $("#Status").val(status);
+        $("#DelectStatus").val(del);
+        $("#SubjectUpdate").ajaxSubmit({
+            beforeSubmit: function () {
+                if (del == "1") {
+                    if (!confirm("是否要删除？"))
+                    { return false; }
+                } else {
+                    var msg = "开启";
+                    if (status == 0) { msg = "关闭"; }
+                    if (!confirm("是否要" + msg + "？")) {
+                        return false;
+                    }
+                }
+            },
+            success: function (html, status) {
+                if (typeof (html) == "string") {
+                    var rs = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+                    data = eval("(" + rs + ")");
+                }
+                else {
+                    data = html;
+                }
+                if (data.result == "1") {
+                    alert(data.message);
+                    window.location = '@(Request.Url.ToString())';
+                    return true;
+                } else {
+                    alert(data.message);
+                    return false;
+                }
+            }
+        });
+    }
+</script>

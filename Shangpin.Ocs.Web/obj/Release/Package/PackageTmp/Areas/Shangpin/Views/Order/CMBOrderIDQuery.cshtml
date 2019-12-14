@@ -1,0 +1,116 @@
+﻿@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Ocs.Entity.Extenstion.Outlet;
+@using Shangpin.Entity.Wfs;
+@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_LayoutOrders.cshtml";
+    ViewBag.Title = "招行分期订单号查询";
+    IList<Shangpin.Ocs.Entity.Extenstion.ShangPin.WfsBankFQPayM> list = (IList<Shangpin.Ocs.Entity.Extenstion.ShangPin.WfsBankFQPayM>)ViewBag.List;
+    int totalCount = (int)ViewBag.Count;
+    int currentPage = (int)ViewBag.CurPage;
+    int pageSize = (int)ViewBag.PageSize;
+}
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/ShangPin/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/js/DivWaitMsg.js"></script>
+    <script language="javascript" type="text/javascript">
+        function OutInputCMBOrder() {
+            var shangpinOrder = $("input[name='shangPinOrderID']").val();
+            var createTime = $("input[name='createTime']").val();
+            if (confirm('确定要导出招行分期订单列表吗？')) {
+                $.ajax({
+                    type: "Post",
+                    url: "/Shangpin/Order/OutInputCMBOrderDataList",
+                    data: "shangPinOrderID=" + shangpinOrder + "&createTime=" + createTime,
+                    beforeSend: function (XMLHttpRequest) { LoadMsgBegin("导出中..."); },
+                    success: function (data) {
+                        LoadMsgEnd();
+                        if (data && data.IsSuccess) {
+                            window.location.href = data.Url;
+                        } else {
+                            alert("导出失败！");
+                            return false;
+                        }
+                    }
+                });
+            }
+        } //OutInputCMBOrder
+    </script>
+}
+<h1>
+    OCS > 尚品 > 订单管理> <a href="/shangpin/Order/CMBOrderIDQuery.html">招行分期订单列表</a></h1>
+<hr style="border: 1px solid Black; border-left: none; border-right: none; height: inherit;" />
+<form action="/shangpin/order/CMBOrderIDQuery.html" method="get" id="frmOrderBankFQSearch"
+name="frmOrderBankFQSearch">
+<div style="padding: 5px;">  
+    尚品订单号
+    <input type="text" value="@ViewBag.ShangPinOrderId" style="" name="shangPinOrderID" />
+    支付时间
+    <input id="createTime" type="text" name="createTime" value="@ViewBag.Time"  class="Wdate" readonly="readonly"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',lang:'zh-cn',isShowClear:true,alwaysUseStartDate:true,readOnly:true,maxDate:'#F{$dp.$D(\'EndTime\',{d:0});}'})"/>
+    至
+    <input id="EndTime" type="text" name="EndTime" value="@ViewBag.EndTime"  class="Wdate" readonly="readonly"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',lang:'zh-cn',isShowClear:true,alwaysUseStartDate:true,readOnly:true,minDate:'#F{$dp.$D(\'createTime\',{d:0});}'})"/>
+    &nbsp;
+    <button type="submit">
+        查询</button>&nbsp;&nbsp;&nbsp;
+    <button type="button" onclick="OutInputCMBOrder()">
+        导出</button>
+</div>
+</form>
+<table class="mx-table">
+    <thead>
+        <tr>
+            <th width="20%">
+                尚品订单号
+            </th>
+            <th width="15%">
+                招行订单号
+            </th>
+            <th width="15%">
+                招行内部订单号
+            </th>
+            <th width="15%">
+                分期类型
+            </th>
+            <th width="15%">
+                支付金额
+            </th>
+            <th width="20%">
+                支付时间
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var flag = 0;
+            foreach (var item in list)
+            {
+                flag = flag + 1;
+                                 
+            <tr class="@(flag % 2 == 0 ? "cross" : "")" id="Pic_@item.ShangOrderNo">
+                <td>
+                    @item.ShangOrderNo
+                </td>
+                <td>
+                    @item.BankFQOrderNo
+                </td>
+                <td>
+                    @item.CMBOrderNo
+                </td>
+                <td>
+                    @(item.Period + "期")
+                </td>
+                <td>
+                    @item.AmountSend
+                </td>
+                <td>
+                    @item.PayDate.ToString("yyyy-MM-dd HH:mm:ss")
+                </td>
+            </tr>
+                                 
+            }
+        }
+    </tbody>
+</table>
+<div class="spPage">@Html.Raw(Html.PagerX("page", currentPage, pageSize, totalCount))</div>
+@*<div class="clr" id="mx-rightcontent-fixbar">
+    <a id="mx-btn-add" href="/shangpin/admanage/createad.html"></a>
+</div>*@ 

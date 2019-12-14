@@ -1,0 +1,4 @@
+D:\workObject\cms\ConfigFileCollection\bin\Release\ConfigFileCollection.dll
+D:\workObject\cms\ConfigFileCollection\bin\Release\ConfigFileCollection.pdb
+D:\workObject\cms\ConfigFileCollection\obj\Release\ConfigFileCollection.dll
+D:\workObject\cms\ConfigFileCollection\obj\Release\ConfigFileCollection.pdb

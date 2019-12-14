@@ -1,0 +1,133 @@
+body{_background-image:url(about:blank);_background-attachment:fixed;}
+.spProduct_listbox { border-top: none; }
+.spProduct_listbox li { margin: 0 37px 15px 0; }
+.spProduct_listbox ul.all { margin: 0; width: 996px; clear: both; }
+.brand_list_new_banner { margin-bottom: 20px; background: #f5f5f5; }
+.brand_list_new_banner .brand_con_box { width: 299px; padding: 15px 30px 10px; color: #333; }
+.brand_list_new_banner .brand_con_box h2 { font-size: 36px; font-family: Constantia, Georgia; text-align: center; height: 44px; line-height: 44px; white-space: nowrap; overflow: hidden; }
+.brand_list_new_banner .brand_con_box h3 { font-size: 14px; font-weight: bold; text-align: center; line-height: 24px; height: 32px; }
+.brand_list_new_banner .brand_con p { line-height: 18px; padding-right: 10px; }
+.brand_list_new_banner .brand_con { margin: 10px 0 15px; height: 90px; width: 100%; overflow-y: auto; }
+.attention_btn { display: block; margin: 0 auto; text-align: left; width: 86px; height: 31px; background: url(/images/page/brand/flagshop/attention_btn.png) no-repeat center 0;line-height: 28px;  *line-height:30px;
+padding-left: 34px;}
+.attention_btn:link,.attention_btn:visited{ color: #fff; }
+.already:link,.already:visited{background-position: center -34px;color: #666;}
+#spList-page-upper { top: 2px; }
+#spList-pagecount { float: right; padding:6px 0;}
+#spList-pagecount a:link, #spList-pagecount a:visited, #spList-pagecount i, #spList-sort a:link, #spList-sort a:visited { line-height: 22px; }
+#spList-pagecount i { padding-right: 0; }
+#spList-sort { float: right; padding:6px 10px; }
+#spList-sort i, #spList-sort a:link { float: left; height: 22px; overflow: hidden; line-height: 22px; margin-right: 5px; }
+#spList-sort i { margin-right: 0; }
+#spList-sort a.brand_price { width: 35px; }
+#spList-sort a.bottom { background: #333 url(/images/page/brand/brand_list_new_icon.gif) no-repeat 32px top; color: #fff; }
+#spList-sort a.top { background: #333 url(/images/page/brand/brand_list_new_icon.gif) no-repeat 32px -61px; color: #fff; }
+#spList-sort a:hover, #spList-pagecount a:hover, #spList-pagecount a.curr { background-color: #333; }
+.spList-page a:link { height: 22px; line-height: 22px; }
+.spList-page a:hover, .spList-page a.cur { background: #333; color: #fff; }
+
+.chose_box_wp{width: 960px; margin:0 auto 5px; background: #fff url(/images/page/brand/flagshop/chose_box_bg.png) repeat-x left 63px; padding-bottom:1px;}
+.chose_box_fixed{ z-index: 1000; top: 0; left: 50%;margin-left: -480px; height: 63px; position:fixed;_position:absolute;_bottom:auto;_top:expression(eval(document.documentElement.scrollTop));}
+#spList-fnarea { position: relative; z-index: 1000; zoom: 1; border-bottom: 1px solid #666; _padding: 0; }
+.spList-fnarea-left { float: left; height: 22px; }
+.spList-fnarea-left li { float: left; margin-right: 20px; position: relative; z-index: 100; height: 28px; }
+.spList-fnarea-left li a { display: block; padding:0 6px; height: 22px; _float:left; line-height: 22px; text-align: center; }
+.spList-fnarea-left li.curr a, .spList-fnarea-left li a:hover { background: #333; color: #fff; }
+.spList-fnarea-left li .sort_box ul li a { background: none; color: #333; padding: 0 5px; height: 24px; line-height: 24px; }
+.spList-fnarea-left li.on .sort_box ul li.on a, .spList-fnarea-left li.on .sort_box ul li a:hover { background: #333; color: #fff;  _float:none;}
+.spList-fnarea-left li.on .sort_box { display: block; }
+.spList-fnarea-left li.on .select_iframe { display: block; }
+.spList-fnarea-left li .select_iframe { z-index: -1; width: 248px; height: 50px; position: absolute; border: 0; left: 0; top: 22px; display: none; }
+.sort_box { position: absolute; top: 28px; left: 0; color: #333; border: 1px solid #666; padding: 6px; width: 220px; background: #fff; display: none; }
+.sort_box ul { float: left; width: 100px; }
+.sort_box ul li { float: none; margin-right: 0; height: 24px; }
+.sort_box ul li a { width: auto; text-align: left; }
+.sort_box ul li.sort_box_title { padding-bottom:3px; border-bottom: 1px solid #ccc; line-height: 24px; margin-bottom: 5px; }
+.sort_box ul.sort_box_left { margin-right: 19px; }
+/*筛选*/
+.brand_select {
+	float: left;
+	padding: 6px 0;
+	_width: 450px;
+}
+.brand_select ul li {
+	float: left;
+	padding: 0 5px;
+	margin-right: 10px;
+	height: 22px;
+	line-height: 22px;
+	position: relative;
+}
+.brand_select ul li.brand_select_cn {
+	outline: none;
+	border: 1px solid #bbb;
+	height: 20px;
+	line-height: 20px;
+	z-index: 100;
+	_zoom: 1;
+}
+.brand_select ul li.brand_select_cn span {
+	cursor: default;
+	padding-right: 30px;
+	background: url(/images/page/brand/brand_list_new_icon.gif) no-repeat right -80px;
+	display: block;
+	_float: left;
+}
+.brand_select ul li ul {
+	position: absolute;
+	left: 0;
+	top: 20px;
+	background: #fff;
+	min-width: 100%;
+	*width:100%;
+	_width: 64px;
+	margin-left: -1px;
+	border: 1px solid #ccc;
+	display: none;
+	overflow: hidden;
+}
+.brand_select ul li li {
+	float: none;
+	white-space: nowrap;
+	vertical-align: top;
+	display: block;
+	line-height: 24px;
+	height: 24px;
+	margin: 0;
+	padding: 0;
+}
+.brand_select ul li li a {
+	display: block;
+	padding: 0 5px;
+	*width:100%;
+}
+.brand_select ul li li a i {
+	position: absolute;
+	width: 20px;
+	height: 14px;
+	background: #FFF;
+	top: 5px;
+	right: 5px;
+}
+.spList-page a:link {
+	height: 22px;
+	line-height: 22px;
+}
+.brand_select ul li li a:hover, .spList-page a:hover, .spList-page a.cur {
+	background: #333;
+	color: #fff;
+}
+.brand_select .brand_select_color ul li{
+	height:auto;
+	padding:2px 4px;
+	*padding:0 4px;
+	_padding:2px 4px;
+}
+.brand_select .brand_select_color ul li a{ padding:0;border:1px solid #ddd; height:16px; width:54px;}
+.brand_select .brand_select_color ul li a img{ vertical-align:text-bottom;}
+.brand_select .brand_select_color ul li a:hover{
+	background:none;
+	border-color:#333;
+}
+.brand_select .brand_select_color ul li.title_color a{ border:none; height:20px; line-height:20px; text-indent:3px; width:auto;}
+.brand_select .brand_select_color ul li.title_color a:hover{background:#333;}

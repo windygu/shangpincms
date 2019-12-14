@@ -1,0 +1,150 @@
+
+/* ie Hack */
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td, address, caption, cite, code, dfn, em, strong, th, var{
+    font: 400 12px "Arial","Tahoma","宋体","黑体", Hei;
+}
+
+/*购物流程*/
+.alCart_Step li{
+	width:250px;
+}
+.alCart_Step li.last_step{
+	width:210px;
+}
+.virtual_Step li{
+	width:330px;
+}
+.virtual_Step li{
+	width:330px;
+}
+.virtual_Step li.last_step{
+	width:300px;
+}
+.vCard_Step li{
+	width:480px;
+}
+.vCard_Step li.last_step{
+	width:480px;
+}
+.alCart_Step li span{
+	right:0;
+}
+.alCart_proList dd.hendelnBox p{
+	_width:290px;
+}
+.spDetail_limg, .spDetail_lchima{
+	_height:35px;
+}
+.proNumber_block span{
+	_width:60%;
+	_margin:0 0 0 30px;
+}
+.proNumber_block input{
+	_line-height:20px;
+}
+.order_list dl{
+	_overflow:hidden;
+}
+
+/*收货地址*/
+.olOrder_conList dd input{
+	top:2px;
+}
+.olOrder_conList dd label{
+	width:805px;
+}
+.invoice_list dd label{
+	width:775px;
+}
+.alCart_proList dd.titleBox p{
+	line-height:140%;
+}
+.alCart_total .submit_btn{
+	_line-height:30px;
+}
+.alCart_total .continue_btn em{
+	line-height:30px;
+}
+.alCart_total .manage_btn em{
+	line-height:30px;
+}
+.alCart_proList dl.proNone .buy_btn em{
+	line-height:30px;
+}
+
+/*支付方式*/
+.olPayment_select_con{
+	overflow:hidden;
+	zoom:1;
+}
+.olPayment_select_bank{
+	margin:5px 0 17px 25px;
+	_margin:5px 0 17px 0;
+}
+.olPayment_select_bank li{
+	margin:0;
+	padding:15px 0 0 40px;
+	_padding:15px 0 0 60px;
+	width:150px;
+	_width:160px;
+}
+.olPayment_select_bank li.active_block{
+	_width:350px;
+}
+.olPayment_select_bank .normal_block li{
+	padding:0;
+	_margin:15px 0 0 30px;
+	_width:160px;
+}
+.olPayment_select_bank li ul{
+	margin:0 0 0 10px;
+	_margin:0;
+}
+.olPayment_select_bank li ul li{
+	margin:15px 0 0 30px;
+}
+.olPayment_select_bank li input{
+	position:static;
+	top:0;
+	margin:10px 7px 0 0;
+	_margin:6px 0 0 0;
+}
+.olPayment_select_bank li label{
+	float:left;
+	margin:0;
+	_margin:0 0 0 10px;
+	vertical-align:middle;
+}
+.normal_block{
+	width:100%;
+}
+.active_block a{
+	_margin:10px 0 0 15px;
+}
+.active_block a em{
+	_margin:0 0 3px 10px;
+}
+.active_block p{
+	left:70px;
+	_left:90px;
+}
+.olPayment_select_bank li.alipay_box{
+	margin:15px 0 0 0;
+	_margin:15px 0 0 15px;
+	_width:160px;
+	padding:0;
+}
+.alCart_couponList table td i{
+	*height:14px;
+	*padding:2px 0 0 5px;
+}
+.alCart_couponList table td a.use_btn:link,.alCart_couponList table td a.use_btn:visited{
+	color:#fff;
+	text-decoration:none;
+}
+
+/*弹出层*/
+
+a.olOrder_window_submit:link, a.olOrder_window_submit:visited{
+	color:#fff;
+}

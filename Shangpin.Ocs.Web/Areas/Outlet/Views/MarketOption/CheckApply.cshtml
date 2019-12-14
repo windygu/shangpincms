@@ -1,0 +1,222 @@
+﻿@{
+    Layout = null;
+}
+@using Shangpin.Ocs.Web.Infrastructure
+@using Shangpin.Entity.Wfs
+@using Shangpin.Ocs.Service.Common
+@model Shangpin.Ocs.Entity.Extenstion.Outlet.SubjectInfo
+@{
+    IList<SWfsChannelSord> channelSordList = ViewBag.ChannelSordList;
+ }
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CheckApply</title>
+    <style type="text/css">
+        td{ padding:5px; margin:0;}
+        .jctr{background-color: #F0F0F0; font-weight:bold;}
+        .copySpan{ color:#05609F;}
+        body{ font-size:12px;}
+       .input{width:300px;}
+      .applybox  textarea{ height:100px; width:300px;}
+    .applybox h2{ border-bottom:1px solid #000; margin-bottom:10px;}
+    .applybox td{ vertical-align:top;}
+    .applybox .button
+    {
+        background-color:#4d90fe;
+    border:1px solid #3079ed;
+    color:#fff;
+	-webkit-border-radius:5px;
+	-moz-border-radius:5px;
+    border-radius:5px;
+	font-size:14px;
+    display:inline-block;
+    padding:5px 10px;
+	*padding:3px 0px 0;
+    position:relative;
+    text-decoration:none;
+	-webkit-transition:border-color 0.218s ease 0s;
+	-moz-transition:border-color 0.218s ease 0s;
+	-o-transition:border-color 0.218s ease 0s;
+    transition:border-color 0.218s ease 0s;
+	cursor:pointer;
+	margin:0 15px 0 0;
+	*zoom:1;
+        }
+    </style>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/lib/jquery.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/lib/jquery.form.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/plug/copy.js"></script>
+</head>
+<body>
+<div class="applybox">
+
+<form enctype="multipart/form-data" id="submitForm" name="submitForm" action="/MarketOption/AddApply" method="post">
+<input type="hidden" value="@Model.SubjectNo" name="SubjectNo" />
+<input type="hidden" value="@ViewBag.Flag" name="flag" />
+<table cellpadding="0" cellspacing="0">
+<tr>
+<td width="30%" class="jctr">活动名称：</td>
+<td><a href="@AppSettingManager.AppSettings["AolaiDomain"]Subject/Index/@Model.SubjectNo" target="_blank">@Model.SubjectName</a> (<span class="copySpan" copyTxt="@AppSettingManager.AppSettings["AolaiDomain"]Subject/Index/@Model.SubjectNo">复制链接</span>)</td>
+</tr>
+<tr>
+<td class="jctr">预热地址：</td>
+<td>
+@if (Model.IsPreheat == 1)
+{ 
+<a href="@(AppSettingManager.AppSettings["AolaiDomain"] + "activity/notice/" + Model.StExpand + "?sno=" + Model.SubjectNo)" target="_blank">点击进入</a> <text>(<span class="copySpan" copyTxt="@(AppSettingManager.AppSettings["AolaiDomain"] + "activity/notice/" + Model.StExpand + "?sno=" + Model.SubjectNo)">复制链接</span>)</text>
+}
+else
+{ 
+  <text>活动未预热</text>
+}
+</td>
+</tr>
+<tr>
+<td class="jctr">素材地址：</td>
+<td>@Model.PicFileUrl (<span class="copySpan" copyTxt="@Model.PicFileUrl">复制链接</span>)</td>
+</tr>
+<tr>
+<td class="jctr">活动编号：</td>
+<td>@Model.SubjectNo</td>
+</tr>
+<tr>
+<td class="jctr">预热状态：</td>
+<td>@(Model.IsPreheat==1?"是":"否")</td>
+</tr>
+<tr>
+<td class="jctr">推广强度：</td>
+<td>@(Html.GetLevel(Model.Level))</td>
+</tr>
+<tr>
+<td class="jctr">所属分类：</td>
+<td>@if (Model.ChannelSordList != null)
+                    {
+
+                        foreach (var sord in Model.ChannelSordList)
+                        {
+                           @(channelSordList.Where(r=>r.SordNo==sord.SordNo).FirstOrDefault().SordName+"、")
+                        }
+                    }</td>
+</tr>
+<tr>
+<td class="jctr">所属品牌：</td>
+<td>@(Model.BrandEnName + "/" + Model.BrandCnName)</td>
+</tr>
+<tr>
+<td class="jctr">申请时间：</td>
+<td>@Model.PromotionApplyTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+</tr>
+<tr>
+<td class="jctr">推广确认时间：</td>
+<td> <input name="PromotionConfirmTime" value="@(Model.PromotionConfirmTime == new DateTime(1900, 1, 1) ? "" : Model.PromotionConfirmTime.ToString("yyyy-MM-dd HH:mm:ss"))" maxlength="30"  class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" readonly="readonly"  /></td>
+</tr>
+
+<tr>
+<td class="jctr">活动预热时间：</td>
+<td>@(Model.IsPreheat==1?Model.PreheatTime.ToString("yyyy-MM-dd HH:mm:ss"):"-----------------")</td>
+</tr>
+
+<tr>
+<td class="jctr">活动开始时间：</td>
+<td>@Model.DateBegin.ToString("yyyy-MM-dd HH:mm:ss")</td>
+</tr>
+<tr>
+<td class="jctr">活动结束时间：</td>
+<td>@Model.DateEnd.ToString("yyyy-MM-dd HH:mm:ss")</td>
+</tr>
+<tr>
+<td class="jctr">活动卖点：</td>
+<td><textarea disabled="disabled" name="SubjectSalesHot" id="SubjectSalesHot">@Model.SubjectSalesHot</textarea></td>
+</tr>
+<tr>
+<td class="jctr">货品信息：</td>
+<td><textarea disabled="disabled" name="ProductInfo" id="ProductInfo">@Model.ProductInfo</textarea></td>
+</tr>
+<tr>
+<td class="jctr">其他说明：</td>
+<td><textarea disabled="disabled" name="OtherDescription" id="OtherDescription">@Model.OtherDescription</textarea></td>
+</tr>
+<tr>
+<td class="jctr">推广渠道：</td>
+<td id="PromotionChannelList">
+@{
+    List<SWfsSubjectPromotionChannel> list = ViewBag.PromotionChannelList as List<SWfsSubjectPromotionChannel>;
+    foreach (var item in list)
+    {
+         <input type="checkbox" name="PromotionChannelNo" value="@item.PCID" @(Model.PromotionChannelNo.Contains(item.PCID.ToString()) ? "checked=checked" : "")/>@item.ChannelName   
+    }
+ }
+
+</td>
+</tr>
+<tr>
+<td></td>
+<td><input type="text" value="渠道名称" id="PromotionChannel" name="PromotionChannel" /><input type="button" id="AddPromotionChannel" value="添加渠道" /></td>
+</tr>
+<tr>
+<td></td>
+<td>
+<input  class="button" id="AddApply" type="button" value=" 确 认 "/>
+<input id="CloseApply" class="button" type="button" value=" 取 消 "/>
+</td>
+</tr>
+</table>
+</form>
+
+</div>
+</body>
+<script type="text/javascript">
+    $(function () {
+        $(".applybox").delegate("#AddPromotionChannel", "click", function () {
+            //alert("添加渠道");
+            var name = $("#PromotionChannel").val();
+            if (name == "") {
+                alert("推广渠道不能为空");
+                return false;
+            }
+            else {
+                var name = $("#PromotionChannel").val();
+                $.ajax({
+                    url: "/outlet/MarketOption/AddPromotionChannel",
+                    type: "POST",
+                    data: { name: name },
+                    dataType: "json",
+                    success: function (obj) {
+                        if (obj.rs == "ok") {
+                            alert(obj.msg);
+                            //需要把新数据附加到后部
+                            $("#PromotionChannelList").append("<input type=\"checkbox\" value=" + obj.id + " name=\"PromotionChannelNo\">" + name);
+                        }
+                        else {
+                            alert(obj.msg);
+                        }
+                    }
+                });
+            }
+        });
+
+        $(".applybox").delegate('#AddApply', 'click', function () {
+            $("#submitForm").ajaxSubmit({
+                success: function (result) {
+                    if (result.rs == "ok") {
+                        alert("确认成功");
+                        parent.window.TrueInfo();
+                    }
+                    else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        });
+
+        $(".applybox").delegate('#CloseApply', 'click', function () {
+            $(window.parent.document).find("#windown-close").trigger("click");
+        });
+    });
+
+</script>
+</html>

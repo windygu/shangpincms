@@ -1,0 +1,80 @@
+﻿@{
+    Layout = null;
+    Shangpin.Entity.Wfs.SWfsSpChannelTemplateRegion obj = null;
+    Dictionary<int, string> typelist = new Dictionary<int, string>();
+    typelist.Add(1, "http://www.shangpin.com/women/subject/{0}");
+    typelist.Add(2, "http://www.aolai.com/subject/index/{0}/0");
+    typelist.Add(3, "http://www.aolai.com/topic/index/{0}");
+    typelist.Add(4, "http://www.aolai.com/topic/index/{0}");
+    typelist.Add(5, "{0}");
+}
+@using Shangpin.Framework.WebMvc
+@model IEnumerable<Shangpin.Entity.Wfs.SWfsSpChannelTemplateRegion>
+
+<div class="sp-temp-box">
+    @if (Model.Count(p => p.RegionID == 1) == 1)
+    {
+        obj = Model.Single(p => p.RegionID == 1);
+        
+    <a href="@(string.Format(typelist[obj.RelationType], obj.RelationContent))" style="width:450px; height:320px; left:0; top:0;" opratorRegion="@obj.RegionID" relationtype="@obj.RelationType">
+        <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 450, 320))" width="450" height="320" />
+    </a>
+            
+    }
+    else
+    {
+    <a href="#" style="width:450px; height:320px; left:0; top:0;" opratorRegion="1" relationtype="1">
+        <img src="" width="450" height="320" />
+    </a>
+            
+    }
+
+    @if (Model.Count(p => p.RegionID == 2) == 1)
+    {
+        obj = Model.Single(p => p.RegionID == 2);
+        
+    <a href="@(string.Format(typelist[obj.RelationType], obj.RelationContent))" style="width:252px; height:252px; right:0; top:0;" opratorRegion="@obj.RegionID" relationtype="@obj.RelationType">
+        <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 252, 252))" width="252" height="252" />
+    </a>      
+    }
+    else
+    {
+    
+    <a href="#" style="width:252px; height:252px; right:0; top:0;" opratorRegion="2" relationtype="1">
+        <img src="" width="252" height="252" />
+    </a>       
+    }
+
+    @if (Model.Count(p => p.RegionID == 3) == 1)
+    {
+        obj = Model.Single(p => p.RegionID == 3);
+        
+    <a href="@(string.Format(typelist[obj.RelationType], obj.RelationContent))" style="width:450px; height:320px; left:0; top:334px;" opratorRegion="@obj.RegionID" relationtype="@obj.RelationType">
+        <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 450, 320))" width="450" height="320" />
+    </a>      
+    }
+    else
+    {
+    
+    <a href="#" style="width:450px; height:320px; left:0; top:334px;" opratorRegion="3" relationtype="1">
+        <img src=""  width="450" height="320" />
+    </a>     
+    }
+
+    @if (Model.Count(p => p.RegionID == 4) == 1)
+    {
+        obj = Model.Single(p => p.RegionID == 4);
+        
+    <a href="@(string.Format(typelist[obj.RelationType], obj.RelationContent))" style="width:252px; height:388px; right:0; top:266px;" opratorRegion="@obj.RegionID" relationtype="@obj.RelationType">
+        <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 252, 388))" width="252" height="388" />
+    </a>
+    }
+    else
+    {
+    
+    <a href="#" style="width:252px; height:388px; right:0; top:266px;" opratorRegion="4" relationtype="1">
+        <img src="" width="252" height="388" />
+    </a> 
+    }
+</div>
+

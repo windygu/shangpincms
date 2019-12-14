@@ -1,0 +1,455 @@
+/*tab标签切换*/
+.spTabs_menu * {
+	font-family: Arial, "宋体";
+}
+.spTabs_menu{
+	width: 961px;
+	height: 25px;
+	margin: 20px 0 10px;
+	*margin: 8px 0 10px;
+	border-bottom: 1px solid #ccc;
+}
+.spTabs_menu li{
+	float: left;
+	position: relative;
+	height: 24px;
+	line-height: 24px;
+	background: #fafafa;
+	border-color:#ccc;
+	border-style:solid;
+	border-width:1px 1px 0 0;
+}
+.spTabs_menu li a {
+	display: block;
+	white-space: nowrap;
+	width: 239px;
+	height: 24px;
+	line-height: 24px;
+	color: #333;
+	text-align: center;
+}
+.spTabs_menu li.first{
+	border-width:1px 1px 0 1px;
+	width:238px;
+}
+.spTabs_menu li.seled {
+	background: #fff;
+	border-color:#333 #ccc;
+	border-width:2px 1px 0 0;
+	_border-width:1px 1px 0 0;
+	width: 239px;
+	_z-index:10;
+	_zoom:1;
+}
+.spTabs_menu li.seled a {
+	color: #363636;
+	font-weight: bolder;
+	border: 0;
+	background-image: url(/images/page/detail/spDetail_main.gif);
+	background-repeat: no-repeat;
+	background-position: -656px -630px;
+}
+.spTabs_menu li.last.seled{
+	width:240px;
+	*border-width:2px 0 0 0;
+}
+
+.prodMenu li a{
+	width:106px;
+}
+.prodMenu li.first {
+	width:105px;
+}
+.prodMenu li.seled {
+	width:106px;
+}
+.prodMenu li.seled a {
+	background:none;
+}
+
+
+/* 商品详情 */
+.detailInfo{
+	width:100%;
+	padding:10px 0;
+}
+.detailInfo dl{
+	width:100%;
+}
+.detailInfo dl dt{
+	height:26px;
+	line-height:25px;
+	padding:0 10px;
+	background:url(/images/page/detail/dotted_line.jpg) repeat-x 0 24px;
+	position:relative;
+}
+.detailInfo dl dd{
+	padding:10px 0;
+}
+.detailInfo dl dd .normalTxt{
+	line-height:24px;
+	padding-right:200px;
+}
+.detailInfo dl dd .normalBtn{
+	display:inline-block;
+	height:22px;
+	line-height:22px;
+	padding:0 35px;
+	border:1px solid #ccc;
+	background:url(/images/page/detail/normalBtn_bg.png) repeat-x 0 center;
+	overflow:hidden;
+	-webkit-border-radius:2px;
+	-moz-border-radius:2px;
+	border-radius:2px;
+	margin-top:10px;
+}
+
+.detailInfo .detailAttr{
+	width:98%;
+	margin:0 auto;
+}
+.detailInfo .detailAttr td{
+	width:30%;
+	height:24px;
+	line-height:24px;
+	padding-right:3%;
+	overflow:hidden;
+}
+
+.detailInfo .tj_tjLeft{
+	width:309px;
+}
+.tj_tjLeft .detail_tjTxt{
+	padding-left:10px;
+	line-height:24px;
+}
+.tj_tjLeft .btm_line{
+	display:block;
+	height:25px;
+	line-height:25px;
+	overflow:hidden;
+	background:url(/images/page/detail/dotted_line.jpg) repeat-x 0 18px;
+}
+
+.detailInfo .detail_tjRight{
+	width:625px;
+	padding-right:10px;
+}
+.detailInfo .detail_tjRight p{
+	padding-bottom:10px;
+}
+
+.detailInfo .detail_start{
+	width:100%;
+	padding-bottom:10px;
+}
+.detailInfo .detail_start li{
+	width:229px;
+	height:390px;
+	margin-left:9px;
+	_margin-left:8px;
+	float:left;
+	overflow:hidden;
+	position:relative;
+}
+.detail_start li img{
+	width:229px;
+	height:390px;
+	display:block;
+}
+.detail_start li p{
+	position:absolute;
+	left:0;
+	bottom:0;
+	color:#fff;
+	padding:5px 10px;
+	background:url(/images/page/detail/spDetail_startBg.png) repeat-x 0 0;
+	_background:url(/images/page/detail/spDetail_startBg.gif) repeat-x 0 0;
+}
+.detail_start li p span{
+	display:block;
+	width:209px;
+	height:32px;
+	line-height:16px;
+	overflow:hidden;
+}
+
+.detailInfo .detail_model{
+	padding-left:10px;
+	width:100%;
+}
+.detailInfo .detail_model li{
+	width:290px;
+	padding:5px;
+	margin-right:20px;
+	float:left;
+	background-color:#fafafa;
+}
+.detail_model li a{
+	display:block;
+	width:100%;
+}
+.detail_model li a:hover, .detail_model li a:active{
+	text-decoration:underline;
+}
+.detail_model li img{
+	width:290px;
+	height:290px;
+	display:block;
+}
+.detail_model li p{
+	padding:6px 0 0 15px;
+	height:20px;
+	line-height:20px;
+	overflow:hidden;
+}
+.detail_model li span{
+	display:block;
+	padding:0 0 0 30px;
+	margin-bottom:7px;
+	height:20px;
+	line-height:20px;
+	overflow:hidden;
+	background:url(/images/page/detail/detail_modelDot.gif) no-repeat 15px center;
+}
+.detail_model li span em{
+	padding:0 5px;
+}
+
+
+/*尺码信息*/
+.detailSize{
+	display:none;
+}
+.spDetail_size_cell {
+	width: 100%;
+}
+.spDetail_size_cell dl {
+	width:380px;
+	padding-right:100px;
+	float:left;
+	margin-top:3px;
+}
+.spDetail_size_cell dl dt {
+	width: 45px;
+	text-align:center;
+	color: #333;
+	padding:0;
+	background:none;
+	height:32px;
+	line-height:32px;
+}
+.spDetail_size_cell dl dd {
+	padding:0;
+	width:335px;
+}
+.spDetail_size_cell .spDetail_size_detail {
+	background:url(/images/page/detail/dotted_line.jpg) repeat-x 0 15px;
+	padding-top:15px;
+	width:100%;
+}
+.spDetail_size_detail li {
+	float: left;
+	display: inline-block;
+	width: 46px;
+	text-align: center;
+	height: 28px;
+	line-height: 28px;
+	margin: 0 20px 0 0;
+	color: #ccc;
+	position: relative;
+	zoom: 1;
+}
+.spDetail_size_detail li span {
+	display: none;
+	width: 8px;
+	height: 4px;
+	top:1px;
+	left: 19px;
+	overflow: hidden;
+	position: absolute;
+	background-image: url(/images/page/detail/spDetail_main.gif);
+	background-repeat: no-repeat;
+	background-position: -580px -155px;
+}
+
+.spDetail_size_detail li.curr{
+	color:#333;
+}
+.spDetail_size_detail li.curr span{
+	display:block;
+}
+
+.detailSize .spDetail_size_notice{
+	font-weight:bold;
+	padding-left:10px;
+	margin:15px 0 20px;
+}
+
+.detailSize .spDetail_size_bags{
+	padding-left:115px;
+}
+
+.detailSize .shoes_size{
+	width:440px;
+}
+
+.detailSize .spDetail_size_guide{
+	width:640px;
+	text-align:right;
+}
+.detailSize .spDetail_size_guide a{
+	display:inline-block;
+	padding-left:20px;
+	text-decoration:underline;
+	background-image:url(/images/page/detail/spDetail_guide.gif);
+	background-repeat:no-repeat;
+	height:30px;
+	line-height:30px;
+}
+a#clothesSize_guide, a#shoesSize_guide{
+	background-position:3px -30px;
+	margin-right:5px;
+}
+.detailSize .shoes_guide{
+	position:absolute;
+	top:0;
+	right:0;
+	width:200px;
+}
+
+
+.detailSize .sizeTab{
+	width:640px;
+	margin:5px 0 0 0;
+	border:1px solid #ccc;
+}
+.detailSize .sizeTab th, .detailSize .sizeTab td{
+	border:1px solid #ccc;
+	text-align:center;
+}
+.detailSize .sizeTab th{
+	text-align:center;
+	background-color:#fafafa;
+	height:24px;
+	line-height:24px;
+}
+.detailSize .sizeTab td{
+	height:30px;
+	line-height:30px;
+}
+.detailSize .shoesTab{
+	width:100%;
+}
+
+
+/* 售后及保养 */
+.after_sale .washing{
+	padding:18px 0;
+}
+.after_sale .washing li{
+	height:55px;
+	width:25%;
+	float:left;
+	text-align:center;
+}
+
+.after_sale .safekeep{
+	width:100%;
+}
+.after_sale .safekeep li{
+	padding-bottom:10px;
+}
+.after_sale .safekeep li img{
+	width:190px;
+	height:160px;
+	float:left;
+	margin-right:15px;
+}
+.after_sale .safekeep li p{
+	width:550px;
+	height:160px;
+	display:table-cell;
+	line-height:24px;
+	padding-right:205px;
+	vertical-align:middle;
+	background:url(/images/page/detail/dotted_line.jpg) repeat-x 0 158px;
+}
+
+.after_sale .policyTab{
+	width:98%;
+	margin:15px 10px 0 10px;
+	border:1px solid #ccc;
+}
+.after_sale .policyTab th, .after_sale .policyTab td{
+	height:36px;
+	line-height:36px;
+	border:1px solid #ccc;
+	font-size:14px;
+}
+.after_sale .policyTab th{
+	font-weight:bold;
+	text-align:center;
+	background-color:#fafafa;
+}
+.after_sale .policyTab td{
+	width:45%;
+	padding-left:5%;
+}
+.after_sale .policyTxt{
+	padding:20px 0;
+}
+
+
+/* 品牌故事 */
+.detail_brand_banner { margin:35px 0 20px; background: #f5f5f5; overflow:hidden; }
+.detail_brand_banner .brand_con_box { width: 299px; padding: 15px 30px 10px; color: #333; }
+.detail_brand_banner .brand_con_box h2 { font-size: 36px; font-family: Constantia, Georgia; text-align: center; height: 44px; line-height: 44px; white-space: nowrap; overflow: hidden; }
+.detail_brand_banner .brand_con_box h3 { font-size: 14px; font-weight: bold; text-align: center; line-height: 24px; height: 32px; }
+.detail_brand_banner .brand_con p { line-height: 18px; padding-right: 10px; }
+.detail_brand_banner .brand_con { margin: 30px 0 15px; height: 90px; width: 100%; overflow-y: auto; }
+.attention_btn { display: block; margin: 0 auto; text-align: left; width: 86px; height: 31px; background: url(/images/page/brand/flagshop/attention_btn.png) no-repeat center 0;line-height: 28px;  *line-height:30px;
+padding-left: 34px;}
+.attention_btn:link,.attention_btn:visited{color: #fff;}
+.already:link,.already:visited{background-position: center -34px;color: #666;}
+
+.detail_brand_banner a img{
+	display:block;
+}
+
+.detail_brand_box{
+	padding:30px 0;
+	line-height:24px;
+}
+
+
+
+/* 看了又看 */
+.detail_looking{
+	padding:0 0 20px 6px;
+	width:100%;
+}
+.detail_looking li{
+	width:150px;
+	margin-right:10px;
+	float:left;
+}
+.detail_looking li a{
+	display:block;
+	width:100%;
+}
+.detail_looking li a:hover, .detail_looking li a:active{
+	text-decoration:underline;
+}
+.detail_looking li img{
+	width:150px;
+	height:200px;
+	display:block;
+	margin-bottom:5px;
+}
+.detail_looking li p{
+	height:14px;
+	line-height:14px;
+	text-align:center;
+	overflow:hidden;
+}

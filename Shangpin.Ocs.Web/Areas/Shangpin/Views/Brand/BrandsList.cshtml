@@ -1,0 +1,397 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.ShangPin
+@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Entity.Wfs
+@using Shangpin.Ocs.Web.Infrastructure
+@{
+    Layout = null;
+    IList<SWfsBrandIndexInfo> list = ViewBag.List;
+    List<SWfsBrandModule> brandModuleList = new List<SWfsBrandModule>();
+    int currentPage = 0;
+    //处理逻辑为【品牌首页管理】,如果各值为空，false那么走【国际时尚品牌】
+    bool moduleType = false;
+    string _brandView = Request["BrandView"];
+    string _typeId = Request["typeId"];
+    int _currentCount = ViewBag.currentCount;
+    if (string.IsNullOrEmpty(_brandView))
+    {
+        brandModuleList = ViewBag.BrandModuleList;
+    }
+    else
+    {
+        moduleType = true;
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>BrandsList</title>
+</head>
+<body>
+    <div>
+        @{
+            Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+            int totalCount = ViewBag.totalcount;
+            currentPage = ViewBag.PageIndex;
+            int pageSize = 10;
+            if (!string.IsNullOrEmpty(_brandView) && !string.IsNullOrEmpty(_typeId))
+            {
+                if (_brandView == "2" && _typeId == "2")
+                {
+                    pageSize = 32;
+                }
+            }
+            ViewBag.Title = "国际时尚品牌管理";
+        }
+       
+        @section HeadScript{
+
+            <script type="text/javascript" src="/Areas/outlet/Scripts/page/index/popDiv.js"></script>
+            <script src="/Areas/Shangpin/Scripts/lib/jquery.js" type="text/javascript"></script>
+            <script src="/Areas/Shangpin/Scripts/plug/comm.js" type="text/javascript"></script>
+            <script type="text/javascript">
+                function UpdatePosition(indexId) {
+                    if (/^\d$/.test(indexId)) {
+                        alert("请输入数字");
+                        return;
+                    }
+                    $.post("/Shangpin/Brand/UpdateSort.html", { 'indexid': indexId, 'sort': $("#" + indexId).val() }, function (data) {
+                        if (data > 0) {
+                            alert("修改成功");
+                            var url = window.location.href;
+
+                            window.location.href = gettimestampurl(url);
+                            //window.location.reload();
+                        } else {
+                            alert("修改失败");
+                        }
+                    });
+                }
+
+                function show() {
+                    $("#divHotBrand").slideDown("slow");
+                }
+                function Cancle() {
+                    $("#txtHotBrand").empty().val("请批量输入品牌编号，多个品牌编号使用【英文逗号】对编号进行分割");
+                    $("#divHotBrand").slideUp("slow");
+                }
+            </script>
+        }
+        <script type="text/javascript" src="/Areas/Shangpin/Scripts/lib/jquery.form.js"></script>
+        <script type="text/javascript">
+            function SaveSubmit() {
+                // $("#formBatchCreate").submit();
+                $("#btnBatch").val("保存中...");
+                $("#btnBatch").attr("disabled", true);
+                $('#formBatchCreate').ajaxSubmit({
+                    success: function (html) {
+                        if (typeof (html) == "string") {
+                            var rs = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+                            data = eval("(" + rs + ")");
+                        }
+                        else {
+                            data = html;
+                        }
+                        if (data.result != "1") {
+                            $("#btnBatch").val("批量添加提交");
+                            $("#btnBatch").removeAttr("disabled");
+                            alert(data.message);
+                            return false;
+                        }
+                        else if (data.result == "1") {
+                            var _brandView = $("#hidBrandView").val();
+                            var _typeId = $("#hidTypeId").val();
+                            if (data.message != null && data.message != "")
+                                alert(data.message);
+                            else
+                                alert("品牌批量添加保存成功！");
+                            window.location.href = "/Shangpin/Brand/BrandsList?TypeId=" + _typeId + "&BrandView=" + _brandView + "&" + gettimestamp();
+
+                            return true;
+                        }
+                    }
+                });
+            }
+            function promptShow() {
+                var _hotBrand = $("#txtHotBrand").val();
+                if (_hotBrand != "" && _hotBrand != null) {
+                    if (_hotBrand.substring(0, 1) == "请") {
+                        $("#txtHotBrand").val("");
+                    }
+                }
+            }
+            function promptHide() {
+                var _hotBrand = $("#txtHotBrand").val();
+                if (_hotBrand == "" || _hotBrand == null) {
+                    $("#txtHotBrand").empty().val("请批量输入品牌编号，多个品牌编号使用【英文逗号】对编号进行分割");
+                }
+            }
+        </script>
+        @if (!moduleType)
+        { <h1>
+            OCS > 尚品 > <a href="#">品牌管理</a> >国际时尚品牌
+
+        </h1>  }
+        else
+        {
+            string TitPrompt = string.Empty;
+            if (_brandView == "2" && _typeId == "2")
+            {
+                TitPrompt = "热门品牌";
+            }
+            else if (_brandView == "2" && _typeId == "1")
+            {
+                TitPrompt = "官方旗舰店";
+            }
+            <h1>
+                OCS > 尚品 > 品牌管理 > <a href="/shangpin/brandindex/index">品牌首页管理</a> > @(TitPrompt)
+
+            </h1>
+        }
+        <form action="/Shangpin/Brand/BrandsList" method="get">
+            <div>
+                <input type="hidden" name="BrandView" id="hidBrandView" value="@(_brandView)">
+                <input type="hidden" name="TypeId" id="hidTypeId" value="@(_typeId)">
+                <input type="text" name="BrandShowName" placeholder="品牌名称" value="@ViewBag.KeyWord" style="width: 160px; color: #666; font-size: 12px;">
+                @{
+                    if (!moduleType)
+                    {
+                        <select name="ModuleName">
+                            <option value='-1'>模块名称</option>
+                            @{
+                        if (brandModuleList.Count > 0)
+                        {
+                            foreach (var module in brandModuleList)
+                            {
+                                <option value='@module.ModuleNo' type='@module.ModuleType' @(module.ModuleNo == Request.QueryString["ModuleName"] ? "selected" : "")>@module.ModuleName</option>
+                            }
+                        }
+                            }
+                        </select>
+                        <select name="TypeId">
+                            <option value='-1'>位置</option>
+                            <option value='1' @(Request.Params["TypeId"] == "1" ? "selected='selected'" : "")>广告位</option>
+                            <option value='2' @(Request.Params["TypeId"] == "2" ? "selected='selected'" : "")>logo墙</option>
+                        </select>
+                    }
+                }
+
+                <select name="Status">
+                    <option value='-1'>状态</option>
+                    <option value='1' @(Request.Params["Status"] == "1" ? "selected='selected'" : "")>
+                        显示
+                    </option>
+                    <option value='0' @(Request.Params["Status"] == "0" ? "selected='selected'" : "")>
+                        不显示
+                    </option>
+                </select>
+                <button type="submit">
+                    提交查询
+                </button>
+                @if (!moduleType)
+                {
+                    <button type="button" onclick="window.location.href = '/shangpin/brand/brandindexcreate.html?BrandView=@(_brandView)&TypeId=@(_typeId)'">
+                        新建
+                    </button>}
+                @if (moduleType)
+                {
+                    <button type="button" onclick="window.location.href = '/shangpin/brand/brandindexcreate.html?BrandView=@(_brandView)&TypeId=@(_typeId)'">
+                        添加
+                    </button>
+
+                    if (_brandView == "2")
+                    {
+                        if (_typeId == "2")
+                        {
+                            <button type="button" class="button" onclick="show()">批量添加</button>
+                            <button type="button" onclick="window.location.href = '/shangpin/brandindex/index'">
+                                返回
+                            </button>
+                            <span style="color:red;">"前台最多只能显示 128 个"</span>
+                        }
+                        else if (_typeId == "1")
+                        {
+                            <button type="button" onclick="window.location.href = '/shangpin/brandindex/index'">
+                                返回
+                            </button>
+                            <span style="color:red;">"前台最多只能显示 12 个"</span>
+                        }
+
+                    }
+                }
+            </div>
+        </form>
+        <div id="divHotBrand" style="display:none;">
+            <form id="formBatchCreate" action="/Shangpin/Brand/BrandIndexSave" method="post">
+                <input type="hidden" name="hidBrandView" id="hidBrandView" value="@(_brandView)">
+                <input type="hidden" name="hidTypeId" id="hidTypeId" value="@(_typeId)">
+                <input type="hidden" name="hidbatch" id="hidbatch" value="true">
+                <textarea id="txtHotBrand" onblur="promptHide()" onfocus="promptShow()" name="HotBrand" rows="5" cols="50" style="color: #666; font-size: 12px;">请批量输入品牌编号，多个品牌编号使用【英文逗号】对编号进行分割</textarea>
+                <br />
+                <input class="button" id="btnBatch" type="button" onclick="SaveSubmit()" value="批量添加提交" />
+                <input class="button" type="button" onclick="Cancle();" value="取消" />
+            </form>
+        </div>
+        <input type="hidden" id="CurSordName" name="CurSordName" />
+        <table class="mx-table">
+            <thead>
+                <tr>
+                    @if (!moduleType)
+                    {
+                        <th width="4%">
+                            模块名称
+                        </th>
+
+                        <th width="4%">
+                            位置
+                        </th>
+                    }
+                    else
+                    {
+                        <th width="4%">
+                            编号
+                        </th>
+                    }
+
+                    <th width="7%">
+                        品牌名称
+                    </th>
+
+                    <th width="7%">
+                        图片预览
+                    </th>
+                    <th width="6%">
+                        创建时间
+                    </th>
+                    <th width="4%">
+                        显示状态
+                    </th>
+                    <th width="4%">
+                        排序值
+                    </th>
+                    <th width="15%">
+                        操作
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @if (null != list && list.Count > 0)
+                {
+                    int flag = 0;
+                    if (_brandView == "2" && _typeId == "2")
+                    {
+                        flag = (currentPage - 1) * 32;
+                    }
+                    else
+                    {
+                        flag = (currentPage - 1) * 10;
+                    }
+                    foreach (var item in list)
+                    {
+
+                        flag = flag + 1;
+                        <tr class="@(flag % 2 == 0 ? "cross" : "")">
+                            @if (!moduleType)
+                            {
+                                <td>
+                                    @item.ModuleName
+                                </td>
+                                <td>
+                                    @(item.TypeId == 1 ? "广告位" : "logo墙")
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    @(flag)
+                                </td>
+                            }
+                            <td>
+                                @item.BrandShowName
+                            </td>
+                            <td>
+                                @*@item.BrandPic*@
+                                @if (item.TypeId == 1)
+                                {
+                                    <img src="/ReadPic/GetPic.ashx?width=75&height=30&pictureFileNo=@(item.BrandPic)&type=2" />
+                                }
+                                else
+                                {
+                                    <img src="/ReadPic/GetPic.ashx?width=75&height=30&pictureFileNo=@(item.BrandLogo)&type=2" />
+                                }
+                            </td>
+                            <td>
+                                @item.DateCreate
+                            </td>
+                            <td>
+                                @(item.Status == 1 ? "显示" : "不显示")
+                            </td>
+                            <td>
+                                <input id="@item.IndexId" name="sort" value="@item.Sort" style="width:50px;" />
+                                <a style="color:#1c8ede;cursor:pointer" onclick="UpdatePosition(@item.IndexId)">修改</a>
+                                @*@item.Sort*@
+                            </td>
+                            <td>
+
+                                @if (!moduleType)
+                                {
+                                <!--http://localhost:14573/Shangpin/Brand/BrandsList.html?BrandShowName=&ModuleName=-1&TypeId=-1&Status=-1-->
+                                    <a id="@item.IndexId" class="button" href="/shangpin/brand/brandindexcreate.html?brandindexid=@item.IndexId">
+                                        编辑
+                                    </a>
+                                    <a id="@item.IndexId" class="button" href="/shangpin/brand/UpdateStatus.html?BrandShowName=@(Request.QueryString["BrandShowName"])&ModuleName=@(Request.QueryString["ModuleName"])&indexId=@item.IndexId&editestatus=@(item.Status == 1 ? 0 : 1)&TypeId=@(Request.QueryString["TypeId"])&status=@(Request.QueryString["status"])">@(item.Status == 1 ? "隐藏" : "显示")</a>
+                                    <a id="@item.IndexId" class="button" href="/Shangpin/Brand/BrandDelete.html?BrandShowName=@(Request.QueryString["BrandShowName"])&ModuleName=@(Request.QueryString["ModuleName"])&indexId=@item.IndexId&TypeId=@(Request.QueryString["TypeId"])&status=@(Request.QueryString["status"])" onclick="return confirm('您确定删除吗?')">
+                                        删除
+                                    </a> @*<a id="@item.IndexId" class="button" href="/outlet/channel/SubjectList?type=1&channel=@item.IndexId" >频道活动推荐</a>
+                                          <a id="@item.IndexId" class="button" href="#" onclick="UpdateStatus(this.id,@item.Status)" >
+                                        @(item.Status == 1 ? "关闭" : "开启")</a>*@
+                                }
+                                else
+                                {
+                                    <a id="@item.IndexId" class="button" href="/shangpin/brand/brandindexcreate.html?TypeId=@(_typeId)&BrandView=@(_brandView)&brandindexid=@item.IndexId&pageindex=@(Request.QueryString["pageindex"])">
+                                        编辑
+                                    </a>
+                                 <!--http://localhost:14573/Shangpin/Brand/BrandsList.html?BrandShowName=&ModuleName=-1&TypeId=-1&Status=-1-->
+                                    <a id="@item.IndexId" class="button" href="/shangpin/brand/UpdateStatus.html?BrandView=@(_brandView)&BrandShowName=@(Request.QueryString["BrandShowName"])&ModuleName=@(Request.QueryString["ModuleName"])&indexId=@item.IndexId&editestatus=@(item.Status == 1 ? 0 : 1)&TypeId=@(_typeId)&status=@(Request.QueryString["status"])&pageindex=@(Request.QueryString["pageindex"])">@(item.Status == 1 ? "隐藏" : "显示")</a>
+                                    <a id="@item.IndexId" class="button" href="/Shangpin/Brand/BrandDelete.html?BrandView=@(_brandView)&BrandShowName=@(Request.QueryString["BrandShowName"])&ModuleName=@(Request.QueryString["ModuleName"])&indexId=@item.IndexId&TypeId=@(_typeId)&status=@(Request.QueryString["status"])&pageindex=@(Request.QueryString["pageindex"])&index=@(_currentCount)" onclick="return confirm('您确定删除吗?')">
+                                        删除
+                                    </a> @*<a id="@item.IndexId" class="button" href="/outlet/channel/SubjectList?type=1&channel=@item.IndexId" >频道活动推荐</a>
+                                          <a id="@item.IndexId" class="button" href="#" onclick="UpdateStatus(this.id,@item.Status)" >
+                                        @(item.Status == 1 ? "关闭" : "开启")</a>*@
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <div class="spPage">@Html.Raw(Html.PagerX("page", currentPage, pageSize, totalCount))</div>
+        @*<div id="mx-rightcontent-fixbarbg">
+                <div class="fixbarcontent">
+                    <!-- 添加订单 start -->
+                    <div class="mx-rightcontent-msgbox" id="mx-rightcontent-addbox">
+                        <!--h1>添加数据<a href="#" id="mx-rightcontent-addbox-close" class="close">×</a> </h1-->
+                        <dl>
+                            <dt>分类名称：</dt>
+                            <dd>
+                                <input type="text" value="" name="SordName" id="SordName"></dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dd>
+                                <button class="secondary" value="" name="BtnAdd" id="BtnAdd" type="button">
+                                    确&#12288;定</button>
+                                <button value="" name="BtnCancle" id="BtnCancle" type="button">
+                                    取&#12288;消</button></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="clr" id="mx-rightcontent-fixbar">
+                <a id="mx-btn-add" href="#"></a><a id="mx-btn-del" href="#"></a><a id="mx-btn-search"
+            href="#"></a><a id="mx-btn-folder" href="#"></a>
+            </div>*@
+    </div>
+</body>
+</html>

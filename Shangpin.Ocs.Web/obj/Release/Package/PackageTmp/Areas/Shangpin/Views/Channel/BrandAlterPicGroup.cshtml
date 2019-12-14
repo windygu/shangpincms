@@ -1,0 +1,85 @@
+﻿@model IList<Shangpin.Entity.Wfs.SWfsListAlterGroup>
+@using Shangpin.Ocs.Web.Infrastructure
+@{
+    ViewBag.Title = "品牌轮播组";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    int pageIndex = ViewBag.pageIndex;
+    int pageSize = ViewBag.pageSize;
+    int totalCount = ViewBag.totalCount;
+    
+}
+@section HeadScript{
+    
+
+}
+<h1>
+    OCS > 尚品 > <a href="/Shangpin/channel/ChannelList">频道页列表</a>  >品牌轮播组
+</h1>
+<div>
+    <form method="get" action="/shangpin/Channel/BrandAlterPicGroup">
+    <input type="text" name="groupname" placeholder="品牌轮播组名称" value="@(Request.QueryString["groupname"])">
+    <select name="status">
+        <option value="" @(Request.QueryString["status"]==""?"selected":null)>品牌轮播组状态</option>
+        <option value="1" @(Request.QueryString["status"]=="1"?"selected":null)>开启</option>
+        <option value="0" @(Request.QueryString["status"]=="0"?"selected":null)>关闭</option>
+    </select>
+    <input type="hidden" name="channelno" value="@Request.QueryString["channelno"]" />
+    <input type="submit" value="查询" />
+    </form>
+</div>
+<table cellpadding="1" cellspacing="1" class="mx-table">
+    <thead>
+        <tr>
+            <th colspan="2">
+                品牌轮播组
+            </th>
+        </tr>
+    </thead>
+    @if (Model != null && Model.Count() > 0)
+    {
+        var flag = 0;
+        foreach (var group in Model)
+        {
+            flag = flag + 1;
+            string style = flag % 2 == 0 ? "border:#ccc 0px solid;width:100%; background-color:#f0f0f0;" : "border:#ccc 0px solid;width:100%;";
+        <tbody style="@style">
+            <tr>
+                <td width="30%" style="text-align: left; padding-left: 10px;">
+                    商品组名称：@group.GroupName
+                </td>
+                <td width="42%" style="text-align: left; font-weight: bold;">
+                    创建时间：@group.CreateDate
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: left; padding-left: 10px;">
+                    商品组状态：@(group.Status == 0 ? "关闭" : "开启")
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" style="text-align: right;">
+                    <a class="button" href="/shangpin/channel/BrandAlterPicList?groupid=@(group.GroupId)&channelno=@(Request.QueryString["channelno"])">管理图片 </a>
+                    <a class="button" href="/shangpin/channel/EditeBrandAlterPicGroup?GroupId=@(group.GroupId)&channelno=@(Request.QueryString["channelno"])">
+                        编辑 </a>
+                    <a class="button" onclick="return confirm('是否删除')" href="/shangpin/channel/DeleteBrandAlterPicGroup/@(group.GroupId)?channelno=@(Request.QueryString["channelno"])">删除
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+
+        }
+    }
+</table>
+<div class="spPage">
+    <!--分页-->
+    @if (totalCount > 0)
+    {
+        @Html.Raw(Html.PagerX("page", pageIndex, pageSize, totalCount))
+    }
+</div>
+<div class="clr" id="mx-rightcontent-fixbar">
+    <a id="mx-btn-add" href="/Shangpin/channel/EditeBrandAlterPicGroup?GroupId=0&channelno=@(Request.QueryString["channelno"])" title="添加品牌轮播组">
+    </a>
+</div>

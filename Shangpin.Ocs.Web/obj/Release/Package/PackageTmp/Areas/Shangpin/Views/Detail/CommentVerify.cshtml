@@ -1,0 +1,39 @@
+﻿@{
+    Layout = null;
+}
+    <style type="text/css">
+        tr,td{height:30px;font: 400 12px "微软雅黑", "Microsoft YaHei", "Tahoma", "宋体"; text-align:center;}
+       </style>
+
+    <script src="/Contents/Scripts/jquery-1.7.2.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#NoApprove").bind("click", parent.window.TrueInfo);
+
+            $("#Approve").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "/Shangpin/detail/UpdateASWfsProductCommentStatus.html",
+                    data: "verify=1&cCommentId=" + $(this).attr("commentId") + "&cStatus=" + $(this).attr("status"),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.Successed) {
+                            $("table").children("tbody").html("<tr><td>修改成功！3秒自动关闭！</td></tr>");
+                            setTimeout("parent.window.TrueInfo()", 3000);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+    <table cellpadding="0" cellspacing="0" border="0" style="margin:10px auto;padding:10px;" width="80%">
+        <tbody>
+            <tr>
+                <td colspan="2">此条评论是否通过审核？</td>
+            </tr>
+            <tr>
+                <td><input type="button" name="Approve" id="Approve" value="确认通过" commentId="@ViewBag.CommentId" status="@ViewBag.Status" verify="1"/></td>
+                <td colspan="2"><input type="button" name="NoApprove" id="NoApprove" value="不通过" /></td>
+            </tr>
+        </tbody>
+    </table>

@@ -1,0 +1,181 @@
+﻿<html>
+<head>
+    <title>缓存清理-欢迎登录尚品百资CMS管理系统</title>
+    <link href="/Areas/Outlet/Content/css/init.css" rel="stylesheet" type="text/css"
+        charset="utf-8" />
+    <link href="/Areas/Outlet/Content/css/core.css" rel="stylesheet" type="text/css"
+        charset="utf-8" />
+    <link href="/Areas/Outlet/Content/css/layout/header.css" rel="stylesheet" type="text/css"
+        charset="utf-8" />
+    <link href="/Areas/Outlet/Content/css/layout/body.css" rel="stylesheet" type="text/css"
+        charset="utf-8" />
+    <link href="/Areas/Outlet/Content/css/page/leftmenu/leftmenu.css" rel="stylesheet"
+        type="text/css" charset="utf-8" />
+    <link href="/Areas/Outlet/Content/css/page/rightcontent/rightcontent.css" rel="stylesheet"
+        type="text/css" charset="utf-8" />
+    <style type="text/css">
+        table
+        {  width:1000px; margin:20px auto;
+          }
+        td{ font-size:14px; padding:10px; }
+        .input{ width:300px;}
+    </style>
+      <script type="text/javascript" src="/Areas/Outlet/Scripts/lib/jquery.js" charset="utf-8"></script>
+</head>
+<body>
+    <div id="mx-header">
+        <div id="mx-header-logo-wrapper">
+            <span style="float: left;"><a id="mx-header-logo" class="inlb" href="/" style="margin-left: 18px;">
+                <img src="/Areas/Shangpin/Images/logo/logo.png" alt="尚品OCS系统" />
+            </a></span><span style="float: right; padding: 20px 20px 0 0;"><a href="/loginout.html">
+                退出系统</a></span>
+        </div>
+        <div id="mx-header-nav-wrapper">
+            <ul id="mx-header-nav" class="clr">
+            <li ><a href="/Shangpin/Brand/AIIBrandsSelect.html">尚品CMS</a></li>
+                <li ><a href="/outlet/subject/index">奥莱CMS</a></li>
+                <li><a href="/Shangpin/Venue/MeetListManage">活动会场管理</a></li>
+                <li class="cur"><a href="/Permission/cachemanage/clear">缓存清理</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <table>
+        <tr>
+            <td width="15%">
+              <b>MemberCache</b> 
+            </td>
+            <td >
+                <input class="input" type="text" value="" id="MemberCache" name="MemberCache" />(备注：请填写MemberCache缓存键值，多个请用英文逗号分割)
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <b>Redis</b> 
+            </td>
+            <td>
+                <input  class="input" type="text" value="" id="Redis" name="Redis" />(备注：请填写Redis缓存键值，多个请用英文逗号分割)
+            </td>
+        </tr>
+         <tr>
+            <td>
+              <b>Nginx/CDN</b> 
+            </td>
+            <td>
+                <input  class="input" type="text" value="" id="Nginx" name="Nginx" />(备注：请填写页面url绝对地址，多个请用英文逗号分割)
+            </td>
+        </tr>
+        <tr>
+            <td id="btnInfo" colspan="2">
+            <a id="submitBtn" class="sumit_btn" href="###">清  理</a>
+            </td>
+        </tr>
+    </table>
+    <hr />
+    
+    <table>
+    <tr>
+    <td colspan="2">
+   测试类型： <select id="keyType" name="keyType">
+    <option value="0">请选择</option>
+    <option value="1">MemberCache</option>
+    <option value="2">RedisCache</option>
+    <option value="3">Nginx/CDN</option>
+
+    </select>
+    键：<input  type="text" value="" id="keyName" name="keyName" />
+    值：<input  type="text" value="" id="keyValue" name="keyValue" />
+    </td>
+   
+    </tr>
+     <tr>
+            <td id="btnInfo" colspan="2">
+            <a id="submitBtnWrite" class="sumit_btn" href="###">写入</a> <a id="submitBtnRead" class="sumit_btn" href="###">读取</a>
+            </td>
+        </tr>
+    </table>
+</body>
+<script type="text/javascript">
+    $(function () {
+        $("#submitBtn").bind("click", function () {
+            var Member = $("#MemberCache").val();
+            var Redis = $("#Redis").val();
+            var Nginx = $("#Nginx").val();
+            $.ajax({
+                url: "/Permission/cachemanage/doclear",
+                type: "post",
+                data: { Member: Member, Redis: Redis, Nginx: Nginx },
+                dataType: "json",
+                beforeSend: function () { $("#btnInfo").text("正在处理中...") },
+                error: function () { alert("网络异常请刷新页面重试..."); },
+                success: function (data) {
+                    if (data.result == "1") {
+                        alert(data.message);
+                        window.location.reload(true);
+                    }
+                    else {
+                        alert(data.message);
+                        return false;
+                    }
+                }
+            });
+        });
+
+        $("#submitBtnWrite").bind("click", function () {
+
+            var keyType = $("#keyType").val();
+            var keyName = $("#keyName").val();
+            var keyValue = $("#keyValue").val();
+            $.ajax({
+                url: "/Permission/cachemanage/DoWrite",
+                type: "post",
+                data: { keyType: keyType, keyName: keyName, keyValue: keyValue },
+                dataType: "json",
+                beforeSend: function () { $("#submitBtnWrite").text("正在处理中...") },
+                error: function () { alert("网络异常请刷新页面重试..."); },
+                success: function (data) {
+                    if (data.result == "1") {
+                        alert(data.message);
+                        //window.location.reload(true);
+                        $("#submitBtnWrite").text("写入")
+                    }
+                    else {
+                        alert(data.message);
+                        return false;
+                    }
+                }
+            });
+
+        });
+
+        $("#submitBtnRead").bind("click", function () {
+
+            var keyType = $("#keyType").val();
+            var keyName = $("#keyName").val();
+            var keyValue = $("#keyValue").val();
+            $.ajax({
+                url: "/Permission/cachemanage/DoRead",
+                type: "post",
+                data: { keyType: keyType, keyName: keyName, keyValue: keyValue },
+                dataType: "json",
+                beforeSend: function () { $("#submitBtnRead").text("正在处理中...") },
+                error: function () { alert("网络异常请刷新页面重试..."); },
+                success: function (data) {
+                    if (data.result == "1") {
+                        alert(data.message);
+                        //window.location.reload(true);
+                        $("#submitBtnRead").text("读取")
+                    }
+                    else {
+                        alert(data.message);
+                        return false;
+                    }
+                }
+            });
+
+        });
+
+
+    })
+</script>
+</html>

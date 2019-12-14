@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <statement id="ComBeziWfs_SWfsIndexNewArrival_Add">
+    insert into SWfsIndexNewArrival(NewArrivalTitle,SortValue,StartDate,CreateDate,Status,DataState,OperateUserId) values(@NewArrivalTitle,@SortValue,@StartDate,@CreateDate,1,1,@OperateUserId) SELECT @@IDENTITY;
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsIndexNewArrival_SelAll">
+    with temp as (
+    select *,row_number() over(order by StartDate desc) as row from SWfsIndexNewArrival where PageNo='index' AND PagePositionNo='INDEX_NA' AND DataState=1 and status=1
+    )
+    select * from temp  where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize order by startdate desc
+
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsIndexNewArrival_SelAllProduct">
+    SELECT B.ProductNo ,
+    PE.ProductShowPic ProductPicFile
+    FROM   SWfsIndexNewArrivalProductList B
+    INNER JOIN SpProduct C ON B.ProductNo = C.ProductNo
+    INNER JOIN SpfProductExtend PE ON B.ProductNo = PE.ProductNo
+    LEFT JOIN (SELECT ProductNo FROM dbo.SpfSkuExtend skue WHERE skue.PcSaleState=2  GROUP BY ProductNo) AS t ON t.ProductNo=b.ProductNo
+    LEFT JOIN SpBrand AS brand ON C.BrandNo=brand.BrandNo
+    LEFT JOIN SpBrandExtend AS be ON be.BrandNo=brand.BrandNo
+    WHERE  B.NewArrivalId = @NewArrivalId
+    AND B.DataState = 1
+    AND B.status = 1
+    AND PE.TypeFlag=1
+    ORDER BY sortvalue DESC
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsIndexNewArrival_SelCount">
+    select count(*) from SWfsIndexNewArrival where PageNo='index' AND PagePositionNo='INDEX_NA' AND DataState=1 and status=1
+  </statement>
+  
+  
+  <statement id="ComBeziWfs_SWfsIndexNewArrival_SelUpdateGoods">
+    SELECT p.ProductNo ,
+    p.ProductModel GoodsNo ,
+    x.Status ,
+    p.ProductName ,
+    pe.ProductShowPic AS ProductPicFile ,
+    x.sortvalue ,
+    brand.BrandCnName ,
+    brand.BrandEnName
+    FROM   SWfsIndexNewArrivalProductList x
+    INNER JOIN Spproduct AS p ON x.ProductNo=p.ProductNo
+    INNER JOIN SpfProductExtend AS pe ON pe.ProductNo=x.ProductNo
+    LEFT JOIN (SELECT ProductNo FROM SpfSkuExtend(NOLOCK) WHERE PcSaleState=2 GROUP BY ProductNo) AS b ON b.ProductNo=x.ProductNo
+    LEFT JOIN SpBrand AS brand ON p.BrandNo=brand.BrandNo
+    LEFT JOIN SpBrandExtend AS be ON be.BrandNo=brand.BrandNo
+    WHERE  NewArrivalId = @NewArrivalId
+    AND x.DataState = 1
+    AND pe.TypeFlag = 1
+    AND x.status = 1
+    ORDER BY x.SortValue DESC
+  </statement>
+
+  <statement id="ComBeziWfs_SkuList_GetSkuListByProductNo">
+    SELECT  sku.ProductNo,
+    sku.PcShowState,
+    sku.DisabledState,
+    sku.PcSaleState AS IsShelf,
+    sku.PcShelfDate as DateShelf ,
+    price.GoldPrice ,
+    price.PlatinumPrice ,
+    price.DiamondPrice ,
+    price.StandardPrice ,
+    price.MarketPrice ,
+    price.PromotionPrice
+    FROM SpfSkuExtend AS sku ( NOLOCK )
+    INNER JOIN SpfSkuPrice AS price ( NOLOCK ) ON price.SkuNo = sku.SkuNo
+    WHERE sku.PcShowState = 1
+    AND sku.PcSaleState = 2
+    AND sku.DataState=1
+    AND sku.ProductNo = @ProductNo
+  </statement>
+
+
+  <statement id="ComBeziWfs_SWfsIndexNewArrival_SelOneByIdentity">
+    select *  from SWfsIndexNewArrival where NewArrivalId=@NewArrivalId
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsIndexNewArrival_UpdateManager">
+    update SWfsIndexNewArrival set NewArrivalTitle=@NewArrivalTitle,StartDate=@StartDate,UpdateOperateUserId=@UpdateOperateUserId,UpdateDate=@UpdateDate where NewArrivalId=@NewArrivalId
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsIndexNewArrival_DelNewComming">
+    update SWfsIndexNewArrival set DataState=255 where NewArrivalId=@NewArrivalId;
+    update SWfsIndexNewArrivalProductList set DataState=255 where NewArrivalId=@NewArrivalId;
+  </statement>
+  
+
+  <statement id="ComBeziWfs_SWfsIndexNewArrival_SelDetailDate">
+    select count(*) from  SWfsIndexNewArrival where StartDate=@StartDate and DataState=1 and status=1 and NewArrivalId != @NewArrivalId
+  </statement>
+</statements>

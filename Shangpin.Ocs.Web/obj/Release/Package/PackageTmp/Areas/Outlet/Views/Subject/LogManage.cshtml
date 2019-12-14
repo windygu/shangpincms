@@ -1,0 +1,62 @@
+﻿@using Shangpin.Entity.Wfs
+@using Shangpin.Ocs.Web.Infrastructure;
+@{
+    int totalCount = (int)ViewBag.Count;
+    int currentPage = (int)ViewBag.CurPage;
+    int pageSize = (int)ViewBag.PageSize;
+     
+    ViewBag.Title = "活动日志管理|尚品OCS管理系统";
+    IList<SWfsSubjectOrChannelLog> list = (IList<SWfsSubjectOrChannelLog>)ViewBag.LogList;
+}
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+}
+<h1>
+<a href="/outlet/subject/index">活动管理</a> 
+> @(ViewBag.SubjectName)活动日志管理</h1>
+<form action="/outlet/subject/LogManage" method="get">
+<table class="mx-table">
+<tr>
+<td style="text-align:left">
+<input type="hidden" id="subjectNo" name="subjectNo" value="@Request.QueryString["subjectNo"]" />
+查询日期：<input name="begintime" class="Wdate" type="text" onclick="WdatePicker()" readonly="readonly" value="@Request.QueryString["begintime"]" />-
+<input name="endtime" class="Wdate" type="text" onclick="WdatePicker()" readonly="readonly" value="@Request.QueryString["endtime"]" />
+关键字：<input type="text" value="@Request.QueryString["key"]" style="" name="key" />
+<button type="submit">查 询</button>
+</td>
+</tr>
+</table>
+</form>
+<table class="mx-table">
+    <thead>
+        <tr>
+            <th width="25%">
+                时间
+            </th>
+            <th width="25%">
+                操作人
+            </th>
+            <th width="50%">
+                动作
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var flag = 0;
+            foreach (var item in list)
+            {
+                flag = flag + 1;                                 
+            <tr class="@(flag % 2 == 0 ? "cross" : "")" id="@item.SubjectOrChannelLogId">
+                <td>@item.DateOperator
+                </td>
+                <td>@item.OperatorUserId
+                </td>
+                <td>@item.OperatorContent
+                </td>
+            </tr>                                 
+            }
+        }
+    </tbody>
+</table>
+<div class="spPage">@Html.Raw(Html.PagerX("page",currentPage,pageSize,totalCount))</div>

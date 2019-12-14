@@ -1,0 +1,131 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@using Shangpin.Entity.Wfs;
+
+@{
+    Layout = null;
+    IList<SWfsPromotionsList> list = ViewBag.List;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div>
+        @{
+            Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+            int totalCount = ViewBag.totalcount;
+            int currentPage = ViewBag.PageIndex;
+            int pageSize = 10;
+
+            ViewBag.Title = "促销提示列表";
+        }
+        @using Shangpin.Ocs.Web.Infrastructure;
+        @model Shangpin.Entity.Wfs.SWfsProductPromotionTip
+        @section HeadScript{
+        <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+            <script src="/Areas/Shangpin/Scripts/lib/jquery.js" type="text/javascript"></script>
+            <script src="/Areas/Shangpin/Scripts/plug/comm.js" type="text/javascript"></script>
+        }
+        <h1>
+            OCS > 尚品 > <a href="#">促销提示管理</a> > 促销提示</h1>
+        <form action="/Shangpin/Promotion/PromotionsList.html" method="get">
+        <div>
+            有效时间:<input id="StartDate" name="StartDate" value="@ViewBag.StartDate" maxlength="30"  class="Wdate" type="text" onclick="WdatePicker()" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" readonly="readonly" style=" width:160px;" />至
+                     <input id="EndDate" name="EndDate" value="@ViewBag.EndDate" maxlength="30" class="Wdate" type="text" onclick="WdatePicker()" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" readonly="readonly" style=" width:160px;" /><br />
+            创建时间:<input id="CreateDate" name="CreateDate" value="@ViewBag.CreateDate" maxlength="30"  class="Wdate" type="text" onclick="WdatePicker()" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" readonly="readonly" style=" width:160px;" />至
+                     <input id="EndCreateDate" name="EndCreateDate" value="@ViewBag.EndCreateDate" maxlength="30" class="Wdate" type="text" onclick="WdatePicker()" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" readonly="readonly" style=" width:160px;" />
+            <select name="Status">
+                <option value="-1">状态</option>
+                <option value = "0" @(Request.Params["Status"] == "0" ? "selected='selected'" : "")>
+                    无效</option>
+                <option value = "1" @(Request.Params["Status"] == "1" ? "selected='selected'" : "")>
+                    有效</option>
+            </select>
+            <input type="text" name="PromotionInfoName" placeholder="请输入促销名称" value="@ViewBag.KeyWord"  style="width: 140px; color: #666; font-size: 12px;" />
+            <input type="text" name="TipContent" placeholder="请输入提示语" value="@ViewBag.Prompt"  style="width: 140px; color: #666; font-size: 12px;" />
+            <input type="text" name="ProductNo" placeholder="请输入商品编号" value="@ViewBag.ProductNo" style="width: 140px; color: #666; font-size: 12px;" />
+            <input type="text" name="CreateUsterId" placeholder="请输入创建人" value="@ViewBag.Created"  style="width: 100px; color: #666; font-size: 12px;" />
+            <button type="submit">
+                提交查询</button>
+                <button type="button" onclick="window.location.href='/shangpin/Promotion/PromotionsInsert.html'">
+                新建</button>
+        </div>
+        </form>
+        <input type="hidden" id="CurSordName" name="CurSordName" />
+        <table class="mx-table">
+            <thead>
+                <tr>
+                    <th width="9%">
+                        名称
+                    </th>
+                    <th width="9%">
+                        适用范围
+                    </th>
+                    <th width="11%">
+                        有效期
+                    </th>
+                    <th width="9%">
+                        状态
+                    </th>
+                    <th width="9%">
+                        创建时间
+                    </th>
+                    <th width="9%">
+                        创建人
+                    </th>
+                    <th width="18%">
+                        操作
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (null != list && list.Count > 0)
+                {
+                    var flag = 0;
+                    foreach (var item in list)
+                    {
+                        flag = flag + 1;
+                    <tr class="@(flag % 2 == 0 ? "cross" : "")">
+                        <td>
+                            @item.PromotionInfoName
+                        </td>
+                        <td>
+                            @{
+                        string[] level = item.MemberSet.Split(',');
+                        for (int i = 0; i < level.Length; i++)
+                        {
+                            @Shangpin.Entity.User.CustomerLevel.GetLevelNameByNo(level[i]);<br />
+                        }
+                                }
+                                @(item.MemberSet == "0" ? "全部会员" : "")<br />
+                            @(item.IsAllProduct == 1 ? "全部商品" : "部分商品")
+                        </td>
+                        <td>
+                            @item.StartDate<br />
+                            @item.EndDate
+                        </td>
+                        <td>
+                            @(item.Status == 0 ? "无效" : "有效")
+                        </td>
+                        <td>
+                            @item.CreateDate
+                        </td>
+                        <td>
+                            @item.CreateUsterId
+                        </td>
+                        <td>
+                            <a id="@item.PromotionInfoId" class="button" href="/Shangpin/Promotion/PromotionsInsert.html?promotioninfoId=@item.PromotionInfoId" >
+                                编辑</a> 
+                                <a id="@item.PromotionInfoId" class="button" href="/Shangpin/Promotion/PromotionsStatus_Update.html?promotioninfoId=@item.PromotionInfoId&status=@(item.Status == 0 ? 1 : 0)">@(item.Status == 0 ? "有效" : "无效")</a>
+                            <a id="@item.PromotionInfoId" class="button" href="/Shangpin/Promotion/DeletePromotions.html?promotioninfoId=@item.PromotionInfoId" onclick="return confirm('您确定删除吗?')" >
+                                删除</a>
+                        </td>
+                    </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <div class="spPage">@Html.Raw(Html.PagerX("page", currentPage, pageSize, totalCount))</div>
+</body>
+</html>

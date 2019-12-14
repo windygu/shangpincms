@@ -1,0 +1,206 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="/Areas/Shangpin/Content/css/init.css" rel="stylesheet" type="text/css"
+          charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/core.css" rel="stylesheet" type="text/css"
+          charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/layout/header.css" rel="stylesheet" type="text/css"
+          charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/layout/body.css" rel="stylesheet" type="text/css"
+          charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/page/leftmenu/leftmenu.css" rel="stylesheet"
+          type="text/css" charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/page/rightcontent/rightcontent.css" rel="stylesheet"
+          type="text/css" charset="utf-8" />
+    <link href="~/Areas/ProductFlat/Content/CSS/ProductSortLayout.css" rel="stylesheet" />
+    @RenderSection("HeadStyle", false)
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/lib/jquery.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/plug/leftMenu.js"></script>
+    @RenderSection("HeadScript", false)
+</head>
+<body>
+    <div id="mx-header">
+        <div id="mx-header-logo-wrapper">
+            <span style="float: left;">
+                <a id="mx-header-logo" class="inlb" href="/" style="margin-left: 18px;">
+                    <img src="/Areas/Shangpin/Images/logo/logo.png" alt="尚品OCS系统" />
+                </a>
+            </span><span style="float: right; padding: 20px 20px 0 0;">
+                <a href="/loginout.html">
+                    退出系统
+                </a>
+        </div>
+        <div id="mx-header-nav-wrapper">
+            <ul id="mx-header-nav" class="clr">
+                <li class="cur"><a href="/Shangpin/Brand/AIIBrandsSelect.html">尚品CMS</a> </li>
+                <li><a href="/outlet/subject/index">奥莱CMS</a></li>
+                <li><a href="/Shangpin/Venue/MeetListManage">市场运营</a></li>
+                <li><a href="/Shangpin/Order/CMBOrderIDQuery.html">订单管理</a></li>
+                <li><a href="/Shangpin/product/productmanager">商品管理</a></li>
+                <li><a href="/Permission/cachemanage/clear">缓存清理</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="mx-body">
+        <ul id="mx-leftmenu">
+            <li class="@((Request.Url.ToString().ToLower().IndexOf("/brand/") > 0 || Request.Url.ToString().ToLower().IndexOf("shangpin/flagship") > 0 || Request.Url.ToString().ToLower().IndexOf("/brandindex") > 0) ? "first cur" : "first")">
+                <a href="javascript:;">品牌管理</a>
+                <p style="@((Request.Url.ToString().ToLower().IndexOf("shangpin/brand") > 0 || Request.Url.ToString().ToLower().IndexOf("shangpin/flagship") > 0) ? "display:block;" : "display:none;")">
+                    <a href="/Shangpin/Brand/AIIBrandsSelect.html" @(Request.Url.ToString().ToLower().IndexOf("aiibrandsselect.html") > 0 ? "class=cur" : null)>
+                        全部品牌
+                    </a> @*<a href="/Shangpin/Brand/AlterPicList.html" @(Request.Url.ToString().ToLower().IndexOf("alterpiclist.html") > 0 ? "class=cur" : null)>
+                            轮播图管理
+                        </a><a href="/Shangpin/Brand/BrandsListGuoJi.html" @(Request.Url.ToString().ToLower().IndexOf("brandslistguoji.html") > 0 ? "class=cur" : null)>
+                            国际高端品牌
+                        </a> <a href="/Shangpin/Brand/BrandsList.html" @(Request.Url.ToString().ToLower().IndexOf("brandslist.html") > 0 ? "class=cur" : null)>
+                            国际时尚品牌
+                        </a>*@  <a href="/Shangpin/Brand/StoresList.html" @(Request.Url.ToString().ToLower().IndexOf("storeslist.html") > 0 ? "class=cur" : null)>
+                        专卖店
+                    </a> <a href="/Shangpin/Brand/Flagshipstorelist.html" @(Request.Url.ToString().ToLower().IndexOf("flagshipstorelist.html") > 0 ? "class=cur" : null)>
+                        旗舰店
+                    </a> <a href="/Shangpin/Flagship/FlagshipList.html" @(Request.Url.ToString().ToLower().IndexOf("shangpin/flagship") > 0 ? "class=cur" : null)>
+                        精品旗舰店
+                    </a> <a href="/shangpin/brand/TemplateList" @(Request.Url.ToString().ToLower().IndexOf("shangpin/brand/templatelist") > 0 ? "class=cur" : null)>
+                        模板管理
+                    </a> <a href="/shangpin/brandindex" @(Request.Url.ToString().ToLower().IndexOf("/shangpin/brandindex") > 0 || Request.Url.ToString().ToLower().IndexOf("/shangpin/brand/brandslist") > 0 ? "class=cur" : null)>
+                        品牌首页管理
+                    </a>
+                </p>
+            </li>
+            <li class="@(Request.Url.ToString().ToLower().IndexOf("seo") > 0 ? "cur" : null)">
+                <a href="javascript:;">别名管理</a>
+                <p style="@(Request.Url.ToString().ToLower().IndexOf("shangpin/seo") > 0 ? "display:block;" : "display:none;")">
+                    <a href="/Shangpin/seo/BrandAlias.html" class="@(Request.Url.ToString().ToLower().IndexOf("brandalias") > 0 ? "cur" : null)">
+                        品牌别名设置
+                    </a> <a href="/Shangpin/seo/CategoryAlias.html" class="@((Request.Url.ToString().ToLower().IndexOf("categoryalias") > 0 && Request.Url.ToString().ToLower().IndexOf("categoryno=a02") < 0) ? "cur" : null)">
+                        女士分类别名设置
+                    </a> <a href="/Shangpin/seo/CategoryAlias.html?categoryno=A02" class="@(Request.Url.ToString().ToLower().IndexOf("categoryno=a02") > 0 ? "cur" : null)">
+                        男士分类别名设置
+                    </a> <a href="/Shangpin/seo/NoBdAlias.html" class="@(Request.Url.ToString().ToLower().IndexOf("nobdalias") > 0 ? "cur" : null)">
+                        没有品牌别名列表
+                    </a> <a href="/Shangpin/seo/NoCyAlias.html?cno=A01" class="@(Request.Url.ToString().ToLower().IndexOf("cno=a01") > 0 ? "cur" : null)">
+                        没有女士分类别名列表
+                    </a> <a href="/Shangpin/seo/NoCyAlias.html?cno=A02" class="@(Request.Url.ToString().ToLower().IndexOf("cno=a02") > 0 ? "cur" : null)">
+                        没有男士分类别名列表
+                    </a>
+                </p>
+            </li>
+            <li class="@(Request.Url.ToString().ToLower().IndexOf("subject") > 0 ? "cur" : null)">
+                <a href="javascript:;">活动管理</a>
+                <p style="@(Request.Url.ToString().ToLower().IndexOf("shangpin/subject") > 0 ? "display:block;" : "display:none;")">
+                    <a href="/Shangpin/subject/index.html" class="@((Request.Url.ToString().ToLower().IndexOf("shangpin/subject/index") > 0 || Request.Url.ToString().ToLower().IndexOf("shangpin/subject/datastatisticsnew") > 0) ? "cur" : null)">
+                        活动列表
+                    </a> <a href="/Shangpin/subject/DataStatisticsNew.html" class="@(Request.Url.ToString().ToLower().IndexOf("shangpin/subject/datastatisticsnew") > 0 ? "cur" : null)">
+                        数据统计
+                    </a>
+                </p>
+            </li>
+            <li class="@((Request.Url.ToString().ToLower().IndexOf("admanage") > 0 || Request.Url.ToString().ToLower().IndexOf("curtain") > 0) ? "cur" : null)">
+                <a href="javascript:;">公告管理</a>
+                <p style="@(Request.Url.ToString().ToLower().IndexOf("shangpin/admanage") > 0 || Request.Url.ToString().ToLower().IndexOf("shangpin/curtain") > 0 ? "display:block;" : "display:none;")">
+                    <a href="/Shangpin/admanage/createad.html" class="@(Request.Url.ToString().ToLower().IndexOf("createad") > 0 ? "cur" : null)">
+                        添加公告
+                    </a> <a href="/Shangpin/admanage/index.html" class="@(Request.Url.ToString().ToLower().IndexOf("admanage/index") > 0 ? "cur" : null)">
+                        公告列表
+                    </a> <a href="/Shangpin/curtain/curtainlist.html" class="@(Request.Url.ToString().ToLower().IndexOf("curtain/curtainlist") > 0 ? "cur" : null)">
+                        拉幕列表管理
+                    </a>
+                </p>
+            </li>
+            <li class="@(Request.Url.ToString().ToLower().IndexOf("seo") > 0 ? "cur" : null)">
+                <a href="javascript:;">列表页轮播图管理</a>
+                <p style="@(Request.Url.ToString().ToLower().IndexOf("shangpin/list/alterlist") > 0 ? "display:block;" : "display:none;")">
+                    <a href="/Shangpin/List/AlterList.html" @(Request.Url.ToString().ToLower().IndexOf("alterlist.html") > 0 ? "class=cur" : null)>
+                        列表页头图管理
+                    </a>
+                </p>
+            </li>
+            <li class="@(Request.Url.ToString().ToLower().IndexOf("promotionslist") > 0 ? "cur" : null)">
+                <a href="javascript:;">促销提示管理</a>
+                <p style="@(Request.Url.ToString().ToLower().IndexOf("shangpin/promotion/promotionslist") > 0 ? "display:block;" : "display:none;")">
+                    <a href="/Shangpin/Promotion/PromotionsList.html" @(Request.Url.ToString().ToLower().IndexOf("promotionslist.html") > 0 ? "class=cur" : null)>
+                        促销提示
+                    </a>
+                </p>
+            </li>
+            <li class="@((Request.Url.ToString().ToLower().IndexOf("/channel/") > 0 || Request.Url.ToString().ToLower().IndexOf("/newchannel/") > 0 || Request.Url.ToString().ToLower().IndexOf("/style/")>0) ? "cur" : "")">
+                <a href="javascript:;">列表页管理</a>
+                <p style="@((Request.Url.ToString().ToLower().IndexOf("/channel/") > 0 || Request.Url.ToString().ToLower().IndexOf("/newchannel/") > 0 || Request.Url.ToString().ToLower().IndexOf("/style/") > 0) ? "display:block;" : "display:none;")">
+                    <a href="/Shangpin/channel/ChannelList" @(Request.Url.ToString().ToLower().IndexOf("channel/channellist") > 0 ? "class=cur" : null)>
+                        列表页管理
+                    </a>
+                    <a href="/Shangpin/newchannel/newChannelList" @((Request.Url.ToString().ToLower().IndexOf("newchannel/newchannellist") > 0) || Request.Url.ToString().ToLower().IndexOf("/style/") > 0 ? "class=cur" : null)>
+                        最新列表页管理
+                    </a>
+                    <a href="/Shangpin/channel/TemplateList" @(Request.Url.ToString().ToLower().IndexOf("channel/templatelist") > 0 ? "class=cur" : null)>
+                        模板管理
+                    </a>
+                </p>
+            </li>
+            @*<li class="@(Request.Url.ToString().ToLower().IndexOf("homehotgroup") > 0 ? "cur" : null)">
+                    <a href="javascript:;">频道首页管理</a>
+                    <p style="@(Request.Url.ToString().ToLower().IndexOf("shangpin/homehotgroup") > 0 ? "display:block;" : "display:none;")">
+                        <a href="/Shangpin/HomeHotGroup/GroupList.html" @(Request.Url.ToString().ToLower().IndexOf("grouplist.html") > 0 ? "class=cur" : null)>
+                            促销商品组</a>
+                    </p>
+                </li>*@
+            <li class="@(Request.Url.ToString().ToLower().IndexOf("homepage") > 0 || Request.Url.ToString().ToLower().IndexOf("homehotgroup") > 0 ? "cur" : null)">
+                <a href="javascript:;">首页管理</a>
+                <p style="@(Request.Url.ToString().ToLower().IndexOf("shangpin/homepage") > 0 || Request.Url.ToString().ToLower().IndexOf("shangpin/homehotgroup") > 0 ? "display:block;" : "display:none;")">
+                    <a href="/shangpin/homepage/homemanager.html" @(Request.Url.ToString().ToLower().IndexOf("shangpin/homepage/homemanager") > 0 ? "class=cur" : null)>
+                        首页模板管理
+                    </a>
+                </p>
+            </li>
+            <li class="@(Request.Url.ToString().ToLower().IndexOf("detail") > 0)">
+                <a href="javascript:;">终端页管理</a>
+                <p style="@(Request.Url.ToString().ToLower().IndexOf("shangpin/detail") > 0 ? "display:block;" : "display:none;")">
+                    <a href="/shangpin/detail/CommentManager.html" @(Request.Url.ToString().ToLower().IndexOf("shangpin/detail/commentmanager") > 0 ? "class=cur" : null)>
+                        终端页评论管理
+                    </a>
+                    <a href="/shangpin/detail/QuestAnswerManager.html" @(Request.Url.ToString().ToLower().IndexOf("shangpin/detail/questanswermanager") > 0 ? "class=cur" : null)>
+                        终端页咨询管理
+                    </a>
+                    <a href="/shangpin/detail/addcomment.html" @(Request.Url.ToString().ToLower().IndexOf("shangpin/detail/addcomment") > 0 ? "class=cur" : null)>
+                        后台添加评论
+                    </a>
+                </p>
+            </li>
+            <li class="@(Request.Url.ToString().ToLower().IndexOf("detail") > 0)">
+                <a href="javascript:;">首页导航管理</a>
+                <p style="@(Request.Url.ToString().ToLower().IndexOf("shangpin/detail") > 0 ? "display:block;" : "display:none;")">
+                    <a href="/shangpin/HomePage/NavManger" @(Request.Url.ToString().ToLower().IndexOf("shangpin/detail/commentmanager") > 0 ? "class=cur" : null)>
+                        导航管理
+                    </a>
+
+                </p>
+            </li>
+
+            @*<li class="@(Request.Url.ToString().ToLower().IndexOf("order") > 0 ? "cur" : null)">
+                    <a href="javascript:;">订单管理</a>
+                    <p style="@(Request.Url.ToString().ToLower().IndexOf("shangpin/order") > 0 ? "display:block;" : "display:none;")">
+                    </p>
+                </li>*@
+            <li class="@(Request.Url.ToString().ToLower().IndexOf("shangpin/appindexmamager") > 0 || Request.Url.ToString().ToLower().IndexOf("shangpin/apprecommendproductmanger") > 0 ? "cur" : null)">
+                <a href="javascript:;">尚品-内容管理APP</a>
+                <p style="@(Request.Url.ToString().ToLower().IndexOf("shangpin/appindexmamager") > 0 || Request.Url.ToString().ToLower().IndexOf("shangpin/apprecommendproductmanger") > 0 ? "display:block;" : "display:none;")">
+                    <a href="/shangpin/AppIndexMamager/Index" @(Request.Url.ToString().ToLower().IndexOf("/shangpin/appindexmamager/index") > 0 ? "class=cur" : null)>首页管理</a>
+                </p>
+                <p style="@(Request.Url.ToString().ToLower().IndexOf("shangpin/appindexmamager") > 0 || Request.Url.ToString().ToLower().IndexOf("shangpin/apprecommendproductmanger") > 0 ? "display:block;" : "display:none;")">
+                    <a href="/shangpin/AppRecommendProductManger/Index" @(Request.Url.ToString().ToLower().IndexOf("/shangpin/apprecommendproductmanger/index") > 0 ? "class=cur" : null)>推荐管理</a>
+                </p>
+            </li>
+        </ul>
+        <div id="mx-rightcontent">
+            <div id="mx-rightcontent-inner">
+                <!--内容--->
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</body>
+@RenderSection("hiddendiv", false)
+</html>

@@ -1,0 +1,259 @@
+body {
+	_background-image: url(about:blank);
+	_background-attachment: fixed;
+}
+.sp_body, .sp_body .box {
+	background: none;
+}
+/*banner*/
+.sp_ifc_bags {
+	background: url(/images/page/ifc/bags/main_bg.jpg) no-repeat center top;
+}
+.sp_body .sp_ifc_top {
+	position: relative;
+	height: 100px;
+	background: none;
+	height: 335px;
+}
+.sp_ifc_top .topBack {
+	display: block;
+	width: 107px;
+	height: 99px;
+	overflow: hidden;
+	position: absolute;
+	left: 0;
+	top: 3px;
+	z-index: 9999;
+	background: url(/images/page/ifc/topBack_bg.gif) no-repeat 0 0;
+}
+.sp_ifc_bagslist {
+}
+.sp_bagstitle_spjc {
+	height: 36px;
+	line-height: 36px;
+	background: #0e6040;
+	color: #fff;
+	font-family: "Microsoft yahei", "微软雅黑";
+	padding: 0 14px;
+	font-size: 18px;
+	font-weight: bold;
+	margin-bottom: 6px;
+}
+.sp_ifc_bagscn {
+	width: 960px;
+	margin: 0 auto;
+	overflow: hidden;
+}
+.sp_ifc_bagscn ul {
+	width: 972px;
+ *padding-bottom:12px;
+	_padding-bottom: 0;
+}
+.sp_ifc_bagscn li {
+	float: left;
+	border: 1px solid #5e5d5d;
+	margin: 0 12px 12px 0;
+	width: 229px;
+	height: 363px;
+	position: relative;
+}
+.sp_ifc_bagscn li img {
+	display: block;
+}
+.sp_ifc_bagscn li a {
+	color: #000;
+}
+.sp_ifc_bagscn li a span {
+	display: block;
+	padding: 5px 10px;
+	background: #fff;
+	border-top: 2px solid #5e5d5d;
+	height: 45px;
+	position: relative;
+}
+.sp_ifc_bagscn li a span em {
+	display: block;
+	width: 100%;
+	overflow: hidden;
+	height: 24px;
+	line-height: 24px;
+	font-weight: bold;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+}
+.sp_ifc_bagscn li a span b {
+	font-size: 12px;
+	font-weight: bold;
+	font-family: "Microsoft yahei", "微软雅黑";
+	width: 120px;
+	overflow: hidden;
+	float: left;
+	height: 20px;
+	line-height: 20px;
+}
+.sp_ifc_bagscn li a span ins {
+	color: #37ad7e;
+	float: right;
+	height: 18px;
+	line-height: 18px;
+	position: absolute;
+	bottom: 9px;
+	right: 10px;
+	font-weight: bold;
+}
+.sp_ifc_bagscn li a span i {
+	font-weight: bold;
+	font-size: 20px;
+	font-family: Arial, Helvetica, sans-serif;
+	vertical-align: -1px;
+ *vertical-align:auto;
+}
+.sp_bagstitle_tab {
+	height: 35px;
+	line-height: 35px;
+	background: #333333;
+	margin-bottom: 12px;
+	text-align: center;
+	width: 100%;
+	overflow: hidden;
+}
+.sp_bagstitle_tab a {
+	color: #fff;
+	font-size: 16px;
+	font-weight: bold;
+	font-family: "Microsoft yahei", "微软雅黑";
+	text-align: center;
+	width: 319px;
+	float: left;
+	border-right: 1px solid #5c5c5c;
+}
+.sp_bagstitle_tab a.cur {
+	background: url(/images/page/ifc/bags/title_tab_icon.png) no-repeat center top;
+	border-color: #0d633d;
+}
+.sp_bagstitle_tab a:link, .sp_bagstitle_tab a:visited {
+	color: #fff;
+}
+.sp_bagstitle_tab a.cur:link, .sp_bagstitle_tab a.cur:visited {
+	color: #5e5d5d;
+}
+/*nav*/
+.listNav {
+	height: 56px;
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+	z-index: 100;
+	_position: absolute;
+	_bottom: auto;
+ _top:expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight-this.offsetHeight-(parseInt(this.currentStyle.marginTop, 10)||0)-(parseInt(this.currentStyle.marginBottom, 10)||0)));
+/*border-bottom: 3px solid rgba(0,0,0,0.5);*/
+}
+.listNavbox {
+	background: #000;
+}
+.listNav ul {
+	background: #545454;
+	padding-left: 60px;
+	position: relative;
+	width: 900px;
+	margin: 0 auto;
+}
+.listNav li {
+	float: left;
+	height: 56px;
+	line-height: 56px;
+	overflow: hidden;
+	background: url(/images/page/ifc/bags/listNav_icon.gif) no-repeat 0 -56px;
+}
+.listNav li a {
+	display: block;
+	height: 56px;
+	width: 100%;
+	font-size: 15px;
+	font-family: "Microsoft yahei", "微软雅黑";
+	color: #fff;
+	font-weight: bold;
+	text-align: center;
+}
+.listNav li.fontcolor1 {
+	background: none;
+}
+.listNav li a:link, .listNav li a:visited {
+	color: #fff;
+}
+.listNav li a:hover {
+	color: #6fa3fb;
+}
+.listNav li.fontcolor1 a:hover {
+	color: #d18f05;
+}
+.listNav li.fontcolor2 a:hover {
+	color: #6fa3fb;
+}
+.listNav li.fontcolor3 a:hover {
+	color: #e5386e;
+}
+.listNav li.fontcolor4 a:hover {
+	color: #59bb94;
+}
+.listNav li.fontcolor5 a:hover {
+	color: #f17454;
+}
+.listNav li.fontcolor6 a:hover {
+	color: #efd520;
+}
+.listNav li.fontcolor7 a:hover {
+	color: #8fb256;
+}
+.listNav li.fontcolor8 a:hover {
+	color: #962092;
+}
+.listNav li.Txt4 {
+	width: 105px;
+}
+.listNav li.Txt2 {
+	width: 82px;
+}
+.listNav li.coupon {
+	float: right;
+	width: 125px;
+	padding-left: 18px;
+	background: #000 url(/images/page/ifc/bags/listNav_icon.gif) no-repeat 0 0;
+	text-align: center;
+	overflow: hidden;
+}
+.listNav li.coupon a {
+	display: inline;
+	font-size: 12px;
+	color: #d08f04;
+	font-family: "宋体";
+	font-weight: bold;
+}
+.listNav li.coupon a:link, .listNav li.coupon a:visited {
+	color: #d08f04;
+}
+.listNav li.coupon a:hover, .listNav li.coupon a:active {
+	color: #fdc642;
+}
+.listNav li.titbg {
+	position: absolute;
+	background: url(/images/page/ifc/bags/listNav_bg.gif) no-repeat center;
+	width: 154px;
+	left: -85px;
+	top: 0;
+}
+.sp_ifc_bagscn li a span.hover_bg {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	background: url(/images/page/ifc/hover_bg.png) no-repeat center;
+	height: 306px;
+	width: 229px;
+	border: none;
+	padding: 0;
+	_background: url(/images/page/ifc/hover_bg_ie6.png) no-repeat center;
+	_filter: alpha(opacity = 40);
+}

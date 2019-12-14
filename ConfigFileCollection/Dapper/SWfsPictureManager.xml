@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<statements>
+  <statement id="ComBeziWfs_SWfsPictureManager_Add"  primarykey="PictureManageId">
+    insert into SWfsPictureManager(PictureName,PictureFileNo, LinkAddress, WebSite, Status, Position, OperatorUserId, PagePosition,DateCreate,SubTitle) values(@PictureName,@PictureFileNo, @LinkAddress, @WebSite, @Status, @Position, @OperatorUserId, @PagePosition,@DateCreate,@SubTitle)
+  </statement>
+  <statement id="ComBeziWfs_SWfsPictureManager_Delete"  primarykey="PictureManageId">
+    delete SWfsPictureManager where PagePosition=@PagePosition
+  </statement>
+</statements>

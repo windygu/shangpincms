@@ -1,0 +1,124 @@
+﻿<style type="text/css">
+    .brand
+    {
+        width: 800px;
+        display: none;
+    }
+    .brand ul li
+    {
+        border: 1px solid #ccc;
+        margin: 2px;
+        float: left;
+        width: 150px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+</style>
+<script type="text/javascript">
+    $(function () {
+
+ 
+
+        //筛选区域--搜索框搜索品牌
+        var $filter_brand_box = $("#filter_brand_box");
+        $("#filter_search_btnName").keyup(function () {
+            var tbKey = $("#filter_search_btnName");
+            if (!tbKey.is(":visible")) {
+                return false;
+            } 
+            if (tbKey.val() == "") {
+                $filter_brand_box.find("li").show(); //显示普通品牌列表  
+                return false;
+            }
+            $("#filter_brand_box li").hide();
+            $("#filter_brand_box li").each(function () {
+                if ($(this).attr("title")) {
+                    var aTitle = $(this).attr("title").toLowerCase();
+                    var inputVal = tbKey.val().toLowerCase();
+                    if (aTitle.indexOf("" + inputVal + "") > -1) {
+                        $(this).show();
+                    }
+                }
+            });
+
+        }).keyup();
+
+    })
+</script>
+<script type="text/javascript">
+    function ShowOrNone() {
+        $("#filter_search_btnName").val("");
+        var traget = document.getElementById("barndView");
+        if (traget.style.display != "block") {  //隐藏
+            traget.style.display = "block";
+
+        } else {                       //显示
+            traget.style.display = "none";
+        }
+    }
+    function barnd_ChenlSel() {
+        $("input[name='ck_Brand']").attr("checked", false);
+    }
+    function brand_Confirm() {
+        var bno = "";
+        var arrChk = $("input[name='ck_Brand']:checked");
+        for (var i = 0; i < arrChk.length; i++) {
+            var brandName = $("#" + arrChk[i].value).html();
+            bno += brandName + "  |  ";
+        }
+        if (bno != "") {
+            $("#subBrandAllName").html("已选择：" + bno);
+        }
+        else {
+            $("#subBrandAllName").html("");
+        }
+
+        $("#barndView").hide();
+    }
+    $(function () {
+        brand_Confirm();
+    })
+</script>
+@*<select style="width: 140px;" >
+    <option selected="selected">下拉复选品牌列表</option>
+</select>*@
+<input class="filter_search_text" id="filter_search_btnName"   value="支持模糊搜索" onclick="ShowOrNone()"  type="text" />
+<span id="subBrandAllName"></span>
+<div class="brand" id="barndView">
+    
+    <input type="button" value="确定" onclick="brand_Confirm()" style="width: 80px; height: 30px" />
+    <input type="button" value="清空" onclick="barnd_ChenlSel()" style="width: 80px; height: 30px" />
+        <div class="filter_brand_box" id="filter_brand_box">
+    <ul>
+        @{
+            List<string> list = ViewBag.BrandList;
+            if (Model != null && Model.Count > 0)
+            {
+                foreach (var item in Model)
+                {
+                    if (list != null && list.Contains(item.BrandNo))
+                    {                       
+            <li title="@item.BrandEnName" >
+                <label style="cursor:pointer">
+                    <input type="checkbox"  onclick="brand_Confirm()" style="cursor:pointer" name="ck_Brand" value="@item.BrandNo" title="@item.BrandEnName" checked="checked"/>@item.BrandEnName</label>
+                    <span style="display:none;" id="@item.BrandNo">@item.BrandEnName</span>
+            </li>
+                       
+                    }
+                    else
+                    {
+            <li title="@item.BrandEnName">
+                <label style="cursor:pointer">
+                    <input type="checkbox" style="cursor:pointer"  onclick="brand_Confirm()" name="ck_Brand" value="@item.BrandNo" title="@item.BrandEnName"/>@item.BrandEnName</label>
+                    <span style="display:none;" id="@item.BrandNo">@item.BrandEnName</span>
+            </li>
+                    }
+
+
+                }
+            }
+        }
+    </ul>
+    </div>
+</div>

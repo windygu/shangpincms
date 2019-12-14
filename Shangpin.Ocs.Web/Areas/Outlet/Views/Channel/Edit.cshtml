@@ -1,0 +1,98 @@
+﻿@using Shangpin.Entity.Wfs
+@model Shangpin.Entity.Wfs.SWfsChannel
+@{
+    Layout = null;
+    IList<SWfsChannelSord> channelSordList = ViewBag.ChannelSordList;       
+    IList<SWfsChannelSordRef> channelSordRefList = ViewBag.ChannelSordRefList;
+}
+<!-- 面包屑and关闭按钮 -->
+<div class="crumb"><a href="#">频道管理</a> &gt; 编辑频道 <a href="#" class="closeBtn">&times;</a></div>
+<div class="mx-rightcontent-msgbox" id="mx-rightcontent-addbox">
+<form id="formEdit" method="post" action="/outlet/Channel/EditChannel">
+
+    <dl>
+        <dt style="color:Red;">
+        频道名称:
+        </dt>
+        <dd>
+        <input type="hidden" value="@Model.ChannelNo" name="ChannelNo" />
+        <input id="ChannelName" name="ChannelName" type="text" value="@Model.ChannelName" />
+        </dd>
+    </dl>
+    <dl> 
+        <dt>
+        频道状态: 
+        </dt>
+        <dd>
+        <input id="Status1" name="Status" type="radio" value="1" @(Model.Status == 1 ? "checked='checked'" : "")  />开启
+            <input id="Status0" name="Status" type="radio" value="0" @(Model.Status == 0 ? "checked='checked'" : "")  />关闭
+        </dd>
+    </dl>
+    <dl>
+        <dt style="color:Red;">
+        分类选择:
+        </dt>
+        <dd>
+        @{
+                IList<string> tmpchannelsordList = channelSordRefList.Select(s => s.SordNo).ToList();
+                foreach (SWfsChannelSord sord in channelSordList)
+                {
+                <input type="checkbox" id="@sord.SordNo" value="@sord.SordNo" name="SordNo" @(tmpchannelsordList.Contains(sord.SordNo) ? "checked=checked" : "")  />
+                <label for="@sord.SordNo" >@sord.SordName</label>
+                }
+            }
+        </dd>
+    </dl>
+    <dl>
+        <dt>&nbsp;</dt>
+        <dd>
+            <button type="button" id="btnSave" name="" value="" class="secondary" onclick="return checkSubmit();">
+                确 定</button>
+            <button type="button" id="btnCancle" name="" value="" onclick="Cancle();">
+                取 消</button>
+        </dd>
+    </dl>
+</form>
+</div>
+
+<script type="text/javascript">
+    function checkSubmit() {
+        if ($("#ChannelName").val() == "") {
+            alert("请填写频道名称!");
+            return false;
+        }
+        var SordNos = "";
+        $("input[name='SordNo']:checked").each(function () {
+            SordNos += $(this).val() + ",";
+        });
+        if (SordNos == "") {
+            alert("请选择分类！");
+            return false;
+        }
+        $.ajax({
+            url: "/outlet/Channel/EditChannel",
+            type: "post",
+            data: $("form").serialize(),
+            dataType: "json",
+            success: function (data) {
+                if (data.result == "1") {
+                    alert(data.message);
+                    window.location.href = gettimestampurl(window.location.href);
+                    //window.location.reload();
+                }
+                else {
+                    alert(data.message);
+                    return false;
+                }
+            }
+        });
+    }
+    function Cancle() {
+        $("#mx-rightcontent-fixbarbg").css({ "height": 79, "overflow-y": "hidden" });
+        //$("#mx-rightcontent-fixbar").css({ "bottom": 0 });
+    };
+    $("#mx-rightcontent-fixbarbg .crumb").on("click", function () {
+        Cancle();
+        return false;
+    });
+</script>

@@ -1,0 +1,47 @@
+﻿@{
+    Layout = null;
+    Shangpin.Ocs.Entity.Extenstion.ShangPin.SWfsMeetingRelationRegionContent obj = null;
+    string ShangpinActiveHrefUrlShow = "http://www.shangpin.com/women/subject/{0}?MeetingNO={1}&ClickRegionID={2}";
+    string AoLaiActiveHrefUrlShow = "http://www.aolai.com/subject/index/{0}/0?MeetingNO={1}&ClickRegionID={2}";
+    string AoLaiSpecialHrefUrlShow = "http://www.aolai.com/topic/index/{0}?MeetingNO={1}&ClickRegionID={2}";
+    string VenueHrefUrlShow = "http://www.shangpin.com/Venue/Index/{0}?MeetingNO={1}&ClickRegionID={2}";
+}
+@using Shangpin.Framework.WebMvc
+@model IEnumerable<Shangpin.Ocs.Entity.Extenstion.ShangPin.SWfsMeetingRelationRegionContent>
+
+
+<div class="main_box">
+    <div class="box box_five topBg">
+        <div class="boxWarp topBox_bg">
+            <ul class="clr">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    if (Model.Count(p => p.RegionID == i) == 1) 
+                    {
+                        obj = Model.Single(p => p.RegionID == i);
+                             
+                        <li opratorRegion="@i" relationtype="@obj.RelationType">
+                            @if (obj.RelationContent=="#")
+                            {
+                                <img width="175" height="330" lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 175, 330))" />
+                            }
+                            else
+                            {
+                                <a target="_blank" href="@(obj.RelationContent + "?MeetingNO=" + obj.MettingNO + "&ClickRegionID=" + i)">
+                                    <img width="175" height="330" lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 175, 330))" />
+                                </a>
+                            }
+                        </li>
+                    }
+                    else
+                    {
+                        <li opratorRegion="@i" relationtype="3"></li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="box">
+        <img width="960" height="55" lazy="@Html.ResolveContentCdnUrl("/shangpin/images/page/Thanksgiving2/top_line.jpg")" />
+    </div>
+</div>

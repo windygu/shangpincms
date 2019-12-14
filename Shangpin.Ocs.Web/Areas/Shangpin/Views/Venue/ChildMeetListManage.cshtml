@@ -1,0 +1,383 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.ShangPin
+@using Shangpin.Ocs.Web.Infrastructure
+@using Shangpin.Ocs.Service.Shangpin
+@model IEnumerable<SWfsMeetingHtmlInfoList>
+@{
+    ViewBag.Title = "分会场列表";
+    Layout = "~/Areas/Shangpin/Views/Shared/_VenueLayout.cshtml";
+}
+@{
+    int page = ViewBag.pageIndex != null ? (int)ViewBag.pageIndex : 1;
+    int pageSize = ViewBag.PageSize != null ? (int)ViewBag.PageSize : 20;
+    int totalCount = ViewBag.TotalCount != null ? (int)ViewBag.TotalCount : 0;
+}
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script src="/Areas/Outlet/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+    <script language="javascript" type="text/javascript">
+        $(function () {
+            $(".OpenCloseStatus").click(function () {
+                var aObj = $(this);
+                var status = $(aObj).attr("status");
+                var mid = $(aObj).attr("mid");
+                var mNo = $(aObj).attr("mNo");
+                $.ajax({
+                    url: "/shangpin/venue/UpdateStatus",
+                    type: "post",
+                    dataType: "json",
+                    data: "status=" + status + "&mId=" + mid + "&mNo=" + mNo,
+                    success: function (data) {
+                        if (data != null) {
+                            if (data.result == true) {
+                                if (status == "1") {
+                                    $(aObj).attr("status", "0");
+                                    $(aObj).text("关闭");
+                                    $(aObj).parent().find("span").html("开启");
+                                    $(aObj).parent().find("span").css({ color: "green" });
+                                } else if (status == "0") {
+                                    $(aObj).attr("status", "1");
+                                    $(aObj).text("开启");
+                                    $(aObj).parent().find("span").html("关闭");
+                                    $(aObj).parent().find("span").css({ color: "red" });
+                                }
+                            }
+                        }
+                    },
+                    error: function (x, e) {
+                        alert(x.responseText);
+                    }
+                });
+            });
+        });
+        //弹出会场管理层
+        function namagerMeeting(mID, obj) {
+            //$("body").append('<div id="windownBG" style="height:' + $(window).width() + 'px;opacity:0.5;z-index: 9999;display:block;left:0px;top:0px;position:absolute;width:100%;background: none repeat scroll 0 0 #000000;"></div>');
+            //$("body").append('<div style="top:' + ($(obj).position().top + 150) + 'px;left:' + ($("#mx-leftmenu").width() + $(".mx-table").position().left) + 'px;display:block;position:absolute;width:' + $(".mx-table").width() + 'px;height:auto;z-index:9999;"><div style="text-align:right;background-color:white;padding-right:30px;cursor:pointer;width" onclick="removeDIV(this)">关闭</div><iframe src="/Shangpin/Venue/VenueTemplateEditeByID?venueID=' + mID + '" scrolling="auto" frameborder="0" margin="0" width="100%" height="600px"></iframe></div>');
+        }
+        function removeDIV(obj) {
+            //$("#windownBG").remove();
+            //$(obj).parent().remove();
+        }
+        function resetForm() {
+            $("input[name='meetingNameOrDomain']").val("会场名称/域名");
+            $("input[name='activityNo']").val("专题活动编号");
+            $("select[name='topicSubjectType']").val("");
+            $("select[name='status']").val("");
+            $("select[name='webOrMobile']").val("");
+            $("#startTime").val("");
+            $("#endTime").val("");
+        }
+        //清除会场缓存
+        function ClearVenueCache(venueid) {
+            $.get("/shangpin/venue/ClearVenueCach/" + venueid, function (data) {
+                alert(data);
+            });
+        }
+        function changeVenueType(venueID, ispreview) {
+            if (confirm('确定更换会场类型吗')) {
+                window.location.href = "/shangpin/venue/ChangeVenueType?venueID=" + venueID + "&isPreview=" + ispreview;
+            }
+        }
+    </script>
+}
+<h1>OCS > 尚品 > <a href="/shangpin/venue/MeetListManage">
+    @if (ViewBag.MeetingName != "")
+    { 
+        @ViewBag.MeetingName <span> > </span>
+    }
+</a>分会场列表
+</h1>
+<form method="get" action="/shangpin/venue/childmeetlistmanage?meetingId=@ViewBag.MID&type=1" id="SearchMeeting">
+    <input type="hidden" name="meetingId" value="@ViewBag.MID" />
+    <input type="hidden" name="meetingName" value="@ViewBag.CurrentParentMeeting" />
+    <table width="auto" border="0" class="mx-table" style="width: 100%">
+        <tr>
+            <td style="text-align: left;">
+                <input name="meetingNameOrDomain"  value="@(!string.IsNullOrEmpty(ViewBag.MeetingNameOrDomain) ? ViewBag.MeetingNameOrDomain : "会场名称/域名")"  style="width: 150px; color: #666; font-size: 12px;"
+               onfocus="if(this.value == '会场名称/域名') this.value = ''" onblur="if(this.value == '') this.value = '会场名称/域名'"  />
+            </td>
+            <td>
+                <select style="width: 80px;" name="topicSubjectType">
+                    <option value="">类型</option>
+                    <option value="0" @(ViewBag.TopicSubjectType == "0" ? "selected=selected" : "")>专题</option>
+                    <option value="1" @(ViewBag.TopicSubjectType == "1" ? "selected=selected" : "")>活动</option>
+                </select>
+            </td>
+            <td>
+                <input name="activityNo"  value="@(!string.IsNullOrEmpty(ViewBag.ActiveNO) ? ViewBag.ActiveNO : "专题活动编号")"  style="width: 130px; color: #666; font-size: 12px;"
+                onfocus="if(this.value == '专题活动编号') this.value = ''" onblur="if(this.value == '') this.value = '专题活动编号'"  />
+            </td>
+            <td align="left">
+                <select style="width: 80px;" name="status">
+                    <option value="">会场状态 </option>
+                    <option value="0" @(ViewBag.Status == "0" ? "selected=selected" : "")>已关闭 </option>
+                    <option value="1" @(ViewBag.Status == "1" ? "selected=selected" : "")>已开启 </option>
+                </select>
+            </td>
+            <td align="left">
+                <span>渠道:</span>
+                <select name="webOrMobile" id="webOrMobile" style="width: 60px">
+                    <option value="">渠道</option>
+                    <option  value="1" @(ViewBag.WebOrMobile == "1" ? "selected=selected" : "")>网站</option>
+                    <option  value="2" @(ViewBag.WebOrMobile == "2" ? "selected=selected" : "")>移动端</option>
+                </select>
+            </td>
+            <td align="left" style="padding-left: 3px">
+                <select name="SourceFrom" id="SourceFrom" style="width: 80px">
+                    <option value="">所属网站</option>
+                    <option  value="1" @(ViewBag.SourceFrom == "1" ? "selected=selected" : "")>尚品</option>
+                    <option  value="2" @(ViewBag.SourceFrom == "2" ? "selected=selected" : "")>奥莱</option>
+                </select>
+            </td>
+            <td width="375px" align="left" style="padding-left: 3px;">
+                <span>会场时间：</span>
+                <input id="startTime" name="startTime" value="@ViewBag.StartTime" maxlength="30"  class="Wdate" type="text" readonly="readonly" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd', skin: 'whyGreen', lang: 'zh-cn', isShowClear: true, alwaysUseStartDate: true, readOnly: true, maxDate: '#F{$dp.$D(\'endTime\',{d:0});}' })" />
+                <span>至</span>
+                <input id="endTime" name="endTime" value="@ViewBag.EndTime" maxlength="30" class="Wdate" type="text" readonly="readonly" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd', skin: 'whyGreen', lang: 'zh-cn', isShowClear: true, alwaysUseStartDate: true, readOnly: true, minDate: '#F{$dp.$D(\'startTime\',{d:0});}' })"/>
+            </td>
+            <td style="text-align: center;">
+                <input class="button" type="submit" value="查 询" />&nbsp;&nbsp;&nbsp;<input class="button"
+                    type="button" onclick="javascript: resetForm();" value="重 置" />
+            </td>
+        </tr>
+    </table>
+</form>
+<table cellpadding="1" cellspacing="1" class="mx-table">
+    <tbody>
+        <tr>
+            <td width="30%" style="text-align: left;">
+                <h1>
+                    <b>分会场列表</b></h1>
+            </td>
+            <td width="70%" style="text-align: right;">
+                <a id="addChildMeeting" class="button" href="/Shangpin/Venue/MeetingIndex?parentId=@ViewBag.MID&type=1" name="child">创建分会场</a> <a id="addChildMeeting" class="button" href="javascript:window.location.href='/Shangpin/Venue/MeetListManage'"
+                    name="child">返回</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table cellpadding="1" cellspacing="1" class="mx-table">
+    <thead>
+        <tr>
+            <th>会场信息
+            </th>
+            <th></th>
+            <th>操作
+            </th>
+        </tr>
+    </thead>
+    @if (Model != null && Model.Count() > 0)
+    {
+
+        var flag = 0;
+        foreach (var meet in Model)
+        {
+            flag = flag + 1;
+            string style = flag % 2 == 0 ? "border:#ccc 0px solid;width:100%; background-color:#f0f0f0;" : "border:#ccc 0px solid;width:100%;";
+      
+        <tbody style="@style">
+            <tr>
+                <td width="30%" style="text-align: left; padding-left: 10px;">会场名称：@meet.MeetingName
+                </td>
+                <td width="28%" style="text-align: left;">会场域名：@meet.MeetingDomain
+                </td>
+                <td width="42%" style="text-align: left; font-weight: bold;">时间：@Html.Raw(meet.StartTime.ToString("yyyy-MM-dd HH:mm") + " 至 " + meet.EndTime.ToString("yyyy-MM-dd HH:mm"))
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: left; padding-left: 10px;">展示渠道：@{
+            if (meet.WebOrMobile == 1)
+            {
+                    @Html.Raw("网站");
+            }
+            else if (meet.WebOrMobile == 2)
+            {
+                    @Html.Raw("移动端");
+            }
+            else if (meet.WebOrMobile == 3)
+            {
+                    @Html.Raw("网站、移动端");
+            }
+                }
+                </td>
+                <td style="text-align: left;">当前会场状态：@if (meet.Status == 0)
+                                                     {
+                    @Html.Raw("<span style='color:red'>关闭</span>&nbsp;&nbsp;&nbsp;设置：<a class='OpenCloseStatus' href='#' status='1' mid='" + meet.MeetingID + "' mNo='" + meet.MeetingNO + "'>开启</a>");
+                                                     }
+                                                     else
+                                                     {
+                    @Html.Raw("<span style='color:green'>开启</span>&nbsp;&nbsp;&nbsp;设置：<a class='OpenCloseStatus' href='#' status='0' mid='" + meet.MeetingID + "' mNo='" + meet.MeetingNO + "'>关闭</a>");
+                                                     }
+                </td>
+                <td width="42%" style="text-align: left;">
+                    @(DateTime.Now >= meet.StartTime ? "" : "预热时间:" + meet.PreViewTime.ToString("yyyy-MM-dd HH:mm"))
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: left; padding-left: 10px;">所属网站：@if (meet.SourceFrom == 1)
+                                                                       {
+                    @Html.Raw("尚品");
+                                                                       }
+                                                                       else
+                                                                       {
+                    @Html.Raw("奥莱");
+                                                                       }
+                </td>
+                <td style="text-align: left;">当前展示会场类型:<span style="color: Red;">&nbsp;&nbsp;@( DateTime.Now >= meet.StartTime ? "正式会场" : "预热会场")</span>
+                </td>
+                <td style="text-align: left;">
+                    @{
+                                                                       string str = "";
+                                                                       string str1 = "";
+                                                                       string str2 = "";
+                                                                       string str3 = "";
+                                                                       string TemplateTypeValue = meet.TemplateType;
+                                                                       if (!string.IsNullOrEmpty(meet.TemplateType))
+                                                                       {
+                                                                           //已发布
+                                                                           if (TemplateTypeValue.Substring(0, 1) == "1")
+                                                                           {
+                                                                               str += "Mobile预热会场、";
+                                                                           }
+                                                                           if (TemplateTypeValue.Substring(1, 1) == "1")
+                                                                           {
+                                                                               str += "Mobile开始会场、";
+                                                                           }
+                                                                           if (TemplateTypeValue.Substring(2, 1) == "1")
+                                                                           {
+                                                                               str += "Web预热会场、";
+                                                                           }
+                                                                           if (TemplateTypeValue.Substring(3, 1) == "1")
+                                                                           {
+                                                                               str += "Web开始会场、";
+                                                                           }
+                                                                           //未发布
+                                                                           if (TemplateTypeValue.Substring(0, 1) == "0")
+                                                                           {
+                                                                               str1 += "Mobile预热会场、";
+                                                                           }
+                                                                           if (TemplateTypeValue.Substring(1, 1) == "0")
+                                                                           {
+                                                                               str1 += "Mobile开始会场、";
+                                                                           }
+                                                                           if (TemplateTypeValue.Substring(2, 1) == "0")
+                                                                           {
+                                                                               str1 += "Web预热会场、";
+                                                                           }
+                                                                           if (TemplateTypeValue.Substring(3, 1) == "0")
+                                                                           {
+                                                                               str1 += "Web开始会场、";
+                                                                           }
+
+                                                                       }
+                                                                       else
+                                                                       {
+                                                                           if (!string.IsNullOrWhiteSpace(meet.MobilePreViewCode))
+                                                                           {
+                                                                               str2 += "Mobile预热会场、";
+                                                                           }
+                                                                           else
+                                                                           {
+                                                                               str3 += "Mobile预热会场、";
+                                                                           }
+                                                                           if (!string.IsNullOrWhiteSpace(meet.MobileStartCode))
+                                                                           {
+                                                                               str2 += "Mobile开始会场、";
+                                                                           }
+                                                                           else
+                                                                           {
+                                                                               str3 += "Mobile开始会场、";
+                                                                           }
+                                                                           if (!string.IsNullOrWhiteSpace(meet.WebPreViewCode))
+                                                                           {
+                                                                               str2 += "Web预热会场、";
+                                                                           }
+                                                                           else
+                                                                           {
+                                                                               str3 += "Web预热会场、";
+                                                                           }
+                                                                           if (!string.IsNullOrWhiteSpace(meet.WebStartCode))
+                                                                           {
+                                                                               str2 += "Web开始会场、";
+                                                                           }
+                                                                           else
+                                                                           {
+                                                                               str3 += "Web开始会场、";
+                                                                           }
+                                                                       }
+
+
+                        
+                        <p>
+                            已发布会场：&nbsp;&nbsp;
+                            @if (!string.IsNullOrEmpty(str))
+                            {
+                                <span style="color: Red;">@str.Substring(0, str.LastIndexOf("、")) </span>
+                            }
+                            else if (!string.IsNullOrEmpty(str2))
+                            {
+                                <span style="color: Red;">@str2.Substring(0, str2.LastIndexOf("、")) </span>
+                            }
+                            else
+                            {
+                                <span style="color: Red;">无</span>
+                            }
+                        </p>
+                        <p>
+                            未发布会场：&nbsp;&nbsp;<span style="color: Red;">
+                                @if (!string.IsNullOrEmpty(str1))
+                                {
+                                    @str1.Substring(0, str1.LastIndexOf("、"))
+                                }
+                                else if (!string.IsNullOrEmpty(str3))
+                                {
+                                    @(str3.Substring(0, str3.LastIndexOf("、"))) 
+                                }
+                                else
+                                {
+                                    <span style="color: Red;">已全部发布</span>
+                                }
+                            </span>
+                        </p>
+                                                                     
+                    }
+                    <p style="text-align: center;">
+                        <a href="javascript:ClearVenueCache(@meet.MeetingID);">清除缓存</a>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" style="text-align: right;">
+                    <a href="javascript:changeVenueType(@meet.MeetingID,@(meet.IsSelect ? 0 : 1));" class="button">会场切换</a>
+                    <a id="@meet.MeetingNO" class="button" href="/shangpin/venue/meetingindex?meetId=@meet.MeetingID&parentId=@meet.ParentID&type=1&MeetingName=@meet.MeetingName">编 辑</a>
+                    @{
+                                string url = "#";
+                                //if (meet.SourceFrom == 1)
+                                //{
+                                //    url = "/Shangpin/Venue/VenueTemplateEditeByID?venueID=" + meet.MeetingID + "&currentTemplateNO=" + meet.WebPreViewNO;
+                                //}
+                                //else { 
+                                url = "/Shangpin/Venue/VenueTemplateEdite?venueID=" + meet.MeetingID + "&currentTemplateNO=" + meet.WebPreViewNO;
+                                //}
+                    }
+                    <a id="@meet.MeetingNO" class="button"
+                        href="@url"  name="child">会场管理</a> <a class="button" href="/shangpin/venue/SkillManager?meetingId=@meet.MeetingID" name="child">秒杀管理 </a><a class="button" href="/Shangpin/Venue/VenueVisitList?MeetingNO=@meet.MeetingNO">数据统计</a> <a class="button" href="/shangpin/venue/LogManageList?meetNo=@meet.MeetingNO&mId=@ViewBag.MID&meetType=2">会场日志</a>
+                </td>
+            </tr>
+        </tbody>
+        }
+    }
+</table>
+@if (totalCount > 0 && totalCount > pageSize)
+{
+    <div class="spPage">
+        @Html.Raw(@Html.PagerX("page", page, pageSize, totalCount))
+    </div>
+}
+<div class="clr" id="mx-rightcontent-fixbar">
+    <a id="mx-btn-add" href="/Shangpin/Venue/MeetingIndex?parentId=@ViewBag.MID&type=1" title="添加分会场"></a>@*<a id="mx-btn-del" href="#"></a><a id="mx-btn-search"
+        href="#"></a>
+        <a id="mx-btn-folder" href="#"></a>
+        <a id="mx-btn-edit" href="#">
+    </a>*@
+</div>

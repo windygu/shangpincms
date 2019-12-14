@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <!--商品表中当前品牌15天内上新的商品-->
+  <!--<statement id="ComBeziWfs_WfsProduct_BrandTop15DayNewShelfProduct">
+    with temp as (Select
+    ProductNo,
+    GoodsNo,
+    Status,
+    IsShelf,
+    ProductName,
+    ProductPicFile,
+    SellPrice,
+    PlatinumPrice,
+    DiamondPrice,
+    LimitedPrice,
+    LimitedVipPrice,
+    MarketPrice,
+    PromotionPrice,
+    WfsProduct.BrandNo,
+    WfsBrand.BrandCnName,
+    WfsBrand.BrandEnName,
+    row_number() over(order by DateShelf desc) as row
+    from WfsProduct with(nolock)
+    left join wfsBrand with(nolock) on WfsProduct.BrandNo=WfsBrand.BrandNo
+    where wfsBrand.BrandNo=@BrandNo and isShelf=1 and visiblestate=1 and WfsProduct.IsLimitedOutlet =1 and LimitedPrice > 0 and ProductPicFile!=''
+    and firstdateshelf between @startDate  and @endDate
+    and WfsProduct.ProductNo not in(Select ProductNo from SWfsNewProductManage where BrandNo=@BrandNo and DateShelf between @dayStartDate and @dayEndtDate)
+    #if($Keyword!='')
+    and (WfsProduct.ProductName like '%'+@KeyWord+ '%' or WfsProduct.ProductNo like '%'+@KeyWord+ '%' or WfsProduct.GoodsNo like '%'+@KeyWord+ '%')
+    #end
+    #if($CategoryNo !='')
+    and WfsProduct.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and WfsProduct.GenderStyle=@Gender
+    #end
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>-->
+  <!--商品表中当前品牌15天内上新的商品(新EP表结构)-->
+  <statement id="ComBeziWfs_WfsProduct_BrandTop15DayNewShelfProduct">
+    with temp as (Select
+    p.ProductNo,--商品编号
+    p.ProductModel as GoodsNo,--商品货号
+    p.ProductName,--商品名称
+    e.productShowPic as ProductPicFile, --图片
+    spb.BrandCnName,--中文名称名称
+    spb.BrandEnName, --英文品牌名称
+    e.FirstShelfDate, --第一次上架时间
+    row_number() over(order by e.FirstShelfDate desc) as row
+    FROM SpProduct p with(nolock)
+    LEFT JOIN SpBrand spb with(nolock)
+    ON p.BrandNo=spb.BrandNo
+    LEFT JOIN SpfProductExtend e with(nolock)
+    ON p.ProductNo=e.ProductNo
+    WHERE e.ProductNo IN(
+    --找到符合条件的条件的ProductNo
+    SELECT DISTINCT(b.ProductNo) FROM SpfSkuExtend b with(nolock)
+    WHERE
+    b.PcSaleState=2
+    AND b.PcShowState=1
+    And b.DataState=1
+    AND b.ProductNo in
+    (SELECT c.ProductNo FROM SpfProductExtend c with(nolock)
+    LEFT JOIN SpProduct d with(nolock)
+    ON c.ProductNo=d.ProductNo
+    where c.ProductNo not in
+    (Select ProductNo from SWfsNewProductManage with(nolock) where BrandNo=@BrandNo and DateShelf between @dayStartDate and @dayEndtDate)
+    and c.TypeFlag=1
+    and c.DataState=1
+    and c.[Status]=1
+    and d.BrandNo=@BrandNo
+    AND FirstShelfDate between @startDate  and @endDate
+    #if($Keyword!='')
+    and (d.ProductName like '%'+@KeyWord+ '%' or d.ProductNo like '%'+@KeyWord+ '%' or d.ProductModel  like '%'+@KeyWord+ '%')
+    #end
+    #if($CategoryNo !='')
+    and d.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and d.ProductSex=@Gender
+    #end
+    )
+    )
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+  </statement>
+  <!--商品表中当前品牌15天内上新的商品的总数-->
+  <!--<statement id="ComBeziWfs_WfsProduct_BrandTop15DayNewShelfProductCount">
+    Select Count(ProductNo) from WfsProduct with(nolock) where BrandNo=@BrandNo and isShelf=1 and visiblestate=1 and WfsProduct.IsLimitedOutlet =1 and LimitedPrice > 0 and ProductPicFile!=''
+    and firstdateshelf between @startDate  and @endDate
+    and ProductNo not in(Select ProductNo from SWfsNewProductManage where BrandNo=@BrandNo and DateShelf between @dayStartDate and @dayEndtDate )
+    #if($Keyword!='')
+    and (WfsProduct.ProductName like '%'+@KeyWord+ '%' or WfsProduct.ProductNo like '%'+@KeyWord+ '%' or WfsProduct.GoodsNo like '%'+@KeyWord+ '%')
+    #end
+    #if($CategoryNo !='')
+    and WfsProduct.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and WfsProduct.GenderStyle=@Gender
+    #end
+  </statement>-->
+  <!--商品表中当前品牌15天内上新的商品的总数(新EP表结构)-->
+  <statement id="ComBeziWfs_WfsProduct_BrandTop15DayNewShelfProductCount">
+    SELECT COUNT(DISTINCT(b.ProductNo)) FROM SpfSkuExtend b with(nolock)
+    WHERE
+    b.PcSaleState=2
+    and b.DataState=1
+    AND b.PcShowState=1
+    AND b.ProductNo in
+    (SELECT c.ProductNo FROM SpfProductExtend c with(nolock)
+    LEFT JOIN SpProduct d with(nolock)
+    ON c.ProductNo=d.ProductNo
+    where c.ProductNo not in
+    (Select ProductNo from SWfsNewProductManage with(nolock) where BrandNo=@BrandNo and DateShelf between @dayStartDate and @dayEndtDate)
+    and c.TypeFlag=1
+    and c.DataState=1
+    and c.[Status]=1
+    and d.BrandNo=@BrandNo
+    AND c.FirstShelfDate between @startDate  and @endDate
+    #if($Keyword!='')
+    and (d.ProductName like '%'+@KeyWord+ '%' or d.ProductNo like '%'+@KeyWord+ '%' or d.ProductModel  like '%'+@KeyWord+ '%')
+    #end
+    #if($CategoryNo !='')
+    and d.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and d.ProductSex=@Gender
+    #end
+    )
+  </statement>
+  
+
+  <!--判断商品是否重复加入-->
+  <statement id="ComBeziWfs_SWfsNewProductManage_IsProduct">
+    Select Count(ProductNo) from SWfsNewProductManage with(nolock) where BrandNo=@BrandNo and ProductNo=@ProductNo and DateShelf=@DateShelf
+  </statement>
+
+  <!--添加上新商品（可能是多条）-->
+  <statement id="ComBeziWfs_SWfsNewProductManage_Inserts">
+    $sqlstring
+  </statement>
+
+  <!--找出当前品牌下当前时间的上新的商品的最大排序值的商品-->
+  <statement id="ComBeziWfs_SWfsNewProductManage_MaxSort">
+    select top 1 *  from SWfsNewProductManage(nolock) where BrandNo=@BrandNo and DateShelf between @startDate  and @endDate 
+    order by sort desc
+  </statement>
+
+  <!--找出已经生成好的某天的某个品牌的上架商品-->
+  <!--<statement id="ComBeziWfs_SWfsNewProductManage_NewProductList">
+    Select
+    SWfsNewProductManage.Id,
+    WfsProduct.ProductNo,
+    WfsProduct.GoodsNo,
+    WfsProduct.IsShelf,
+    WfsProduct.ProductName,
+    WfsProduct.ProductPicFile,
+    WfsProduct.SellPrice,
+    WfsProduct.PlatinumPrice,
+    WfsProduct.DiamondPrice,
+    WfsProduct.LimitedPrice,
+    WfsProduct.LimitedVipPrice,
+    WfsProduct.MarketPrice,
+    WfsProduct.PromotionPrice,
+    SWfsNewProductManage.dateShelf,
+    SWfsNewProductManage.BrandNo,
+    WfsBrand.BrandCnName,
+    WfsBrand.BrandEnName,
+    SWfsNewProductManage.Sort,
+    row_number() over(order by Sort asc) as row
+    from SWfsNewProductManage with(nolock)
+    left join
+    WfsProduct with(nolock) on  SWfsNewProductManage.ProductNo=WfsProduct.ProductNo
+    left join wfsBrand with(nolock) on SWfsNewProductManage.BrandNo=WfsBrand.BrandNo
+    where SWfsNewProductManage.BrandNo=@BrandNo and SWfsNewProductManage.DateShelf between @startDate  and @endDate
+    #if($Keyword!='')
+    and (WfsProduct.ProductName like '%'+@KeyWord+ '%' or WfsProduct.ProductNo like '%'+@KeyWord+ '%' or WfsProduct.GoodsNo like '%'+@KeyWord+ '%')
+    #end
+    #if($CategoryNo !='')
+    and WfsProduct.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and WfsProduct.GenderStyle=@Gender
+    #end
+  </statement>-->
+  
+  <!--找出已经生成好的某天的某个品牌的上架商品(新EP表结构)-->
+  <statement id="ComBeziWfs_SWfsNewProductManage_NewProductList">
+    Select
+    e.Id,
+    a.ProductNo,--商品编号
+    a.ProductModel as GoodsNo,--商品货号
+    a.ProductName,--商品名称
+    b.BrandCnName,--中文名称名称
+    b.BrandEnName,--英文品牌名称
+    c.productShowPic as ProductPicFile, --图片
+    e.dateShelf,
+    e.BrandNo,
+    e.Sort,
+    row_number() over(order by Sort asc) as row
+    from SWfsNewProductManage e with(nolock)
+    left join
+    SpProduct a with(nolock) on  e.ProductNo=a.ProductNo
+    left join SpBrand b with(nolock) on e.BrandNo=b.BrandNo
+    LEFT JOIN SpfProductExtend c with(nolock)
+    ON a.ProductNo=c.ProductNo
+    where e.BrandNo=@BrandNo and e.DateShelf between @startDate  and @endDate
+    and b.IsShow=1 and b.DataState=1 and b.IsValid=1
+    #if($Keyword!='')
+    and (a.ProductName like '%'+@KeyWord+ '%' or a.ProductNo like '%'+@KeyWord+ '%' or a.ProductModel like '%'+@KeyWord+ '%')
+    #end
+    #if($CategoryNo !='')
+    and a.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($Gender !='')
+    and a.ProductSex=@Gender
+    #end
+  </statement>
+
+  <!--找出已经生成好的某天的某个品牌的上架商品总数-->
+  <statement id="ComBeziWfs_SWfsNewProductManage_NewProductListCount">
+    Select Count(ProductNo) from SWfsNewProductManage with(nolock) where BrandNo=@BrandNo and SWfsNewProductManage.DateShelf between @startDate  and @endDate
+  </statement>
+
+  <!--删除上新商品（可能是多条）-->
+  <statement id="ComBeziWfs_SWfsNewProductManage_Deletes">
+    $sqlstring
+  </statement>
+
+  <!--修改上新商品排序值（可能是多条）-->
+  <statement id="ComBeziWfs_SWfsNewProductManage_UpdateSort">
+    $sqlstring
+  </statement>
+
+  <!--找出上新商品大于或等于10的上新品牌，并排序-->
+  <statement id="ComBeziWfs_SWfsNewProductManage_GrderByBrandNoDateShelf">
+    with temp as(
+    SELECT a.DateShelf,a.BrandNo,count(a.ProductNo) as count,b.Sort,row_number() over(Order by a.DateShelf DESC, b.Sort asc) as row
+    FROM SWfsNewProductManage a with(nolock)
+    left join SWfsNewBrandManage b with(nolock) on a.brandNo=b.brandNo
+    left join SpBrand spb with(nolock) on a.brandNo=spb.brandNo
+    left join SpBrandExtend spe with(nolock) on spb.brandNo=spe.brandNo
+    where 1=1
+    and spb.IsShow =1 AND spb.DataState =1 AND spb.IsValid =1 --AND spe.IsSupportShangPin =1
+    #if($BrandNo!='')
+    and a.BrandNo=@BrandNo
+    #end
+    #if($StartDate!='')
+    and a.DateShelf>=@StartDate
+    #end
+    #if($EndDate!='')
+    and @EndDate>=a.DateShelf
+    #end
+    Group by a.DateShelf,a.BrandNo,b.Sort
+    having count(a.ProductNo)>=10
+    )select * from temp where row between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize
+
+    <!--Select b.brandNo,a.sort from SWfsNewBrandManage a left join SWfsNewProductManage b
+    on a.brandNo=b.brandNo where a.weekdays=@weekdays
+    and b.dateshelf between @startDate and @endDate
+    group by b.BrandNo,a.sort having count(productNo)>=10
+    order by a.sort-->
+  </statement>
+  <statement id="ComBeziWfs_SWfsNewProductManage_GrderByBrandNoDateShelfCount">
+    with temp as(
+    SELECT a.DateShelf,a.BrandNo,count(a.ProductNo) as count,b.Sort,row_number() over(Order by a.DateShelf DESC, b.Sort asc) as row
+    FROM SWfsNewProductManage a with(nolock)
+    left join SWfsNewBrandManage b with(nolock) on a.brandNo=b.brandNo
+    left join SpBrand spb with(nolock) on a.brandNo=spb.brandNo
+    left join SpBrandExtend spe with(nolock) on spb.brandNo=spe.brandNo
+    where 1=1
+    and spb.IsShow =1 AND spb.DataState =1 AND spb.IsValid =1 --AND spe.IsSupportShangPin =1
+    #if($BrandNo!='')
+    and a.BrandNo=@BrandNo
+    #end
+    #if($StartDate!='')
+    and a.DateShelf>=@StartDate
+    #end
+    #if($EndDate!='')
+    and @EndDate>=a.DateShelf
+    #end
+    Group by a.DateShelf,a.BrandNo,b.Sort
+    having count(a.ProductNo)>=10
+    )select count(*) from temp
+  </statement>
+
+  <!--查找排序值最小的上新商品-->
+  <statement id="ComBeziWfs_SWfsNewBrandManage_SelectMinSort">
+    Select Min(sort) from SWfsNewProductManage with(nolock) where BrandNo=@BrandNo and dateshelf between @startDate and @endDate
+  </statement>
+
+
+</statements>

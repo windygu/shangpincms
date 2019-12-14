@@ -1,0 +1,458 @@
+﻿<script src="/Areas/Outlet/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+@using Shangpin.Entity.Wfs
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin
+@using Shangpin.Framework.Configuration
+@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    List<ProductCommentEntity> entities = Model as List<ProductCommentEntity>;
+    List<SWfsUserLevel> levels = ViewBag.UserLevel as List<SWfsUserLevel>;
+    var commentItems = CommentItemManager.CommentItems;
+    string oneCategory = entities != null && entities.Count > 0 ? entities[0].CategoryNo.Substring(0, 3) : "";
+    Boolean haveCategory = commentItems.FirstOrDefault(a => a.CategoryID == oneCategory) != null;
+}
+@section HeadStyle{
+    <link href="/Areas/Shangpin/Content/css/page/rightcontent/brandcontent.css" rel="stylesheet"
+          type="text/css" charset="utf-8" />
+    <style>
+        .title_red {
+            color: red;
+        }
+    </style>
+}
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/page/Detail/ajax-file-upload.js"></script>
+    <script src="~/Areas/Shangpin/Scripts/plug/uploadPreview.min.js"></script>
+    <script>
+        $(function () {
+            addFile();
+            $("body").append('<iframe src="" id="hiddenIframe" name="hideiframe" frameborder="1" style="display:none;"></iframe>');//隐藏域
+            //错误信息消失
+            $("#skuNo").live({
+                'focus': function () {
+                    $("#formSearch .error").html("").hide();
+                }
+            })
+            $("input,textarea,select").live({
+                'focus': function () {
+                    $(".error").html("").hide();
+                }
+            })
+            //身高和体重输入框只能输入数字
+            $(".input_num").live({
+                "keypress": function () {
+                    var keyCode = event.keyCode;
+                    if ((keyCode >= 48 && keyCode <= 57)) {
+                        event.returnValue = true;
+                    } else {
+                        event.returnValue = false;
+                    }
+                }, "keyup": function () {
+                    if ($(this).val().length > 0 && isNaN($(this).val())) { $(this).val(''); }
+                    else if ($(this).val().length > 0) { $(this).val(parseInt($(this).val())); }
+                },
+                "copy cut paste": function (e) { e.preventDefault(); }
+            })
+            if ($("#formAddComment input[name=productNo]").length == 0 && $.trim($("#skuNo").val()).length > 0) {
+                $("#formSearch .error").html("未找到此SKU对应商品").show();
+                if ($("#nocategory").length > 0)
+                    $("#formSearch .error").html("").hide();
+            }
+
+            $("#ImportComments").click(function () {
+                $.ajaxFileUpload({
+                    url: '/Shangpin/detail/ImportExcelTemplate.html', //用于文件上传的服务器端请求地址
+                    secureuri: false, //是否需要安全协议，一般设置为false
+                    fileElementId: 'batchComment', //文件上传域的ID
+                    dataType: 'json', //返回值类型 一般设置为json
+                    success: function (data) {  //服务器成功响应处理函数
+                        alert(data.Message);
+                    },
+                    error: function (data, status, e) {//服务器响应失败处理函数
+                        alert(e);
+                    }
+                });
+                return false;
+            });
+            $(".skutext").each(function (i, n) {//文本　　样式调整 
+                $this = $(n);
+                var json = $this.attr("json"); 
+                try {
+                    if (!json || json.length == 0) return;
+                    json = $.parseJSON(json);
+                    if (json && json.length > 0) {
+                        json = json[0];
+                        var result = "";
+                        var key = "";
+                        for (var i in json) {
+                            key = i;
+                            if (json[i] != undefined && json[i] != null && json[i].length > 0) {
+                                result += "&nbsp;&nbsp;&nbsp;&nbsp;" + key + "/" + json[i];
+                            }
+                        }
+                        if (result.length > 0)
+                        {
+                            result = result.substr(24);
+                        } 
+                        $this.html(result);
+                    }
+                } catch (e) {
+                    $this.html('');
+                }
+            })
+        });
+        function addFile(fileObj) {
+            //文件大小限制4MB 暂不支持IE8及以下
+            var maxSize = 4 * 1024 * 1024;
+            try {
+                if ($(fileObj)[0].files[0].size > maxSize) {
+                    alert('上传图片大小最大为4MB,请重新上传');
+                    deleteFile($(fileObj));
+                    return false;
+                }
+            } catch (e) {
+
+            }
+            if ($("[file]").length < 3) {
+                var hiddenfile = $("#hiddenFile");
+                var clone = hiddenfile.clone().attr("file", "file");
+                clone.removeAttr("id").find("input").removeAttr("disabled");
+                hiddenfile.before(clone);
+                BindPreview(hiddenfile.prev().find("input[type=file]"));
+                $("[file]").show();
+                $("[filetitle]").height($("[file]").length * $("[file]").height());
+            }
+        }
+        function BindPreview(fileObj) {
+            var tempi = $("input[type=file]:visible").index(fileObj);
+            var tempn = $(fileObj);
+            $(tempn).uploadPreview({
+                Width: 69,
+                Height: 69,
+                ImgType: ["gif", "jpeg", "jpg", "png"],
+                errorCallback: function (error) {
+                    alert(error);
+                },
+                Callback: function (patharr, pathstr, fileObj) {
+                    $("#imgdd").show();
+                    var tempi = tempi = $("input[type=file]:visible").index(fileObj);
+                    var obj = $("#imgdd img").eq(tempi - 1).show();
+                    var randomNum = Math.random();
+                    obj.show();
+                    $(fileObj).attr("math", randomNum);
+                    obj.attr("math", randomNum);
+                    var arr = new Array();
+                    var isIE = false;
+                    if (patharr && patharr.length > 0) {
+                        arr = patharr;
+                    } else if (pathstr && pathstr.length > 0) {
+                        isIE = true;
+                        //  IEShow(obj, pathstr);
+                        // arr = new Array(pathstr);
+                    }
+                    if (arr.length > 0) {
+                        obj.attr("src", arr[0]);
+                        tempn.attr("trueurl", arr[0]);
+                    }
+                }
+            });
+
+
+        }
+        function deleteFile(obj) {
+            var math = $(obj).parent().find("input[type=file]").attr("math");
+            $("img[math='" + math + "']").hide().attr("math", "");
+            $(obj).parent().remove();
+
+            if ($("[file]").length < 3) {
+                addFile();
+            }
+            if ($("#imgdd img:visible").length == 0) {
+                $("#imgdd").hide();
+                $("#imgdd img").hide();
+            }
+        }
+        function beforeSubmit(clearAll) {
+            if (clearAll)
+                $("#clearform").val("1");
+            else
+                $("#clearform").val("");
+            var idstr = "";
+            var valstr = "";
+            var errorstr = "";
+            $("[itemid]").each(function (i, n) {
+                var $this = $(n);
+                var thisvalue = '';
+                idstr = idstr + "∈" + $this.attr("itemid");
+                if ($(this).is("[itemtype=2]")) {//单选框
+                    thisvalue = $this.find("input[type=radio]:checked").val();
+                } else {
+                    thisvalue = $this.val();
+                }
+                valstr = valstr + "∈" + thisvalue;
+                if ($this.is("[required=1]") && thisvalue.length == 0)
+                    errorstr = errorstr + "," + $this.attr("itemname");
+            })
+            if (valstr.length > 0 && idstr.length > 0) {
+                valstr = valstr.substr(1);
+                idstr = idstr.substr(1);
+                var resultstr = valstr + "∨" + idstr;
+            }
+
+            if ($("#optionitems").length == 0)
+                $("#formAddComment").append("<input type='hidden' id='optionitems' name='optionitems' value='" + resultstr + "'>");
+            else
+                $("#optionitems").val(resultstr);
+            if ($.trim($("#username").val()).length == 0) {
+                errorstr += ",用户名不能为空";
+            }
+            $("#commentarea").text($("#commentarea").val());
+            if ($.trim($("#commentarea").val()).length == 0 || $.trim($("#commentarea").val()).length > 200) {
+                errorstr += ",评论不能为空且字数不能超过200字";
+            }
+            if (errorstr.length > 0) {//验证未通过
+                errorstr = errorstr.substr(1);
+                //$("#formAddComment .error").html("<br/>" + errorstr).show();
+                //$("#mx-rightcontent").animate({ scrollTop: 0 }, 200);
+                alert(errorstr)
+                return false;
+            } else {
+                $("#formAddComment .error").html("").hide();
+            }
+            return true;
+        }
+        function saveCommentCallBack(isclear, success, msg) {
+            if (success == "1") {
+                alert("保存成功!");
+                if (isclear == "1")
+                    $("#skuNo").val('');
+                $("#formSearch").submit();
+            } else if (msg && msg.length > 0) {
+                alert(msg);
+            }
+        }
+
+
+    </script>
+
+}
+<h1>
+    OCS > 尚品 > 添加评论
+</h1>
+<div style="width:100%;text-align:right;">
+    <input type="file" id="batchComment" name="batchComment" multiple />
+    <a href="javascript:;" id="ImportComments" style="font-size:14px; color:Blue;">批量导入评论数据</a>&nbsp;&nbsp;&nbsp;
+    <a href="#" style="font-size:14px; color:Blue;">下载评论数据源模板</a>
+</div>
+<div class="mx-brandcontent-msgbox">
+
+
+
+    <div>
+
+        <form id="formSearch" name="formSearch" action="/shangpin/Detail/AddComment" method="get">
+            <dl>
+                <dt>SKU编号：</dt>
+                <dd>
+                    <input id="skuNo" style="height:30px;" placeholder="请输入SKU号.." type="text" name="skuNo" value="@ViewBag.skuNo" maxlength="30" />
+                    <button type="button" id="" name="" value="" style="padding:3px 10px;" class="secondary" onclick="$('#formSearch').submit();">
+                        检索
+                    </button><span class="error" style="display:none;color:red;"></span>
+                </dd>
+            </dl>
+
+        </form>
+        <br />
+        <form id="formAddComment" name="formAddComment" target="hideiframe" action="/shangpin/Detail/AddReviewBack" method="post"
+              enctype="multipart/form-data">
+            @if (entities.Count > 0)
+            {
+
+
+                int Good = entities.Where(a => a.StarLevel == "4" || a.StarLevel == "5").Count();
+                int Middle = entities.Where(a => a.StarLevel == "3" || a.StarLevel == "2").Count();
+                int Bad = entities.Where(a => a.StarLevel == "1").Count();
+                string LastTime = entities.FirstOrDefault(a => a.CommentSource == "1") == null ? "" : entities.FirstOrDefault(a => a.CommentSource == "1").DateCreate;
+                string EditTimes = entities.Count(a => a.CommentSource == "1").ToString();
+                <input type="hidden" name="productNo" value="@entities[0].ProductNo" />
+                <input type="hidden" name="skuNo" value="@ViewBag.skuNo " />
+                <div style="width:700px;border:gray;">
+                    <table border="1" style="border-collapse:collapse;" width="100%">
+                        <tr style="background-color: #CCCCCC;">
+                            <td align="center" width="70">商品图片</td>
+                            <td align="center" width="*">商品信息</td>
+                            <td align="center" width="40%">评价信息</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img width="70" height="107" src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@entities[0].ProductPicFile&type=1" />
+                            </td>
+                            <td style="padding-left:5px;">
+                                商品编号: @(entities[0].ProductNo) <br />
+                                SKU编号: @(entities[0].SkuNo) <br />
+                                商品名称: @(entities[0].ProductName) <br />
+                                品牌: @(entities[0].BrandEnName ?? "") <br />
+                                价格: @(entities[0].SellPrice) <br />
+                                <span class="skutext" json="@(entities[0].SkuAttrText)"></span>
+                            </td>
+                            <td style="padding-left:5px;">
+                                评价总数:@(Good + Middle + Bad)<br />
+                                好评个数:@Good<br />
+                                中评个数:@Middle<br />
+                                差评个数:@Bad<br />
+                                最后编辑时间:@(LastTime ?? "")<br />
+                                编辑次数:@(EditTimes ?? "")
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <br />
+                <span class="error" style="display:none;color:red;"></span>
+                <dl>
+                    <dt class="title_red">*用户名：</dt>
+                    <dd>
+                        <input type="text" required="1" name="username" id="username" style="width: 200px; height: 30px;" value="" placeholder="请输入用户名..." />
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>用户等级：</dt>
+                    <dd>
+                        <select style="height: 30px;" name="UserLevel" id="UserLevel">
+                            @if (levels != null && levels.Any())
+                            {
+                                <option value="0">随机会员</option>
+                                foreach (SWfsUserLevel level in levels.OrderBy(a => Convert.ToInt32(a.LevelNo)))
+                                {
+                                    if (Convert.ToInt32(level.LevelNo) != 0)
+                                    {
+                                        <option value="@level.LevelNo">@level.LevelName</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </dd>
+                </dl>
+                            Dictionary<string, string> dic = new Dictionary<string, string>();
+                            dic["1"] = "一星";
+                            dic["2"] = "二星";
+                            dic["3"] = "三星";
+                            dic["4"] = "四星";
+                            dic["5"] = "五星";
+                            var zonghepinfen = CommentItemManager.AllCommentItemOption.FirstOrDefault(a => a.Name == "综合评分");
+                            var oneCategoryComment = commentItems.FirstOrDefault(a => a.CategoryID == oneCategory);
+                            List<CommentItemOption> options = oneCategoryComment == null ? new List<CommentItemOption> { zonghepinfen } : oneCategoryComment.CommentItemOption;
+
+                            foreach (var i in options.Where(b => Convert.ToInt32(b.Type) == 5 || Convert.ToInt32(b.Type) == 3).OrderByDescending(c => Convert.ToInt32(c.Type)))
+                            {
+                                string requiredstr = i.Required == 1 ? "*" : "";
+                                <dl>
+                                    <dt @(Html.Raw(requiredstr.Length > 0 ? "class='title_red'" : ""))>@requiredstr@i.Name</dt>
+                                    <dd>
+                                        <select itemid="@i.Id" itemname="@i.Name" required="@i.Required" itemtype="@i.Type" style="height: 30px;">
+                                            @if (i.Required == 0)
+                                            {
+                                                <option value="" selected="selected"></option>
+                                            }
+                                            @for (int j = 0; j < i.SelectOptions.Keys.Count(); j++)
+                                            {
+                                                var flag = i.Default == i.SelectOptions.ElementAt(j).Key;
+                                                if (Convert.ToInt32(i.Type) == 5)
+                                                {
+                                                    @(i.SelectOptions.ElementAt(j).Value)
+                                                    <option @(flag ? "selected=\"selected\"" : "") value="@(i.SelectOptions.ElementAt(j).Key)" selected="selected">@(dic.Keys.Contains(i.SelectOptions.ElementAt(j).Key) ? dic[i.SelectOptions.ElementAt(j).Key] : "")</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@(i.SelectOptions.ElementAt(j).Key)" @(flag ? "selected=\"selected\"" : "")>@(i.SelectOptions.ElementAt(j).Value)</option>
+                                                }
+                                            }
+                                        </select>
+                                    </dd>
+                                </dl>
+                            }
+                            foreach (var i in options.Where(b => Convert.ToInt32(b.Type) == 1))//输入框
+                            {
+                                string requiredstr = i.Required == 1 ? "*" : "";
+                                <dl>
+                                    <dt @(Html.Raw(requiredstr.Length > 0 ? "class='title_red'" : ""))>@requiredstr@i.Name</dt>
+                                    <dd>
+                                        @if (i.ValueType == "int")
+                                        {
+                                            <input maxlength="3" class="input_num" type="text" itemid="@i.Id" itemname="@i.Name" itemtype="1" required="@i.Required" id="input@(i)" value="" /><label for="input@(i)">@i.SelectOptions.ElementAt(0).Value</label>
+                                        }
+                                        else
+                                        {
+                                            <input type="text" itemid="@i.Id" itemname="@i.Name" itemtype="1" required="@i.Required" id="input@(i)" value="" /><label for="input@(i)">@i.SelectOptions.ElementAt(0).Value</label>
+                                        }
+                                    </dd>
+                                </dl>
+                            }
+                            foreach (var i in options.Where(b => Convert.ToInt32(b.Type) == 2))//单选框
+                            {
+                                string requiredstr = i.Required == 1 ? "*" : "";
+                                <dl itemid="@i.Id" itemtype="2" itemname="@i.Name" required="@i.Required">
+                                    <dt @(Html.Raw(requiredstr.Length > 0 ? "class='title_red'" : ""))>@requiredstr@i.Name：</dt>
+                                    <dd>
+                                        @for (int j = 0; j < i.SelectOptions.Keys.Count(); j++)
+                                        {
+                                            if (i.Default == i.SelectOptions.ElementAt(j).Key)
+                                            {
+                                                <input type="radio" name="radio@(i)" id="radio@(i)" value="@i.SelectOptions.ElementAt(j).Key" checked="checked"><label for="radio@(i)">@i.SelectOptions.ElementAt(j).Value</label>
+                                            }
+                                            else
+                                            {
+                                                <input type="radio" name="radio@(i)" id="radio@(i)" value="@i.SelectOptions.ElementAt(j).Key"><label for="radio@(i)">@i.SelectOptions.ElementAt(j).Value</label>
+                                            }
+                                        }
+                                    </dd>
+                                </dl>
+                            }
+
+                            <dl>
+                                <dt> </dt>
+                                <dd id="imgdd" style="display:none;">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <img src="" style="display:none;" height="67" width="67" />
+                                    <img src="" style="display:none;" height="67" width="67" />
+                                    <img src="" style="display:none;" height="67" width="67" />
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt filetitle>*上传图片：</dt>
+                                <dd id="hiddenFile" style="display:none;">
+                                    <input class="file" onchange="addFile(this);" disabled="disabled" style="width: 300px; border: 1px solid #CCCCCC;" name="file_upload" accept="image/gif, image/jpeg,image/png" type="file">
+                                    <button type="button delete-button" style="padding:3px 10px;" id="" name="" value="" class="secondary" onclick="deleteFile(this);">
+                                        删除
+                                    </button>
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt class="title_red">评论内容：</dt>
+                                <dd>
+                                    <textarea maxlength="200" style="width:300px;height:150px;" id="commentarea" name="commentarea"></textarea>
+                                    <span style="color:gray;">200字数以内</span>
+                                </dd>
+                            </dl>
+                            <input type="hidden" id="clearform" name="clearform" value="" />
+
+            }
+        </form>
+
+    </div>
+    @if (entities.Count > 0)
+    {
+        <dl>
+            <dt>&nbsp;</dt>
+            <dd>
+                <button type="button" style="height:32px;" id="" name="" value="" class="secondary" onclick="if (beforeSubmit(1)) $('#formAddComment').submit();">
+                    保存评价
+                </button>
+                <button type="button" style="height:32px;" id="" name="" value="" onclick="if (beforeSubmit()) $('#formAddComment').submit();">
+                    保存并继续
+                </button>
+            </dd>
+        </dl>
+    }
+</div>

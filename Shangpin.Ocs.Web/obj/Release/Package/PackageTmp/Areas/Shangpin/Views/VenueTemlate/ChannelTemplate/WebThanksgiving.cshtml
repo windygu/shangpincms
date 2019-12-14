@@ -1,0 +1,72 @@
+﻿@{
+    Layout = null;
+    Shangpin.Entity.Wfs.SWfsSpChannelTemplateRegion obj = null;
+    string ShangpinActiveHrefUrlShow = "http://www.shangpin.com/women/subject/{0}";
+    string AoLaiActiveHrefUrlShow = "http://www.aolai.com/subject/index/{0}/0";
+    string AoLaiSpecialHrefUrlShow = "http://www.aolai.com/topic/index/{0}";
+}
+@using Shangpin.Framework.WebMvc
+@model IEnumerable<Shangpin.Entity.Wfs.SWfsSpChannelTemplateRegion>
+
+
+<div class="main_box">
+    <div class="box box_five topBg">
+        <div class="boxWarp topBox_bg">
+            <ul class="clr">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    if (Model.Count(p => p.RegionID == i) == 1) 
+                    {
+                        obj = Model.Single(p => p.RegionID == i);
+                             
+                        <li opratorRegion="@i" relationtype="@obj.RelationType">
+                            @switch (obj.RelationType)
+                            {
+                                case 1:
+                                    <a target="_blank" href="@(string.Format(ShangpinActiveHrefUrlShow,obj.RelationContent))">
+                                        <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 175, 330))" />
+                                    </a>
+                                    break;
+                                    case 2:
+                                    <a target="_blank" href="@(string.Format(AoLaiActiveHrefUrlShow, obj.RelationContent))">
+                                        <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 175, 330))" />
+                                    </a>
+                                    break;
+                                    case 3:
+                                    <a target="_blank" href="@(string.Format(AoLaiSpecialHrefUrlShow, obj.RelationContent))">
+                                        <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 175, 330))" />
+                                    </a>
+                                    break;
+                                    case 4:
+                                    <a target="_blank" href="@(string.Format(AoLaiSpecialHrefUrlShow, obj.RelationContent))">
+                                        <img lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 175, 330))" />
+                                    </a>
+                                    break;
+                                default:
+                                    if (obj.RelationContent=="#")
+                                    {
+                                        <img width="175" height="330" lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 175, 330))" />
+                                    }
+                                    else
+                                    {
+                                <a target="_blank" href="@(obj.RelationContent)">
+                                    <img width="175" height="330" lazy="@(Shangpin.Framework.WebMvc.ServicePic.ResolveUGCImage("2", obj.ImgNO, 175, 330))" />
+                                </a>
+                                    }
+                                    break;
+                            }
+                            
+                        </li>
+                    }
+                    else
+                    {
+                        <li opratorRegion="@i" relationtype="1"></li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="box">
+        <img width="960" height="55" lazy="@Html.ResolveContentCdnUrl("/shangpin/images/page/Thanksgiving2/top_line.jpg")" />
+    </div>
+</div>

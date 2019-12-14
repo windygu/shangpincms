@@ -1,0 +1,323 @@
+body {
+	_background-image: url(about:blank);
+	_background-attachment: fixed;
+}
+.sp_body {
+	background: none;
+}
+/*banner*/
+.sp_108 {
+	background: url(/images/page/108/main_bg.jpg) no-repeat center top;
+	padding-top: 530px;
+}
+.sp_108_top {
+	width: 960px;
+	margin: 0 auto;
+}
+/*倒计时*/
+#curdatetime_108, #curdatetime_108 img{
+	position:relative;
+}
+
+#leftdays_108, #lefthours_108, #leftminutes_108, #leftseconds_108{
+    display: block;
+    width: 44px;
+    position: absolute;
+    font-size: 22px;
+    text-align: center;
+    font-family: "微软雅黑", "Microsoft YaHei", "黑体", "Tahoma", "宋体";
+    font-weight: 700;
+    color: #e1a217;
+    top: 10px;
+    left: 332px;
+}
+#leftdays_108{
+	left:248px;
+}
+#lefthours_108{
+	left:319px;
+}
+#leftminutes_108{
+	left:411px;
+}
+#leftseconds_108{
+	left:483px;
+}
+
+#rss108 {
+    display: block;
+    background: #fff;
+    position: absolute;
+    border: 0;
+    outline: none;
+    top: 20px;
+    left: 680px;
+    height: 14px;
+    padding: 1px 0 0;
+    width: 165px;
+}
+
+#rss108_btn {
+    display: block;
+    background: #fff;
+    position: absolute;
+    border: 0;
+    outline: none;
+    top: 16px;
+    left: 853px;
+    height: 24px;
+    width: 83px;
+    cursor: pointer;
+}
+/*倒计时End*/
+
+/*轮播图*/
+#spIndex_mxImageSwitch {
+	width: 960px;
+	height: 400px;
+	overflow: hidden;
+	margin: 0 auto 12px;
+	position: relative;
+}
+#spIndex_mxImageSwitch .switchsort {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 960px;
+	height: 24px;
+	overflow: hidden;
+	padding: 7px 0;
+	background: url(/images/page/index/swbg.png) repeat-x 0 0;
+	_background: #333;
+	_filter: alpha(opacity=80);
+}
+#spIndex_mxImageSwitch span {
+	display: block;
+	position: absolute;
+	width: 40px;
+	height: 400px;
+	top: 0;
+	z-index: 1000;
+	cursor: pointer;
+	background: url(/images/page/index/swarr.png) no-repeat 8px center;
+	_background-image: url(/images/page/index/swarr.gif)
+}
+#spIndex_mxImageSwitch span#switchnext {
+	right: 0;
+	background-position: -200px center;
+}
+.switchsort li {
+	display: block;
+	float: left;
+	width: 95px;
+	height: 24px;
+	border-right: 1px solid #fff;
+}
+.switchsort li:last-child {
+	border-right: none;
+}
+.switchsort a {
+	display: block;
+	width: 100%;
+	height: 100%
+}
+.switchsort a strong, .switchsort a i {
+	color: #fff;
+	display:table-cell;
+	width:94px;
+	vertical-align:middle;
+	height: 24px;
+	line-height: 12px;
+	overflow: hidden;
+	text-align: center;
+	*display:block;
+}
+.switchsort a strong {
+	font-size: 14px;
+	font-weight: 700;
+	height: 15px;
+	padding-bottom: 2px;
+}
+.switchsort a.cur strong, .switchsort a.cur i {
+	color: #c3c3c3;
+}
+#switchhref {
+	display: block;
+	width: 960px;
+	height: 400px;
+	overflow: hidden;
+	background: url(/images/plug/loader/aloader-greybg.gif) no-repeat center center;
+}
+#switchhref.loaderhide {
+	background-position: -1000px -1000px;
+}
+/*列表*/
+.sp_108_list {
+	width: 100%;
+}
+.listNav {
+	height: 43px;
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 10;
+	_position: absolute;
+	_bottom: auto;
+ _top:expression(eval(document.documentElement.scrollTop));
+	border-bottom: 3px solid rgba(0,0,0,0.5);
+}
+.listNavbox {
+	background: #000;
+}
+.listNav ul {
+	background: url(/images/page/108/listNav_link.gif) no-repeat left top;
+	padding-left: 10px;
+	position: relative;
+	width: 960px;
+	margin: 0 auto;
+}
+.listNav li {
+	float: left;
+	height: 43px;
+	line-height: 43px;
+	overflow: hidden;
+}
+.listNav li a {
+	display: block;
+	height: 43px;
+	width: 100%;
+	font-size: 15px;
+	font-family: "Microsoft yahei", "微软雅黑";
+	color: #fff;
+	font-weight: bold;
+	text-align: center;
+}
+.listNav li a:link, .listNav li a:visited {
+	color: #fff;
+}
+.listNav li a:hover {
+	color: #6fa3fb;
+}
+.listNav li.fontcolor1 a:hover {
+	color: #d18f05;
+}
+.listNav li.fontcolor2 a:hover {
+	color: #6fa3fb;
+}
+.listNav li.fontcolor3 a:hover {
+	color: #e5386e;
+}
+.listNav li.fontcolor4 a:hover {
+	color: #59bb94;
+}
+.listNav li.fontcolor5 a:hover {
+	color: #f17454;
+}
+.listNav li.fontcolor6 a:hover {
+	color: #efd520;
+}
+.listNav li.fontcolor7 a:hover {
+	color: #8fb256;
+}
+.listNav li.fontcolor8 a:hover {
+	color: #962092;
+}
+.listNav li.Txt4 {
+	width: 110px;
+}
+.listNav li.Txt2 {
+	width: 82px;
+}
+.listNav li.coupon {
+	width: 155px;
+	margin-left: 27px;
+	background-color: #000;
+	text-align: center;
+	overflow: hidden;
+}
+.listNav li.coupon a {
+	display: inline;
+	font-size: 12px;
+	color: #d08f04;
+	font-family: "宋体";
+	font-weight: bold;
+}
+.listNav li.coupon a:link, .listNav li.coupon a:visited {
+	color: #d08f04;
+}
+.listNav li.titbg {
+	position: absolute;
+	background: url(/images/page/108/listNav_bg.jpg) no-repeat center;
+	width: 110px;
+	left: -110px;
+	top: 0;
+}
+.sp_108_demo {
+	width: 972px;
+}
+.sp_108_demo li {
+	width: 231px;
+	margin-right: 12px;
+	float: left;
+	vertical-align: top;
+	text-align: left;
+}
+.sp_108_demo li span {
+	display: block;
+	width: 231px;
+	height: 385px;
+	overflow: hidden;
+	margin-bottom: 12px;
+	position: relative;
+	background-color:#ccc;
+}
+
+.sp_108_demo li span.miniBox {
+	height: 154px;
+}
+.sp_108_demo li img {
+	display: block;
+}
+.sp_108_demo li span.txtBox{
+	width:229px;
+	height:383px;
+	border:1px solid #5e5d5d;
+	background:none;
+}
+.sp_108_demo li span.txtBox img{
+	width:229px;
+	height:306px;
+}
+.sp_108_demo li span.txtBox p{
+	display:block;
+	padding-top:5px;
+}
+.sp_108_demo li span.txtBox a em, .sp_108_demo li span.txtBox a b {
+	display: block;
+	text-align: center;
+	height: 18px;
+	line-height: 18px;
+	color: #000;
+	font-size: 12px;
+	overflow: hidden;
+	margin: 0 auto;
+	font-family: "Microsoft yahei", "微软雅黑";
+	font-weight: normal;
+}
+.sp_108_demo li span.txtBox a em {
+	font-size: 14px;
+	font-weight: bold;
+	font-family:Arial;
+}
+.sp_108_demo li span.txtBox i{
+	display:block;
+	width:90px;
+	height:22px;
+	line-height:20px;
+	background-color:#000;
+	text-align:center;
+	color:#fff;
+	margin:5px auto 0;
+}

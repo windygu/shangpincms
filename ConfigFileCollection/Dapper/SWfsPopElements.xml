@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <statement id="ComBeziWfs_SWfsPopElements"  primarykey="">
+    select * from SWfsPopElements;
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsProductLabel_GetProductLabelList">
+    SELECT l.LabelNo,l.LabelNo,l.ParentNo,l.LabelName,ISNULL(pop.SortId,0) AS SortId,ISNULL(pop.Status,0) AS Status FROM SWfsProductLabel AS l
+    LEFT JOIN SWfsPopElements AS pop
+    ON l.LabelNo = pop.LabelNo
+    WHERE ParentNo=@ParentNo
+    ORDER BY pop.SortId DESC
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsProductRefLabel_GetProductList">
+    SELECT COUNT(0) AS DataCount FROM SWfsProductRefLabel AS l  LEFT JOIN
+    WfsProduct AS p  ON  l.ProductNo = p.ProductNo
+    WHERE l.RefLabelNo like @RefLabelNo+'%'
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsPopElements_AddPopElements">
+    INSERT INTO SWfsPopElements
+    ([CategoryNo], [LabelNo], [Status], [SortId], [OperatorUserId], [DateCreate])
+    VALUES
+    (@CategoryNo, @LabelNo, @Status, @SortId, @OperatorUserId, @DateCreate);
+    select cast(@@IDENTITY as varchar(50))
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsPopElements_ExistsPopElements">
+    SELECT ElementsId,CategoryNo,LabelNo,Status,SortId  FROM SWfsPopElements
+    WHERE CategoryNo =@CategoryNo AND LabelNo=@LabelNo
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsPopElements_PopElementsCount">
+    SELECT Count(0) AS Count  FROM SWfsPopElements
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsProductRefLabel_GetAllProductLabel">
+    select lr.ProductNo,l.LabelNo,l.ParentNo,l.LabelName,l.LabelNickName from SWfsProductRefLabel as lr left join SWfsProductLabel as l on lr.RefLabelNo=l.LabelNo
+  </statement>
+
+</statements>

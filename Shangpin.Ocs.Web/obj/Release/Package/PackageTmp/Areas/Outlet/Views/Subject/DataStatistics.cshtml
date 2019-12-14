@@ -1,0 +1,307 @@
+﻿@*@model Shangpin.Ocs.Entity.Extenstion.Outlet.SubjectDataStatistics*@
+@using Shangpin.Ocs.Entity.Extenstion.Outlet
+@using Shangpin.Ocs.Service.Common
+@{
+    ViewBag.Title = "数据统计";
+    Dictionary<string, string> buDic = ViewBag.BUStatisticsData as Dictionary<string, string>; //BU
+    Dictionary<string, string> brandDic = ViewBag.BrandStatisticsData as Dictionary<string, string>; //品牌
+    Dictionary<string, string> categoryDic = ViewBag.CategoryStatisticsData as Dictionary<string, string>; //品类
+}
+<script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script language="javascript" type="text/javascript">
+    $(function () {
+        $("#brandId").change(function () {
+            window.location = '?range=@ViewBag.range&beginTime=@ViewBag.beginTime&endTime=@ViewBag.endTime&subjectNo=@ViewBag.subjectNo&BackSubjectUrl=@ViewBag.SubjectCurrUrl&buNo=@ViewBag.BUNo&brandNo=' + $(this).val() + "&categoryNo=@ViewBag.CategoryNo";
+        });
+        $("#categoryId").change(function () {
+            window.location = '?range=@ViewBag.range&beginTime=@ViewBag.beginTime&endTime=@ViewBag.endTime&subjectNo=@ViewBag.subjectNo&BackSubjectUrl=@ViewBag.SubjectCurrUrl&buNo=@ViewBag.BUNo&brandNo=@ViewBag.BrandNo&categoryNo=' + $(this).val();
+        });
+        $("#buId").change(function () {
+            window.location = '?range=@ViewBag.range&beginTime=@ViewBag.beginTime&endTime=@ViewBag.endTime&subjectNo=@ViewBag.subjectNo&BackSubjectUrl=@ViewBag.SubjectCurrUrl&buNo=' + $(this).val() + '&brandNo=@ViewBag.BrandNo&categoryNo=@ViewBag.CategoryNo';
+        });
+    });
+</script>
+<h1>
+    <a href="@ViewBag.SubjectCurrUrl">活动管理</a> > @ViewBag.SubjectName > 活动列表 <span style="float:right;"><a href="###"  onclick="javascript:history.back();">返回上一步</a></span></h1>
+<form action="/outlet/subject/DataStatistics" method="get" id="DataStatistics">
+<div style="padding: 5px;">
+    <span>查询日期:</span>
+    @Html.RadioButton("range", "0", ViewBag.range == "0" ? true : false, new { id = "range0" })@Html.Label("range0", "全部")&nbsp;&nbsp;
+    @Html.RadioButton("range", "1", ViewBag.range == "1" ? true : false, new { id = "range1" })@Html.Label("range1", "今天")&nbsp;&nbsp;
+    @Html.RadioButton("range", "2", ViewBag.range == "2" ? true : false, new { id = "range2" })@Html.Label("range2", "昨天")&nbsp;&nbsp;
+    @Html.RadioButton("range", "3", ViewBag.range == "3" ? true : false, new { id = "range3" })@Html.Label("range3", "本周")&nbsp;&nbsp;
+    @Html.RadioButton("range", "4", ViewBag.range == "4" ? true : false, new { id = "range4" })@Html.Label("range4", "本月")&nbsp;&nbsp;
+    @Html.RadioButton("range", "5", ViewBag.range == "5" ? true : false, new { id = "rangeSel" })@Html.Label("rangeSel", "自定义")
+    <input id="StartTime" name="beginTime" maxlength="30"  class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm:00'})" readonly="readonly"  value="@ViewBag.beginTime" />
+    <span>至</span>
+    <input id="EndTime" name="endTime" maxlength="30" class="Wdate"  type="text" onclick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm:00'})" readonly="readonly" value="@ViewBag.endTime" />
+    <input type="hidden" id="subjectno" name = "subjectNo" value="@ViewBag.subjectNo" />
+    <input type="hidden" id="BackSubjectUrl" name = "BackSubjectUrl" value="@ViewBag.SubjectCurrUrl" />
+    <button type="submit">
+        查询</button>
+</div>
+</form>
+<span>销售统计</span>
+<table class="mx-table">
+    <thead>
+        <tr>
+            <th>
+                订单总数
+            </th>
+            <th>
+                成功订单数
+            </th>
+            <th>
+                成功订单金额
+            </th>
+            <th>
+                总成本价
+            </th>
+            <th>
+                成功订单平均毛利率
+            </th>
+            <th>
+                成功订单总利润
+            </th>
+            <th>
+                总库存
+            </th>
+            <th>
+                总单款数
+            </th>
+            <th>
+                售罄率
+            </th>
+            <th>
+                动销率
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{  var Sale = ViewBag.subjectSaleStatistics;
+            int orderNums = ViewBag.OrderNums;
+            if (Sale != null)
+            {
+            <tr>
+                <td>@orderNums
+                </td>
+                <td>@Sale.OrderNums
+                </td>
+                <td>@Sale.Amount
+                </td>
+                <td>@Sale.CostAmount
+                </td>
+                <td>@(Sale.Amount == 0 ? 0 : (((Sale.Amount - Sale.CostAmount) / Sale.Amount) * 100).ToString(".##") + "%")
+                </td>
+                <td>@(Sale.Amount - Sale.CostAmount)
+                </td>
+                <td>@(Sale.StockCount + Sale.SaleCount)
+                </td>
+                <td>@Sale.SKUCount
+                </td>
+                <td>@DivideHelper.Divide(Sale.SaleCount, Sale.StockCount + Sale.SaleCount, 2)
+                </td>
+                <td>@DivideHelper.Divide(Sale.SaledSKUCount, Sale.SKUCount, 2)
+                </td>
+            </tr>
+            }
+         
+        }
+    </tbody>
+</table>
+<span>访问统计</span>
+<table class="mx-table">
+    <thead>
+        <tr>
+            <th>
+                日期
+            </th>
+            <th>
+                PV
+            </th>
+            <th>
+                UV
+            </th>
+            <th>
+                普通会员
+            </th>
+            <th>
+                黄金会员
+            </th>
+            <th>
+                白金会员
+            </th>
+            <th>
+                钻石会员
+            </th>
+            <th>
+                订单转化率
+            </th>
+            <th>
+                会员平均订单
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{ var Visit = ViewBag.subjectVisitStatistic;
+           if (Visit != null)
+           {
+            <tr>
+                <td>@Visit.DateStatistics
+                </td>
+                <td>@Visit.PV
+                </td>
+                <td>@Visit.UV
+                </td>
+                <td>@Visit.VIP
+                </td>
+                <td>@Visit.GoldenVIP
+                </td>
+                <td>@Visit.PlatinaVIP
+                </td>
+                <td>@Visit.DiamondVIP
+                </td>
+                <td>@DivideHelper.Divide((int)Visit.OrderNums, (int)Visit.UV, 2)
+                </td>
+                <td>@DivideHelper.Divide((int)Visit.OrderNums, (int)(Visit.VIP + Visit.GoldenVIP + Visit.PlatinaVIP + Visit.DiamondVIP), 2)
+                </td>
+            </tr>
+           }         
+        }
+    </tbody>
+</table>
+<span>商品统计</span> <a href="~/outlet/subject/OutletProjectToExcel?subjectNo=@ViewBag.subjectNo" style=" float:right; margin-left:50px">
+    导出活动商品
+</a> <a href="~/outlet/subject/OrderToExcel?subjectNo=@ViewBag.subjectNo" style="  float:right;margin-left:50px">
+        导出商品订单</a>
+<table id="productStatisticsList" class="mx-table">
+    <thead>
+        <tr>
+            <th>
+                BU
+                <select id="buId" style="width: auto;">
+                    <option value="">全部BU</option>
+                    @{
+                        if (buDic != null)
+                        {
+                            foreach (var item in buDic.OrderByDescending(a => a.Key))
+                            {
+                        <option value="@item.Key" @(item.Key.Equals(ViewBag.BUNo) ? "selected='selected'" : "")>@(item.Key.Equals("0") ? "其它" : item.Value)</option>
+                            }
+                        }
+                    }
+                </select>
+            </th>
+            <th>
+                品牌名称
+                <select id="brandId" style="width: auto;">
+                    <option value="">全部品牌</option>
+                    @{
+                        if (brandDic != null)
+                        {
+                            foreach (var item in brandDic)
+                            {
+                        <option value="@item.Key" @(item.Key.Equals(ViewBag.BrandNo) ? "selected='selected'" : "")>@item.Value</option>
+                            }
+                        }
+                    }
+                </select>
+            </th>
+            <th>
+                品类
+                <select id="categoryId" style="width: auto;">
+                    <option value="">全部品类</option>
+                    @{
+                        if (categoryDic != null)
+                        {
+                            foreach (var item in categoryDic)
+                            {
+                        <option value="@item.Key" @(item.Key.Equals(ViewBag.CategoryNo) ? "selected='selected'" : "")>@item.Value</option>
+                            }
+                        }
+                    }
+                </select>
+            </th>
+            <th>
+                商品数量
+            </th>
+            <th>
+                总库存
+            </th>
+            <th>
+                售罄率
+            </th>
+            <th>
+                总售罄率
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.subjectProductStatistics)
+        {
+            <tr>
+                <td>
+                    @(item.BU.Equals("0") ? "其它" : item.BU)
+                </td>
+                <td>@item.BrandName
+                </td>
+                <td>@item.CategoryName
+                </td>
+                <td>@item.SKUCount
+                </td>
+                <td>@(item.StockCount + item.SaleCount)
+                </td>
+                <td>@DivideHelper.Divide(item.SaleCount, item.StockCount + item.SaleCount, 2)
+                </td>
+                <td>
+                    1
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script language="javascript" type="text/javascript">
+    $(
+    function () {
+        var table = document.getElementById('productStatisticsList');
+        var rowLength = document.getElementById('productStatisticsList').rows.length;
+        var rowSpan = 1;
+        var rowValue = 0;
+        if (rowLength >= 2) {
+            table.rows[1].cells[table.rows[0].cells.length - 1].innerHTML = table.rows[1].cells[table.rows[0].cells.length - 2].innerHTML;
+            rowValue = table.rows[1].cells[table.rows[0].cells.length - 1].innerHTML;
+        }
+        if (rowLength >= 3) {
+            for (var i = 2; i < rowLength; i++) {
+                if (table.rows[i - rowSpan].cells[0].innerHTML == table.rows[i].cells[0].innerHTML) {
+                    rowSpan++;
+                    rowValue = parseFloat(rowValue) + parseFloat(table.rows[i].cells[table.rows[i].cells.length - 2].innerHTML);
+                    table.rows[i - rowSpan + 1].cells[0].rowSpan = rowSpan;
+                    table.rows[i].deleteCell(0);
+
+                    var cellIndex = table.rows[i - rowSpan + 1].cells.length - 1;
+                    table.rows[i - rowSpan + 1].cells[cellIndex].rowSpan = rowSpan;
+                    table.rows[i - rowSpan + 1].cells[cellIndex].innerHTML = rowValue + "%";
+                    table.rows[i].deleteCell(table.rows[i].cells.length - 1);
+                }
+                else {
+                    rowSpan = 1;
+                    rowValue = table.rows[i].cells[table.rows[i].cells.length - 2].innerHTML;
+                    table.rows[i].cells[table.rows[i].cells.length - 1].innerHTML = rowValue;
+                }
+            }
+        }
+
+        $("#StartTime").click(function () {
+            $("#rangeSel").attr("checked", "checked");
+        })
+
+        $("#EndTime").click(function () {
+            $("#rangeSel").attr("checked", "checked");
+        })
+    })
+   
+</script>
+<input type="hidden" name="task1" value="@ViewBag.Task1" />
+<input type="hidden" name="task2" value="@ViewBag.Task2" />
+<input type="hidden" name="task3" value="@ViewBag.Task3" />

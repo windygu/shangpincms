@@ -1,0 +1,197 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.Outlet
+@using Shangpin.Ocs.Web.Infrastructure
+@using Shangpin.Ocs.Service.Common
+@using Shangpin.Entity.Wfs
+@{
+    ViewBag.Title = "奥莱首页轮播图管理|尚品OCS管理系统";
+}
+@model SWfsSubjectFocusArea
+<script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script src="/Areas/Outlet/Scripts/lib/jquery.form.js" type="text/javascript"></script>
+<script>
+    $(function () {
+        if ($("#ID").val() != 0 && $("#selLinkType").val() == 2) {
+            $("tr[name='IsCustom']").show();
+            $("#tdsubNo").hide();
+        }
+        else {
+            $("tr[name='IsCustom']").hide();
+            $("#tdsubNo").show();
+        }
+        $("#submitBtn").bind("click", function () {
+            if ($("#ShowDate").val() == "") {
+                alert("请选择显示日期");
+                return false;
+            }
+            if ($("#selLinkType").val() == 1) {
+                if ($("#SubjectNoes").val() == "") {
+                    alert("请填写活动编号");
+                    return false;
+                }
+            }
+            else {
+                if ($("#ID").val() == 0 && $("#WebPic").val() == "") {
+                    alert("请上传网站图片！");
+                    return false;
+                }
+                if ($("#ID").val() == 0 && $("#MobilePic").val() == "") {
+                    alert("请上传移动端图片！");
+                    return false;
+                }
+            }
+            if ($("#WebUrl").val() != "") {
+                if ($("#WebUrl").val().indexOf("http://") == -1) {
+                    alert("网站链接填写有误，请按提示格式填写！");
+                    return false;
+                }
+            }
+            if ($("#MobileUrl").val() != "") {
+                if ($("#MobileUrl").val().indexOf("http://") == -1) {
+                    alert("移动端网站链接填写有误，请按提示格式填写！");
+                    return false;
+                }
+            }
+            //if ($("#MobilePic").val() == "") {
+            //    alert("请上传移动端图片！");
+            //    return false;
+            //}
+            $('#addfrom').ajaxSubmit({
+                beforeSubmit: function () {
+                    $("#submitBtn").html("正在处理中...");
+                },
+                error: function () {
+
+                    $("#submitBtn").html("确定");
+                },
+                success: function (html, status) {
+                    if (typeof (html) == "string") {
+                        var rs = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+                        data = eval("(" + rs + ")");
+                    }
+                    else {
+                        data = html;
+                    }
+                    if (data.rs == "ok") {
+                        $("#submitBtn").html("确定");
+                        alert("操作成功");
+                        if ($("#ID").val() > 0) {
+                            window.location.href = "/outlet/IndexFouctPic/add?act=edit&id=" + $("#ID").val() + "&r=" + Math.random();
+                        } else {
+                            window.location.href = "/outlet/IndexFouctPic/";
+                        }
+                    }
+                    else {
+                        $("#submitBtn").html("确定");
+                        alert(data.message);
+                        $("#tipinfo").html(data.message);
+                        return false;
+                    }
+                }
+            });
+        });
+    });
+    function ShowVenue(val) {
+        if (val == "2") {
+            $("#tdsubNo").hide();
+            $("tr[name='IsCustom']").show();
+            $("#tipinfo").empty();
+            $("#SubjectNoes").val("");
+        } else {
+            $("#tdsubNo").show();
+            $("tr[name='IsCustom']").hide();
+        }
+    }
+</script>
+<style>
+    .sleftable td {
+        padding: 5px;
+        float: none;
+    }
+</style>
+<h1><a href="/outlet/channel/index">频道管理</a> > 频道活动推荐 > 首页</h1>
+<hr />
+<form action="/outlet/IndexFouctPic/add" method="post" id="addfrom" enctype="multipart/form-data">
+    <input value="@(Model!=null?Model.ID:0)" name="ID" id="ID" type="hidden" />
+    <table class="sleftable">
+        <tr>
+            <td colspan="2" style="font-size:14px;">@((Model != null && Model.ID > 0) ? "修改轮播活动" : "添加轮播活动")</td>
+        </tr>
+        <tr>
+            <td width="20%" style="color:Red;">轮播类型</td>
+            <td>
+                <select id="selLinkType" name="Type" onchange="ShowVenue(this.value);">
+                    <option value="1" @(Model != null ? (Model.Type == 1 ? " selected=\"selected\"" : "") : "")>专题活动</option>
+                    <option value="2" @(Model != null ? (Model.Type == 2 ? " selected=\"selected\"" : "") : "")>自定义链接</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td width="20%" style="color:Red;">显示日期</td>
+            <td>
+                <input id="ShowDate" value="@(Model.ShowDate.ToString("yyyy-MM-dd") != "0001-01-01" ? Model.ShowDate.ToString("yyyy-MM-dd") : "")" name="showDate" maxlength="300" class="Wdate" type="text" onclick="WdatePicker()" readonly="readonly" />
+            </td>
+        </tr>
+        <tr id="tdsubNo">
+            <td style="color:Red;">活动编号</td>
+            <td>
+                <input id="SubjectNoes" value="@(Model!=null?Model.SubjectNo:"")" name="subjectNoes" style=" width:300px;" />
+                <span id="spRemark" style="color:Red;">(备注:多个编号用英文逗号","分割)</span>
+            </td>
+        </tr>
+        <tr name="IsCustom">
+            <td>网站链接</td>
+            <td>
+                <input id="WebUrl" name="webUrl" style=" width:300px;" value="@Model.WebUrl" /><br />
+                <span>(备注：链接地址如：http://www.aolai.com/xxx； 如不填写则为无跳转连接)</span>
+            </td>
+        </tr>
+        <tr name="IsCustom">
+            <td>移动端链接</td>
+            <td>
+                <input id="MobileUrl" name="MobileUrl" style=" width:300px;" value="@Model.MobileUrl" /><br />
+                <span>(备注：链接地址如：http://m.aolai.com/xxx； 如不填写则为无跳转连接)</span>
+            </td>
+        </tr>
+        <tr name="IsCustom">
+            <td style="color:Red;">网站图片</td>
+            <td>
+                <input id="WebPic" name="WebPic" type="file" />
+                <span style="color:Red;">(备注:1680*390 格式:jpg、gif小于500K)</span><br />
+                @if (null != Model && !string.IsNullOrEmpty(Model.WebPic))
+                {
+                    <img src="/ReadPic/GetPic.ashx?width=168&height=39&pictureFileNo=@Model.WebPic&type=2" />
+                }
+                <input type="hidden" name="WebPicNo" value="@Model.WebPic" />
+            </td>
+        </tr>
+        <tr name="IsCustom">
+            <td style="color:Red;">移动端图片</td>
+            <td>
+                <input id="MobilePic" name="MobilePic" type="file" />
+                <span style="color:Red;">(备注:640*400 格式:jpg、gif小于200K)</span><br />
+                @if (null != Model && !string.IsNullOrEmpty(Model.MobilePic))
+                {
+                    <img src="/ReadPic/GetPic.ashx?width=100&height=79&pictureFileNo=@Model.MobilePic&type=2" />
+                }
+                <input type="hidden" name="MobilePicNo" value="@Model.MobilePic" />
+            </td>
+        </tr>
+        @if (Model != null && Model.ID > 0)
+        {
+            <tr>
+                <td>排序</td>
+                <td><input id="sort" name="sort" value="@(Model!=null?Model.Sort:0)" /><span style="color:Red;">(备注:请填写大于0的正整数)</span></td>
+            </tr>
+        }
+        <tr>
+            <td></td>
+            <td><span id="tipinfo" style="color:Red;"></span></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <a id="submitBtn" class="sumit_btn" href="#">确 定</a>
+                <a id="cancleBtn" class="cancle_btn" href="/outlet/IndexFouctPic/Index">@((Model != null && Model.ID > 0) ? "返 回" : "取 消")</a>
+            </td>
+        </tr>
+    </table>
+</form>

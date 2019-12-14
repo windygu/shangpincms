@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <statement id="ComBeziWfs_SWfsIndexNewArrivalProductList_Add">
+    insert into SWfsIndexNewArrivalProductList(ProductNo, NewArrivalId, SortValue, CreateDate, Status, DataState, OperateUserId) values(@ProductNo, @NewArrivalId, @SortValue, @CreateDate, 1, 1, @OperateUserId)
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsIndexNewArrivalProductList_DeleteGoods">
+    update SWfsIndexNewArrivalProductList set DataState=255 where ProductNo=@ProductNo and NewArrivalId=@NewArrivalId
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsIndexNewArrivalProductList_AddNewGoods">
+    select count(*) from  SWfsIndexNewArrivalProductList where ProductNo=@ProductNo and NewArrivalId=@NewArrivalId and DataState=1
+  </statement>
+
+  <statement id="ComBeziWfs_SWfsIndexNewArrivalProductList_UpdateSort">
+      update SWfsIndexNewArrivalProductList set SortValue=@SortValue where ProductNo=@ProductNo and NewArrivalId=@NewArrivalId
+  </statement>
+</statements>

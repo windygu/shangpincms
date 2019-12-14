@@ -1,0 +1,133 @@
+﻿@model Shangpin.Ocs.Entity.Extenstion.ProductFlat.XMLReturnClassLists
+@using Shangpin.Ocs.Entity.Extenstion.ProductFlat
+@using Shangpin.Ocs.Service.Shangpin.ProductSort
+@using Shangpin.Ocs.Web.Infrastructure;
+@{
+    ViewBag.Title = "App推荐商品";
+    Layout = "~/Areas/Shangpin/Views/Shared/_AppRecommendLayout.cshtml";
+    int pageIndex = !string.IsNullOrEmpty(Request.QueryString["pageIndex"]) ? int.Parse(Request.QueryString["pageIndex"].Trim()) : 1;
+}
+@section HeadStyle{
+    <link type="text/css" rel="stylesheet" href="~/Areas/ProductFlat/Content/CSS/ProductIndex.css" />
+    <style type="text/css">
+        #ProductList a {
+            background-color: #4d90fe;
+            border: 1px solid #3079ed;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 14px;
+            margin: 0 15px 0 0;
+            padding: 5px 10px;
+            position: relative;
+            text-decoration: none;
+            transition: border-color 0.218s ease 0s;
+        }
+    </style>
+}
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Shangpin/Scripts/lib/jquery.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript">
+        var cheAll = function (ischeck) {
+            $("input:checkbox[name='productNo']").attr("checked", ischeck);
+        }
+
+        var addSortproduct = function (productNo) {
+            $.post("/Shangpin/AppRecommendProductManger/DelProductById", { "productNo": productNo }, function (data) {
+                alert("操作成功");
+                window.location.reload();
+            });
+        }
+
+        function DelGrogpby(obj) {
+            var ProductNoStr = "";
+            $(obj).attr("disabled", "true")
+            $("input[name=productNo]").each(function (index, obj) {
+                if ($(obj).attr("checked") == "checked") {
+                    ProductNoStr = ProductNoStr + $(obj).val() + ",";
+                }
+            })
+            if (ProductNoStr != "") {
+                ProductNoStr = ProductNoStr.substring(0, ProductNoStr.length - 1);
+                $.post("/Shangpin/AppRecommendProductManger/DelProductById", { "productNo": ProductNoStr }, function (data) {
+                    alert("操作成功");
+                    window.location.reload();
+                });
+            }
+            else {
+                alert("请选择移除项");
+                $(obj).removeAttr("disabled")
+            }
+        }
+
+    </script>
+
+}
+<div id="ProductIndexTitle">
+    <a @(Html.Raw(Request.Url.ToString().ToLower().IndexOf("/shangpin/apprecommendproductmanger/index") >= 0 ? "class =\"CurTitle\"" : null)) href="/Shangpin/AppRecommendProductManger/Index">全部商品(<font id="fontAllCount">@Request.QueryString["tatolCount"]</font>)</a>
+    <a @(Html.Raw(Request.Url.ToString().ToLower().IndexOf("/shangpin/apprecommendproductmanger/apprecommendproductlist") >= 0 ? "class =\"CurTitle\"" : null)) href="/Shangpin/AppRecommendProductManger/AppRecommendProductList?tatolCount=@Request.QueryString["tatolCount"]">推荐商品(<font id="fontSortCount">@Model.ListProducts.Count</font>)</a>
+</div>
+<!--产品列表-->
+<div class="MoudleTitle">推荐商品</div>
+<form id="productForm" action="/productflat/product/ProductList?categoryNO=@Request.QueryString["categoryNO"]&ProductNo=@Request.QueryString["ProductNo"]&ProductName=@Request.QueryString["ProductName"]&brandNO=@Request.QueryString["brandNO"]&colorId=@Request.QueryString["colorId"]&shelfType=@Request.QueryString["shelfType"]&ShelfDate=@Request.QueryString["ShelfDate"]&MinPrice=@Request.QueryString["MinPrice"]&MaxPrice=@Request.QueryString["MaxPrice"]&MinStock=@Request.QueryString["MinStock"]&MaxStock=@Request.QueryString["MaxStock"]&MinDiscountRate=@Request.QueryString["MinDiscountRate"]&MaxDiscountRate=@Request.QueryString["MaxDiscountRate"]&pageindex=@Request.QueryString["pageindex"]&categoryType=@Request.QueryString["categoryType"]&isLast=@Request.QueryString["isLast"]" method="post">
+    <div id="ProductListBar">
+        <div id="ChkCtrl">
+            <input type="checkbox" onclick="cheAll(this.checked)" />全选/取消
+            <input type="button" value="移除选中项" id="addSortProduct" onclick="DelGrogpby(this)" />
+        </div>
+    </div>
+    <div id="ProductList">
+        @if (Model != null && Model.ListProducts != null)
+        {
+            for (int i = 0; i < Model.ListProducts.Count; i++)
+            {
+                <div class="ProductListItem" productlistindex="0">
+                    <div class="ProductListItemChk">
+
+                        <input class="ChkProductItem" type="checkbox" name="productNo" value="@Model.ListProducts.ElementAt(i).ProductNo" />
+
+                    </div>
+                    <div class="ProductListItemImg">
+                        <img src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@Model.ListProducts.ElementAt(i).ProductPicFile&type=1" />
+                    </div>
+                    <div class="ProductListItemDetail">
+                        <ul style="width:300px;">
+                            <li><font class="ItemBold">商品编号: </font>@Model.ListProducts.ElementAt(i).ProductNo</li>
+                            <li><font class="ItemBold">商品货号: </font>@Model.ListProducts.ElementAt(i).GoodsNo</li>
+                            <li><font class="ItemBold">商品名称: </font>@Model.ListProducts.ElementAt(i).ProductName</li>
+                            <li><font class="ItemBold">所属品牌: </font>@Model.ListProducts.ElementAt(i).BrandEnName (@Model.ListProducts.ElementAt(i).BrandCnName)</li>
+                        </ul>
+                        <ul style="width:200px;">
+                            <li><font class="ItemBold">可用库存: </font>@Model.ListProducts.ElementAt(i).stock</li>
+                            <li><font class="ItemBold">色系: </font>@Model.ListProducts.ElementAt(i).ProductPrimaryColorName</li>
+                            <li><font class="ItemBold">折扣: </font>@Model.ListProducts.ElementAt(i).DiscountRate</li>
+                            <li><font class="ItemBold">上架时间: </font>@Model.ListProducts.ElementAt(i).DateShelf</li>
+                        </ul>
+                        <ul style="width:200px;">
+                            <li><font class="ItemBold">市场价: </font>@Model.ListProducts.ElementAt(i).MarketPrice</li>
+                            <li><font class="ItemBold">售卖价: </font>@Model.ListProducts.ElementAt(i).LimitedPrice</li>
+                            <li><font class="ItemBold">累计热度: </font>@Model.ListProducts.ElementAt(i).Hot</li>
+                            <li><font class="ItemBold">七日热度: </font>@Model.ListProducts.ElementAt(i).SevenHot</li>
+                        </ul>
+
+                    </div>
+                    <div>
+                        <a style="margin-top:30px;" href="javascript:addSortproduct('@Model.ListProducts.ElementAt(i).ProductNo')">移除</a>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div id="NoProduct">您还没有添加推荐商品，请添加推荐商品</div>
+        }
+    </div>
+    <div id="ProductListBar">
+        <div id="ChkCtrl">
+            <input type="checkbox" onclick="cheAll(this.checked)" />全选/取消
+            <input type="button" value="移除选中项" id="addSortProduct" onclick="DelGrogpby(this)" />
+        </div>
+    </div>
+</form>

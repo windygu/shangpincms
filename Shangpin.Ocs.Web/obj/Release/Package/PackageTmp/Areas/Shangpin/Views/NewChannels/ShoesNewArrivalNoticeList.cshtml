@@ -1,0 +1,230 @@
+﻿@{
+    ViewBag.Title = "ShoesNewArrivalNoticeList";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+
+}
+<script src="/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+<script type="text/javascript" language="javascript">
+    var myDate = new Date();
+    var cutdate = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate()
+
+    function AddStr() {
+        if ($("#tbodyNavManger").find("input").size() == 0) {
+            var allItem = $("#tbodyNavManger").html();
+            var str = "<tr><td><input type='text' style='width:90%;height:90%' id='txt_name' /></td><td><input id='txt_Date' class='Wdate' onclick=\"WdatePicker({dateFmt:'yyyy/MM/dd HH:mm:00',minDate:'" + cutdate + "'})\"  onblur='IsExite(this)' type='text' style='width:90%;height:90%' /></td><td></td><td><a class='button' onclick='SaveAdd()'>保存</a><a class='button' onclick='chancel()' >取消</a></td></tr>" + allItem;
+
+            // <input id="DateEnd" name="DateEnd" class="Wdate" type="text" onclick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm:00'})" />
+            $("#tbodyNavManger").html(str);
+        }
+        else {
+            alert("您还有操作未完成，请完成后再编辑");
+        }
+    }
+
+    function SaveAdd() {
+        if (checkedCur('txt_name', 'txt_Date').length < 2) {
+            $.ajax({
+                type: "POST",
+                url: "/Shangpin/NewChannels/AddShoesNewArrivalNotice",
+                data: { name: $.trim($("#txt_name").val()), NDate: $.trim($("#txt_Date").val()), PageNo: $("#PageNo").val() },
+                dataType: "text",
+                success: function (data) {
+                    window.location.reload()
+                }
+            });
+        }
+        else {
+            alert(checkedCur('txt_name', 'txt_Date'));
+            $("#txt_name").val("");
+            $("#txt_link").val("");
+        }
+    }
+
+    function checkedCur(nameid, linkid) {
+        var result = "";
+        if ($.trim($("#" + nameid).val()) == "" || $.trim($("#" + linkid).val()) == "") {
+            result = "不能为空或者14字以内";
+        }
+        if ($.trim($("#" + nameid).val()).length > 14) {
+            result = "不能为空或者14字以内";
+        }
+
+        return result;
+    }
+
+    function Edit(obj) {
+        if ($("#tbodyNavManger").find("input").size() == 0) {
+            var str = "<td><input type='text' style='width:90%;height:90%' id='txt_editname' value='" + $(obj).attr("aname") + "' /></td><td><input id='txt_editdate'  onblur='IsExite(this)' type='text' class='Wdate' onclick=\"WdatePicker({dateFmt:'yyyy/MM/dd HH:mm:00',minDate:'" + cutdate + "'})\" style='width:90%;height:90%'  value='" + $(obj).attr("adate") + "' editid='" + $(obj).attr("aid") + "' /></td><td></td><td><a class='button' onclick='Saveedit(this)' editid='" + $(obj).attr("aid") + "' >保存修改</a><a class='button' onclick='chancel()' >取消修改</a></td>";
+            $(obj).parent().parent().html(str);
+        } else {
+            alert("您还有操作未完成，请完成后再编辑");
+        }
+    }
+
+
+    function chancel() {
+        window.location.reload();
+    }
+
+    function Saveedit(obj) {
+        if (checkedCur('txt_editname', 'txt_editdate').length < 2) {
+            $.ajax({
+                type: "POST",
+                url: "/Shangpin/NewChannels/EidtShoesNewArrivalNotice",
+                data: { name: $.trim($("#txt_editname").val()), NDate: $.trim($("#txt_editdate").val()), nid: $(obj).attr("editid") },
+                dataType: "text",
+                success: function (data) {
+                    window.location.reload()
+                }
+            });
+        }
+        else {
+            alert(checkedCur('txt_name', 'txt_Date'));
+
+        }
+    }
+    function delNaviga(obj) {
+        var isdel = confirm("确定删除吗？");
+        if (isdel) {
+            $.ajax({
+                type: "POST",
+                url: "/Shangpin/NewChannels/delShoesNewArrivalNotice",
+                data: { nid: $(obj).attr("aid") },
+                dataType: "text",
+                success: function (data) {
+                    window.location.reload()
+                }
+            });
+        }
+    }
+
+    function GotoTop(obj) {
+        var curObj = $(obj).parent().parent();
+        if ($(curObj).index() != 0) {
+            var nid = $(curObj).attr("nid");
+            var nsortid = $(curObj).attr("nsortid");
+            var oid = $(curObj).prev().attr("nid");
+            var osortid = $(curObj).prev().attr("nsortid");
+            UpdateMoveDB(nid, nsortid, oid, osortid)
+        }
+    }
+
+    function GotoNext(obj) {
+        var curObj = $(obj).parent().parent();
+        if ($(curObj).index() != ($(curObj).parent().find("tr").size() - 1)) {
+            var nid = $(curObj).attr("nid");
+            var nsortid = $(curObj).attr("nsortid");
+            var oid = $(curObj).next().attr("nid");
+            var osortid = $(curObj).next().attr("nsortid");
+            UpdateMoveDB(nid, nsortid, oid, osortid)
+        }
+    }
+
+    function IsExite(obj) {
+        if ($(obj).val() != "") {
+            $.ajax({
+                type: "POST",
+                url: "/Shangpin/NewChannels/IsExitNewArrivalNotice",
+                data: { id: $(obj).attr("editid"), PageNo: $("#PageNo").val(), DateValue: $(obj).val() },
+                dataType: "text",
+                success: function (data) {
+                    if (data == "1") {
+                        alert("该日期已存在，请重新选取");
+                        $(obj).val("");
+                    }
+                }
+            });
+        }
+    }
+
+    function SearchItem() {
+        $.ajax({
+            type: "GET",
+            url: "/Shangpin/NewChannels/AjaxShoesNewArrivalNoticeList",
+            data: { PageNo: $("#PageNo").val(), KeyWord: $("#txt_KeyWord").val(), BeginTime: $("#txt_minDate").val(), EndTime: $("#txt_maxDate").val() },
+            dataType: "json",
+            success: function (data) {
+                var list = $(data);
+                if ($(list).size() == 0) {
+                    $("#tbodyNavManger").html("暂无数据");
+                } else {
+                    var strHtml = "";
+                    for (var i = 0; i < $(list).size() ; i++) {
+                        var classCss = i % 2 == 0 ? "cross" : "";
+                        strHtml = strHtml + "<tr class='" + classCss + "'><td style='text-align: center; width: 40%;'>" + $(list)[i].NewArrivalNoticName + "</td><td style=' text-align: center; width: 20%;'>" + $(list)[i].NewArrivalNoticDate + "</td><td style=' text-align: center; width: 20%;'>" + $(list)[i].CreateDate + "</td><td style=' text-align: center; width: 20%;'> <a class='button' style='cursor:pointer' aname=" + $(list)[i].NewArrivalNoticName + " adate=" + $(list)[i].NewArrivalNoticDate + " aid=" + $(list)[i].NewArrivalNoticeId + " onclick='Edit(this)'>编辑</a><a class='button' style='cursor:pointer' aid=" + $(list)[i].NewArrivalNoticeId + " onclick='delNaviga(this)'>删除</a></td></tr>";
+                    }
+                    $("#tbodyNavManger").html(strHtml);
+                }
+            }
+        });
+    }
+
+    function CheckTime(obj) {
+        if ($("#txt_maxDate").val() !== "" && $("#txt_minDate").val() !== "") {
+            var d1 = new Date($("#txt_minDate").val().replace(/\-/g, "\/"));
+            var d2 = new Date($("#txt_maxDate").val().replace(/\-/g, "\/"));
+            if (d1 > d2) {
+                $(obj).val("");
+            }
+        }
+    }
+</script>
+<form id="idlistform">
+    <h2> OCS > 尚品 >  频道页管理 > 最新上架预告管理</h2>
+    <input type="hidden" name="PageNo" id="PageNo" value="@Request.QueryString["PageNo"]" />
+    <table width="100%" style="margin-top:10px;">
+        <tr>
+            <td width="180">
+                <input type="text" id="txt_KeyWord" style="width:96%;height:25" placeholder="请输入预告文字" />
+            </td>
+            <td width="180">
+                <input type="text" id="txt_minDate" style="width: 96%; height: 25" onblur="CheckTime(this)" placeholder="请输入开始时间" readonly="readonly" class='Wdate' onclick="    WdatePicker({ dateFmt: 'yyyy/MM/dd' })" />
+            </td>
+            <td width="180">
+                <input type="text" id="txt_maxDate" style="width: 96%; height: 25" onblur="CheckTime(this)" placeholder="请输入结束时间" readonly="readonly" class='Wdate' onclick="WdatePicker({dateFmt:'yyyy/MM/dd'})" />
+            </td>
+            <td width="180">
+                <input type="button" id="" style="width: 60; height: 25" onclick="SearchItem()" value="查询" />
+            </td>
+            <td style="width:auto">
+                <a style="float: right; cursor: pointer; font-size: 16px; color: #ffffff; background: #1153f1" class="button" href="Shoes?PageNo=@Request.QueryString["PageNo"]">返回列表</a>
+                <a style="float: right; cursor: pointer; font-size: 16px; color: #ffffff; background: #1153f1;margin-left:10px; margin-right: 10px;" class="button" onclick="AddStr()">新增</a>
+            </td>
+        </tr>
+    </table>
+
+    <table class="mx-table" border="0">
+        <thead>
+            <tr>
+                <th style=" text-align: center; width: 40%;">最新上架预告文字</th>
+                <th style=" text-align: center; width: 20%;">最新上架预告时间</th>
+                <th style=" text-align: center; width: 20%;">创建时间</th>
+                <th style=" text-align: center; width: 20%;">操作</th>
+            </tr>
+        </thead>
+        <tbody id="tbodyNavManger" style='width:100%;height:100%'>
+            @if (Model != null)
+            {
+                var flag = 0;
+                foreach (Shangpin.Entity.Wfs.SWfsNewArrivalNotice item in Model)
+                {
+                    <tr class="@(flag % 2 == 0 ? "cross" : "")">
+                        <td style=" text-align: center; width: 40%;">
+                            @item.NewArrivalNoticName
+                        </td>
+                        <td style=" text-align: center; width: 20%;">
+                            @item.NewArrivalNoticDate.ToString("yyyy-MM-dd HH:mm:ss")
+                        </td>
+                        <td style=" text-align: center; width: 20%;">
+                            @item.CreateDate.ToString("yyyy-MM-dd HH:mm:ss")
+                        </td>
+                        <td style=" text-align: center; width: 20%;">
+                            <a class="button" style="cursor:pointer" aname="@item.NewArrivalNoticName" adate="@item.NewArrivalNoticDate" aid="@item.NewArrivalNoticeId" onclick="Edit(this)">编辑</a><a class="button" style="cursor:pointer" aid="@item.NewArrivalNoticeId" onclick="delNaviga(this)">删除</a>
+                        </td>
+                    </tr>
+                    flag++;
+                }
+            }
+        </tbody>
+    </table>
+</form>

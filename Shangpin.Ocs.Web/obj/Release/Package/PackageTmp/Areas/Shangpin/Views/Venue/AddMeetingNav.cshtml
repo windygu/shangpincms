@@ -1,0 +1,71 @@
+﻿@model Shangpin.Entity.Wfs.SWfsMeetingNavigation
+@{
+    ViewBag.Title = "添加会场导航";
+    Layout = "~/Areas/Shangpin/Views/Shared/_VenueLayout.cshtml";
+}
+
+<h1>
+    OCS > 尚品 > <a href="/shangpin/venue/MeetListManage">会场列表</a> > <a href="/shangpin/venue/MeetingNavList?meetingid=@(Request.QueryString["meetingid"])">会场导航列表</a> >添加会场导航
+</h1>
+<div id="mx-rightcontent-addbox" class="mx-rightcontent-msgbox">
+    <form method="post" action="/shangpin/Venue/AddMeetingNav?meetingid=@(Request.QueryString["meetingid"])">
+        <dl>
+            <dt>@(Request.QueryString["parentid"] != null ? "项目组名称" : "导航组名称:")</dt>
+            <dd>
+                @Html.TextBoxFor(model => model.NavName, new { @placeholder = "不超过30个字", maxlength = "30" })
+                <input type="hidden" value="@(Request.QueryString["meetingid"])" name="MeetingID" />
+                @Html.HiddenFor(model=>model.NavNO)
+                @if (Request.QueryString["parentid"] != null)
+                {
+                    <input type="hidden" name="ParentNO" value="@Request.QueryString["parentid"]"/>
+                }
+                else 
+                {
+                    if (Model.ParentNO!=0)
+                    {
+                        <input type="hidden" name="ParentNO" value="@Model.ParentNO"/>
+                    }
+                }
+            </dd>
+        </dl>
+        <dl>
+            <dt>@(Request.QueryString["parentid"] != null ? "项目组状态" : "导航组状态:")</dt>
+            <dd>
+                <input type="radio" name="NavStatus" value="0" @(Model.NavStatus ? "" : "checked")/>关闭
+                <input type="radio" name="NavStatus" value="1" @(Model.NavStatus ? "checked" : "")/>开启
+            </dd>
+        </dl>
+        @if (Request.QueryString["parentid"]!=null||Model.ParentNO!=0)
+         {
+            <dl>
+                <dt>项目组链接:</dt>
+                <dd>
+                    @Html.TextBoxFor(model => model.NavLink, new { maxlength="200"})
+                </dd>
+            </dl>
+         }
+        <dl>
+            <dt>&nbsp;&nbsp;&nbsp;</dt>
+            <dd>
+                <button id="saveButton" class="secondary" type="submit" name="" value=""> 确 定</button>
+                @if (Request.QueryString["parentid"] != null)
+                {
+                    <button id="" type="button" name="" value="" onclick="window.location.href='/Shangpin/Venue/NavContentList?parentid=@Request.QueryString["parentid"]&meetingid=@Request.QueryString["meetingid"]'"> 返回</button>
+                }
+                else
+                {
+                    if (Model.ParentNO != 0)
+                    {
+                        <button id="" type="button" name="" value="" onclick="window.location.href='/Shangpin/Venue/NavContentList?parentid=@Model.ParentNO&meetingid=@Request.QueryString["meetingid"]'"> 返回</button>
+                    }
+                    else
+                    {
+                        <button id="" type="button" name="" value="" onclick="window.location.href='/Shangpin/Venue/MeetingNavList?meetingid=@Request.QueryString["meetingid"]'"> 返回</button>
+                        
+                    }
+                }
+            </dd>
+        </dl>
+    </form>
+</div>
+@ViewData["tip"]

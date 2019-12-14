@@ -1,0 +1,115 @@
+﻿@{
+    ViewBag.Title = "精品旗舰店|轮播图编辑";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+<link href="/Areas/Shangpin/Content/css/page/rightcontent/brandcontent.css" rel="stylesheet" type="text/css">
+<link href="/Areas/Outlet/Scripts/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css">
+<script src="~/Areas/Shangpin/Scripts/validata/jquery-1.8.2.js"></script>
+<script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script src="~/Areas/Shangpin/Scripts/validata/jquery.form.js"></script>
+<script src="~/Areas/Shangpin/Scripts/validata/jquery.metadata.js"></script>
+<script src="~/Areas/Shangpin/Scripts/validata/jquery.validate.js"></script>
+<script src="~/Areas/Shangpin/Scripts/validata/messages_cn.js"></script>
+<script src="~/Areas/Shangpin/Scripts/validata/validate.form.js"></script>
+<link href="~/Areas/Shangpin/Scripts/css/validate.css" rel="stylesheet" />
+<script type="text/javascript">
+    function subafter(result) {
+        window.location = "/Shangpin/Flagship/AlterPicList?brandNo=" + result.content.BrandNo
+    }
+    $("input[type=file]").live(($.browser.msie && ($.browser.version == "6.0")) ? 'propertychange' : 'change', function () {
+        $("#img").remove();
+    });
+    $(function () {
+        if ($("#PictureNo").val() == "") {
+            $("#img").hide();
+            $("#picFile").addClass("{required:true,messages:{required:'不能为空'}}");
+        }
+        $("#PictureIndex" + '@Model.PictureIndex').attr("checked", true);
+        $("#State" + '@Model.State').attr("checked", true);
+        if ($("#FlashId").val() == 0) {
+            $("#BeginDateTime").val("");
+
+        }
+    })
+</script>
+<style type="text/css">
+    #form1 span {
+       display:none;
+    }
+</style>
+<div id="mx-rightcontent-inner">
+    <h1>
+        OCS &gt; 尚品 &gt; <a href="/Shangpin/Flagship?brandNo=@Request.QueryString["brandNo"]">精品旗舰店管理</a> &gt; 轮播图管理 &gt; 编辑
+    </h1>
+    <div class="mx-brandcontent-msgbox">
+        <form action="/Shangpin/Flagship/AlterPicEdit" method="post" enctype="multipart/form-data">
+            <input type="hidden" value="@Model.FlashId" name="FlashId" id="FlashId" />
+            <input type="hidden" value="@Model.OperateUserId" name="OperateUserId" />
+            <input type="hidden" value="@Request.QueryString["brandNo"]" name="BrandNo" />
+            <input type="hidden" value="@Model.PictureNo" name="PictureNo" id="PictureNo" />
+            <input type="hidden" value="@Model.DataCreate" name="DataCreate">
+            <input type="hidden" value="@Model.DataState" name="DataState">
+            <input type="hidden" value="@Model.LinkTarget" name="LinkTarget">
+            <dl>
+                <dt style=" color:Red;">图片标题：</dt>
+                <dd>
+                    <input id="PictureName" type="text" name="PictureName" value="@Model.PictureName" class="text-input small-input {required:true,maxlength:30}">
+                </dd>
+            </dl>
+            <dl>
+                <dt style=" color:Red;">状态：</dt>
+                <dd>
+                    <input type="radio" name="State" id="State1" value="1" checked /><label for="State0">开启</label>
+                    <input type="radio" name="State" id="State0" value="0" /><label for="State1">关闭</label>
+                </dd>
+            </dl>
+            <dl>
+                <dt style=" color:Red;">轮播位置：</dt>
+                <dd>
+                    <input type="radio" name="PictureIndex" id="PictureIndex0" value="0" /><label for="PictureIndex0">第一帧</label>
+                    <input type="radio" name="PictureIndex" id="PictureIndex1" value="1" /><label for="PictureIndex1">第二帧</label>
+                    <input type="radio" name="PictureIndex" id="PictureIndex2" value="2" /><label for="PictureIndex2">第三帧</label>
+                </dd>
+            </dl>
+            @*<dl>
+                    <dt style=" color:Red;">打开方式：</dt>
+                    <dd>
+                        <input type="radio" name="LinkTarget" id="_blank" value="_blank" checked /><label for="Sort0">_blank(新一页)</label>
+                        <input type="radio" name="LinkTarget" id="_parent" value="_parent" /><label for="Sort1">_parent(本页)</label>
+                    </dd>
+                </dl>*@
+            <div id="form1">
+                <dl>
+                    <dt style=" color:Red;">图片上传：</dt>
+                    <dd>
+                        <input type="file" id="picFile" name="picFile" class="text-input small-input" />*尺寸：960*470;格式：jpg;大小：500K以下
+                        <div id="img">
+                            <img src="/ReadPic/GetPic.ashx?width=0&height=0&pictureFileNo=@Model.PictureNo&type=2" style="max-width:500px; max-height:200px;" />
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+            <dl>
+                <dt>图片链接：</dt>
+                <dd>
+                    <input id="LinkUrl" type="text" name="LinkUrl" value="@Model.LinkUrl" class="text-input small-input {url:true}">*格式：http://www.shangpin.com
+                </dd>
+            </dl>
+            <dl>
+                <dt style=" color:Red;">开始时间：</dt>
+                <dd>
+                    <input id="BeginDateTime" type="text" name="BeginDateTime" value="@Model.BeginDateTime" class="text-input small-input {required:true,remote:{url:'/Shangpin/Flagship/CheckTime?brandNo=@Request.QueryString["brandNo"]&v='+Math.random()},messages:{remote:'时间重复'}}" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:'2008-03-08 11:30:00',maxDate:'2100-03-10 20:59:30'})">
+                </dd>
+            </dl>
+            <dl>
+                <dt>&nbsp;</dt>
+                <dd>
+                    <button type="submit" value="" class="secondary">
+                        确 定
+                    </button>
+                    <a href="/Shangpin/Flagship/AlterPicList?brandNo=@Request.QueryString["brandNo"]" class="secondary">返回</a>
+                </dd>
+            </dl>
+        </form>
+    </div>
+</div>

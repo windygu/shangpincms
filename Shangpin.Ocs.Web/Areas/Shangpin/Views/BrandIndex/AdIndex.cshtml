@@ -1,0 +1,182 @@
+﻿@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Ocs.Entity.Extenstion.Outlet;
+@using Shangpin.Entity.Wfs;
+@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    int currentPage = ViewBag.CurrentPage;
+    int pageSize = ViewBag.PageSize;
+    int totalCount = ViewBag.TotalCount;
+    IList<SWfsBrandAdsInfo> list = ViewBag.AdList;
+    ViewBag.Title = "品牌运营广告位管理";
+}
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/plug/comm.js"></script>
+}
+<style type="text/css">
+    .divShowClass {
+        position: absolute;
+        top: 0px;
+        height: 250px;
+        left: 135px;
+        z-index: 100;
+        width: 960px;
+    }
+</style>
+<h1>
+    OCS > 尚品 > 品牌管理 > <a href="/shangpin/brandindex/index">品牌首页管理</a> > 品牌运营广告位管理
+</h1>
+<form action="/Shangpin/BrandIndex/AdIndex" method="get">
+    <div style="padding: 5px;">
+        <table width="100%">
+            <tr>
+                <td align="left" style="width: 20%">
+                    名称：<input type="text" value="@ViewBag.AdName" style="" name="adName" />
+                </td>
+                <td align="left" style="width: 15%">
+                    位置：<select name="position">
+                        <option value="0" @(ViewBag.Position == "0" ? "selected='selected'" : "")>请选择位置</option>
+                        <option value="1" @(ViewBag.Position == "1" ? "selected='selected'" : "")>左侧运营位</option>
+                        <option value="2" @(ViewBag.Position == "2" ? "selected='selected'" : "")>右侧运营位</option>
+                    </select>
+                </td>
+                <td style="width: 45%" align="left">
+                    时间范围：
+                    <input name="sTime" class="Wdate" value="@ViewBag.StartTime" type="text" onclick="WdatePicker()" readonly="readonly" />
+                    <input name="eTime" class="Wdate" value="@ViewBag.EndTime" type="text" onclick="WdatePicker()" readonly="readonly" />
+                    <button type="submit">
+                        查询
+                    </button>
+                </td>
+                <td style="width: 20%">
+                    <a href="Manage?act=add&position=1" class="sumit_btn">新增</a> <a href="Index" class="cancle_btn">
+                        返回
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="Layer1" style="display: none; position: absolute; z-index: 99;">
+    </div>
+</form>
+<table class="mx-table">
+    <thead>
+        <tr>
+            <th width="25%">
+                预览图
+            </th>
+            <th width="25%">
+                名称
+            </th>
+            <th width="20%">
+                开始时间
+            </th>
+            <th width="10%">
+                位置
+            </th>
+            <th width="20%">
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var flag = 0;
+            int w = 0;
+            foreach (var item in list)
+            {
+                w = item.Position == 1 ? 570 : 380;
+                flag = flag + 1;
+                <tr class="@(flag % 2 == 0 ? "cross" : "")">
+                    <td align="center" style="position:relative;">
+                        @*<img width="130" height="100" onmouseover="showPic(event,'/ReadPic/GetPic.ashx?width=@w&height=200&pictureFileNo=@item.PicNo&type=2')" onmouseout="hiddenPic();"
+                            src="/ReadPic/GetPic.ashx?width=130&height=100&pictureFileNo=@(item.PicNo)&type=2 " />*@
+
+                        <img width="130" height="100" onmouseover="onmousemoveImageShow('preview@(item.PicNo)','/ReadPic/GetPic.ashx?width=@w&height=200&pictureFileNo=@item.PicNo&type=2')" onmouseout="onmouseoutImageShow('preview@(item.PicNo)');"
+                             src="/ReadPic/GetPic.ashx?width=130&height=100&pictureFileNo=@(item.PicNo)&type=2 " />
+
+                        <div id="preview@(item.PicNo)">
+                        </div>
+                    </td>
+                    <td>
+                        @item.AdName
+                    </td>
+                    <td>
+                        @item.StartTime.ToString("yyyy-MM-dd HH:mm:ss")
+                    </td>
+                    <td>
+                        @(item.Position == 1 ? "左侧运营位" : "右侧运营位")
+                    </td>
+                    <td>
+                        <a class="button" href="/shangpin/brandindex/Manage?act=edit&id=@item.ID">编辑</a>
+                        <a class="button" href="javascript:" onclick="Delete('@item.ID')">删除</a>
+                    </td>
+                </tr>
+
+            }
+        }
+    </tbody>
+</table>
+<div class="spPage">@Html.Raw(Html.PagerX("page", currentPage, pageSize, totalCount))</div>
+<script type="text/javascript">
+    function mousePos(e) {
+        var x, y;
+        var e = e || window.event;
+        return { x: e.screenX, y: e.screenY };
+    }
+    function showPic(e, sUrl) {
+        var x, y;
+        x = mousePos(e).x - 190;
+        y = mousePos(e).y - 170;
+        document.getElementById("Layer1").style.left = x;
+        document.getElementById("Layer1").style.top = y;
+        document.getElementById("Layer1").innerHTML = "<img src=\"" + sUrl + "\">";
+        document.getElementById("Layer1").style.display = "block";
+    }
+    function hiddenPic() {
+        document.getElementById("Layer1").innerHTML = "";
+        document.getElementById("Layer1").style.display = "none";
+    }
+    function Delete(id) {
+        if (id != "") {
+            if (confirm("确定要删除吗？")) {
+                $.ajax({
+                    url: "/shangpin/BrandIndex/AdDelete",
+                    type: "post",
+                    dataType: "json",
+                    data: "id=" + id,
+                    success: function (data) {
+                        if (data != null) {
+                            if (data.result == 1) {
+                                alert("删除成功！");
+                                window.location.href = gettimestampurl(window.location.href);
+
+                                return true;
+                            } else {
+                                alert("删除失败！");
+                                return false;
+                            }
+                        }
+                    },
+                    error: function (x, e) {
+                        alert(x.responseText);
+                    }
+                });
+            }
+        } else {
+            alert("请选择要删除的活动！");
+            return false;
+        }
+    }
+
+    function onmousemoveImageShow(id, src) {
+        $("#" + id).empty();
+        $("#" + id).addClass("divShowClass");
+        $("#" + id).html("<img  src='" + src + "'></img>");
+    }
+
+    function onmouseoutImageShow(id) {
+        $("#" + id).removeClass("divShowClass");
+        $("#" + id).empty();
+    }
+</script>

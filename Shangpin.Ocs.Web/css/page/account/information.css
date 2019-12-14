@@ -1,0 +1,616 @@
+
+/* CSS Document */
+
+/* ============== Account information ============== */
+
+#spAccount_myinfo{
+	width:100%;
+	margin:10px 0 0;
+	/* border-top:1px solid #f2f2f2; */
+}
+#spAccount_myinfo .myinfo_Notice{
+	color:#333;
+	font-size:14px;
+	font-weight:700;
+	line-height:45px;
+}
+#spAccount_myinfo .myinfo_Notice em{
+	color:#999;
+}
+
+#spAccount_myinfo table{
+	width:100%;
+	margin:15px 0 10px;
+	*table-layout:fixed;
+}
+#spAccount_myinfo table tr.normal{
+	background:#f5f5f5;
+}
+#spAccount_myinfo table th{
+	background:#666;
+	color:#fff;
+	line-height:17px;
+	height:29px;
+	line-height:29px;
+	text-align:center;
+}
+#spAccount_myinfo table td{
+	color:#666;
+	line-height:38px;
+	border:1px solid #f0f0f0;
+	text-align:center;
+}
+#spAccount_myinfo table td.myinfo_tabMargin{
+	border:none;
+	line-height:10px;
+}
+#spAccount_myinfo table td.myinfo_tabNormal{
+	line-height:180%;
+}
+#spAccount_myinfo table td .spSpan70{
+	width:70px;
+	display:inline-block;
+	line-height:160%;
+}
+#spAccount_myinfo table td .spSpan150{
+	width:150px;
+	display:inline-block;
+	line-height:160%;
+	text-align:left;
+	padding-left:2px;
+}
+#spAccount_myinfo table a:link, #spAccount_myinfo table a:visited{
+	text-decoration:none;
+}
+#spAccount_myinfo table a:hover, #spAccount_myinfo table a:active{
+	text-decoration:underline;
+}
+
+
+#spAccount-myinfo_form,#pay-myinfo_form{
+	/* border:1px solid #ccc; */
+	padding:0 10px 30px;
+	background:#fff;
+}
+#spAccount-myinfo_form.password_form,#pay-myinfo_form.password_form{
+	border:none;
+}
+#spAccount-myinfo_form dl,#pay-myinfo_form dl{
+	width:100%;
+	float:left;
+	margin:15px 0 0 0;
+}
+#spAccount-myinfo_form dt, #spAccount-myinfo_form dd,#pay-myinfo_form dt, #pay-myinfo_form dd{
+	height:42px;
+	line-height:35px;
+	float:left;
+	color:#666;
+}
+#spAccount-myinfo_form dt,#pay-myinfo_form dt{
+	width:20%;
+	*width:21%;
+	padding:0 10px 0 0;
+	text-align:right;
+}
+#spAccount-myinfo_form dt em,#pay-myinfo_form dt em{
+	color:#e5323a;
+	vertical-align:middle;
+}
+#spAccount-myinfo_form dd,#pay-myinfo_form dd{
+	width:78%;
+	*width:77%;
+}
+#spAccount-myinfo_form dd input,#pay-myinfo_form dd input{
+	vertical-align:middle;
+	position:relative;
+	top:-1px;
+}
+#spAccount-myinfo_form dd input[type="checkbox"],#pay-myinfo_form dd input[type="checkbox"]{
+	top:5px\9;
+	*top:-1px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){#spAccount-myinfo_form dd input[type="checkbox"],#pay-myinfo_form dd input[type="checkbox"]{top:6px;}}
+#spAccount-myinfo_form dd select,#pay-myinfo_form dd select{
+	width:78px;
+}
+#spAccount-myinfo_form dd span, #spAccount-myinfo_form dd p, #spAccount-myinfo_form dd div,#pay-myinfo_form dd span,#pay-myinfo_form dd p,#pay-myinfo_form dd div{
+	display:inline;
+	float:left;
+}
+#spAccount-myinfo_form dd span,#pay-myinfo_form dd span{
+	padding:3px 10px;
+	width:220px;
+	/* background:#fafafa; */
+	background:#fff;
+	border:1px solid #dadada;
+	border-radius:.2em;
+	-webkit-border-radius:.2em;
+	/* box-shadow:0px 0px 3px #dadada inset; */
+	/* -webkit-box-shadow:0px 0px 3px #dadada inset; */
+}
+#spAccount-myinfo_form dd.error span,#pay-myinfo_form dd.error span{
+	border:1px solid #b5452f;
+	background:#fff;
+}
+#spAccount-myinfo_form dd span input,#pay-myinfo_form dd span input{
+	border:none;
+	/* background:#fafafa; */
+	background:#fff;
+	height:17px;
+	line-height:17px;
+	padding:5px 0;
+	width:99%;
+	color:#999;
+	font-size:14px;
+}
+#spAccount-myinfo_form dd.error span input,#pay-myinfo_form dd.error span input{
+	background:#fff;
+}
+
+#spAccount-myinfo_form dd p,#pay-myinfo_form dd p{
+	margin:0 0 0 22px;
+	display:none;
+}
+#spAccount-myinfo_form dd p i,#pay-myinfo_form dd p i{
+	display:none;
+	width:30px;
+	height:35px;
+	float:left;
+	background-image:url(/images/page/account/account_icon.gif);
+    background-repeat: no-repeat;
+	background-position: -185px -60px;
+}
+#spAccount-myinfo_form.addr_form dd p i,#pay-myinfo_form.addr_form dd p i{
+	background-position: -185px -65px;
+	height:25px;
+}
+#spAccount-myinfo_form dd p em,#pay-myinfo_form dd p em{
+	height:33px;
+	line-height:33px;
+	display:block;
+	float:left;
+	border:1px solid #e2e2e2;
+	padding:0 10px;
+	background:#f5f5f5;
+	position:relative;
+}
+#spAccount-myinfo_form dd.error p em,#pay-myinfo_form dd.error p em{
+	border:1px solid #b5452f;
+	background:#fff;
+	color:#b5452f;
+}
+#spAccount-myinfo_form.addr_form dd.error p em,#pay-myinfo_form.addr_form dd.error p em{
+	height:23px;
+	line-height:23px;
+}
+#spAccount-myinfo_form dd p em b,#pay-myinfo_form dd p em b{
+	background-image:url(/images/plug/arrow/sp_li.gif);
+    background-position: -149px -302px;
+    background-repeat: no-repeat;
+	background-color:#fff;
+	width:7px;
+	height:11px;
+	overflow:hidden;
+	line-height:0;
+	position:absolute;
+	left:-7px;
+	top:10px
+}
+#spAccount-myinfo_form.addr_form dd p em b,#pay-myinfo_form.addr_form dd p em b{
+	top:7px
+}
+#spAccount-myinfo_form dd.error p em b,#pay-myinfo_form dd.error p em b{
+	background-position: -149px -290px;
+}
+#spAccount-myinfo_form dd div{
+	padding:0 0 0 10px;
+	margin:0 0 0 15px;
+	color:#666;
+	line-height:36px;
+}
+#spAccount-myinfo_form dd div.code_box{
+	padding:0;
+	line-height:35px;
+}
+#spAccount-myinfo_form dd div.code_box img{
+	border:1px solid #dadada;
+	position:relative;
+	top:5px;
+	*top:1px;
+	padding:1px;
+	margin:0 10px 0 0;
+	vertical-align:text-bottom;
+}
+#spAccount-myinfo_form dd a:link, #spAccount-myinfo_form dd a:visited,#pay-myinfo_form dd a:link, #pay-myinfo_form dd a:visited {
+	color:#C91D1D;
+	text-decoration:underline;
+}
+#spAccount-myinfo_form dd a:hover, #spAccount-myinfo_form dd a:active,#pay-myinfo_form dd a:hover, #pay-myinfo_form dd a:active {
+	color:#C91D1D;
+	text-decoration:none;
+}
+#spAccount-myinfo_form dd a.newStyle_submit:link, #spAccount-myinfo_form dd a.newStyle_submit:visited, #spAccount-myinfo_form dd a.newStyle_btn:link, #spAccount-myinfo_form dd a.newStyle_btn:visited{
+	color:#333;
+	text-decoration:none;
+}
+#spAccount-myinfo_form dd a.newStyle_submit:hover, #spAccount-myinfo_form dd a.newStyle_submit:active, #spAccount-myinfo_form dd a.newStyle_btn:hover, #spAccount-myinfo_form dd a.newStyle_btn:active{
+	color:#333;
+}
+#spAccount-myinfo_form dd div.code_box a:link, #spAccount-myinfo_form dd div.code_box a:visited{
+	color:#999;
+}
+#spAccount-myinfo_form dd div.code_box a:hover, #spAccount-myinfo_form dd div.code_box a:active{
+	color:#333;
+	text-decoration:underline;
+}
+
+#spAccount_myinfo .new_Addr{
+	display:none;
+}
+
+#spAccount-myinfo_form.addr_form{
+	padding:0px 10px 30px;
+}
+#spAccount-myinfo_form.addr_form dl{
+	margin:10px 0 0 0;
+}
+
+#spAccount-myinfo_form.addr_form dt, #spAccount-myinfo_form.addr_form dd{
+	height:30px;
+	line-height:25px;
+}
+#spAccount-myinfo_form.addr_form dt{
+	width:10%;
+}
+#spAccount-myinfo_form.addr_form dd{
+	width:88%;
+}
+#spAccount-myinfo_form.addr_form dd span{
+	padding:5px 5px 3px;
+	width:130px;
+}
+#spAccount-myinfo_form.addr_form dd span.big_txt{
+	width:320px;
+}
+#spAccount-myinfo_form.addr_form dd span.small_txt{
+	width:32px;
+}
+#spAccount-myinfo_form.addr_form dd span.normal_txt{
+	border:none;
+	padding:0 5px;
+	width:auto;
+	box-shadow:none;
+	-webkit-box-shadow:none;
+	background:#fff;
+}
+#spAccount-myinfo_form.addr_form dd span input{
+	height:16px;
+	line-height:16px;
+	padding:0;
+}
+#spAccount-myinfo_form.addr_form dd select{
+	width:90px;
+	white-space:nowrap;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){#spAccount-myinfo_form.addr_form dd select{width:auto;}}
+#spAccount-myinfo_form.addr_form dd label{
+	margin:0 5px;
+}
+#spAccount-myinfo_form.addr_form dd div{
+	color:#999;
+}
+#spAccount-myinfo_form.addr_form dd div.error{
+	color:#f00;
+}
+
+#spAccount_myinfo .newAddr_Btn{
+	width:100%;
+	padding:15px 0;
+	/* border-bottom:1px dashed #ccc; */
+	margin-bottom:20px;
+}
+
+
+/*尚品找回密码*/
+#sp_simHead{
+	border-bottom:1px solid #ccc;
+	margin:20px auto;
+	padding-bottom:15px;
+}
+
+#sp_getPwd{
+	height:500px;
+	position: relative;
+}
+
+#sp_getPwd h3{
+	width:120px;
+	margin:0 auto;
+	text-align:center;
+}
+
+#sp_getPwd #spAccount_myinfo{
+	margin-top:50px;
+	border:0;
+}
+
+#sp_getPwd h3 em{
+	font-size:24px;
+}
+
+#sp_getPwd #spAccount-myinfo_form{
+	width:670px;
+	margin-left:280px;
+}
+
+#sp_getPwd #spAccount-myinfo_form dt{
+	width:80px;
+}
+#sp_getPwd #spAccount-myinfo_form dd{
+	width:580px;
+}
+#sp_getPwd #spAccount-myinfo_form dd span label{
+	top:3px !important;
+	left:9px !important;
+	font-size:12px;
+	font-family:"宋体";
+}
+
+#sp_getPwd #spAccount-myinfo_form dd span input{
+	background:none;
+	border:none !important;
+}
+
+#sp_getPwd #spAccount-myinfo_form dd p em{
+	width:175px;
+}
+
+.getPwd_sb_btn{
+	display: block;
+	width:95px;
+	height:35px;
+	text-indent:-3000px;
+	background:url(/images/page/account/getPwd_sb_btn.jpg) left top no-repeat;
+}
+
+#sp_getPwd h4{
+	font-size:28px;
+	height:50px;
+	line-height:50px;
+}
+#sp_getPwd h4 em{
+	display: inline-block;
+	float: left;
+	width:58px;
+	height:45px;
+	margin:0 20px 0 0;
+	background:url(/images/page/account/order_icon.png) -138px -138px;
+}
+
+#sp_getPwd #sp_getPwd_success{
+	width:420px;
+	margin:0 auto;
+	position: absolute;
+	top:200px;
+	left:290px;
+}
+
+#sp_getPwd #sp_getPwd_success .autoLocation{
+	width:200px;
+	margin:15px auto 0;
+	text-align:center;
+	font-size:14px;
+	color: #666;
+}
+
+/*注册成功页面*/
+#alRegisterHeader {
+	height:42px;
+}
+#alRegister_success {
+	border:1px solid #e7e7e7;
+	padding:160px 0;
+	text-align:center;
+	color:#666;
+	margin:20px auto;
+}
+#alRegister_success h6 {
+	font-size:14px;
+	font-weight:bold;
+	color:#b51111;
+	margin-bottom:26px;
+	padding-left:30px;
+	background:url(/images/page/login/login_ico.gif) no-repeat -89px -201px;
+}
+#alRegister_success div {
+	margin-bottom:26px;
+}
+#alRegister_success div span {
+	color:#b51111;
+}
+
+.ac_moduleline {
+	border-bottom:1px solid #F2F2F2; padding:22px 0;
+	clear:both;
+	
+}
+.ac_moduleline em{
+	font-weight:bold;
+}
+.phone_notest,.email_notest,.phone_hastest,.email_hastest{ 
+    padding-left:18px;
+    background:url(/images/page/account/reg_ico.png) no-repeat;
+}
+.email_notest{ 
+    background-position:0 -17px; 
+	padding-left:25px;
+}
+.phone_hastest {
+	background-position:0 -65px;
+}
+.email_hastest {
+	padding-left:25px;
+	background-position:0 -38px;
+}
+/**/
+#spAccount-myinfo_form dd #avatar_box {
+	width:180px;
+	height:180px;
+	overflow:hidden;
+	background:#ccc;
+	padding:0;
+	margin:0;
+	text-align:center;
+	line-height:180px;
+}
+
+#spAccount-myinfo_form .spAvatar_box dd { height:auto;}
+
+.syn_tavatar .syn_setting,#submit_upload ,.login_b{
+	background: url(/images/page/account/tips_bg.png) repeat-x;
+    border: 1px solid #D9D7D7;
+    color: #666666 !important;
+    display: inline-block;
+    height: 18px;
+    line-height: 18px;
+    min-width: 50px;
+    padding: 0 12px;
+    vertical-align: middle;
+    white-space: nowrap;
+	text-decoration:none !important;
+}
+.login_b {
+	padding:0 12px !important;
+}
+#avatar_upbtn {
+	clear:both;
+	display:block;
+	width:36px;
+	margin-left:148px;
+	color:#AC8C48 !important;
+	text-decoration:none !important;
+}
+
+#upload_lay {
+	padding:0 0 0 20px;
+}
+
+#clip_box {
+	padding:24px 0;
+	overflow:hidden;
+}
+
+#clip_box dd {
+	float:left;
+}
+
+#photo_box {
+	width:280px;
+	height:280px;
+	border:1px solid #ccc;
+	overflow:hidden;
+	text-align:center;
+}
+#thumb_box {
+	height:280px;
+	padding-left:40px;
+	text-align:center;
+	position:relative;
+	zoom:1;
+}
+#thumb {
+	width:180px;
+	height:180px;
+	overflow:hidden;
+	background:#ccc;
+	margin-bottom:6px;
+	text-align:left;
+}
+
+#file_upload-queue { display:none !important}
+
+#submit_upload { display:none; position:absolute; left:50%; margin-left:-17px; top:230px;}
+
+.spWindow .uploadify-button {
+    background: url("/images/page/account/tips_bg.png") repeat-x;
+    border: 1px solid #D9D7D7;
+    color: #666666 !important;
+    display: inline-block;
+    height: 18px;
+    line-height: 18px;
+    text-align: center !important;
+    text-decoration: none !important;
+    vertical-align: middle;
+    white-space: nowrap;
+	border-radius:0;
+	text-shadow:none;
+	font-weight:normal;
+}
+.spWindow .uploadify:hover .uploadify-button {
+	 background: url(/images/page/account/tips_bg.png) repeat-x;
+}
+
+.syn_tavatar {
+	position:relative;
+}
+
+/***********/
+#spAccount-myinfo_form dl.sp_newpai {
+}
+#spAccount-myinfo_form dl.sp_newpai dd {
+	width:130px;
+}
+#spAccount-myinfo_form .sp_newpai dd span {
+	width:80px;
+}
+.num_unit {
+	padding-left:6px;
+	height:35px;
+	line-height:35px;
+	display:inline-block;
+}
+.ac_modulelinetip {
+	display:inline-block;
+	padding-top:20px;
+	color:#999;
+}
+#spAccount-myinfo_form dl.body_typebox {
+	margin-top:0;
+}
+.body_typebox label {
+	padding-right:10px;
+}
+
+/**/
+.testresult {
+	clear:both;
+	margin-left:143px;
+	*margin-left:150px;
+	background:#BFBFBF;
+	width:242px;
+	color:#fff;
+}
+.testresult div {
+	overflow:hidden;
+	background:#ccc;
+	height:17px;
+	line-height:17px;
+	width:0;
+	text-align:center;
+}
+.shortPass div {
+	width:60px;
+	background:#f00;
+}
+.badPass div{
+	width:120px;
+	background:#f00;
+}
+.goodPass div {
+	width:180px;
+	background:orange;
+}
+.strongPass div {
+	width:242px;
+	background:#080;
+}

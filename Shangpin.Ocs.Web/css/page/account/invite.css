@@ -1,0 +1,647 @@
+
+/* CSS Document */
+
+/* ============== Account invite ============== */
+#myInvite_more{
+	position:absolute;
+	right:0;
+	top:5px;
+	font-size:12px;
+	line-height:30px;
+}
+
+#spAccount_myInvite{
+	margin:10px 0 0;
+}
+#spAccount-myInvite_From{
+	padding:0 0px 30px;
+}
+#spAccount-myInvite_From li{
+	border-bottom:1px solid #f2f2f2;
+	padding:0 0 20px 0;
+	margin:25px 0 0;
+}
+#spAccount-myInvite_From h5{
+	font-weight:700;
+	line-height:14px;
+	color:#666;
+	padding:0 0 0 20px;
+	background-image:url(/images/page/account/account_icon.gif);
+    background-repeat: no-repeat;
+}
+#spAccount-myInvite_From p{
+	color:#666;
+	line-height:30px;
+}
+#spAccount-myInvite_From textarea{
+	width:666px;
+	border:1px solid #ccc;
+	color:#adadad;
+	height:110px;
+	line-height:21px;
+	padding:8px;
+	overflow:auto;
+	resize:none;
+}
+#spAccount-myInvite_From textarea.focus{
+	background:#fff;
+	color:#333;
+}
+#spAccount-myInvite_From input{
+	width:666px;
+	border:1px solid #ccc;
+	color:#000;
+	height:24px;
+	line-height:24px;
+	padding:3px 8px;
+}
+#spAccount-myInvite_From .invite_smbtn{
+	display:block;
+	width:100%;
+	margin:10px 0 0 0;
+	text-align:right;
+}
+#spAccount-myInvite_From .myInvite_emailFrom h5{
+	background-position: -185px 2px;
+}
+#spAccount-myInvite_From .myInvite_noteFrom h5{
+	background-position: -184px -21px;
+}
+#spAccount-myInvite_From .myInvite_linkFrom h5{
+	padding:0;
+	background-image:none;
+}
+
+#spAccount_myInvite table{
+	width:100%;
+	margin:15px 0 10px;
+}
+#spAccount_myInvite table th{
+	background:#666;
+	color:#fff;
+	line-height:17px;
+	height:29px;
+	line-height:29px;
+	text-align:center;
+}
+#spAccount_myInvite table td{
+	color:#666;
+	line-height:40px;
+	border:1px solid #f2f2f2;
+	text-align:center;
+}
+#spAccount_myInvite table td.myInvite_tabMargin{
+	border:none;
+	line-height:10px;
+}
+#spAccount_myInvite table#spAccount-myInvite_list{
+	margin:10px auto 20px;
+	width:93%;
+}
+#spAccount_myInvite table#spAccount-myInvite_list td{
+	border:none;
+	border-bottom:1px solid #f2f2f2;
+}
+
+/*2012-09-12 新加样式*/
+.mt10{ margin-top:10px;}
+.mb10{ margin-bottom:10px;}
+
+
+
+
+
+/* 新版邀请好友 */
+
+.Invite_notice{
+	color:#666;
+	line-height: 180%;
+    margin: 15px 0 0px;
+}
+a.ac_blue:link ,a.ac_blue:visited{
+	font-size:12px;
+	font-family:"宋体";
+	color:#01589f !important;
+}
+a.ac_blue:hover ,a.ac_blue:active{
+	text-decoration:underline;
+}
+
+
+
+#Account_myInvite{
+	margin:20px 0 0;
+}
+#Account_myInvite .total_table{
+	width:100%;
+	height:120px;
+	border:1px solid #f0f0f0;
+	background-color:#fefefe;
+	text-align:center;
+	vertical-align:middle;
+}
+#Account_myInvite .total_table td{
+	border-right:1px solid #f0f0f0;
+	font-size:14px;
+	color:#333;
+	line-height:27px;
+	font-family:"微软雅黑";
+}
+#Account_myInvite .total_table span{
+	display:block;
+	color:#e5232a;
+	font-size:18px;
+}
+
+
+.Account_myInvite_tab{
+    border-bottom:1px solid #d0d0d0; 
+	height:33px; 
+	margin:20px 0 0;	
+}
+.Account_myInvite_tab a {
+    background-color: #f7f7f7;
+	border:1px solid #d0d0d0;
+	border-bottom:none;
+    color:#333;
+	font-size:14px;
+	font-family:"宋体";
+    float: left;
+    height: 32px;
+    line-height: 32px;
+    margin-right: 2px;
+    text-align: center;
+    width: 83px;
+	-webkit-border-top-right-radius:.2em;
+	-webkit-border-top-left-radius:.2em;
+	-moz-border-radius-topleft:.2em;
+	-moz-border-radius-topright:.2em;
+	border-top-left-radius:.2em;
+	border-top-right-radius:.2em;
+}
+.Account_myInvite_tab a.curr {
+    background-color: #fff;
+	height:33px;
+}
+
+.Account_myInvite_content{
+	border:1px solid #d0d0d0;
+	border-top:none;
+	padding:20px 0;
+}
+.Account_myInvite_content .chart{
+	padding:0 90px;
+}
+
+.invite_chart{
+	width:100%;
+	font-family:"宋体";
+	font-size:12px;
+	padding-bottom:40px;
+}
+.invite_chart .chart_txt{
+	line-height:40px;
+	color:#333;
+	font-family:"宋体";
+	position:relative;
+}
+.invite_chart .chart_txt span{
+	line-height:30px;
+	display:inline-block;
+	position:absolute;
+	right:0;
+	color:#666;
+    top: 5px;
+    *top: -6px;
+}
+
+.invite_chart .chart_txt span em {
+    color: #e5232a;
+    padding: 0 5px;
+}
+
+.chart_progress{
+	width:100%;
+}
+.chart_progress p{
+	display:block;
+	padding:0 0 0 2px;
+	height:15px;
+	background:url(/images/page/invite/progress_bgLeft.png) no-repeat;
+	_background:url(/images/page/invite/progress_bgLeft_ie6.png) no-repeat;
+	overflow:hidden;
+}
+.chart_progress p span{
+	display:block;
+	width:15px;
+	float:right;
+	height:15px;
+	background:url(/images/page/invite/progress_bgRight.png) no-repeat right top #fcfcfc;
+	_background:url(/images/page/invite/progress_bgRight_ie6.png) no-repeat right #fcfcfc;
+	overflow:hidden;
+}
+.chart_progress p a{
+	display:block;
+	width:7%;
+	float:left;
+	height:14px;
+	background:url(/images/page/invite/progressIn_bgLeft.png) no-repeat;
+	_background:url(/images/page/invite/progressIn_bgLeft_ie6.png) no-repeat;
+	overflow:hidden;
+}
+.chart_progress p a em{
+	display:block;
+	height:14px;
+	margin-left:10px;
+	background:url(/images/page/invite/progressIn_bgRight.png) no-repeat right top #e5232a;
+	overflow:hidden;
+}
+.chart_progress .chart_tips{
+	position:absolute;
+	border:1px solid #e5e5e5;
+	background-color:#fefefe;
+	color:#666;
+	padding:15px 20px;
+	width:225px;
+	-webkit-border-radius:.3em;
+	-moz-border-radius:.3em;
+	border-radius:.3em;
+	line-height:21px;
+	z-index:1000;
+	display:none;
+}
+.chart_progress .chart_tips em{
+	color:#e5232a;
+}
+.chart_progress .chart_tips i{
+	display:block;
+	background:url(/images/public/sp_newHeader.gif) no-repeat -5px -90px;
+	height:15px;
+	width:15px;
+	position:absolute;
+	top:-10px;
+	left:35px;
+}
+.chart_progress dl{
+	padding:0 5%;
+}
+.chart_progress dd{
+	width:25%;
+	float:left;
+	color:#666;
+	line-height:19px;
+	text-align:center;
+	padding:25px 0 0 0;
+	background:url(/images/page/invite/progress_line.png) no-repeat top center;
+}
+
+
+.myInvite_list table{
+	width:100%;
+}
+.myInvite_list table th{
+	color:#666;
+	line-height:40px;
+	border-bottom:1px solid #f2f2f2;
+	text-align:left;
+	padding-left:100px;
+}
+.myInvite_list table td{
+	color:#666;
+	line-height:40px;
+	border-bottom:1px solid #f2f2f2;
+	text-align:center;
+	width:30%;
+}
+.myInvite_list table .title th, .myInvite_list table .title td{
+	font-weight:700;
+}
+
+
+.Account_myInviteFrom{
+	margin-top:20px;
+	background-color:#fcfcfc;
+	border:1px solid #f0f0f0;
+	padding:0 27px;
+	-webkit-border-radius:.3em;
+	-moz-border-radius:.3em;
+	border-radius:.3em;
+}
+
+.invite_from li{
+	padding:10px 0 30px;
+	border-bottom:1px dotted #ccc;
+}
+.invite_from li.borderNone{
+	border:none;
+}
+.invite_from h5{
+	color:#333;
+	font-family:"宋体";
+	font-size:14px;
+	font-weight:700;
+	height:40px;
+	line-height:40px;
+}
+.invite_from h5 span{
+	display:inline-block;
+	color:#666;
+	font-size:12px;
+	font-weight:normal;
+	padding-left:20px;
+	line-height:30px;
+}
+
+.invite_from .share_txt{
+	display:block;
+	background-color:#fff;
+	border:1px solid #d0d0d0;
+	color:#666;
+	line-height:24px;
+	padding:15px 20px;
+}
+
+.invite_from .share_btn{
+	margin-top:15px;
+	width:100%;
+}
+.invite_from .share_btn a{
+	display:inline-block;
+	height:36px;
+	line-height:36px;
+	padding:0 10px 0 38px;
+	border:1px solid #bfbfbf;
+	-webkit-border-radius:.3em;
+	-moz-border-radius:.3em;
+	border-radius:.3em;
+	-webkit-box-shadow:1px 1px 3px 0px #bfbfbf;
+	-moz-box-shadow:1px 1px 3px 0px #bfbfbf;
+	box-shadow:1px 1px 3px 0px #bfbfbf;
+	background:url(/images/page/invite/invite_icon.gif) no-repeat;
+	margin-right:4px;
+	*margin-right:3px;
+}
+.invite_from .share_btn a.weibo{
+	background-position:10px 6px;
+}
+.invite_from .share_btn a.qweibo{
+	background-position:2px -36px;
+}
+.invite_from .share_btn a.douban{
+	background-position:10px -70px;
+}
+.invite_from .share_btn a.renren{
+	background-position:10px -105px;
+}
+.invite_from .share_btn a.qzone{
+	background-position:10px -139px;
+	margin-right:0;
+}
+
+.invite_from input{
+	width:480px;
+	border:1px solid #d6d6d6;
+	color:#000;
+	height:24px;
+	line-height:24px;
+	padding:3px 8px;
+}
+
+.invite_from textarea{
+	width:480px;
+	border:1px solid #d6d6d6;
+	color:#adadad;
+	height:55px;
+	line-height:21px;
+	padding:8px;
+	overflow:auto;
+	resize:none;
+    vertical-align: bottom;
+}
+#shareArea{
+	color:#666;
+	width:97%;
+	height:65px;
+}
+.invite_from textarea.focus{
+	background:#fff;
+	color:#333;
+}
+
+.invite_from .inviteSueecess{
+	display:block;
+	margin-top:5px;
+	text-align:right;
+	display:none;
+}
+.invite_from .inviteSueecess i.form_succeed{
+	display:inline-block;
+	padding:0 0 0 20px;
+	margin:0 30px;
+	width:auto;
+	height:18px;
+	line-height:18px;
+	background-image:url(/images/page/account/account_icon.gif);
+    background-repeat: no-repeat;
+	background-position: -185px -43px;
+	_background-position: -185px -45px;
+}
+#spAccount_right .inviteSueecess i.form_succeed{
+	margin:0 30px;
+}
+
+a.myInviteFrom_btn{
+	display:inline-block;
+	width:120px;
+	height:31px;
+	line-height:30px;
+	-webkit-border-radius:.3em;
+	-moz-border-radius:.3em;
+	border-radius:.3em;
+	text-align:center;
+	font-size:14px;
+	color:#fff !important;
+	vertical-align:bottom;
+}
+a.myInviteFrom_btn:link, a.myInviteFrom_btn:visited{
+	background:url(/images/page/invite/myInviteFrom_btnCbg.png) repeat-x;
+}
+a.myInviteFrom_btn:hover, a.myInviteFrom_btn:active{
+	background:url(/images/page/invite/myInviteFrom_btnHbg.png) repeat-x;
+}
+
+
+.Account_myInviteQRcode{
+	margin-top:20px;
+	width:116px;
+	height:116px;
+	background:url(/images/page/invite/QRcodeBg.jpg) no-repeat -10px top;
+	padding:79px 474px 7px 94px;
+	overflow:hidden;
+}
+.Account_myInviteQRcode img{
+	width:116px;
+	height:116px;
+	display:block;
+}
+
+
+
+/* 邀请好友专题页 */
+
+.bginvite{
+	width:100%;
+	background-color:#fcfcfc;
+}
+.ztInvite_Top{
+	width:960px;
+	height:345px;
+	margin:10px auto 0;
+	text-align:center;
+	position:relative;
+}
+.ztInvite_Top a{
+	display:block;
+	width:85px;
+	height:40px;
+	line-height:40px;
+	overflow:hidden;
+	position:absolute;
+	top:215px;
+	background-color:#fff;
+}
+.ztInvite_Top a.join{
+	left:717px;
+}
+.ztInvite_Top a.info{
+	left:813px;
+}
+
+.ztInvite_box{
+	width:940px;
+	margin:0 auto;
+	overflow:hidden;
+	padding-bottom:30px;
+}
+.ztInvite_content{
+	background-color:#f6f6f6;
+	border:1px solid #e2e2e2;
+	-webkit-border-radius:.3em;
+	-moz-border-radius:.3em;
+	border-radius:.3em;
+	-webkit-box-shadow:1px 1px 3px 1px #e2e2e2;
+	-moz-box-shadow:1px 1px 3px 1px #e2e2e2;
+	box-shadow:1px 1px 3px 1px #e2e2e2;
+}
+.ztInvite_chart, .ztInvite_table{
+	float:left;
+}
+.ztInvite_chart{
+	width:660px;
+	padding:35px;
+	border-right:1px solid #fefefe;
+}
+.ztInvite_table{
+	width:200px;
+	_width:198px;
+	padding:0 3px;
+	border-left:1px solid #e2e2e2;
+	margin-top:3px;
+}
+.ztInvite_table table{
+	width:100%;
+	text-align:center;
+	vertical-align:middle;
+	border-collapse:inherit;
+}
+.ztInvite_table table td{
+	border-top:1px solid #fefefe;
+	border-bottom:1px solid #e2e2e2;
+	font-size:14px;
+	color:#333;
+	line-height:27px;
+	height:125px;
+	font-family:"微软雅黑";
+}
+.ztInvite_table table td.bigSize{
+	font-size:20px;
+	border-top:none;
+}
+.ztInvite_table table td.borderNone{
+	border-bottom:none;
+}
+.ztInvite_table table span{
+	display:block;
+	color:#e5232a;
+	font-size:18px;
+}
+
+.ztInvite_from, .ztInvite_QRcode{
+	margin-top:20px;
+}
+.ztInvite_from{
+	float:left;
+	width:622px;
+	*width:628px;
+	padding:0 50px;
+	*padding:0 47px;
+	background-color:#fefefe;
+	border:1px solid #f0f0f0;
+	-webkit-border-radius:.3em;
+	-moz-border-radius:.3em;
+	border-radius:.3em;
+}
+.ztInvite_QRcode{
+	float:right;
+	width:116px;
+	height:116px;
+	background:url(/images/page/invite/zt_QRcodeBg.jpg) no-repeat left top;
+	padding:201px 48px 190px 36px;
+	overflow:hidden;
+}
+.ztInvite_QRcode img{
+	width:116px;
+	height:116px;
+	display:block;
+}
+
+#ztInvite_wrapper {
+    position: relative;
+}
+
+#ztInvite_wrapper_backover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0.45;
+    z-index: 999;
+    display: none;
+}
+
+#ztInvite_not_signin {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: none;
+}
+
+#ztInvite_not_signin div {
+    text-align: center;
+    font-size: 26px;
+    padding: 200px 0 0;
+    font-weight: 700;
+    font-family: Tahoma, '微软雅黑', 'microsoft yahei','黑体',Hei,'宋体';
+    text-shadow: 1px 1px 3px #000;
+    color: #fff;
+}
+
+#ztInvite_not_signin p {
+    padding: 20px 0 0;
+    text-align: center;
+}

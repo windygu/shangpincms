@@ -1,0 +1,95 @@
+/*虚拟商品终端页*/
+#spDetail_imgBox{
+	height:250px;
+}
+
+#spDetail_sbE p{
+	width:200px;
+}
+
+#spVirtual_proImg{
+	width:514px;
+	height:235px;
+	margin:0 auto;
+}
+#spVirtual_proImg img{
+	display: block;
+	width:514px;
+	height:235px;
+	font-size:0;
+}
+
+
+#spDetail_introL ul#spVirtual_tbox{
+	width:620px;
+	height:35px;
+	margin:0 0 15px 15px;
+	border-bottom:1px solid #DBBF9B;
+	background:#fff;
+}
+#spDetail_introL ul#spVirtual_tbox li{
+	list-style:none;
+	float: left;
+	position: relative;
+	padding-left:20px;
+	height:35px;
+	line-height:35px;
+	font-size:14px;
+}
+#spDetail_introL ul#spVirtual_tbox li.seled{
+	color: #b9976a;
+	font-weight:bolder;
+	border:0;
+	background-image:url(/images/page/detail/spDetail_main.gif);
+	background-repeat:no-repeat;
+	background-position:-727px -356px;
+}
+
+#spDetail_proInfo h1 span{
+	font-weight:bold;
+}
+.spDetail_proNo{
+	color: #999;
+}
+
+#spVirtual_price{
+	margin:15px 0;
+}
+
+#spVirtual_price span{
+	font-size:24px;
+	color: #b18d5f;
+	margin-right:20px;
+}
+
+#spDetail_proInfo del{
+	display: inline-block;
+	margin-left:3px;
+	font-size:18px;
+}
+
+/*分享层*/
+#spVirtual_share , .alActive_float_share{
+    float: left;
+    height:40px;
+    line-height:40px;
+    position: relative;
+    margin-left:50px;
+    _margin-left:25px;
+}
+
+#spVirtual_share .alActive_sina , .alActive_float_share .alActive_sina{
+    margin-top:10px;
+    line-height:12px;
+}
+
+#spVirtual_share span , .alActive_float_share span{
+    position: absolute;
+    top:0;
+    left:-50px;
+    color: #999;
+}
+
+#spVirtual_share ul , .alActive_float_share ul{
+    float: right;
+}

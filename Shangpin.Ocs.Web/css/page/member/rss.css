@@ -1,0 +1,10 @@
+/*邮件订阅*/
+a.golden:hover{ text-decoration:underline}
+.pl28{ padding-left:28px;}
+.pl60{ padding-left:60px;}
+.tc{ text-align:center}
+.prompt_msg p{ margin:0 0 15px}
+.prompt_msg a{ margin:0 5px;}
+.mail_table{border-top:1px solid #dddcdc;}
+.mail_table td{line-height:24px;}
+.mail_table td input{ width:13px; height:13px; vertical-align:-2px; *vertical-align:middle; margin:0 5px 0 0}

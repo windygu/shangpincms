@@ -1,0 +1,135 @@
+
+/* CSS Document */
+
+/* ============== Account orderList ============== */
+
+#spAccount_orderSlt{
+	position:absolute;
+	right:0px;
+	top:15px;
+}
+
+#spAccount_orderList{
+	width:100%;
+	margin:10px 0 0 0;
+}
+
+#spAccount_orderList table{
+	width:100%;
+	margin-bottom:10px;
+}
+#spAccount_orderList table .order_info table{margin-bottom:0px;}
+
+
+#spAccount_orderList table th, #spAccount_orderList table td{padding:5px 8px;}
+#spAccount_orderList table th{background:#707070; color:#fff; line-height:17px;}
+.order_title{background:#f2f2f2; color:#A3A3A3; line-height:17px;}
+.order_title td{border:1px solid #f2f2f2;}
+
+.order_info td{border:1px solid #f2f2f2; color:#999; line-height:20px; text-align:center;}
+#spAccount_orderList table .order_info td.tab_none{padding:0; border-bottom:none;}
+.order_info a:link, .order_info a:visited {
+	color:#333;
+	display:block;
+}
+.order_info a:hover, .order_info a:active {
+	color:#333;
+	text-decoration:none;
+	display:block;
+}
+.order_info a.none_txtD:link, .order_info a.none_txtD:visited {text-decoration:none; color:#666;}
+.order_info a.none_txtD:hover, .order_info a.none_txtD:active {color:#000;}
+
+.order_info table td{border:none; color:#333; border-bottom:1px solid #f2f2f2;}
+#spAccount_orderList table .order_info table .order_product{border-left:1px solid #f2f2f2; color:#666; padding:15px; width:76%; text-align:left;}
+.order_product img{display:block; float:left; margin-right:20px; width:45px; height:60px;}
+
+.order_product a:link, .order_product a:visited {
+	color:#666;
+	text-decoration:none;
+	display:inline;
+}
+.order_product a:hover, .order_product a:active {
+	color:#333;
+	text-decoration:none;
+	display:inline;
+}
+.order_product p {
+	color:#666;
+	line-height:20px;
+	margin-left:65px;
+	zoom:1;
+}
+.order_product p em {
+	color:#333;
+}
+
+
+/**/
+#simlar_fav {
+	width:685px;
+	height:244px;
+	position:relative;
+	
+}
+#simlar_fav dt {
+	font:bold 14px "Microsoft YaHei";
+	color:#333;
+	padding-bottom:15px;
+	border-bottom:1px solid #f2f2f2;
+	margin-bottom:8px;
+}
+#simlar_fav dd {
+	height:215px;
+	position:relative;
+	zoom:1;
+}
+#simlar_favbox {
+	width:685px;
+	height:215px !important;
+	overflow:hidden;
+}
+#simlar_fav ul {
+	height:215px;
+	overflow:hidden;
+}
+#simlar_fav ul li { 
+    float:left; 
+	display:inline; 
+	height:215px;
+	width:128px; 
+	overflow:hidden; 
+	text-align:center;
+	padding-right:10px;
+}
+#simlar_fav ul li img {
+	padding-bottom:10px;
+}
+#ac_leftbar ,#ac_rightbar {
+	width:18px;
+	height:0;
+	padding-top:35px;
+	overflow:hidden;
+	position:absolute;
+	top:85px;
+	z-index:10;
+	background:url(/images/page/account/scroll_icons.png) no-repeat 0 -70px;
+}
+#ac_leftbar {
+	left:-18px;
+}
+#ac_rightbar {
+	right:-18px;
+	background-position:0 -105px;
+}
+#ac_leftbar:hover {
+	background-position:0 0;
+}
+#ac_rightbar:hover {
+	background-position:0 -35px;
+}
+
+
+
+
+

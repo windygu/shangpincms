@@ -1,0 +1,229 @@
+﻿@{
+    Layout = null;
+}
+@model IEnumerable<Shangpin.Ocs.Entity.Extenstion.ShangPin.SWfsMeetingRelationRegionContent>
+
+<div id="spVip_content" class="box clr">
+    <ul class="spVip_imglist clr">
+        <li opratorRegion="1" relationtype="@(Model.Count(p => p.RegionID == 1)>0 ? Model.Single(p => p.RegionID == 1).RelationType : 1)">
+            <a href="@{
+                if (Model.Count(p => p.RegionID == 1)>0)//根据类型生成区块
+                {
+                    switch (Model.Single(p => p.RegionID == 1).RelationType)
+                    {
+                        case 1://分会场链接
+                            @("/Shangpin/Venue/");
+                            break;
+                        case 2://专题活动链接
+                            @("/Shangpin/Venue/");
+                            break;
+                        case 3://自定义链接
+                            @("/Shangpin/Venue/");
+                            break;
+                        case 4://功能模块链接
+                            @("/Shangpin/Venue/");
+                            break;
+                        default:
+                            @("javascript:;")
+                        break;
+                    }
+                }
+                else
+                {
+                     @("javascript:;")
+                }
+                }" title="@{
+                    if (Model.Count(p => p.RegionID == 1) >0)//根据类型生成区块
+                    {
+                            @Model.Single(p => p.RegionID == 1).Direction
+                    }
+                    else
+                    {
+                            <text>PILGRIM 新款春夏复古饰品专场</text>
+                    }
+                    }">
+                <img width="390" height="550" alt="@{
+                    if (Model.Count(p => p.RegionID == 1)>0)//根据类型生成区块
+                    {
+                            @Model.Single(p => p.RegionID == 1).Direction
+                    }
+                    else
+                    {
+                            <text>PILGRIM 新款春夏复古饰品专场</text>
+                    }
+                    }" src="@{
+                        if (Model.Count(p => p.RegionID == 1)>0)//根据类型生成区块
+                        {
+                                @(new HtmlString("/ReadPic/GetPic.ashx?width=390&height=550&pictureFileNo=" + Model.Single(p => p.RegionID == 1).ImgNO + "&type=2"))
+                        }
+                        else
+                        {
+                                @("/images/page/index/390_550/pic001.jpg")
+                            }
+                        }" />
+            </a>
+        </li>
+        <li opratorRegion="2" relationtype="@(Model.Count(p => p.RegionID == 2) >0 ? Model.Single(p => p.RegionID == 2).RelationType : 2)">
+            <a href="@{
+                if (Model.Count(p => p.RegionID == 2) >0)//根据类型生成区块
+                {
+                    switch (Model.Single(p => p.RegionID == 2).RelationType)
+                    {
+                        case 1://分会场链接
+                            @("/Shangpin/Venue/");
+                            break;
+                        case 2://专题活动链接
+                            @("/Shangpin/Venue/");
+                            break;
+                        case 3://自定义链接
+                            @("/Shangpin/Venue/");
+                            break;
+                        case 4://功能模块链接
+                            @("/Shangpin/Venue/");
+                            break;
+                        default:
+                            @("javascript:;")
+                        break;
+                    }
+                }
+                else
+                {
+                     @("javascript:;")
+                }
+                }" title="@{
+                    if (Model.Count(p => p.RegionID == 2) >0)//根据类型生成区块
+                    {
+                            @Model.Single(p => p.RegionID == 2).Direction
+                    }
+                    else
+                    {
+                            <text>PILGRIM 新款春夏复古饰品专场</text>
+                    }
+                    }" title="PILGRIM 新款春夏复古饰品专场">
+                <img width="390" height="550" alt="@{
+                    if (Model.Count(p => p.RegionID == 2) >0)//根据类型生成区块
+                    {
+                            @Model.Single(p => p.RegionID == 2).Direction
+                    }
+                    else
+                    {
+                            <text>PILGRIM 新款春夏复古饰品专场</text>
+                    }
+                    }" src="@{
+                        if (Model.Count(p => p.RegionID == 2) >0)//根据类型生成区块
+                        {
+                                @(new HtmlString("/ReadPic/GetPic.ashx?width=390&height=550&pictureFileNo=" + Model.Single(p => p.RegionID == 2).ImgNO + "&type=2"))
+                        }
+                        else
+                        {
+                                @("/images/page/index/390_550/pic001.jpg")
+                            }
+                        }">
+            </a>
+        </li>
+        <li opratorRegion="3" relationtype="@(Model.Count(p => p.RegionID == 2)>0? Model.Single(p => p.RegionID == 2).RelationType : 3)">
+            <a href="@{
+                if (Model.Count(p => p.RegionID == 3) >0)//根据类型生成区块
+                {
+                    switch (Model.Single(p => p.RegionID == 3).RelationType)
+                    {
+                        case 1://分会场链接
+                            @("/Shangpin/Venue/");
+                            break;
+                        case 2://专题活动链接
+                            @("/Shangpin/Venue/");
+                            break;
+                        case 3://自定义链接
+                            @("/Shangpin/Venue/");
+                            break;
+                        case 4://功能模块链接
+                            @("/Shangpin/Venue/");
+                            break;
+                        default:
+                            @("javascript:;")
+                        break;
+                    }
+                }
+                else
+                {
+                     @("javascript:;")
+                }
+                }" title="@{
+                    if (Model.Count(p => p.RegionID == 3) >0)//根据类型生成区块
+                    {
+                            @Model.Single(p => p.RegionID == 3).Direction
+                    }
+                    else
+                    {
+                            <text>PILGRIM 新款春夏复古饰品专场</text>
+                    }
+                    }">
+                <img width="390" height="550" alt="@{
+                    if (Model.Count(p => p.RegionID == 3) >0)//根据类型生成区块
+                    {
+                            @Model.Single(p => p.RegionID == 3).Direction
+                    }
+                    else
+                    {
+                            <text>PILGRIM 新款春夏复古饰品专场</text>
+                    }
+                    }" src="@{
+                        if (Model.Count(p => p.RegionID == 3) >0)//根据类型生成区块
+                        {
+                                @(new HtmlString("/ReadPic/GetPic.ashx?width=390&height=550&pictureFileNo=" + Model.Single(p => p.RegionID == 3).ImgNO + "&type=2"))
+                        }
+                        else
+                        {
+                                @("/images/page/index/390_550/pic001.jpg")
+                            }
+                        }">
+            </a>
+        </li>
+        <li opratorRegion="4" relationtype="3">
+            <a href="#" title="PILGRIM 新款春夏复古饰品专场">
+                <img width="390" height="550" alt="" src="/images/page/index/390_550/pic001.jpg">
+            </a>
+        </li>
+    </ul>
+    <ul class="spVip_imglist smallImg clr" opratorRegion="5"  relationtype="4" style="cursor:pointer;">
+        <li>
+            <a href="#" title="PILGRIM 新款春夏复古饰品专场">
+                <img width="247" height="350" alt="" src="/images/page/index/390_550/pic002.jpg">
+                <div>
+                    <h3>EBERJEY 无法低档的色彩诱惑</h3>
+                    <p>
+                        三个月热卖内衣
+                        <br>
+                        2013-04-16
+                    </p>
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="#" title="PILGRIM 新款春夏复古饰品专场">
+                <img width="247" height="350" alt="" src="/images/page/index/390_550/pic002.jpg">
+                <div>
+                    <h3>EBERJEY 无法低档的色彩诱惑</h3>
+                    <p>
+                        三个月热卖内衣
+                        <br>
+                        2013-04-16
+                    </p>
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="#" title="PILGRIM 新款春夏复古饰品专场">
+                <img width="247" height="350" alt="" src="/images/page/index/390_550/pic002.jpg">
+                <div>
+                    <h3>EBERJEY 无法低档的色彩诱惑</h3>
+                    <p>
+                        三个月热卖内衣
+                        <br>
+                        2013-04-16
+                    </p>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>

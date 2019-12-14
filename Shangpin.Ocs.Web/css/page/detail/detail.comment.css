@@ -1,0 +1,84 @@
+/*商品详细介绍*/
+ 
+.spDetail_t { font-size: 14px; color: #333; font-weight: bolder; padding: 10px 0 5px 5px; /*border-top:1px solid #eaeaea;*/
+border-top: 1px solid #eaeaea; font-family: Arial, "宋体"; width: 615px; }
+
+
+/*详细页面内容tab*/
+.spTabsCell p {
+	margin: 5px 0;
+	text-indent: 24px;
+}
+.spTabsCell ol li, .spTabsCell ul li {
+	margin-bottom: 10px;
+	cursor: pointer;
+}
+/*体验报告*/
+.comment_box { padding: 0 19px 3px; z-index: 1; }
+.comment_box * { font-family: Arial, "宋体"; }
+.comment_box dl { z-index: 1; margin-top: 10px; padding-bottom: 15px;}
+.comment_box dl dt a { display: block; width: 88px; height: 88px; padding: 8px 0 0 8px; background-color: #faf6f5; }
+.comment_box dl dt strong { font-weight: bold; margin-top: 5px; height: 22px; display: block; width: 88px; text-align: left; color: #333; padding-left: 5px; }
+.comment_box dl dt ins { display: block; width: 88px; text-align: left; text-decoration: none; padding-left: 5px; }
+.comment_box dl dt img { display: block; width: 80px; height: 80px; }
+.comment_box dl dd { width: 444px; padding: 15px 23px 15px 0; border: 1px solid #ececec; z-index: 999; overflow: visible; min-height: 100px;  *height: expression(document.body.clientHeight <= 100? "100px": "auto");
+}
+.comment_box dl dd .admin_del { display: none; position: relative; }
+.comment_box dl dd .admin_del a { display: block; position: absolute; right: -16px; bottom: -36px; padding-left: 15px; background: url(/images/page/comment/comment_main.gif) -157px -24px no-repeat; }
+.comment_box dl dd .admin_del a:hover { text-decoration: underline; }
+.comment_box .comment_info { margin-bottom: 15px; color: #343434; text-indent: 0; line-height: 22px; padding-left: 23px; position: relative; break-word: break-all; word-wrap: break-word; }
+.comment_box .comment_info i { position: absolute; top: 16px; left: -15px; display: block; width: 15px; height: 15px; background: url(/images/page/comment/comment_main.gif) 0 -63px no-repeat; }
+.comment_box .comment_cm { padding-top: 12px; border-top: 1px dotted #cdcdcd; color: #333; height: 22px; margin-left: 23px; }
+.comment_box .gray { color: #333; padding-left: 23px; }
+#addComment { margin-top: -18px; }
+#addComment .red { color: #e9262a; }
+#addComment .gray { text-indent: 0; }
+#addComment .addComment_tt { position: relative; text-align: left; padding-right: 20px; margin-bottom: 20px; display: block; height: 32px; }
+#addComment .addComment_tt a#comment_contr { display: block; position: absolute; top: 3px; right: 0; font-size: 12px; width: 113px; height: 27px; line-height: 27px; text-align: center; padding-right: 30px; color: #333; background: url(/images/page/comment/comment_main.gif) 0 -157px no-repeat; }
+#addComment .addComment_tt span { display: block; margin-left: 172px; _margin-left: 90px; display: block; padding-top: 5px; }
+#addComment .addComment_tt a#comment_contr:hover { background: url(/images/page/comment/comment_main.gif) 0 -185px no-repeat; }
+.addComment_tt a.zhedie { background: url(/images/page/comment/comment_main.gif) 0 4px no-repeat !important; }
+.addComment_info, .addComment_unsign, .addComment_unbuy { border-top: 1px solid #fff; margin-top: 10px; padding: 0 15px 15px; background: #f6f6f6; }
+.addComment_unsign .msg, .addComment_unbuy .msg { text-align: center; padding: 25px 0; }
+.addComment_unsign a, .addComment_unbuy a { color: #0066cc; text-decoration: underline; }
+.addComment_info p, .addComment_unsign p, .addComment_unbuy p { position: relative; }
+.addComment_info i, .addComment_unsign i, .addComment_unbuy i { position: absolute; width: 22px; height: 12px; top: -17px; right: 60px; _right: 90px; background: url(/images/page/comment/comment_main.gif) -142px 0 no-repeat; }
+.addComment_info .gray { padding: 0; }
+.addComment_info .comment_imgs { padding: 0; margin-bottom: 30px; }
+.addComment_info strong { font-weight: bold; color: #666; font-size: 12px; }
+.addComment_info table tr td { line-height: 24px; }
+.addComment_info textarea { width: 535px; height: 86px; padding: 5px; border: 1px solid #bfbfbf; resize: none; outline: none; -moz-border-radius: 3px; -webkit-border-radius: 3px; -o-border-radius: 3px; border-radius: 3px; color: #333; }
+.addComment_info select { font-size: 12px; }
+#comment_success { position: absolute; top: 5px; left: 5px; width: 530px; height: 86px; background: url(/images/page/comment/comment_main.gif) 195px -277px no-repeat #fff; }
+.comment_holder { position: absolute; top: 5px; left: 5px; color: #ccc !important; border: none !important; }
+.addWeibo { text-decoration: underline !important; color: #999; padding: 2px 0 2px 25px; background: url(/images/page/comment/comment_main.gif) -147px -76px no-repeat; }
+.addWeibo:hover { color: #333; }
+#comment_tb { color: #999; padding: 0 20px 0 0; position: relative; background: url(/images/page/comment/comment_main.gif) 50px -79px no-repeat; }
+#comment_tb:hover, .comment_tb_on { background: url(/images/page/comment/comment_main.gif) 50px -105px no-repeat !important; }
+#comment_tb .weiboSuccess { display: none; position: absolute; color: #04b114; background: #F6F6F6; text-align: center; width: 85px; height: 20px; line-height: 20px; left: -8px; top: 0; }
+#comment_tb .error { color: #e62727; }
+#comment_fb { display: block; width: 93px; height: 27px; line-height: 26px; margin-left: 10px; text-align: center; color: #fff; background: url(/images/page/comment/comment_main.gif) -19px -76px no-repeat; }
+#comment_fb:hover { background: url(/images/page/comment/comment_main.gif) -19px -106px no-repeat; }
+.comment_msg { padding-left: 20px !important; color: #e92329 !important; height: 20px; line-height: 20px; background: url(/images/page/comment/comment_main.gif) -148px -59px no-repeat; }
+#comment_form { position: relative; }
+.uploadify { position: relative; margin-bottom: 1em; }
+.uploadify-button { display: block; width: 64px; height: 94px; text-indent: -2000px; border: 1px solid #e6e3e3; background: url(/images/page/comment/comment_main.gif) -16px 30px no-repeat #fff; -webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0; }
+.uploadify:hover .uploadify-button { border: 1px solid #bcdde6; background: url(/images/page/comment/comment_main.gif) -61px 30px no-repeat #fff; }
+.uploadify-button.disabled { background-color: #D0D0D0; color: #808080; }
+.uploadify-queue { margin-bottom: 1em; position: relative; }
+.uploadify-queue-item { background-color: #F5F5F5; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; font: 11px Verdana, Geneva, sans-serif; margin-top: 5px; width: 55px; padding: 5px; position: absolute; top: -50px; }
+.uploadify-error { background-color: #FDE5DD !important; }
+.uploadify-error span { display: none; }
+.uploadify-queue-item .cancel a { background: url('/images/plug/uploadify/uploadify-cancel.png') 0 0 no-repeat; float: right; height: 16px; text-indent: -9999px; width: 16px; display: none; }
+.uploadify-queue-item.completed { background-color: #E5E5E5; }
+.uploadify-progress { background-color: #E5E5E5; margin-top: 10px; width: 100%; }
+.uploadify-progress-bar { background-color: #0099FF; height: 3px; width: 1px; }
+#addCommImg { position: relative; }
+#file_upload-queue { position: absolute; top: 1px; left: 1px; }
+#file_upload-queue span { display: block; text-align: center; padding-top: 66px; width: 64px; height: 27px; background: url('/images/plug/loader/l1.gif') center center no-repeat #fff; }
+
+#spDetail_introL p {
+	line-height: 23px;
+	color: #333;
+	font-family: Arial, "宋体";
+}

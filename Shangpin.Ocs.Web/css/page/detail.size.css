@@ -1,0 +1,318 @@
+/*终端页商品尺寸*/
+.spDetail_t span{
+	font-size:12px;
+	font-weight:normal;
+	color:#aaa;
+	zoom:1;
+}
+#spSize{
+	position:relative;
+}
+#spSize span{
+	position:absolute;
+	right:0;
+}
+.spDetail_t span.sizeEidt{
+	background:url(/images/page/detail/spDetail_main.gif) no-repeat -625px -192px;
+	color:#666;
+	padding-left:35px;
+	cursor:pointer;
+	display:none;
+}
+
+.spDetail_size_content{
+	width:615px;
+	font-family:Arial , "宋体";
+}
+.spDetail_size_content dl{
+	margin:8px 0 14px;
+	font-family:Arial , "宋体";
+	width:391px;
+	
+}
+.spDetail_size_content dl dt{
+	text-align:center;
+	color: #fff;
+	font-family:Arial , "宋体";
+	background-color:#666;
+	height:16px;
+	line-height:15px;
+	width:28px;
+	padding:0 0 0 3px;
+	overflow:hidden;
+	white-space:nowrap;
+	text-overflow:clip;
+	letter-spacing:.2em;
+}
+.spDetail_size_content dl dd{
+	font-family:Arial , "宋体";
+	width:360px;
+}
+.spDetail_size_content ul li{
+	float:left;
+	width:55px;
+	padding-right:5px;
+	text-align:center;
+	color: #999;
+	font-family:Arial , "宋体";
+	margin-bottom:0;
+}
+.spDetail_size_content ul li.select{
+	color:#666;
+}
+.spDetail_size_content .spDetail_size_pointer{
+	height:16px;
+	line-height:16px;
+	background:url(/images/page/detail/dotted_line.jpg) repeat-x left center;
+}
+.spDetail_size_content .spDetail_size_pointer li{
+	height:16px;
+	line-height:16px;
+	position:relative;
+}
+.spDetail_size_pointer .spDetail_size_ico{
+	display: none;
+	width:10px;
+	height:12px;
+	top:3px;
+	left:50%;
+	margin-left:-9px;
+	overflow:hidden;
+	position: absolute;
+	background-image:url(/images/page/detail/spDetail_main.gif);
+	background-repeat:no-repeat;
+	background-position:-635px -150px;
+}
+.spDetail_size_pointer .blk{
+	display:block;
+}
+
+.spDetail_size_content .spDetail_size_detail li{
+	float:left;
+	display: inline-block;
+	height:70px;
+	text-align:center;
+	margin:4px 0 0 0;
+	padding-bottom:6px;
+	zoom:1;
+}
+.spDetail_size_content .spDetail_size_detail li img{
+	margin:0 !important;
+}
+.spDetail_size_content .sizeImgbox{
+	width:210px;
+	height:280px;
+	border:1px solid #f2f2f2;
+	overflow:hidden;
+	margin:10px 0 0 10px;
+}
+#spDetail_introL .spDetail_size_content .sizeImgbox img{
+	margin:0;
+}
+
+.spDetail_size_content table.spDetail_sizeTb{
+	width:615px;
+	margin:14px 0 35px;
+	border-collapse:collapse;
+}
+.spDetail_size_content table.spDetail_sizeTb img{
+	margin:0 !important;
+}
+.spDetail_size_content table.spDetail_sizeTb tr{
+	text-align:center;
+}
+.spDetail_size_content table.spDetail_sizeTb th, .spDetail_size_content table.spDetail_sizeTb td{
+	word-break:break-all;
+	word-wrap:break-word;
+	border:1px solid #ececec;
+	font-family:Arial , "宋体";
+}
+.spDetail_size_content table.spDetail_sizeTb th{
+	height:33px;
+	line-height:33px;
+	text-align:center;
+	background-color:#f6f6f6;
+}
+ .spDetail_size_content table.spDetail_sizeTb td{
+	height:20px;
+	line-height:20px;
+	padding:5px 0;
+}
+.spDetail_size_content table.spDetail_sizeTb .red{
+	color: #e5232a;
+}
+.spDetail_size_content table.spDetail_sizeTb .gray{
+	color: #999;
+}
+
+.spDetail_size_content h3{
+	background-color:#f9f9f9;
+	height:26px;
+	line-height:26px;
+	padding:0 10px;
+}
+.spDetail_size_content .size_method{
+	width:100%;
+	text-align:center;
+	padding:20px 0;
+}
+
+
+
+.mySize_blcok{
+	display:none;
+}
+
+.mySize_blcok .red{
+	color: #e9262a;
+}
+.mySize_blcok .gray{
+	text-indent:0;
+}
+.mySize_blcok .mySize_tt {
+	position: relative;
+	text-align:left;
+	padding-right:20px;
+	margin-bottom:20px;
+	display: block;
+	height:32px;
+}
+.mySize_blcok .mySize_tt a#addSize{
+	display: block;
+	position: absolute;
+	top:4px;
+	right:0;
+	font-size:12px;
+	width:113px;
+	height:28px;
+	line-height:28px;
+	text-align:center;
+	padding-right:30px;
+	color: #333;
+	background:url(/images/page/comment/comment_main.gif) 0 -156px no-repeat;
+}
+.mySize_blcok .mySize_tt span{
+	display: block;
+	margin-left:172px;
+	_margin-left:90px;
+	display: block;
+	padding-top:5px;
+}
+.mySize_blcok .mySize_tt a#addSize:hover{
+	background:url(/images/page/comment/comment_main.gif) 0 -184px no-repeat;
+}
+
+.mySize_unsign{
+	border-top:1px solid #fff;
+	margin-top:10px;
+	padding:0 15px 15px; 
+	background:#f6f6f6;
+}
+.mySize_unsign .msg{
+	text-align:center;
+	padding:25px 0;
+}
+.mySize_unsign a{
+	color: #0066cc;
+	text-decoration:underline;
+}
+
+.mySize_unsign p{
+	position: relative;
+}
+.mySize_unsign i{
+	position:absolute;
+	width:22px;
+	height:12px;
+	top:-17px;
+	right:45px;
+	_right:75px;
+	background:url(/images/page/comment/comment_main.gif) -142px 0 no-repeat;
+}
+.addSize_block{
+	display:none;
+	margin:10px 0 15px;
+}
+.addSize_block .addSize_tab{
+	padding:10px 50px;
+	cursor:pointer;
+}
+.addSize_block .addSzie_hover{
+	background-color:#f6f6f6;
+}
+.addSize_tab table{
+	width:100%;
+}
+.addSize_tab table td{
+	color:#333;
+	width:25%;
+	height:25px;
+	line-height:25px;
+	padding:5px 0;
+	vertical-align:baseline;
+}
+.addSize_tab table td input{
+	width:30px;
+	height:18px;
+	border:1px solid #fff;
+	color:#333;
+	text-align:center;
+	font-weight:bold;
+}
+.addSzie_hover table td input{
+	border:1px solid #f6f6f6;
+}
+.addSize_tab table td input.hover{
+	border:1px solid #aaa;
+}
+.addSize_block .select_tab{
+	background:#f6f6f6;
+}
+.select_tab table td input{
+	border:1px solid #666 !important;
+	background:#fff !important;
+}
+.select_tab table td input.hover{
+	border:1px solid #666;
+	background:#fff;
+}
+
+.addSize_block .addSize_hendel{
+	padding:15px 0 0;
+	display:none;
+}
+#addSize_submit{
+	display: block;
+	width:93px;
+	height:27px;
+	line-height:27px;
+	margin-left:10px;
+	text-align:center;
+	color: #fff;
+	background:url(/images/page/comment/comment_main.gif) -19px -76px no-repeat;
+}
+#addSize_submit:hover{
+	background:url(/images/page/comment/comment_main.gif) -19px -106px no-repeat;
+}
+#addSize_cancel{
+	height:26px;
+	line-height:26px;
+	margin-left:10px;
+	text-decoration:underline;
+}
+.addSize_hendel .addSize_msg{
+	padding-left:20px !important;
+	height:26px;
+	line-height:26px;
+	background:url(/images/page/account/account_icon.gif) -184px -39px no-repeat;
+	display:none;
+}
+.addSize_hendel .addSize_error,.addSize_hendel .addSize_sizechange{
+	padding-left:20px !important;
+	color: #e5232a !important;
+	height:26px;
+	line-height:26px;
+	background:url(/images/page/account/account_icon.gif) -184px -63px no-repeat;
+	display:none;
+}
+

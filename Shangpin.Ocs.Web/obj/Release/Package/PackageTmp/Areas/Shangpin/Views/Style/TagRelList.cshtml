@@ -1,0 +1,299 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.ShangPin
+@using Shangpin.Entity.Wfs
+@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "标签展示列表|尚品OCS管理系统";
+    IList<SWfsBrandIndexInfo> list = ViewBag.List;
+    List<SWfsBrandModule> brandModuleList = ViewBag.BrandModuleList;
+
+    List<SWfsTagRel> listOne = ViewBag.ListOne;
+    List<SWfsTagRel> listTwo = ViewBag.ListTwo;
+    List<SWfsTagRel> listThree = ViewBag.ListThree;
+    List<SWfsTagRel> listFour = ViewBag.ListFour;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>BrandsList</title>
+    <script src="/Areas/Outlet/Scripts/sortable/jquery-1.8.2.js"></script>
+    <script src="/Areas/Outlet/Scripts/sortable/jquery-ui.js"></script>
+    <style type="text/css">
+        .divStyle {
+            width: 20%;
+            height: 520px;
+            border: 1px solid #000;
+            float: left;
+            /*Border Radius*/
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+            /*Box Shadow*/
+            -moz-box-shadow: 0 1px 3px rgba(0,0,0,.25);
+            -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.25);
+            box-shadow: 0 1px 3px rgba(0,0,0,.25);
+        }
+
+        .divNullStyle {
+            width: 2%;
+            height: 500px;
+            float: left;
+        }
+
+        .ui-sortable-placeholder {
+            border: 3px dashed #aaa;
+            height: 21px;
+            width: 90%;
+            list-style: none;
+            background: #ccc;
+            margin-left: 10px;
+        }
+
+        .ui-sortableN li.ui-state-default {
+            height: 23px;
+            line-height: 23px;
+            color: #000;
+            padding: 0;
+            margin-left: 10px;
+            text-align: left;
+            list-style: none;
+            position: relative;
+            cursor: move;
+            width: 90%;
+            border-bottom: 1px solid rgba(216, 210, 242, 0.90);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+
+            .ui-sortableN li.ui-state-default input {
+                vertical-align: middle;
+            }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //拖动选择加载项
+            $("#SortOne").sortable({
+                placeholder: "ui-sortable-placeholder",
+            });
+            $("#SortTwo").sortable({
+                placeholder: "ui-sortable-placeholder",
+            });
+            $("#SortThree").sortable({
+                placeholder: "ui-sortable-placeholder",
+            });
+            $("#SortFour").sortable({
+                placeholder: "ui-sortable-placeholder",
+            });
+        });
+
+        //删除
+        function delTags(name, id) {
+            var tagsIdStr = "";
+            $("[name=" + name + "]").each(function () {
+                if ($(this).attr('checked') == "checked") {
+                    tagsIdStr += $(this).val() + ",";
+                }
+            });
+            if (tagsIdStr == "") {
+                alert("请选择删除的数据");
+                return false;
+            }
+            $.ajax({
+                url: "/Shangpin/Style/ajaxTagDel",
+                type: "post",
+                data: { tagsStr: tagsIdStr, location: id },
+                dataType: "json",
+                success: function (data) {
+                    if (data.result == "1") {
+                        //window.location.href = gettimestampurl(window.location.href);
+                        alert(data.message);
+                        window.location.href = window.location.href;
+                    }
+                    else {
+                        alert(data.message);
+                        return false;
+                    }
+                },
+                error: function (x, e) {
+                    alert(x.responseText);
+                }
+            });
+        }
+        // 排序保存
+        function saveSort(id, Number) {
+            var idList = "";
+            var list_cell = $("#" + id + " li");
+            if (list_cell != undefined) {
+                for (var i = 0; i < list_cell.length; i++) {
+                    idList += list_cell[i].id + ",";
+                }
+            }
+            if (idList == "") {
+                alert("请添加要排序的数据");
+                return false;
+            }
+            $.ajax({
+                url: "/Shangpin/Style/ajaxTagSave",
+                type: "post",
+                data: { tagsStr: idList, location: Number, des: "sort" },
+                dataType: "json",
+                success: function (data) {
+                    if (data.result == "1") {
+                        //window.location.href = gettimestampurl(window.location.href);
+                        alert("第" + Number + "列" + data.message);
+                        window.location.href = window.location.href;
+                    }
+                    else {
+                        alert(data.message);
+                        return false;
+                    }
+                },
+                error: function (x, e) {
+                    alert(x.responseText);
+                }
+            });
+        }
+        //跳转
+        function urlJump(id) {
+            switch (id) {
+                case "1":
+                    var _one = $("#hidSortOne").val();
+                    if (_one >= 18) {
+                        alert("显示列表已经18个,无法添加,如果需要添加,请删除其他项");
+                        return false;
+                    }
+                    break;
+                case "2":
+                    var _one = $("#hidSortTwo").val();
+                    if (_one >= 18) {
+                        alert("显示列表已经18个,无法添加,如果需要添加,请删除其他项");
+                        return false;
+                    }
+                    break;
+                case "3":
+                    var _one = $("#hidSortThree").val();
+                    if (_one >= 18) {
+                        alert("显示列表已经18个,无法添加,如果需要添加,请删除其他项");
+                        return false;
+                    }
+                    break;
+                case "4":
+                    var _one = $("#hidSortFour").val();
+                    if (_one >= 18) {
+                        alert("显示列表已经18个,无法添加,如果需要添加,请删除其他项");
+                        return false;
+                    }
+                    break;
+            }
+            window.location.href = "/Shangpin/Style/TagRelCreateList?tagid=" + id;
+        }
+
+
+    </script>
+</head>
+<body>
+    <div style="width:100%;">
+        <h1>
+            OCS > 尚品 > <a href="/Shangpin/newchannel/newChannelList">频道列表页</a> > Style > 标签管理
+        </h1>
+        <div id="alIndex_ending_list" style=" height:30px; line-height:30px;"></div>
+        <div style="width:100%;">
+            <div class="divNullStyle"></div>
+            <div class="divStyle">
+                <a style="width: 90%; text-align:center;" class="sumit_btn">第一列</a>
+                <div style="height: 420px; padding-bottom: 25px;" id="DivSortOne">
+                    <ul id="SortOne" class="ui-sortableN" style="display: inline;">
+                        @{
+
+                            if (listOne != null && listOne.Count() > 0)
+                            {
+                                foreach (SWfsTagRel _model in listOne)
+                                {
+                                    <li class="ui-state-default" id="@_model.TagNo"><input type="checkbox" name="chkUlOne" value="@_model.TagNo" />&nbsp;&nbsp;@_model.TagName</li>
+                                }
+                            }
+                        }
+                    </ul>
+                </div>
+                <div align="center">
+                    <a class="sumit_btn" onclick="urlJump('1')">添加</a>
+                    <a class="sumit_btn" onclick="delTags('chkUlOne','1')">删除</a>
+                    <a class="sumit_btn" onclick="saveSort('DivSortOne','1')">保存</a>
+                </div>
+            </div>
+            <div class="divNullStyle"></div>
+            <div class="divStyle">
+                <a style="width: 90%; text-align:center;" class="sumit_btn">第二列</a>
+                <div style="height: 420px; padding-bottom: 25px; " id="DivSortTwo">
+                    <ul id="SortTwo" class="ui-sortableN" style="display: inline;">
+                        @{
+                            if (listTwo != null && listTwo.Count() > 0)
+                            {
+                                foreach (SWfsTagRel _model in listTwo)
+                                {
+                                    <li class="ui-state-default" id="@_model.TagNo"><input type="checkbox" name="chkUlTwo" value="@_model.TagNo" />&nbsp;&nbsp;@_model.TagName</li>
+                                }
+                            }
+                        }
+                    </ul>
+                </div>
+                <div align="center">
+                    <a class="sumit_btn" onclick="urlJump('2')">添加</a>
+                    <a class="sumit_btn" onclick="delTags('chkUlTwo', '2')">删除</a>
+                    <a class="sumit_btn" onclick="saveSort('DivSortTwo', '2')">保存</a>
+                </div>
+            </div>
+            <div class="divNullStyle"></div>
+            <div class="divStyle">
+                <a style="width: 90%; text-align:center;" class="sumit_btn">第三列</a>
+                <div style="height: 420px; padding-bottom: 25px; " id="DivSortThree">
+                    <ul id="SortThree" class="ui-sortableN" style="display: inline;">
+                        @{
+                            if (listThree != null && listThree.Count() > 0)
+                            {
+                                foreach (SWfsTagRel _model in listThree)
+                                {
+                                    <li class="ui-state-default" id="@_model.TagNo"><input type="checkbox" name="chkUlThree" value="@_model.TagNo" />&nbsp;&nbsp;@_model.TagName</li>
+                                }
+                            }
+                        }
+                    </ul>
+                </div>
+                <div align="center">
+                    <a class="sumit_btn" onclick="urlJump('3')">添加</a>
+                    <a class="sumit_btn" onclick="delTags('chkUlThree', '3')">删除</a>
+                    <a class="sumit_btn" onclick="saveSort('DivSortThree', '3')">保存</a>
+                </div>
+            </div>
+            <div class="divNullStyle"></div>
+            <div class="divStyle">
+                <a style="width: 90%; text-align:center;" class="sumit_btn">第四列</a>
+                <div style="height: 420px; padding-bottom: 25px;" id="DivSortFour">
+                    <ul id="SortFour" class="ui-sortableN" style="display: inline; margin-top:5px;">
+                        @{
+                            if (listFour != null && listFour.Count() > 0)
+                            {
+                                foreach (SWfsTagRel _model in listFour)
+                                {
+                                    <li class="ui-state-default" id="@_model.TagNo"><input type="checkbox" name="chkUlFour" value="@_model.TagNo" />&nbsp;&nbsp;@_model.TagName</li>
+                                }
+                            }
+                        }
+                    </ul>
+                </div>
+                <div align="center">
+                    <a class="sumit_btn" onclick="urlJump('4')">添加</a>
+                    <a class="sumit_btn" onclick="delTags('chkUlFour', '4')">删除</a>
+                    <a class="sumit_btn" onclick="saveSort('DivSortFour', '4')">保存</a>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" id="hidSortOne" value="@ViewBag.ListOneCount" />
+        <input type="hidden" id="hidSortTwo" value="@ViewBag.ListTwoCount" />
+        <input type="hidden" id="hidSortThree" value="@ViewBag.ListThreeCount" />
+        <input type="hidden" id="hidSortFour" value="@ViewBag.ListFourCount" />
+    </div>
+</body>
+</html>   

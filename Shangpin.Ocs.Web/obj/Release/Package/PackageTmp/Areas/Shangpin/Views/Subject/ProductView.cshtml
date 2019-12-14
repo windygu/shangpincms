@@ -1,0 +1,75 @@
+﻿@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@using Shangpin.Framework.Common;
+@using Shangpin.Entity.Wfs;
+@model IList<SubjectNewProductRefModel>
+@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    string subjectNo = (string)ViewBag.SubjectNo;
+    string categoryNo = (string)ViewBag.CategoryNo;
+   // ViewBag.CategoryNo = categoryNo;
+    ViewBag.Title = (ViewBag.ChannelNo == 0 ? "女" : "男") + "士频道活动商品可视化编辑|尚品OCS管理系统";
+    }
+<script src="/Areas/shangpin/Scripts/plug/dragDrop.js" type="text/javascript"></script>
+<script src="/Areas/Shangpin/Scripts/plug/comm.js" charset="utf-8" type="text/javascript"></script>
+@*<script type="text/javascript" src="/Areas/shangpin/Scripts/page/index/comm.js" charset="utf-8"></script>*@
+<link href="/areas/shangpin/Content/css/page/rightcontent/list.css" rel="stylesheet"  type="text/css" />
+<div class="handle" style="padding: 0; text-align: left;">
+    <a href="/shangpin/subject/SubjectProductRef.html?subjectNo=@subjectNo&scategoryNo=@categoryNo" name="list" id="list" class="button" style="padding: 5px 10px;5px 10px;">列表模式</a>
+</div>
+<br />
+<div id="alIndex_main">
+    <!--alIndex_today--> 
+     <div class="handle">
+        <a href="#" class="button" id="saveList_btn">保 存</a><a href="javascript:window.location.reload();"
+            class="button">取 消</a></div>
+    <div id="alActive_list">
+        <div class="alIndex_tt clr">
+            <h2 class="msh">
+                商品列表</h2>
+            <a href="/shangpin/subject/SubjectProductRef.html?subjectNo=@Request.QueryString["subjectno"]&scategoryNo=@Request.QueryString["sCategoryNo"]&group=@Request.QueryString["group"]" class="button fltr">返回活动</a>
+        </div>
+         <!--alIndex_today--> 
+        <ul id="collection"></ul>
+        <input id="hidSubjectNo" type="hidden" value="@subjectNo" />
+        <input id="hidcategoryNo" type="hidden" value="@categoryNo" />
+                  
+        <div id="alIndex_ending_list">
+            <ul class="clr hoverEvent">
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        bool isPromotion = string.IsNullOrEmpty(item.ProductPromotionFlag) ? false : (item.ProductPromotionFlag == "1" ? true : false);
+                                
+                    <li class="alActive_list_cell" pordid="@item.ProductNo"><a href="javascript:;" title="@item.ProductName"
+                        class="loader">
+                        <div class="imgFocus">
+                            <img alt="" src="/ReadPic/GetPic.ashx?width=210&height=280&pictureFileNo=@item.ProductPicFile&type=1" class="loader">
+                        </div>
+                        <div class="alActive_list_info">
+                            <p>@Utility.GetStrLenAllString(item.ProductName, 30, "...")</p>
+                            <p>@Utility.GetStrLenAllString(item.BrandEnName, 25, "...")</p>
+                           @if (isPromotion)
+                           {
+                            <span><em style=" font-size:14px; "><i style=" font-size:14px; ">&yen;</i>@item.PromotionPrice.ToString("#0")</em>&nbsp;&nbsp;<em  style="font-size:14px; color:Black; "><i style=" font-size:12px; ">&yen;</i>@item.LimitedPrice.ToString("#0")</em> <del style="font-size:12px; ">￥@item.MarketPrice.ToString("#0")</del>
+                            </span>
+                           }
+                           else
+                           {
+                            <span><em style="font-size:14px; "><i style=" font-size:14px; ">&yen;</i>@item.PromotionPrice.ToString("#0")</em> <del style="font-size:14px; ">￥@item.MarketPrice.ToString("#0")</del>
+                            </span>
+                           }
+                        </div>
+                           @if (item.Quantity <= 0)
+                           {<span pid="@item.ProductNo" class="pro_saleout">售罄</span>}
+                    </a></li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+    <!--alIndex_today-->
+    @*<div class="handle">
+        <a href="#" class="button" id="saveList_btn">保 存</a><a href="javascript:window.location.reload();"
+            class="button">取 消</a></div>*@
+</div>

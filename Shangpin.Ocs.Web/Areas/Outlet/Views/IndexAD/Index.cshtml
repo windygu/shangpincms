@@ -1,0 +1,109 @@
+﻿@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Ocs.Entity.Extenstion.Outlet;
+@{
+    int totalCount = (int)ViewBag.Count;
+    int currentPage = (int)ViewBag.CurPage;
+    int pageSize = (int)ViewBag.PageSize;
+
+    ViewBag.Title = "奥莱首页广告管理|尚品OCS管理系统";
+    IList<Shangpin.Entity.Wfs.SWfsPictureManager> list = (IList<Shangpin.Entity.Wfs.SWfsPictureManager>)ViewBag.List;
+}
+
+@section HeadScript{
+    <script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript">
+     
+    </script>
+}
+<h1>
+    <a href="/outlet/indexad/index">奥莱首页广告管理</a> > 广告列表</h1>
+<form action="/outlet/indexad/index" method="get" id="frmIndexAdSearch" name="frmIndexAdSearch">
+<div style="padding: 5px;">
+    广告名称
+    <input type="text" value="@ViewBag.Name" style="" name="name">
+    开始时间
+    <input name="begindate" class="Wdate" value="@ViewBag.BTime" type="text" onclick="WdatePicker()" readonly="readonly" >
+    结束时间
+    <input name="enddate" class="Wdate" value="@ViewBag.ETime" type="text" onclick="WdatePicker()" readonly="readonly" >
+    广告位置<select name="position" id="position" onchange="$('#frmIndexAdSearch').submit();">
+    <option value="">请选择位置</option>
+        @{
+            List<AD> adlist=IndexAD.ADList();
+            foreach (var item in adlist)
+            {
+              <option value="@item.Position" @(ViewBag.Position== item.Position.ToString() ? "selected" : "")>@item.Name</option>
+            }
+        }
+    </select>
+    展示频道
+    <select id="gender" name="gender" onchange="$('#frmIndexAdSearch').submit();">
+    <option value="">请选择频道</option>
+    <option value="3" @(ViewBag.Gender=="3" ? "selected" : "")>首页</option>
+    <option value="0" @(ViewBag.Gender=="0" ? "selected" : "")>女士频道</option>
+    <option value="1"  @(ViewBag.Gender=="1" ? "selected" : "")>男士频道</option>
+    </select>
+    <button type="submit">
+        查询</button>
+</div>
+</form>
+<input type="hidden" id="CurSordName" name="CurSordName" />
+<table class="mx-table">
+    <thead>
+        <tr>
+            <th width="20%">
+                名称
+            </th>
+            <th width="30%">
+                展示时间
+            </th>
+            <th width="10%">
+                广告位置
+            </th>
+            <th width="10%">
+                展示频道
+            </th>
+            <th width="20%">
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{  
+            var flag = 0;
+            foreach (var item in list)
+            {
+                flag = flag + 1;
+                                 
+            <tr class="@(flag % 2 == 0 ? "cross" : "")" id="Pic_@item.PictureManageId">
+                <td>@item.PictureName
+                </td>
+                <td>@(item.DateBegin + "—" + item.DateEnd)
+                </td>
+                <td>
+                @HtmHelpers.GetPostionName(null, item.Position)
+                </td>
+                <td>
+                @{
+                    if (item.Gender == 0)
+                    { @Html.Raw("女士");
+                    }
+                    else if (item.Gender == 1)
+                    { @Html.Raw("男士"); }
+                    else if (item.Gender == 3)
+                    { @Html.Raw("首页"); }
+                 }
+                </td>
+                <td>
+                    <a href="/outlet/indexad/Manage?act=edit&picManId=@item.PictureManageId">编辑</a>
+                    <a onclick="return confirm('确定删除?')" href="/outlet/indexad/Manage?act=del&picManId=@item.PictureManageId">删除</a> 
+                </td>
+            </tr>
+                                 
+            }
+        }
+    </tbody>
+</table>
+<div class="spPage">@Html.Raw(Html.PagerX("page", currentPage, pageSize, totalCount))</div>
+<div class="clr" id="mx-rightcontent-fixbar">
+    <a id="mx-btn-add" href="/outlet/indexad/Manage?act=create"></a>
+</div>

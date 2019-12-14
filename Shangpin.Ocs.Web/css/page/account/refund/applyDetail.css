@@ -1,0 +1,129 @@
+
+/* CSS Document */
+
+/* ============== Account refundApply ============== */
+
+.refundApply_info{
+	width:100%;
+	margin:10px 0 0 0;
+	color:#666;
+	min-height:655px;
+	_height:655px;
+}
+
+#spAccount_right .refundApply_info h2{
+	color:#e5232a;
+	line-height:45px;
+	height:45px;
+}
+.refundApply_info h4{
+	margin:15px 0 0 0;
+	font-weight:700;
+	line-height:24px;
+}
+
+.refundApply_info .applyMethod,.refundApply_info .applyReason{
+	width:100%;
+	margin:15px 0 0 0;
+}
+.applyMethod li{
+	float:left;
+	width:49%;
+	line-height:24px;
+}
+
+.applyProduct{
+	width:100%;
+	padding:5px 0;
+}
+.applyProduct li{
+	float:left;
+}
+.applyProduct li.prodDot2{
+	width:61px;
+	height:17px;
+	line-height:17px;
+	overflow:hidden;
+	margin-top:25px;
+	text-align:center;
+	padding-bottom:40px;
+	background:url(/images/page/account/refund_iconArrow.gif) no-repeat center center;
+}
+.applyProduct li.prodBox{
+	width:255px;
+	min-height:65px;
+	_height:65px;
+	padding:15px 10px;
+	border:1px solid #ccc;
+}
+.applyProduct li.prodBox img{
+	float:left;
+	margin-right:10px;
+	width:46px;
+	height:62px;
+}
+.applyProduct li.prodBox p{
+	margin-left:56px;
+	line-height:18px;
+	width:180px;
+}
+
+.refundApply_info .applyAddr{
+	width:100%;
+	line-height:24px;
+}
+.refundApply_info .applyAddr p{
+	line-height:24px;
+}
+/*detail*/
+
+.refund_title {
+    background: none repeat scroll 0 0 #F2F2F2;
+	height:27px;
+	color: #333;
+	padding:0 15px;
+	margin:21px 0 16px 0;
+}
+.refund_title p {
+   line-height: 27px;
+   width:49.9%;
+   float:left;
+   color: #333;
+}
+#refund_title_right {
+   text-align:right;	
+	}
+.applyReason li {
+   line-height: 24px;
+	}
+.indent {
+   padding-left:15px;	
+	}
+.indent2 {
+   padding-left:65px;	
+	}
+.indent3 {
+   width:15px;	
+	}
+#long {
+   width:64%;	
+	}
+#short {
+   width:35%;	
+	}
+#long2 {
+   width:65%;	
+	}
+#short2 {
+   width:33%;	
+	}
+#tabHei {
+   height:38px;
+   color:#000;
+	}
+.tabHei2 {
+   height:22px;
+	}
+.tabWid {
+   width:233px;	
+	}

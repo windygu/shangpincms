@@ -1,0 +1,58 @@
+#spVip_content{
+	padding:0 0 35px;
+}
+.spVip_imglist{
+	padding:0 0 0 66px;
+	margin-top:-10px;
+}
+.spVip_imglist li{
+	width:390px;
+	height:550px;
+	float:left;
+	margin:26px 28px 0 0;
+	border:5px solid #b9b9b9;
+}
+.spVip_imglist li a, .spVip_imglist li img{
+	display:block;
+	width:390px;
+	height:550px;
+}
+.smallImg li{
+	width:247px;
+	height:350px;
+	position:relative;
+}
+.smallImg li a, .smallImg li img{
+	width:247px;
+	height:350px;
+}
+.smallImg li div{
+	display:block;
+	height:75px;
+	width:217px;
+	padding:0 15px;
+	position:absolute;
+	left:0;
+	bottom:0;
+	background-color:rgba(0, 0, 0, 0.6);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000,endColorstr=#99000000);zoom:1;
+}
+:root .smallImg li div{filter:none\9;}/*for IE9*/
+.smallImg li div h3{
+	color:#fff;
+	font-size:14px;
+	line-height:22px;
+	font-weight:bold;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	margin-top:8px;
+}
+.smallImg li div p{
+	color:#cacaca;
+	font-size:12px;
+	line-height:18px;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}

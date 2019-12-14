@@ -1,0 +1,162 @@
+.spNewlist_asidebox {
+	width:195px;
+	font-family:Arial,"宋体";
+}
+.spNewlist_aside {
+	/*width:210px;--20130415*/
+	/*padding:16px 0 0;*/
+	color:#666;
+	background:#fff;
+	font-family:Arial,"宋体";
+}
+.spNewlist_aside h1{
+	font-size:14px;
+	font-family:Arial,"宋体";
+	padding:0 !important;
+	text-shadow:none;
+	overflow:hidden;
+	font-weight:700;
+}
+
+
+/*--20130415--*/
+/*#brand_box{
+	background:#fff;
+	width:930px;
+	padding:0 15px;
+}*/
+#brandList_guanzhu{
+	margin:10px 0 12px 0;
+	height:30px;
+	line-height:30px;
+	width:195px;
+	background: url(/images/page/brand/attenBg.gif) repeat-x left top;
+}
+#brandList_guanzhu div{
+	position:relative;
+	line-height:30px;
+	cursor:pointer;
+}
+
+#brandList_guanzhu a{
+	font-family:Arial,"宋体";
+	display: block;
+	float:left;
+	line-height:30px;
+	color: #777;
+	padding-left:27px;
+	position: relative;
+}
+#brandList_guanzhu span{
+	display: block;
+	line-height:30px;
+	float:left;
+	color: #777;
+	font-family:Arial,"宋体";
+}
+
+#brandList_guanzhu a i, #brandList_guanzhu .added i{
+	display: block;
+	position: absolute;
+	left:5px;
+	top:10px;
+	width:18px;
+	height:11px;
+}
+#brandList_guanzhu a i{
+	background:url(/images/page/brand/attenEd.gif) no-repeat;
+}
+#brandList_guanzhu .added i{
+	background:url(/images/page/brand/attenIng.gif) no-repeat;
+}
+
+.aside_commbox {
+	margin:0 0 12px ;
+	zoom:1;
+}
+.aside_commbox dt {
+	color:#333;
+	font-weight:bold;
+    font-size: 12px;
+    font-family:Arial,"宋体";
+    position: relative;
+	height:25px;
+	line-height:25px;
+	/*width:196px;*/
+	border-bottom:1px solid #ccc;
+	margin-bottom:10px;
+	padding-left:6px;
+}
+.aside_commbox dd a{
+	display:block;
+	/*width:195px;*/
+	height:23px;
+	line-height:23px;
+	padding-left:6px;
+}
+.aside_commbox dd a:hover{
+	background-color:#666;
+	color:#fff;
+}
+dl.curr,dl.curr a,.aside_commbox dd a.curr{
+	/*font-weight:normal;*/
+	background-color:#666;
+	color:#fff;
+}
+.spNewlist_con {
+	width:694px;
+	padding:0 0 0 16px;
+	background:#fff;
+    overflow: hidden;
+}
+
+.spNewlist_top{
+	padding-bottom:20px;
+}
+
+.spProduct_listbox li{
+	margin:0 28px 10px 0;
+}
+
+.spNewlist_intrd {
+    width:694px;
+	border-top:1px solid #ccc;	
+	padding:10px 0 30px;
+	margin-top:30px;
+	}
+.spNewlist_intrd span {
+    font-size:14px;
+	color:#333;
+	height:40px;
+	line-height:40px;	
+	padding-right:30px;
+	}
+.spNewlist_intrd p {
+	color:#333;
+	line-height:24px;
+	text-indent: 2em;
+	padding-right:30px;
+}
+
+.brandDetail_conlist{
+	padding: 16px 0 20px 0;
+	border-top:1px solid #e2e2e2;
+	width:100%;
+}
+.brandDetail_conlist h3{
+	font-family:Arial,"宋体";
+	font-size:14px;
+	font-weight:bold;
+	color: #333;
+	padding-bottom:10px;
+}
+.brandDetail_conlist p{
+	font-family:Arial,"宋体";
+	font-size:14px;
+	line-height:24px;
+	color: #333;
+	text-indent:28px;
+}
+.nobd{
+	border:0;
+}

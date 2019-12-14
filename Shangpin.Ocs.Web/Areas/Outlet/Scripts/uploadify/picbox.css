@@ -1,0 +1,35 @@
+#picBox ul {
+    padding: 10px;
+}
+
+#picBox li p {
+}
+
+#picBox li {
+    position: relative;
+    padding: 5px;
+    margin: 10px 5px;
+    width: 100px;
+    min-height: 50px;
+    float: left;
+    display: inline;
+    border: 1px solid #ccc;
+}
+
+#picBox input {
+    width: 100px;
+}
+
+#picBox li .left {
+    float: left;
+    cursor: pointer;
+}
+
+#picBox li .right {
+    float: right;
+    cursor: pointer;
+}
+
+fieldset .pageBox {
+    clear: both;
+}

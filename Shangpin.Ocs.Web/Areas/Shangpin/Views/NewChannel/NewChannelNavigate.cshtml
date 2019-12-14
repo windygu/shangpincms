@@ -1,0 +1,120 @@
+﻿@model List<Shangpin.Entity.Wfs.SWfsRecommLink>
+@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "NewChannelNavigate";
+
+}
+
+<script src="~/Areas/Shangpin/Scripts/js/jquery.validate.js"></script>
+<script src="~/Areas/Shangpin/Scripts/NewChanne/Navigate.js?23=0"></script>
+<script src="~/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script src="~/Areas/Shangpin/Scripts/json2.js"></script>
+<link href="~/Areas/Shangpin/Scripts/NewChanne/Navigate.css" rel="stylesheet" />
+<script src="/Areas/Shangpin/Scripts/Venue/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+
+<h2>OCS > 尚品 > 导航管理</h2>
+
+<div class="tabs">
+    <ul id="tabs">
+        <li class="tab-nav-action" style="border-right:0px; border-bottom:0px;">热门推荐</li>
+        <li class="tab-nav" style="border-right:0px; border-bottom:0px;">品类</li>
+        <li class="tab-nav" style="border-bottom:0px;">品牌</li>
+    </ul>
+</div>
+<div id="tabs-body" class="tabs-body">
+    <div style="display:block">
+
+        <table class="tabshot" id="table_main">
+            <tr>
+                <th>名称</th>
+                <th>链接</th>
+                <th>状态</th>
+                <th width="160px">展示时间</th>
+                <th width="70px">操作</th>
+            </tr>
+            @{
+                if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td style="display:none;">@item.LinkId,@item.SortId</td>
+                            <td>@item.LinkName</td>
+                            <td style="width:260px;">@item.LinkAddress</td>
+                            <td style="color:blue;"><font onclick="UpdateState(this)" nid="@item.LinkId" nstatus="@item.Status" style="cursor:pointer">@(item.Status == 1 ? "显示" : "隐藏")</font></td>
+                            <td>@item.BeginTime 至 @item.EndTime</td>
+                            <td style="color:blue;"><font onclick="GotoTop(this)" style="cursor:pointer">上移</font>&nbsp;&nbsp;<font onclick="GotoBottom(this)" style="cursor:pointer">下移</font>&nbsp;&nbsp;<font nid="@item.LinkId" onclick="DelBottom(this)" style="cursor:pointer">删除</font></td>
+                        </tr>
+                    }
+                }
+            }
+
+        </table>
+
+
+        <div>
+            <input type="button" value="添加" onclick="Add()" style="margin-left:30px;margin-top:10px;width:100px;height:30px;display:inline;" />
+            <input type="button" value="保存" onclick="savetable()" style="margin-left: 20px; width: 100px; height: 30px; display: none;cursor: pointer;" id="SaveTable" />
+        </div>
+        <input type="hidden" value="@ViewBag.ChannelNo" id="hidChannelNo" />
+        <input type="hidden" value="@ViewBag.sChannelNo" id="hidsChannelNo" />
+
+        <form style="margin-left:30px;margin-top:10px;display:none;" id="FormAdd">
+            <table style="line-height:30px;text-align:center;">
+                <tr>
+                    <td style="width:60px;line-height:45px;text-align:right;">名称：</td>
+                    <td><input type="text" style="width:400px;height:30px;" name="LinkName" id="LinkName" /><font style="color:#ff0000">16个字以内</font></td>
+                </tr>
+                <tr>
+                    <td style="width: 60px; line-height: 45px; text-align: right; ">链接：</td>
+                    <td><input type="text" style="width:400px;height:30px;" name="LinkAddress" id="LinkAddress" /><font style="color:#ff0000">200个字以内</font></td>
+                </tr>
+                <tr>
+                    <td style="width: 60px; line-height: 45px; text-align: right; ">打开方式：</td>
+                    <td style="text-align:left;"><input type="radio" name="LinkTarget" value="_self" checked="checked" />当前页打开&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="LinkTarget" value="_blank" />新页面打开</td>
+                </tr>
+                <tr>
+                    <td style="width: 60px; line-height: 45px; text-align: right;">状态：</td>
+                    <td style="text-align:left;"><input type="radio" name="Status" value="1" checked="checked" />显示&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="Status" value="0" />隐藏</td>
+                </tr>
+                <tr>
+                    <td style="width: 60px; line-height: 45px; text-align: right;">开始时间：</td>
+                    <td><input type="text" onclick="WdatePicker({ startDate: '%y-%M-01 00:00:00', dateFmt: 'yyyy-MM-dd HH:mm:ss', alwaysUseStartDate: true })" style="width:400px;height:30px;" name="BeginTime" id="BeginTime" /></td>
+                </tr>
+                <tr>
+                    <td style="width: 60px; line-height: 45px; text-align: right;">结束时间：</td>
+                    <td><input type="text" onclick="WdatePicker({ startDate: '%y-%M-01 00:00:00', dateFmt: 'yyyy-MM-dd HH:mm:ss', alwaysUseStartDate: true })" style="width:400px;height:30px;" name="EndTime" id="EndTime" /></td>
+                </tr>
+            </table>
+            <input type="submit" value="保存" style="width: 100px; height: 30px; background: #808080; margin-top: 20px;margin-left:60px;" />
+        </form>
+    </div>
+    <div style="display:none">
+        无
+    </div>
+    <div style="display:none">
+        <form style="margin-left:30px;margin-top:10px;" id="UploadForm" enctype="multipart/form-data" action="/shangpin/NewChannel/AddUpdatePicture">
+            <table cellpadding="5" cellspacing="0" border="0" width="80%">
+                <tr>
+                    <td><input type="hidden" value="@ViewBag.ChannelNo" name="fileChannelNo" /></td>
+                </tr>
+                <tr>
+                    <td> 图片：<input type="file" id="PicFile" name="PicFile" style="width:200px;" /><br /></td>
+                </tr>
+                <tr>
+                    <td> 链接：<input id="lianjie" type="text" style="width:400px; margin-top:20px;height:30px;" name="LinkAddress" /></td>
+                </tr>
+                <tr>
+                    <td><a href="" id="imglink" target="_blank"><img src="" id="viewImg" style="display:none; margin-top:10px;" /></a></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="button" value="预览" style="width: 100px; height: 30px; background: #808080; margin-top: 20px" onclick="yulans()" />&nbsp;&nbsp;
+                        <input type="button" value="保存" style="width: 100px; height: 30px; background: #808080; margin-top: 20px" onclick="save()" />
+                    </td>
+                </tr>
+            </table>
+            <br />
+        </form>
+    </div>
+</div>

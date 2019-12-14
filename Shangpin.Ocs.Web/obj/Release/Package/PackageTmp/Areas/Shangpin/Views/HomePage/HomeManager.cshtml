@@ -1,0 +1,759 @@
+﻿@using Shangpin.Entity.Item
+@using Shangpin.Entity.User
+@using Shangpin.Entity.Wfs
+@using Shangpin.Framework.Common
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@using Shangpin.Ocs.Service.Shangpin;
+@using Shangpin.Ocs.Service.Common;
+@{
+    ViewBag.Title = "首页管理";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    SWfsIndexModuleService _SWfsIndexModuleService = new SWfsIndexModuleService();
+    SWfsOperationPictureService _SWfsOperationPictureService = new SWfsOperationPictureService();
+    SWfsIndexModuleLinkService _SWfsIndexModuleLinkService = new SWfsIndexModuleLinkService();
+    //IList<SWfsPictureManager> topList = ViewBag.Banner;//头图Banner
+
+    IList<SWfsOperationPicture> topList = ViewBag.Banner;//头图Banner
+    //底部运营位置图片
+    IList<SWfsOperationPicture> picBottonList = ViewBag.BottomBanner as IList<SWfsOperationPicture>;
+    IList<SWfsOperationPicture> picMiddelList = ViewBag.MiddleBanner as IList<SWfsOperationPicture>;
+    //横幅广告
+    IList<SWfsOperationPicture> bannerADHeight70 = ViewBag.Banner70 as IList<SWfsOperationPicture>;
+    string bannerIsClose = ViewBag.Banner70IsClose as string;
+    //首页品牌
+    IEnumerable<Shangpin.Entity.Item.Search.BrandInfo> brandList = ViewBag.RecommendBrand;
+    IList<SWfsOperationPicture> imgMapList = ViewBag.BannerImgMap;//热点图Banner
+}
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/js/tipswindown.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="/Areas/Shangpin/Scripts/page/index/CategoryChoose.js"></script>
+    <script type="text/javascript">
+        function switchTab(ProTag, ProBox) {
+            //alert(ProTag + "-" + ProBox);
+            for (i = 1; i < 5; i++) {
+                if ("tab" + i == ProTag) {
+                    $("#" + ProTag).attr("style", "background-color: red;");
+                } else {
+                    $("#tab" + i).removeAttr("style");
+                }
+                if ("con" + i == ProBox) {
+                    $("#" + ProBox).show();
+                } else {
+                    $("#con" + i).hide();
+                }
+            }
+        }
+        function changeStates(channelNo, value) {
+            if (channelNo.length > 0) {
+                $.ajax({
+                    url: "/shangpin/HomePage/IndexBannerADStatus?rand=" + Math.random(),
+                    data: { PageNo: channelNo, value: value },
+                    success: function (result) {
+                        if (result.status == 1) { }
+                        else {
+                            alert('操作失败请稍后再试');
+                        }
+                    }
+                })
+            }
+        }
+    </script>
+}
+@section HeadStyle{
+    <link href="/Areas/Shangpin/Content/css/tipswindown.css" rel="stylesheet" type="text/css" charset="utf-8" />
+    <link href="~/Areas/Shangpin/Content/css/page/index/index201408.css" rel="stylesheet" />
+    <style type="text/css">
+        .dispalayRegion {
+            display: none;
+            position: absolute;
+            width: 960px;
+            background-color: White;
+            height: auto;
+            top: 0px;
+            left: 0px;
+            font-size: 12px;
+        }
+
+            .dispalayRegion td {
+                padding: 10px;
+            }
+
+        .setbar {
+            text-align: right;
+            padding-top: 6px;
+            width: 100%;
+            height: 60px;
+        }
+
+        a.blue_button {
+            background-color: #449FDF;
+            color: white;
+            padding: 3px 4px;
+            border-radius: 3px;
+        }
+
+        .floor {
+            border: 1px solid black;
+            width: 100%;
+            margin: 8px 0px;
+        }
+
+            .floor.hidefloor {
+                border: 2px dotted red;
+            }
+
+        #hotproduct {
+            border: 1px solid #000;
+            margin-top: 20px;
+        }
+
+            #hotproduct ul {
+                text-align: center;
+                list-style-type: none;
+            }
+
+                #hotproduct ul #hotlishow {
+                    font-size: 18px;
+                    margin-left: 400px;
+                }
+
+            #hotproduct a {
+                margin-left: 300px;
+            }
+
+            #hotproduct ul li {
+                display: inline;
+                height: 48px;
+                line-height: 48px;
+                list-style-type: none;
+            }
+
+        .product_list .small_img_list li img {
+            position: absolute;
+            bottom: 0;
+            left: 10px;
+            top: 30px;
+            z-index: 1;
+        }
+    </style>
+}
+<div style="width:1070px;text-align:right">
+    <a class="blue_button" href="/shangpin/homepage/HomeManager_FloorSort">更改页面布局</a>
+</div>
+<div class="spIndex_box">
+    <!--首页banner start-->
+    <!--首页图片轮播 start-->
+    <div id="spIndex_mxImageSwitch" style="border:1px solid #000;">
+        <a name="ImageSwitchList" href="/shangpin/homepage/indexlist.html" class="blue_button">轮播图管理列表</a>
+        <div class="switchwrapper">
+            @{
+                if (topList != null && topList.Count > 0)
+                {
+                    SWfsOperationPicture topBigShow = topList.Where(p => p.PictureIndex == 4).FirstOrDefault();
+                    if (topBigShow != null)
+                    {
+                        <a id="switchhref" href="/shangpin/homepage/createtopswitch.html" title="测试链接标题-index-0">
+                            <img src="/ReadPic/GetPic.ashx?width=960&pictureFileNo=@(topBigShow.PictureFileNo)&type=2" alt="@(topBigShow.PictureName)" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="/shangpin/homepage/createtopswitch.html"><img alt="@(topList[0].PictureName)" src="/ReadPic/GetPic.ashx?pictureFileNo=@(topList[0].PictureFileNo)&type=2" /> </a>
+                    }
+                }
+                else
+                {
+                    <a href="/shangpin/homepage/createtopswitch.html">点击添加轮播图</a>
+                }
+            }
+        </div>
+    </div>
+    <!--首页图片轮播 end-->
+    <!--首页banner end-->
+    <!--首页主体部分 start-->
+    <div class="spIndex_body">
+
+        <!--热门潮流 start-->
+        <div id="spTabs" class="clr" style="border:1px solid #000;margin-top: 15px;">
+            <h6 class="clr" id="spTabs_menu">
+                <ul class="bigTabs_menu clr">
+                    <li class="curr" id="tab1" onmouseover="switchTab('tab1','con1');"><span class="padr10"><a href="/shangpin/homepage/BrandSelectList?PageNo=index&PagePositionNo=PopularBrand">热门潮流列表</a></span>|</li>
+                    <li id="tab2" onmouseover="switchTab('tab2','con2');"><span class="padl10"><a href="/shangpin/homepage/BrandSelectList?PageNo=index&PagePositionNo=InternationalBrand">国际大牌列表</a></span></li>
+                </ul>
+                <ul style="float:right">
+                    <li><a href="/shangpin/homepage/RecomemendBrandSelectList?PageNo=index&PagePositionNo=RecommendBrand&isRecommendBrand=1" class="blue_button" style="color:white;">品牌广告图管理</a></li>
+                </ul>
+            </h6>
+
+            <div class="clr" id="spTab_content">
+                <div class="major_suit clr" id="con1">
+                    <p>
+                        @if (brandList != null && brandList.Count() > 0)
+                        {
+                            var brandList0 = brandList.Where(n => n.PagePositionNo == "PopularRecommendBrand" && n.IsRecommendBrand == 1).ToList();
+                            if (brandList0 != null && brandList0.Count() > 0)
+                            {
+                                <a href="/shangpin/homepage/AddHomeBrand?PageNo=index&PagePositionNo=PopularRecommendBrand&PagePositionName=@(HttpUtility.UrlEncodeUnicode("热门潮流"))">
+                                    <img src="/ReadPic/GetPic.ashx?width=160&height=200&pictureFileNo=@(brandList0[0].PictureFileNo)&type=2" width="168" height="260" />
+                                </a>
+                            }
+                            else
+                        {
+                             <a href="/shangpin/homepage/AddHomeBrand?PageNo=index&PagePositionNo=PopularRecommendBrand&PagePositionName=@(HttpUtility.UrlEncodeUnicode("热门潮流"))">
+                                 <img src="" alt="添加推荐品牌" width="168" height="260" />
+                                </a>
+                        }
+                        }
+                        
+                    </p>
+                    <ul>
+                        @if (brandList != null && brandList.Count() > 0)
+                        {
+                            var brandList1 = brandList.Where(n => n.PagePositionNo == "PopularBrand" && n.IsRecommendBrand == 0).Take(24).ToList();
+                            if (brandList1 != null && brandList1.Count() > 0)
+                            {
+                                for (int i = 0; i < brandList1.Count(); i++)
+                                {
+                                    <li>
+                                        <a href="/shangpin/homepage/AddBrands?PageNo=index&PagePositionNo=PopularBrand&PagePositionName=@(HttpUtility.UrlEncodeUnicode("热门潮流"))">
+                                            <img src="/ReadPic/GetPic.ashx?width=130&height=62&pictureFileNo=@(brandList1.ElementAt(i).BrandLogo)&type=2" width="130" height="62" />
+                                        </a>
+                                    </li>
+                                }
+                            }
+                        }
+                    </ul>
+                </div>
+
+                <div class="major_suit clr non" id="con2" style="display:none;">
+                    <p>
+                        @if (brandList != null && brandList.Count() > 0)
+                        {
+                            var brandList3 = brandList.Where(n => n.PagePositionNo == "InternationalRecommendBrand" && n.IsRecommendBrand == 1).ToList();
+                            if (brandList3 != null && brandList3.Count() > 0)
+                            {
+                                <a href="/shangpin/homepage/AddHomeBrand?PageNo=index&PagePositionNo=InternationalRecommendBrand&PagePositionName=@(HttpUtility.UrlEncodeUnicode("国际大牌"))">
+                                    <img src="/ReadPic/GetPic.ashx?width=160&height=200&pictureFileNo=@(brandList3[0].PictureFileNo)&type=2" width="168" height="260" />
+                                </a>
+                            }
+                             else
+                            {
+                                 <a href="/shangpin/homepage/AddHomeBrand?PageNo=index&PagePositionNo=InternationalRecommendBrand&PagePositionName=@(HttpUtility.UrlEncodeUnicode("国际大牌"))">
+                                        <img src="" alt="添加推荐品牌" width="168" height="260" />
+                                    </a>
+                        }
+                        }
+                       
+                    </p>
+                    <ul>
+                        @if (brandList != null && brandList.Count() > 0)
+                        {
+                            var brandList2 = brandList.Where(n => n.PagePositionNo == "InternationalBrand" && n.IsRecommendBrand == 0).Take(24).ToList();
+                            if (brandList2 != null && brandList2.Count() > 0)
+                            {
+                                for (int i = 0; i < brandList2.Count(); i++)
+                                {
+                                    <li>
+                                        <a href="/shangpin/homepage/AddBrands?PageNo=index&PagePositionNo=InternationalBrand&PagePositionName=@(HttpUtility.UrlEncodeUnicode("国际大牌"))">
+                                            <img src="/ReadPic/GetPic.ashx?width=130&height=62&pictureFileNo=@(brandList2.ElementAt(i).BrandLogo)&type=2" width="130" height="62" />
+                                        </a>
+                                    </li>
+                                }
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--热门潮流 end-->
+        <!--最新上架 start-->
+        <div class="clr" style="border:1px solid #000;margin-top: 25px;">
+            <h6>
+                <span class="right">
+                    <a href="~/Shangpin/NewComming/AddNewComming" class="blue_button" style="color:white;">
+                        添加上新
+                        @*<input type="button" value="添加上新"  style="width:100px;height:30px;" onclick="AddNewComming()"/>*@
+                    </a>&nbsp;&nbsp;
+                    <a href="~/Shangpin/NewComming/NewCommingIndex" class="blue_button" style="color:white;">
+                        上新列表管理
+                        @*<input type="button" value="上新列表管理" style="width:100px;height:30px;" />*@
+                    </a>&nbsp;&nbsp;
+                    <a href="~/Shangpin/NewComming/AddNewCommingDate" class="blue_button" style="color:white;">
+                        上新时间设置
+                        @*<input type="button" value="上新时间设置" style="width:100px;height:30px;" />*@
+                    </a>
+                </span>
+                <span class="left">最新上架</span>
+            </h6>
+        </div>
+        <!--最新上架 end-->
+        <!--首页轮播热点图 start-->
+        <div class="clr" style="border:1px solid #000;margin-top: 25px;">
+            <h6>
+                <span class="right">
+                    <a name="ImageSwitchList" href="/shangpin/homepage/indexlistismap.html?isMap=1" class="blue_button" style="color:white;">橱窗图管理列表</a>
+                    <a href="/shangpin/homepage/createtopswitchimgmap.html" class="blue_button" style="color:white;">点击添加橱窗图</a>
+                </span>
+
+                <span class="left">今日橱窗管理</span>
+            </h6>
+            <div>
+                @{
+                    if (imgMapList != null && imgMapList.Count > 0)
+                    {
+                        string mapid = "ImgMap" + imgMapList[0].PictureManageId;
+
+                        <img alt="@(imgMapList[0].PictureName)" src="/ReadPic/GetPic.ashx?pictureFileNo=@(imgMapList[0].PictureFileNo)&type=2" usemap="#@mapid" />
+                        if (!string.IsNullOrEmpty(imgMapList[0].LinkAddress))
+                        {
+                            string[] link = imgMapList[0].LinkAddress.Split('|');
+
+                            <map id="@mapid" name="@mapid">
+                                @{
+                            foreach (var item in link)
+                            {
+                                if (!item.Contains("="))
+                                {
+                                    continue;
+                                }
+                                <area shape="rect" coords="@item.Split('=')[1]" href="@item.Split('=')[0]" target="_blank" />
+                            }
+                                }
+                            </map>
+                        }
+
+                    }
+                    else
+                    {
+                        <a href="/shangpin/homepage/createtopswitchimgmap.html">点击添加轮播图</a>
+                    }
+                }
+            </div>
+
+        </div>
+
+        <!--首页轮播热点图 end-->
+
+        <!--广告位start-->
+        <ul class="promotion_img clr">
+            <div style="">
+                <a class="blue_button" href="/shangpin/homepage/IndexBottonList.html?PagePositionNo=middleBanner&PagePositionName=首页中间三广告位1&width=340&height=220&PictureIndex=0" style="display: block;width: 330px;float: left;">中间三广告(340*220)管理列表</a>
+                <a class="blue_button" href="/shangpin/homepage/IndexBottonList.html?PagePositionNo=middleBanner&PagePositionName=首页中间三广告位2&width=263&height=220&PictureIndex=1" style="display: block;width: 256px;float: left;margin-left: 10px;">中间三广告(263*220)管理列表</a>
+                <a class="blue_button" href="/shangpin/homepage/IndexBottonList.html?PagePositionNo=middleBanner&PagePositionName=首页中间三广告位3&width=340&height=220&PictureIndex=2" style="display: block;width: 321px;float: left;margin-left: 10px;">中间三广告(340*220)管理列表</a>
+            </div>
+            @if (picMiddelList.Any())
+            {
+                int index = 1;
+                switch (picMiddelList.Count)
+                {
+                    case 1:
+                        foreach (var picsingle in picMiddelList.OrderBy(p => p.PictureIndex))
+                        {
+                            <li @(index == 3 ? Html.Raw("class=\"last\"") : (index == 2 ? Html.Raw("class=\"small\"") : Html.Raw("")))>
+                                <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=middleBanner&PictureIndex=@(index-1)&PagePositionName=@(HttpUtility.UrlEncodeUnicode("首页中间三广告位" + (index)))&width=340&height=220" title="@picsingle.PictureName" target="@(picsingle.LinkAddress.IsNullOrEmpty() == true ? "" : "_blank")">
+                                    <img alt="@(picsingle.PictureName)" src="/ReadPic/GetPic.ashx?width=340&height=220&pictureFileNo=@(picsingle.PictureFileNo)&type=2" width="340" height="220" />
+                                </a>
+                            </li>
+                            index = index + 1;
+                        }
+                        <li class="small">
+                            <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=middleBanner&PictureIndex=1&PagePositionName=首页中间三广告位2&width=263&height=220"><img alt="首页中间三广告位2" src="" width="263" height="220" /></a>
+                        </li>
+                        <li class="last">
+                            <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=middleBanner&PictureIndex=2&PagePositionName=首页中间三广告位3&width=340&height=220"><img alt="首页中间三广告位3" src="" width="340" height="220" /></a>
+                        </li>
+                        break;
+                    case 2:
+                        //int index = 1;
+                        foreach (var picsingle in picMiddelList.OrderBy(p => p.PictureIndex))
+                        {
+                            <li @(index == 2 ? Html.Raw("class=\"small\"") : Html.Raw(""))>
+                                <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=middleBanner&PictureIndex=@(index-1)&PagePositionName=@(HttpUtility.UrlEncodeUnicode("首页中间三广告位" + (index)))&width=@(index==2?"263":"340")&height=220" title="@picsingle.PictureName" target="@(picsingle.LinkAddress.IsNullOrEmpty() == true ? "" : "_blank")">
+                                    <img alt="@(picsingle.PictureName)" src="/ReadPic/GetPic.ashx?width=@(index==2?"263":"340")&height=220&pictureFileNo=@(picsingle.PictureFileNo)&type=2" @(index == 2 ? Html.Raw("width=\"263\"") : Html.Raw("width=\"340\"")) height="220" />
+                                </a>
+                            </li>
+                            index = index + 1;
+                        }
+                        <li class="last">
+                            <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=middleBanner&PictureIndex=2&PagePositionName=首页中间三广告位3&width=340&height=220"><img alt="首页中间三广告位3" src="" width="340" height="220" /></a>
+                        </li>
+                        break;
+                    case 3:
+                        //int index = 1;
+                        foreach (var picsingle in picMiddelList.OrderBy(p => p.PictureIndex))
+                        {
+                            <li @(index == 2 ? Html.Raw("class=\"small\"") : Html.Raw(""))>
+                                <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=middleBanner&PictureIndex=@(index-1)&PagePositionName=@(HttpUtility.UrlEncodeUnicode("首页中间三广告位" + (index)))&width=@(index==2?"263":"340")&height=220" title="@picsingle.PictureName" target="@(picsingle.LinkAddress.IsNullOrEmpty() == true ? "" : "_blank")">
+                                    <img alt="@(picsingle.PictureName)" src="/ReadPic/GetPic.ashx?width=@(index==2?"263":"340")&height=220&pictureFileNo=@(picsingle.PictureFileNo)&type=2" @(index == 2 ? Html.Raw("width=\"263\"") : Html.Raw("width=\"340\"")) height="220" />
+                                </a>
+                            </li>
+                            index = index + 1;
+                        }
+                        break;
+                    default:
+                    <li>
+                        <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=middleBanner&PictureIndex=0&PagePositionName=首页中间三广告位1&width=340&height=220"><img alt="首页中间三广告位1" src="" width="340" height="220" /></a>
+                    </li>
+                    <li class="small">
+                        <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=middleBanner&PictureIndex=1&PagePositionName=首页中间三广告位2&width=263&height=220"><img alt="首页中间三广告位2" src="" width="263" height="220" /></a>
+                    </li>
+                    <li class="last">
+                        <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=middleBanner&PictureIndex=2&PagePositionName=首页中间三广告位3&width=340&height=220"><img alt="首页中间三广告位3" src="" width="340" height="220" /></a>
+                    </li>
+                        break;
+                }
+            }
+            else
+            {
+                <li>
+                    <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=middleBanner&PictureIndex=0&PagePositionName=首页中间三广告位1&width=340&height=220"><img alt="首页中间三广告位1" src="" width="340" height="220" /></a>
+                </li>
+                <li class="small">
+                    <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=middleBanner&PictureIndex=1&PagePositionName=首页中间三广告位2&width=263&height=220"><img alt="首页中间三广告位2" src="" width="263" height="220" /></a>
+                </li>
+                <li class="last">
+                    <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=middleBanner&PictureIndex=2&PagePositionName=首页中间三广告位3&width=340&height=220"><img alt="首页中间三广告位3" src="" width="340" height="220" /></a>
+                </li>
+            }
+
+        </ul>
+
+
+        <!--banner广告 start-->
+        @if (bannerADHeight70 != null && bannerADHeight70.Count() > 0)
+        {
+            <div class="banner" style="border:1px solid #000; height:90px;">
+                <a class="blue_button" href="/shangpin/homepage/IndexBottonList.html?PagePositionNo=BannerADHeight70&PagePositionName=@(HttpUtility.UrlEncodeUnicode("横幅广告"))&width=960&height=70">横幅广告管理列表 </a>
+                <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=BannerADHeight70&PictureIndex=0&PagePositionName=@(HttpUtility.UrlEncodeUnicode("横幅广告960*70"))&width=960&height=70">
+                    <img alt="@(bannerADHeight70[0].PictureName)" src="/ReadPic/GetPic.ashx?width=960&height=70&pictureFileNo=@(bannerADHeight70[0].PictureFileNo)&type=2" />
+                </a>
+            </div>
+        }
+        else
+        {
+             <div class="banner" style="border:1px solid #000; height:90px;">
+                 <a class="blue_button" href="/shangpin/homepage/IndexBottonList.html?PagePositionNo=BannerADHeight70&PagePositionName=@(HttpUtility.UrlEncodeUnicode("横幅广告"))&width=960&height=70">横幅广告管理列表 </a>
+                <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=BannerADHeight70&PictureIndex=0&PagePositionName=@(HttpUtility.UrlEncodeUnicode("横幅广告960*70"))&width=960&height=70">
+                    <img alt="点击添加横幅广告" src="" width="960" height="70" />
+                </a>
+            </div>
+        }
+        <!--banner广告 end-->
+
+        @{
+            int floorStage = 0;
+            List<SWfsIndexModule> allfloors = new SWfsIndexModuleService().GetAllFloors();
+            if (allfloors == null)
+            {
+                allfloors = new List<SWfsIndexModule>();
+            }
+            List<SWfsIndexModule> floors = allfloors.OrderBy(a => a.Sort).ToList();//所有楼层
+
+            Boolean insertToday = false;
+            for (int i = 1; i <= 9; i++)
+            {
+                SWfsIndexModule temp = null;
+                if (floors != null && floors.Count > 0)
+                {
+                    temp = floors.Where(a => a.Sort == i).FirstOrDefault();
+                    if (temp != null && temp.ADShowType == 3)
+                    {
+                        insertToday = true;
+                    }
+                }
+                if (temp == null)
+                {
+                    if (!insertToday)
+                    {
+                        temp = new SWfsIndexModule { ModuleId = 0, ModuleName = "今日style", ADShowType = 3, Sort = i, Stutas = 1 };//如果为空默认第一个楼层为今日style
+                        insertToday = true;
+                    }
+                    else if (i == 1)
+                    {
+                        temp = new SWfsIndexModule { ModuleId = 0, ModuleName = i + "F", ADShowType = 1, Sort = i, Stutas = 1 };//第二楼为单广告图
+                    }
+                    else if (i > 1)
+                    {
+                        temp = new SWfsIndexModule { ModuleId = 0, ModuleName = i + "F", ADShowType = 2, Stutas = 1 };//其他为双广告图
+                    }
+                }
+                if (i == 9 && !insertToday)//至少保证插入一条今日style
+                {
+                    temp = new SWfsIndexModule { ModuleId = 0, ModuleName = "今日style", ADShowType = 3, Sort = i, Stutas = 1 };//如果为空默认第一个楼层为今日style
+                }
+                List<SWfsOperationPicture> pics = _SWfsIndexModuleService.GetCurrentSWfsOperationPictureByModuleId(temp);//_SWfsIndexModuleService.GetSWfsOperationPictureByModuleId(floors[i].ModuleId);
+
+                if (pics != null)
+                {
+                    pics = pics.OrderBy(a => a.PictureIndex).ToList();//所有图片
+                }
+                List<SWfsIndexModuleLink> links = _SWfsIndexModuleLinkService.GetSWfsIndexModuleLinkByModuleId(temp.ModuleId);
+                if (links != null)
+                {
+                    links = links.OrderBy(a => a.SortId).ToList();
+                }
+                if (temp.ADShowType == 3)
+                {
+                    SWfsOperationPicture todayPic0 = pics.FirstOrDefault(a => a.PictureIndex == 0) != null ? pics.First(a => a.PictureIndex == 0) : new SWfsOperationPicture();
+                    SWfsOperationPicture todayPic1 = pics.FirstOrDefault(a => a.PictureIndex == 1) != null ? pics.First(a => a.PictureIndex == 1) : new SWfsOperationPicture();
+                    SWfsOperationPicture todayPic2 = pics.FirstOrDefault(a => a.PictureIndex == 2) != null ? pics.First(a => a.PictureIndex == 2) : new SWfsOperationPicture();
+
+
+                    <div class="floor @(temp.Stutas==0?"hidefloor":"")" adshowtype="@temp.ADShowType" moduleid="@temp.ModuleId" sort="@temp.Sort">
+                        <div class="setbar">
+                            <a class="blue_button" href="/shangpin/homepage/HomeManager_TodayStyleSet?Sort=@(i)">模块全局设置</a>
+                        </div>
+                        <div class="clr">
+                            <h6 class="no_border">
+                                <span class="right">
+                                    <a href="@(links.Count > 0 ? links[0].LinkHref :"javascript:void(0)") target=" _blank">@(links.Count > 0 ? links[0].LinkName : "")&gt;</a>
+                                </span>
+                                <span class="left">@(temp.ModuleName)</span>
+                            </h6>
+                            <div class="today_style clr">
+                                <div class="left">
+                                    <a href="/shangpin/homepage/HomeManager_EditTodyStylePic?ManageId=@(todayPic0.PictureManageId)&PictureIndex=0">
+                                        <img managerid="@(todayPic0.PictureManageId)" pictureindex="0" src="@(!string.IsNullOrEmpty(todayPic0.PictureFileNo) ? "/ReadPic/GetPic.ashx?pictureFileNo=" + todayPic0.PictureFileNo + "&type=2" : "")" width="466" height="530" />
+                                    </a>
+                                </div>
+                                <div class="right">
+                                    <span class="top">
+                                        <a href="/shangpin/homepage/HomeManager_EditTodyStylePic?ManageId=@todayPic1.PictureManageId&PictureIndex=1">
+                                            <img managerid="@(todayPic1.PictureManageId)" pictureindex="1" src="@(!string.IsNullOrEmpty(todayPic1.PictureFileNo) ? "/ReadPic/GetPic.ashx?pictureFileNo=" + todayPic1.PictureFileNo + "&type=2" : "")" width="480" height="260" />
+                                        </a>
+                                    </span>
+                                    <span>
+                                        <a href="/shangpin/homepage/HomeManager_EditTodyStylePic?ManageId=@todayPic2.PictureManageId&PictureIndex=2">
+                                            <img managerid="@(todayPic2.PictureManageId)" pictureindex="2" src="@(!string.IsNullOrEmpty(todayPic2.PictureFileNo) ? "/ReadPic/GetPic.ashx?pictureFileNo=" + todayPic2.PictureFileNo + "&type=2" : "")" width="480" height="260" />
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+                else
+                {
+                    floorStage++;
+                    <div class="floor @(temp.Stutas==0?"hidefloor":"")" adshowtype="@temp.ADShowType" moduleid="@temp.ModuleId" sort="@i">
+                        <div class="setbar">
+                            <a class="blue_button" href="@(temp.ModuleId == 0 ? "javascript:void(0);" : "/shangpin/homepage/HomeManager_FloorADPicManager?moduleId=" + temp.ModuleId + "&type=" + temp.ADShowType)">楼层广告图管理</a>
+                            <a class="blue_button" href="@(temp.ModuleId == 0 ? "javascript:void(0);" : "/shangpin/homepage/HomeManager_FloorLinkSet?moduleId=" + temp.ModuleId + "&moduleName=" + (temp.ModuleId == 0 ? floorStage + "F" : temp.ModuleName))"> 设置楼层链接</a>
+                            <a class="blue_button" href="/shangpin/homepage/HomeManager_FloorGlobalSet?Sort=@(i)&moduleId=@(temp.ModuleId)&moduleName=@(temp.ModuleId == 0 ? floorStage + "F" : temp.ModuleName)">楼层全局管理</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
+                        <div class="woman_list">
+                            <h6>
+                                <span class="right">
+                                    @if (links.Any(a => a.LinkType == 1) && links.Count(a => a.LinkType == 1) == 6)
+                                    {
+                                        Boolean linkFlag = false;
+                                        var tempLink = links.Where(a => a.LinkType == 1).OrderBy(b => b.SortId).ToList();
+                                        for (int l = 0; l < tempLink.Count - 1; l++)
+                                        {
+                                            if (!string.IsNullOrEmpty(tempLink[l].LinkName))
+                                            {
+                                                @(Html.Raw((l <= 5 && linkFlag) ? "<em>｜</em>" : "")) <a href="@(tempLink[l].LinkHref)" target=" _blank">@(tempLink[l].LinkName)</a>
+                                                linkFlag = true;
+                                            }
+                                        }
+                                        if (!string.IsNullOrEmpty(tempLink.Last().LinkName))
+                                        {
+                                            @(Html.Raw((linkFlag) ? "<em>｜</em>" : ""))<a href="@(tempLink.Last().LinkHref)" class="padl10">@(tempLink.Last().LinkName)&gt;</a>
+                                        }
+                                    }
+                                </span>
+                                <span class="left">@(temp.ModuleId == 0 ? floorStage + "F" : temp.ModuleName.ToString())</span>
+                                @if (temp.ModuleId > 0)
+                                {
+                                    <a class="blue_button" style="font-size:12px;color:white;" href="javascript:void(0);" oldname="修改楼层名称" onclick="ChangeModuleName(this, '@temp.ModuleId')">修改楼层名称</a>
+                                }
+                            </h6>
+                            <div class="product_list clr">
+                                <div class="logo_list">
+                                    <div id="spIndex_imgroll_wrapper_0" class="spIndex_imgroll_wrapper">
+                                        <ul>
+                                            <li><a href="/shangpin/homepage/BrandSelectList?PageNo=index&PagePositionNo=@(temp.ModuleId)&PagePositionName=@(temp.ModuleName)" class="blue_button">品牌列表管理</a></li>
+                                            <!--3对li品牌墙-->
+                                            @{
+                    if (brandList != null && brandList.Count() > 0)
+                    {
+                        var brandList1 = brandList.Where(n => n.PagePositionNo == temp.ModuleId.ToString() && n.IsRecommendBrand == 0).ToList();
+                        if (brandList1 != null && brandList1.Count() > 0)
+                        {
+                                                        for (int k = 0; k < (brandList1.Count() > 21 ? 21 : brandList1.Count()); k++)
+                            {
+                                if (k == 0)
+                                {
+                                    @Html.Raw("<li>")
+                                }
+                                <a href="/shangpin/homepage/AddBrands?PageNo=index&PagePositionNo=@(temp.ModuleId)&PagePositionName=@(HttpUtility.UrlEncodeUnicode(temp.ModuleName))">
+                                    <img src="/ReadPic/GetPic.ashx?width=130&height=62&pictureFileNo=@(brandList1.ElementAt(k).BrandLogo)&type=2" width="130" height="62">
+                                </a>
+                                if ((k + 1) % 6 == 0)
+                                {
+                                                                if (k == ((brandList1.Count() > 21 ? 21 : brandList1.Count()) - 1))
+                                    {
+                                        @Html.Raw("</li>")
+                                    }
+                                    else
+                                    {
+                                        @Html.Raw("</li><li>")
+                                    }
+                                }
+                            }
+                        }
+                                                    else
+                                                    {
+                                                        <li><a href="/shangpin/homepage/AddBrands?PageNo=index&PagePositionNo=@(temp.ModuleId)&PagePositionName=@(HttpUtility.UrlEncodeUnicode(temp.ModuleName))" class="blue_button">添加品牌</a></li>
+                                                    }
+                                                }
+                                                
+                                            }
+                                        </ul>
+
+                                    </div>
+                                </div>
+                                @if (temp.ADShowType == 2)
+                                {
+                                    if (pics.Count > 0 && pics.FirstOrDefault(a => a.PictureIndex == 0 || a.PictureIndex == 1) != null) { pics = pics.Where(a => a.PictureIndex == 0 || a.PictureIndex == 1).OrderBy(a => a.PictureIndex).ToList(); }
+                                <!--两小图-->
+                                    <div class="big_img">
+                                        <span class="top_img">
+                                            <a href="@(temp.ModuleId == 0 ? "javascript:void(0);" : "/shangpin/homepage/HomeManager_EditFloorAD?picId=0&moduleId=" + temp.ModuleId + "&pictureIndex=0")" target="_self">
+                                                <img src="@(pics.Count>1?"/ReadPic/GetPic.ashx?pictureFileNo="+pics[0].PictureFileNo+"&type=2":"")" width="340" height="220">
+                                            </a>
+                                        </span>
+                                        <span>
+                                            <a href="@(temp.ModuleId == 0 ? "javascript:void(0);" : "/shangpin/homepage/HomeManager_EditFloorAD?picId=0&moduleId=" + temp.ModuleId + "&pictureIndex=1")" target="_self">
+                                                <img src="@(pics.Count>1?"/ReadPic/GetPic.ashx?pictureFileNo="+pics[1].PictureFileNo+"&type=2":"")" width="340" height="220">
+                                            </a>
+                                        </span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    if (pics.Count > 0 && pics.FirstOrDefault(a => a.PictureIndex == 2) != null) { pics = pics.Where(a => a.PictureIndex == 2).ToList(); }
+                                <!--单图-->
+                                    <div class="big_img">
+                                        <a href="@(temp.ModuleId == 0 ? "javascript:void(0);" : "/shangpin/homepage/HomeManager_EditFloorAD?picId=0&moduleId=" + temp.ModuleId + "&pictureIndex=2")" target="_self">
+                                            <img src="@(pics.Count>0?"/ReadPic/GetPic.ashx?pictureFileNo="+pics[0].PictureFileNo+"&type=2":"")" width="340" height="442">
+                                        </a>
+                                    </div>
+                                }
+                                <ul class="small_img_list">
+                                    @{
+                                var tempBranLinks = links.Where(a => a.LinkType == 2).OrderBy(b => b.SortId).ToList();
+                                if (tempBranLinks == null)
+                                {
+                                    tempBranLinks = new List<SWfsIndexModuleLink>();
+                                }
+                                for (int s = 0; s < 6; s++)
+                                {
+                                    SWfsIndexModuleLink tempLink = tempBranLinks.Where(a => a.SortId == s).OrderBy(b => b.DateCreate).FirstOrDefault();
+                                    if (tempLink == null)
+                                    {
+                                        tempLink = new SWfsIndexModuleLink { LinkId = 0, LinkType = 2, SortId = s, LinkName = "分类" + (s + 1), ModuleId = temp.ModuleId };
+                                    }
+                                    <li>
+                                        <a categroyhref="@(tempLink.LinkId>0?tempLink.LinkHref:"")" href="javascript:void(0);">
+                                            <span>
+                                                <!--品牌名-->
+                                                <b style="display:none;"> @(tempLink.LinkId > 0 ? tempLink.CategoryNo : "") </b>
+                                                <!--图片名-->
+                                                <em>
+                                                    <b>@(tempLink.LinkId > 0 ? tempLink.LinkName : "")</b>
+                                                </em>
+                                            </span>
+                                            <img src="" width="120" height="160" linkid="@(tempLink.LinkId)" onclick="setCategory(this,'@(tempLink.SortId)','@(tempLink.ModuleId)')" alt="@(tempLink.LinkHref)" />
+                                        </a>
+                                    </li>
+                                }
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        }
+        <div id="hotproduct">
+            <ul>
+                <li id="hotlishow">
+                    <span>本周热门商品</span>
+                </li>
+                <li id="hotlimanage">
+                    <span><a href="~/Shangpin/homepage/IndexHotProductList" class="blue_button">本周热门商品管理</a></span>
+                </li>
+            </ul>
+        </div>
+        <!--底部广告 start-->
+        <ul class="advert_footer clr" style="border:1px solid #000;margin-top: 15px;">
+            <a class="blue_button" href="/shangpin/homepage/IndexBottonList.html?PagePositionNo=bottomBanner&PagePositionName=底部广告&width=315&height=150" style="display: block;">底部广告管理列表 </a>
+            @if (picBottonList.Any())
+            {
+                int index = 1;
+                switch (picBottonList.Count)
+                {
+                    case 1:
+                        foreach (var picsingle in picBottonList.OrderBy(p => p.PictureIndex))
+                        {
+                    <li @(index == 3 ? Html.Raw("class=\"last\"") : Html.Raw(""))>
+                                <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=bottomBanner&PictureIndex=@(index-1)&PagePositionName=@(HttpUtility.UrlEncodeUnicode("首页底部广告位"+(index)))&width=315&height=150" title="@picsingle.PictureName" target="@(picsingle.LinkAddress.IsNullOrEmpty() == true ? "" : "_blank")">
+                            <img alt="@(picsingle.PictureName)" src="/ReadPic/GetPic.ashx?width=315&height=150&pictureFileNo=@(picsingle.PictureFileNo)&type=2" width="315" height="150" />
+                        </a>
+                    </li>
+                    index = index + 1;
+                }
+                        <li>
+                          <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=bottomBanner&PictureIndex=1&PagePositionName=首页底部广告位2"><img alt="首页底部广告位2&width=315&height=150" src="" width="315" height="150" /></a>
+                        </li>
+                        <li class="last">
+                            <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=bottomBanner&PictureIndex=2&PagePositionName=首页底部广告位3"><img alt="首页底部广告位3&width=315&height=150" src="" width="315" height="150" /></a>
+                        </li>
+                        break;
+                    case 2:
+                        //int index = 1;
+                        foreach (var picsingle in picBottonList.OrderBy(p => p.PictureIndex))
+                        {
+                            <li @(index == 3 ? Html.Raw("class=\"last\"") : Html.Raw(""))>
+                                <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=bottomBanner&PictureIndex=@(index-1)&PagePositionName=@(HttpUtility.UrlEncodeUnicode("首页底部广告位"+(index)))&width=315&height=150" title="@picsingle.PictureName" target="@(picsingle.LinkAddress.IsNullOrEmpty() == true ? "" : "_blank")">
+                                    <img alt="@(picsingle.PictureName)" src="/ReadPic/GetPic.ashx?width=315&height=150&pictureFileNo=@(picsingle.PictureFileNo)&type=2" width="315" height="150" />
+                                </a>
+                            </li>
+                            index = index + 1;
+            }
+                    <li class="last">
+                        <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=bottomBanner&PictureIndex=2&PagePositionName=首页底部广告位3&width=315&height=150"><img alt="首页底部广告位3" src="" width="315" height="150" /></a>
+                    </li>
+                        break;
+                    case 3:
+                        //int index = 1;
+                        foreach (var picsingle in picBottonList.OrderBy(p => p.PictureIndex))
+            {
+                            <li @(index == 3 ? Html.Raw("class=\"last\"") : Html.Raw(""))>
+                                <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=bottomBanner&PictureIndex=@(index-1)&PagePositionName=@(HttpUtility.UrlEncodeUnicode("首页底部广告位"+(index)))&width=315&height=150" title="@picsingle.PictureName" target="@(picsingle.LinkAddress.IsNullOrEmpty() == true ? "" : "_blank")">
+                                    <img alt="@(picsingle.PictureName)" src="/ReadPic/GetPic.ashx?width=315&height=150&pictureFileNo=@(picsingle.PictureFileNo)&type=2" width="315" height="150" />
+                                </a>
+                            </li>
+                            index = index + 1;
+                        }
+                        break;
+                    default:
+                <li>
+                            <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=bottomBanner&PictureIndex=0&PagePositionName=首页底部广告位1&width=315&height=150"><img alt="首页底部广告位1" src="" width="315" height="150" /></a>
+                </li>
+                <li>
+                            <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=bottomBanner&PictureIndex=1&PagePositionName=首页底部广告位2&width=315&height=150"><img alt="首页底部广告位2" src="" width="315" height="150" /></a>
+                </li>
+                <li class="last">
+                            <a href="/shangpin/homepage/createbottonpageposition.html?PagePositionNo=bottomBanner&PictureIndex=2&PagePositionName=首页底部广告位3&width=315&height=150"><img alt="首页底部广告位3" src="" width="315" height="150" /></a>
+                </li>
+                        break;
+            }
+            }
+        </ul>
+        <!--底部广告 end-->
+    </div>
+    <!--首页主体部分 end-->
+</div>

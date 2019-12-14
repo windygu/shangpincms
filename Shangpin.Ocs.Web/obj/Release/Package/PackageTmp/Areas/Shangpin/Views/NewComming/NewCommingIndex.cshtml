@@ -1,0 +1,147 @@
+﻿@model IList<Shangpin.Entity.Wfs.SWfsIndexNewArrivalExt>
+@using Shangpin.Ocs.Web.Infrastructure;
+@using Shangpin.Entity.Wfs
+@{
+    ViewBag.Title = "最新上架";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    
+    int pageIndex = ViewBag.pageIndex;
+    int pageSize = ViewBag.pageSize;
+    int totalCount = ViewBag.totalCount;
+}
+
+
+<style>
+    .tabNew {
+        margin-top:20px;
+        width: 1100px;
+    }
+
+        .tabNew td {
+            
+            line-height: 40px;
+        }
+</style>
+
+<script src="~/Areas/Shangpin/Scripts/My97DatePicker/WdatePicker.js"></script>
+<input type="hidden" value="@ViewBag.Num" id="Num"/>
+<div>
+    <form>
+        <table class="tabNew">
+            <tr>
+                <td>
+                    标题：&nbsp;
+                    <input type="text" style="width: 100px; height: 30px; border: 1px black solid;" name="titname" value="@Request.QueryString["titname"]" onblur="this.value = removeHTMLTag(this.value);" />&nbsp;&nbsp;&nbsp;&nbsp;
+                    上新时间：&nbsp;
+                    <input type="text" style="width: 100px; height: 30px; border: 1px black solid;" name="startdate" onclick="WdatePicker()" value="@Request.QueryString["startdate"]" />&nbsp;至&nbsp;
+                    <input type="text" style="width: 100px; height: 30px; border: 1px black solid;" name="enddate" onclick="WdatePicker()" value="@Request.QueryString["enddate"]" />&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="submit" style="width:55px;height:25px" value="检索" />&nbsp;&nbsp;
+                    <input type="button" style="width: 55px; height: 25px; margin-left: 400px;" value="新增" onclick="AddNewComming()"/>
+                </td>
+            </tr>
+        </table>
+</form>
+</div>
+
+<div>
+    <table class="tabNew">
+        <tr style="background-color:blue;">
+            <th style="width:150px;color:white; line-height:35px;text-align:center;">标题</th>
+            <th style="width:180px;color:white; line-height:35px;text-align:center;">上新商品</th>
+            <th style="width:150px;color:white; line-height:35px;text-align:center;">开始上新时间</th>
+            <th style="width:190px;color:white; line-height:35px;text-align:center;">操作</th>
+        </tr>
+          @{
+            if (Model != null)
+            {
+                foreach (var item in Model.OrderByDescending(n=>n.StartDate))
+                {
+                    <tr>
+                        <td style="display:none;">@item.NewArrivalId</td>
+                        <td style="text-align:center;">@item.NewArrivalTitle</td>
+                        <td>
+                            <table style="margin-left:80px;">
+                                <tr>
+                                    @for (var i = 0; i < (item.ProductNo.Count() >= 6 ? 6 : item.ProductNo.Count()); i++)
+                                    {
+                                        <td style="text-align:center;"><img src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@item.ProductPicFile[i]&type=1" style="width: 60px; height: 60px; margin: 2px;" /></td>
+                                    }
+
+                                </tr>
+                                <tr>
+                                    @for (var i = 6; i < (item.ProductNo.Count() >= 12 ? 12 : item.ProductNo.Count()); i++)
+                                    {
+                                        <td style="text-align:center;"><img src="/ReadPic/GetPic.ashx?width=70&height=107&pictureFileNo=@item.ProductPicFile[i]&type=1" style="width: 60px; height: 60px; margin: 2px;" /></td>
+                                    }
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="text-align:center;">@item.StartDate</td>
+                        <td style="color: blue; text-align: center;"><input type="button" value="管理商品" onclick="GoodsUp(this)" />&nbsp;&nbsp;<input type="button" value="编辑" onclick="UpdateManager(this)"/>&nbsp;&nbsp;<input type="button" value="删除" onclick="DelNewComming(this)" /></td>
+                    </tr>
+                }
+            }
+        }
+        <tr>
+            <td colspan="4" style="text-align:right;">
+                <div class="spPage">
+                    @if (totalCount > 0)
+                    {
+                        @Html.Raw(Html.PagerX("page", pageIndex, pageSize, totalCount))
+                    }
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script>
+    function GoodsUp(obj)
+    {
+        var goodid=$(obj).parent().prev().prev().prev().prev().text();
+        location.href = "UpdateGoods?GoodsId=" + goodid;
+    }
+
+    function UpdateManager(obj) {
+        var goodid = $(obj).parent().prev().prev().prev().prev().text();
+        location.href = "UpdateNewCommingManager?ArivalId=" + goodid;
+    }
+
+    function DelNewComming(obj) {
+        if (confirm("您确定要删除吗？")) {
+
+            if ($("#Num").val() == 1)
+            {
+                alert("就剩一条数据，无法删除！")
+                return false;
+            }
+            else
+                {
+                var id = $(obj).parent().prev().prev().prev().prev().text();
+                $.ajax({
+                    url: '/Shangpin/newcomming/DelNewComming',
+                    type: "POST",
+                    data: { CommingId: id, },
+                    success: function (result) {
+                        alert(result);
+                        window.location.href = "NewCommingIndex";
+                    }
+                });
+            }
+        }
+    }
+
+    function AddNewComming()
+    {
+        window.location.href = "AddNewComming";
+    }
+    function removeHTMLTag(str) {
+        
+        str = str.replace(/<\/?[^>]*>/g, ''); //去除HTML tag
+        str = str.replace(/[ | ]*\n/g, '\n'); //去除行尾空白
+        //str = str.replace(/\n[\s| | ]*\r/g,'\n'); //去除多余空行
+        str = str.replace(/&nbsp;/ig, '');//去掉&nbsp;
+        //alert(str);
+        return str;
+    }
+</script>

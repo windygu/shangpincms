@@ -1,0 +1,445 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<statements>
+  <!--活动管理商品 by lijibo  20141002-->
+  <statement id="ComBeziWfs_SWfsSubject_GetProductRefListOutlet">
+    SELECT DISTINCT spref.SubjectProductRefId ,
+    spref.PropertyValue ,
+    spref.TopFlag ,
+    spref.SortNo ,
+    spref.BuyType ,
+    spref.IsStarProduct ,
+    spref.ShowTime ,
+    spref.IsShow ,
+    sp.ProductNo ,
+    sp.ProductName ,
+    spextend.ProductShowPic AS ProductPicFile ,
+    sp.ProductModel AS GoodsNo ,
+    sp.DepartmentNo ,
+    spB.BrandNo ,
+    spB.BrandCnName ,
+    spB.BrandEnName,
+    spref.DateCreate
+    FROM    SWfsSubjectProductRef AS spref ( NOLOCK )
+    INNER JOIN SpProduct AS sp ( NOLOCK ) ON spref.ProductNo = sp.ProductNo
+    INNER JOIN SpBrand AS spB ( NOLOCK ) ON sp.BrandNo = spB.BrandNo
+    LEFT JOIN SpfProductExtend AS spextend ( NOLOCK ) ON spextend.ProductNo = sp.ProductNo
+    WHERE   spref.CategoryNo in @SCategoryNo AND
+    spextend.IsOutside=1 AND
+    spref.TypeFlag = 0
+    AND spextend.Status = 1
+    AND spextend.DataState = 1
+    #if($CategoryNo !='')
+    and sp.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($BrandNo!='')
+    and sp.BrandNo =@BrandNo
+    #end
+    #if($Keyword!='')
+    and (sp.ProductName like '%'+@KeyWord+ '%' or sp.ProductNo like '%'+@KeyWord+ '%' or sp.ProductModel like '%'+@KeyWord+ '%')
+    #end
+    #if($GenderStyle!='')
+    and sp.ProductSex = @GenderStyle
+    #end
+    ORDER BY spref.SortNo ASC ,
+    spref.DateCreate DESC
+  </statement>
+
+  <!--活动管理商品II by lijibo  20141002-->
+  <statement id="ComBeziWfs_SWfsSubject_GetProductRefListIIOutlet">
+    SELECT DISTINCT spref.SubjectProductRefId ,
+    spref.PropertyValue ,
+    spref.TopFlag ,
+    spref.SortNo ,
+    spref.BuyType ,
+    spref.IsStarProduct ,
+    spref.ShowTime ,
+    spref.IsShow ,
+    sp.ProductNo ,
+    sp.ProductName ,
+    spextend.ProductShowPic AS ProductPicFile ,
+    sp.ProductModel AS GoodsNo ,
+    sp.DepartmentNo ,
+    spB.BrandNo ,
+    spB.BrandCnName ,
+    spB.BrandEnName,
+    spref.DateCreate
+    FROM    SWfsSubjectProductRef AS spref ( NOLOCK )
+    INNER JOIN SpProduct AS sp ( NOLOCK ) ON spref.ProductNo = sp.ProductNo
+    INNER JOIN SpBrand AS spB ( NOLOCK ) ON sp.BrandNo = spB.BrandNo
+    LEFT JOIN SpfProductExtend AS spextend ( NOLOCK ) ON spextend.ProductNo = sp.ProductNo
+    WHERE   spref.CategoryNo = @SCategoryNo AND
+    spref.TypeFlag = 0
+    AND spextend.Status = 1
+    AND spextend.IsOutside=1
+    AND spextend.DataState = 1
+    #if($CategoryNo !='')
+    and sp.CategoryNo like '%' + @CategoryNo + '%'
+    #end
+    #if($BrandNo!='')
+    and sp.BrandNo =@BrandNo
+    #end
+    #if($Keyword!='')
+    and (sp.ProductName like '%'+@KeyWord+ '%' or sp.ProductNo like '%'+@KeyWord+ '%' or sp.ProductModel like '%'+@KeyWord+ '%')
+    #end
+    #if($GenderStyle!='')
+    and sp.ProductSex = @GenderStyle
+    #end
+    ORDER BY spref.SortNo ASC ,
+    spref.DateCreate DESC
+  </statement>
+
+  <!--管理商品列表 by lijibo  20141002-->
+  <statement id="ComBeziWfs_SpProduct_GetCreateProductListOutlet">
+    SELECT  sp.ProductNo ,
+    sp.ProductModel AS GoodsNo ,
+    spextend.Status ,
+    sp.ProductName ,
+    spextend.ProductShowPic AS ProductPicFile ,
+    sp.DepartmentNo ,
+    spB.BrandNo ,
+    spB.BrandCnName ,
+    spB.BrandEnName
+    FROM    SpProduct AS sp ( NOLOCK )
+    INNER JOIN SpBrand AS spB ( NOLOCK ) ON sp.BrandNo = spB.BrandNo
+    LEFT JOIN SpfProductExtend AS spextend ( NOLOCK ) ON spextend.ProductNo = sp.ProductNo
+    WHERE   spextend.TypeFlag = 2
+    AND spextend.Status = 1
+    AND spextend.DataState = 1
+    AND spextend.IsOutside = 1
+    AND NOT EXISTS ( SELECT spref.ProductNo
+    FROM   dbo.SWfsSubjectCategory (NOLOCK) AS sc ,
+    SWfsSubjectProductRef (NOLOCK) AS spref
+    WHERE  sc.CategoryNo = spref.CategoryNo
+    AND SubjectNo = @SubjectNo
+    AND spref.ProductNo=sp.ProductNo
+    AND spref.TypeFlag = 0 )
+    AND (SELECT COUNT(1)
+    FROM dbo.SpfSkuExtend(NOLOCK)
+    WHERE sp.ProductNo = ProductNo
+    AND DataState = 1
+    AND DisabledState = 0
+    #if($IsShelf!='')
+    AND PcSaleState = @IsShelf
+    #else
+    AND PcSaleState IN (2,3)
+    #end
+    ) >= 1
+    #if($CategoryNo !='')
+    and  sp.CategoryNo  like @CategoryNo + '%'
+    #else
+    AND SUBSTRING(sp.CategoryNo,1,3) IN @CategoryList
+    #end
+    #if($BrandNo!='')
+    and sp.BrandNo =@BrandNo
+    #end
+    #if($Keyword!='')
+    and (sp.ProductName like '%'+@KeyWord+ '%' or sp.ProductNo like '%'+@KeyWord+ '%' or  sp.ProductModel  like '%'+@KeyWord+ '%')
+    #end
+    #if($GenderStyle!='')
+    and  sp.ProductSex = @GenderStyle
+    #end
+  </statement>
+
+  <!--管理商品列表II by lijibo  20141002-->
+  <statement id="ComBeziWfs_SpProduct_GetCreateProductListIIOutlet">
+    SELECT sp.ProductNo ,
+    sp.ProductModel AS GoodsNo ,
+    spextend.Status ,
+    sp.ProductName ,
+    spextend.ProductShowPic AS ProductPicFile ,
+    sp.DepartmentNo ,
+    spB.BrandNo ,
+    spB.BrandCnName ,
+    spB.BrandEnName
+    FROM    SpProduct AS sp ( NOLOCK )
+    INNER JOIN SpBrand AS spB ( NOLOCK ) ON sp.BrandNo = spB.BrandNo
+    LEFT JOIN SpfProductExtend AS spextend ( NOLOCK ) ON spextend.ProductNo = sp.ProductNo
+    WHERE   spextend.TypeFlag = 2
+    AND spextend.Status = 1
+    AND spextend.IsOutside=1
+    AND spextend.DataState = 1
+    AND NOT EXISTS (
+    SELECT  spref.ProductNo
+    FROM dbo.SWfsSubjectCategory (NOLOCK) AS sc ,
+    SWfsSubjectProductRef (NOLOCK) AS spref
+    WHERE sc.CategoryNo = spref.CategoryNo
+    AND SubjectNo = @SubjectNo
+    AND spref.ProductNo=sp.ProductNo
+    AND spref.TypeFlag = 0 )
+    #if($ProductNo !='')
+    AND sp.ProductNo IN @ProductNo
+    #end
+  </statement>
+
+  <!--管理商品列表II by lijibo  20141002-->
+  <statement id="ComBeziWfs_SpProduct_SelectProductListToExcelOutlet">
+    SELECT ssc.CategoryName ,
+    sspr.ProductNo ,
+    ssc.CategoryNo ,
+    spB.BrandEnName ,
+    spB.BrandCnName ,
+    sp.ProductName
+    FROM    SWfsSubjectCategory AS ssc ( NOLOCK )
+    INNER JOIN SWfsSubjectProductRef AS sspr ( NOLOCK ) ON sspr.CategoryNo = ssc.CategoryNo
+    INNER JOIN SpProduct AS sp ( NOLOCK ) ON sspr.ProductNo = sp.ProductNo
+    INNER JOIN SpfProductExtend AS spextend  ON  sp.ProductNo=spextend.ProductNo
+    INNER JOIN SpBrand AS spB ( NOLOCK ) ON sp.BrandNo = spB.BrandNo
+    WHERE   spextend.TypeFlag = 2
+    AND spextend.Status = 1
+    AND spextend.IsOutside=1
+    AND spextend.DataState = 1
+    AND ssc.SubjectNo = @SubjectNo
+    ORDER BY ssc.SortNo ,
+    sspr.SubjectProductRefId DESC
+  </statement>
+
+  <!--查询秒杀商品 by lijibo  20141002-->
+  <statement id="ComBeziWfs_SWfsSubjectSpikeProduct_GetSpikeProductBySubjectNoOutlet">
+    SELECT  $SubjectNo AS SubjectNo ,
+    SpRef.SubjectProductRefId ,
+    SpRef.PropertyValue ,
+    SpRef.TopFlag ,
+    SpRef.SortNo ,
+    SpRef.BuyType ,
+    SpRef.IsStarProduct ,
+    SpRef.ShowTime ,
+    SpRef.IsShow ,
+    SpRef.CategoryNo ,
+    sp.ProductNo ,
+    sp.ProductName ,
+    spextend.ProductShowPic AS ProductPicFile ,
+    sp.ProductModel AS GoodsNo ,
+    spB.BrandNo ,
+    spB.BrandCnName ,
+    spB.BrandEnName
+    FROM    SWfsSubjectProductRef AS SpRef ( NOLOCK )
+    INNER JOIN SpProduct AS sp ( NOLOCK ) ON SpRef.ProductNo = sp.ProductNo
+    INNER JOIN SpBrand AS spB ( NOLOCK ) ON sp.BrandNo = spB.BrandNo
+    LEFT JOIN SpfProductExtend AS spextend ( NOLOCK ) ON spextend.ProductNo = sp.ProductNo
+    WHERE   spref.TypeFlag = 0
+    AND spextend.Status = 1
+    AND spextend.IsOutside=1
+    AND spextend.DataState = 1
+    AND SpRef.CategoryNo IN (
+    SELECT  CategoryNo
+    FROM    SWfsSubjectCategory(NOLOCK)
+    INNER JOIN SWfsSubject(NOLOCK) ON SWfsSubjectCategory.SubjectNo = SWfsSubject.SubjectNo
+    WHERE   SWfsSubject.SubjectNo = @SubjectNo AND
+    SWfsSubject.SubjectTemplate = 5
+    AND Status = 1
+    AND DateEnd > GETDATE() )
+  </statement>
+  <!--根据时间和商品名称及编号查询秒杀组及秒杀商品-->
+  <statement id="ComBeziWfs_SWfsSubjectSpikeProductManage_SelectSpikeProductListByTimeAndPName">
+    select SP.ID,SP.ShowTime,SP.ShowProductPicFileNo,SP.ProductNo,P.ProductName,SP.SubjectNo,SP.SubjectCategoryNo,SP.Type,
+    CONVERT(varchar(100), SP.ShowTime, 23) as DateDay
+    from SWfsSubjectSpikeProductManage(nolock) as SP
+    left Join SpProduct(nolock) as P on P.ProductNo= SP.ProductNo
+    where SP.Status=1 and DATEDIFF(month,SP.ShowTime,@Date)=0
+    #if($ProductNoName!='')
+    and (P.ProductNo=@ProductNoName or P.ProductName like '%'+@ProductNoName+'%')
+    #end
+    #if($SubjectNo!='')
+    and SP.SubjectNo=@SubjectNo
+    #end
+    order by SP.ShowTime ASC
+  </statement>
+  <!--获取商品对应的sku信息（目前sku价格取的是以奥莱价为最低的值） by lijibo 20141003-->
+  <statement id="ComBeziWfs_SpfSkuExtend_GetSkuListByProductNoOutlet">
+    SELECT skuPri.MarketPrice ,
+    skuPri.GoldPrice AS SellPrice ,
+    skuPri.PlatinumPrice ,
+    skuPri.DiamondPrice ,
+    skuPri.StandardPrice AS LimitedPrice ,
+    skuPri.OutletPrice AS LimitedVipPrice ,
+    skuPri.DiscountOutlet AS DiscountRate,
+    sku.PcShelfDate AS DateShelf,
+    sku.PcSaleState AS IsShelf ,
+    sku.DisabledState,
+    skuPri.SkuNo,
+    sku.ProductNo
+    FROM      SpfSkuExtend AS sku ( NOLOCK )
+    INNER JOIN SpfSkuPrice AS skuPri ( NOLOCK ) ON skuPri.SkuNo = sku.SkuNo
+    WHERE sku.DataState = 1
+    AND sku.PcSaleState IN(2,3)
+    AND sku.DisabledState = 0
+    AND ProductNo IN @ProductNo
+    ORDER BY skuPri.OutletPrice ASC,sku.SkuId DESC
+  </statement>
+  <!--获取商品对应的sku信息（目前sku价格取的是以市场价为最高的值） by lijibo 20141003-->
+  <statement id="ComBeziWfs_SpfSkuExtend_GetMarketPriceSkuListByProductNoOutlet">
+    SELECT skuPri.MarketPrice ,
+    skuPri.GoldPrice AS SellPrice ,
+    skuPri.PlatinumPrice ,
+    skuPri.DiamondPrice ,
+    skuPri.StandardPrice AS LimitedPrice ,
+    skuPri.OutletPrice AS LimitedVipPrice ,
+    skuPri.DiscountOutlet AS DiscountRate,
+    sku.PcShelfDate AS DateShelf,
+    sku.PcSaleState AS IsShelf ,
+    sku.DisabledState,
+    skuPri.SkuNo,
+    sku.ProductNo
+    FROM      SpfSkuExtend AS sku ( NOLOCK )
+    INNER JOIN SpfSkuPrice AS skuPri ( NOLOCK ) ON skuPri.SkuNo = sku.SkuNo
+    WHERE     sku.PcShowState = 1
+    AND sku.DataState = 1
+    AND sku.PcSaleState = 2
+    AND sku.DisabledState = 0
+    AND ProductNo IN @ProductNo
+    ORDER BY skuPri.MarketPrice DESC,sku.SkuId DESC
+  </statement>
+  <!--获取商品对应的sku信息活动关联（目前sku价格取的是以奥莱价为最低的值） by lijibo 20141003-->
+  <statement id="ComBeziWfs_SpfSkuExtend_GetSkuListByProductNoOutletRef">
+    SELECT skuPri.MarketPrice ,
+    skuPri.GoldPrice AS SellPrice ,
+    skuPri.PlatinumPrice ,
+    skuPri.DiamondPrice ,
+    skuPri.StandardPrice AS LimitedPrice ,
+    skuPri.OutletPrice AS LimitedVipPrice ,
+    skuPri.DiscountOutlet AS DiscountRate,
+    sku.PcShelfDate AS DateShelf,
+    sku.PcSaleState AS IsShelf ,
+    sku.DisabledState,
+    skuPri.SkuNo,
+    sku.ProductNo
+    FROM      SpfSkuExtend AS sku ( NOLOCK )
+    INNER JOIN SpfSkuPrice AS skuPri ( NOLOCK ) ON skuPri.SkuNo = sku.SkuNo
+    WHERE  sku.DataState = 1
+    AND ProductNo IN @ProductNo
+    ORDER BY skuPri.OutletPrice ASC,sku.SkuId DESC
+  </statement>
+  <!--获取活动中商品可视化列表分类 by lijibo 20141003-->
+  <statement id="ComBeziWfs_SpfProductExtend_GetSubjectProductViewListOutlet">
+    SELECT  spRef.SubjectProductRefId ,
+    spRef.PropertyValue ,
+    spRef.TopFlag ,
+    spRef.SortNo ,
+    spRef.BuyType ,
+    spRef.IsStarProduct ,
+    spRef.ShowTime ,
+    spRef.IsShow ,
+    spRef.DateCreate ,
+    sp.CategoryNo ,
+    sp.ProductNo ,
+    sp.ProductName ,
+    spextend.ProductShowPic AS ProductPicFile ,
+    sp.ProductModel AS GoodsNo ,
+    spB.BrandNo ,
+    spB.BrandCnName ,
+    spB.BrandEnName ,
+    spref.DateCreate
+    FROM    SWfsSubjectProductRef AS spRef ( NOLOCK )
+    INNER JOIN SpProduct AS sp ( NOLOCK ) ON spref.ProductNo = sp.ProductNo
+    INNER JOIN SpBrand AS spB ( NOLOCK ) ON sp.BrandNo = spB.BrandNo
+    LEFT JOIN SpfProductExtend AS spextend ( NOLOCK ) ON spextend.ProductNo = sp.ProductNo
+    WHERE   spRef.CategoryNo = @CategoryNo
+    AND spextend.IsOutside=1
+    AND spRef.TypeFlag = 0
+    AND spextend.Status = 1
+    AND spextend.DataState = 1
+    AND spRef.IsShow = 1
+    AND spRef.ShowTime &lt;= @ShowTime
+    AND spextend.TypeFlag=2
+    AND ( SELECT  COUNT(1)
+    FROM      dbo.SpfSkuExtend
+    WHERE     sp.ProductNo = ProductNo
+    AND DataState = 1
+    AND DisabledState = 0
+    AND PcSaleState = 2
+    AND PcShowState = 1
+    ) >= 1
+    ORDER BY SortNo ASC ,
+    spRef.DateCreate DESC
+  </statement>
+  <!--判断商品是否存在  by lijibo 20141011-->
+  <statement id="ComBeziWfs_SpProduct_GetIsExistenceListOutlet">
+    SELECT    sp.*
+    FROM      SpProduct AS sp ( NOLOCK )
+    INNER JOIN SpfProductExtend AS spextend ( NOLOCK ) ON spextend.ProductNo = sp.ProductNo
+    WHERE  spextend.Status = 1
+    AND spextend.IsOutside=1
+    AND spextend.DataState = 1 AND  spextend.ProductNo = @ProductNo
+  </statement>
+  <!--查询活动下是否有商品 by lijibo 20141011-->
+  <statement id="ComBeziWfs_SWfsSubjectProductRef_SelectBySubjectNo1Outlet">
+    SELECT  spref.ProductNo
+    FROM    dbo.SWfsSubjectCategory (NOLOCK) AS sc ,
+    SWfsSubjectProductRef (NOLOCK) AS spref
+    INNER JOIN  SpProduct AS sp ( NOLOCK ) ON sp.ProductNo = spref.ProductNo
+    LEFT JOIN SpfProductExtend AS spextend ( NOLOCK ) ON spextend.ProductNo = sp.ProductNo
+    WHERE   spextend.TypeFlag = 2
+    AND spref.IsShow = 1
+    AND spextend.IsOutside=1
+    AND sc.CategoryNo = spref.CategoryNo
+    AND SubjectNo = @SubjectNo
+    AND spref.TypeFlag = 0
+  </statement>
+  <statement id="ComBeziWfs_SWfsSubjectBrand_GetSubjectBrandOutlet">
+    select ISNULL(brandNo,'0') AS BrandNo,ISNULL(BrandEnName,'0') AS BrandEnName,ISNULL(BrandCnName,'0') AS BrandCnName,SubjectNo from SWfsSubject with(nolock)
+    left outer join  SpBrand(nolock) on  convert(nvarchar(255),SWfsSubject.BrandContent)=SpBrand.brandNo
+    where SubjectNo in  @SubjectNo
+  </statement>
+  <statement id="ComBeziWfs_SpBrand_GetModelOutlet">
+    Select * from SpBrand (nolock) where BrandNo=@BrandNo
+  </statement>
+  <!--商品变动重新计算活动折扣数据 by lijibo 20141016-->
+  <statement id="ComBeziWfs_WfsProduct_selectProductBySubjectNoDisCountOutlet">
+    SELECT spextend.ProductNo
+    FROM  SpfProductExtend AS spextend WITH ( NOLOCK )
+    WHERE spextend.DataState = 1
+    AND spextend.TypeFlag = 2
+    AND spextend.Status = 1
+    AND  spextend.ProductNo IN ( SELECT DISTINCT
+    spref.ProductNo
+    FROM      dbo.SWfsSubjectCategory AS sc ,
+    SWfsSubjectProductRef AS spref
+    WHERE     sc.CategoryNo = spref.CategoryNo
+    AND SubjectNo = @SubjectNo
+    AND spref.TypeFlag = 0
+    AND spref.IsShow = 1 )
+  </statement>
+  <statement id="ComBeziWfs_SpfSkuExtend_GetProductSkuOutlet">
+    SELECT DISTINCT SkuNo,
+    ProductNo
+    FROM dbo.SpfSkuExtend(NOLOCK)
+    WHERE ProductNo IN @ProductNo
+  </statement>
+  <!--首页轮播图融合自定义 by lijibo-->
+  <statement id="ComBeziWfs_SWfsSubjectFocusArea_GetFocusAreaInfoOutlet">
+    SELECT
+    sub.SubjectNo ,
+    sub.SubjectName ,
+    sub.SubjectEnName ,
+    sub.SubjectTemplate ,
+    sub.Gender ,
+    sub.AdPic ,
+    sub.BelongsSubjectPic ,
+    topic.PreheatTime ,
+    sub.DateBegin ,
+    sub.DateEnd ,
+    topic.TopCreateTime ,
+    sub.DateCreate ,
+    sub.IPhoneText ,
+    sub.FlapPic ,
+    sub.IPhonePic ,
+    sub.TitlePic2 ,
+    topic.StExpand AS SWfsAolaiNoticePageId,
+    fa.WebPic,
+    fa.WebUrl,
+    fa.Type,
+    sub.SubjectTemplate,
+    sub.IsAudited,
+    sub.Status,
+    sub.SubjectType,
+    sub.IsRelated,
+    sub.ChannelNo
+    FROM  SWfsSubjectFocusArea  (NOLOCK) AS  fa
+    LEFT JOIN SWfsSubject (NOLOCK) AS  sub ON fa.SubjectNo = sub.SubjectNo
+    LEFT OUTER JOIN dbo.SWfsSubjectTopExpand (NOLOCK) AS topic ON topic.SubjectNo = sub.SubjectNo
+    WHERE fa.showdate = CONVERT(VARCHAR, GETDATE(), 23)
+    AND fa.status = 1
+    ORDER BY fa.sort ASC ,
+    fa.showdate DESC
+  </statement>
+</statements>

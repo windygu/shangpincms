@@ -1,0 +1,84 @@
+﻿@{
+    Layout = null;
+}
+@{
+    IList<Shangpin.Ocs.Entity.Extenstion.Outlet.BrandInfo> brandlist = ViewBag.Brands;
+    IList<Shangpin.Ocs.Entity.Extenstion.Outlet.BrandInfo> brandFristLetter = ViewBag.BrandFristLetter;
+}
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+    <div id="div_brandSelect">
+        <style type="text/css">
+				#div_brandSelect{margin-top:3px}
+				.brandselectTitle{padding:0 3px;width:200px;}
+				.brandselectTitle a{ text-decoration: none;font-weight :bold;color: #000;}
+				.brandselectItemContains{margin-left :10px;width:95%;}
+				.brandselectItemContains a:link,a:visited{color:#354668;text-decoration:none;padding :2px 2px;font-size:13px;}
+				.brandselectItemContains a:hover{color: #fff;text-decoration:none;padding :2px 2px;background-color:#354668;font-size:13px;}
+				.brandselectItem{margin:0 3px 3px 0;;display:inline-block;line-height :16px;}
+				.clearContent{font-size:13px;text-align:right;margin:1px 2px 0 0;}
+				.clearContent span{}
+				.clearContent a{color:#354668;text-decoration:underline;font-size:13px;cursor:pointer ;width:35px;}
+			</style>
+        <script type="text/javascript">
+            function chooseBrand(BrandNo, BrandName) {
+                parent.document.getElementById("QuerybranchNo").value = BrandNo;
+                parent.document.getElementById("QueryBrandName").value = BrandName;
+                parent.document.getElementById("QueryBrandIframe").style.display = "none";
+
+                var SubformID = '';
+                if (typeof (SubformID) != "undefined" && SubformID != '') {
+                    parent.document.getElementById(SubformID).submit();
+                }
+                var functionName = 'Onsubmit';
+                if (typeof (functionName) != "undefined" && functionName != '') {
+                    //eval('parent.frames.' + functionName + '()');
+                }
+            }
+            function clearBeand() {
+                parent.document.getElementById("QuerybranchNo").value = "";
+                parent.document.getElementById("QueryBrandName").value = "";
+                parent.document.getElementById("QueryBrandIframe").style.display = "none";
+                var SubformID = '';
+                if (typeof (SubformID) != "undefined" && SubformID != '') {
+                    parent.document.getElementById("").submit();
+                }
+                var functionName = 'Onsubmit';
+                if (typeof (functionName) != "undefined" && functionName != '') {
+                    //eval('parent.frames.' + functionName + '()');
+                }
+            }
+        </script>
+        <div class="clearContent">
+            <span onclick="clearBeand()" style="folat: right; display: inline-block; width: 35px;">
+                <a>清空</a> </span>
+        </div>
+        <div>
+            @foreach (var fbrand in brandFristLetter)
+            {
+                var linkId = "link" + fbrand.FristLetter;
+                var brandId = "brand" + fbrand.FristLetter;
+                <div>
+                    <div class="brandselectTitle" name="firstLetter"  id="@linkId">
+                        <a name="@fbrand.FristLetter">
+                            @fbrand.FristLetter
+                        </a>
+                    </div>
+                    @{var varFristLetter = fbrand.FristLetter; }
+                    <div class="brandselectItemContains" name="itemContent" id="@brandId">
+                        @foreach (var brand in brandlist.Where(b => b.FristLetter == varFristLetter))
+                        {
+                            <span class="brandselectItem" brandEnName="@brand.BrandEnName"><a href="javascript:void(0);"  onclick="chooseBrand('@brand.BrandNo','@brand.BrandEnName');">
+                                @brand.BrandEnName
+                            </a></span>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>

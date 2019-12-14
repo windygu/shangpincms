@@ -1,0 +1,178 @@
+﻿@model Shangpin.Entity.Wfs.SWfsListAlterGroup
+@{
+    ViewBag.Title = "频道轮播图编辑";
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+}
+@section HeadScript{
+    <script type="text/javascript">
+        (function (window, $, undefined) {
+            $(function () {
+                if ($("input:radio[name='Gender'][checked='checked']").val() == "0") {
+                    $("#form1").show();
+                    $("#form2").hide();
+                } else {
+                    $("#form1").hide();
+                    $("#form2").show();
+                }
+                $(".mx-brandcontent-msgbox input[name='Gender']").change(function () {
+                    if ($("#Gender0").prop("checked")) {
+                        $("#form1").show();
+                        $("#form2").hide();
+                    } else if ($("#Gender1").prop("checked")) {
+                        $("#form1").hide();
+                        $("#form2").show();
+                    }
+                });
+                var status1 = document.getElementById("Status1").value;
+                var zhuangtai = document.getElementById("Status0").value;
+                if (status1 == 1) {
+                    document.getElementById("Status1").disabled = false;
+                    document.getElementById("Status0").disabled = true;
+                }
+
+            });
+        })(window, jQuery);
+    </script>
+    <script type="text/javascript">
+        function CheckStr(id, len) {
+            var msg = $("#" + id).val();
+            var nums = msg.replace(/[^\x00-\xff]/g, "00").length;
+            if (nums > len) {
+                alert("名称只能在" + len / 2 + "个汉字" + len + "个字符");
+                return false;
+            }
+            return true;
+        }
+        function bao() {
+            var zhi = $("#GroupName").val();
+            if (!CheckStr("GroupName", 30)) {
+                return false;
+            }
+            var fenlei = $("#Category");
+            if (fenlei.val() == "") {
+                alert("所属品类不能为空！");
+                return false;
+            }
+            var name = $("#GroupName").val();
+            if (name == "") {
+                alert("分组名称不能为空!");
+                return false;
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        function staus() {
+            var statu = document.getElementById("Status1").value;
+            if (statu == 1) {
+                //document.getElementById("Status1").disabled = true;
+                document.getElementById("Status0").checked = true;
+                document.getElementById("Status0").disabled = false;
+                document.getElementById("Status1").disabled = true;
+                alert("状态只能在列表也开启!!");
+                return false;
+            }
+        }
+    </script>
+}
+<script type="text/javascript" src="/Areas/Outlet/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script src="/Areas/Shangpin/Scripts/plug/comm.js" type="text/javascript"></script>
+@*<script type="text/javascript" src="/Areas/outlet/Scripts/page/index/popDiv.js"></script> *@
+<head>
+       
+</head>
+   <h1> CMS > 尚品 > <a href="ChannelList.html">频道轮播管理</a> > <a href="/shangpin/Channel/ChannelAlterList.html?channelno=@Request.QueryString["channelno"]">频道轮播列表</a> > 新建</h1>
+
+<form action="/Shangpin/Channel/AlterCreate.html" method="post" enctype="multipart/form-data" id="submitForm" name="submitForm">
+<div class="mx-brandcontent-msgbox">
+    <input type="hidden" name="GroupId" id="GroupId" value="@Model.GroupId" />
+    <input type="hidden" name="channelname" id="channelname" value="@Request.QueryString["channelno"]" />
+    <table class="gernalTclass">
+            <tr style=" height:50px">
+                <td width="20%" style=" font-size:15px; color:Red;">
+                    分组名称:
+                </td>
+                <td>
+                    <input type="text" id="GroupName" maxlength="30" value="@(Model.GroupName)" name="GroupName" style=" width:200px;" />
+                </td>
+            </tr>
+            <tr style=" height:50px;">
+                <td width="13%" style=" font-size:15px; color:Red;">
+                    分组状态:
+                </td>
+                <td>
+                    <input type="radio" id="Status0" value="0" @(Model.Status == 0 ? "checked" : "") name="Status" checked="checked" /><label>关闭</label>
+                    <input type="radio" id="Status1" value="1" @(Model.Status == 1 ? "checked" : "") name="Status" onclick="staus()" /><label>开启</label>
+                </td>
+            </tr>
+            @*<tr style=" height:50px;">
+                <td width="13%" style=" font-size:15px; color:Red;">
+                    所属频道:
+                </td>
+                <td>
+                <input type="radio" id="Gender0" value="0" @(Model.Gender == 0 ? "checked" : "") name="Gender" /><label for="weizhi0">女士</label>
+                <input type="radio" id="Gender1" value="1" @(Model.Gender == 1 ? "checked" : "") name="Gender" /><label for="weizhi1">男士</label>
+                <select id="genderID">
+                    <option value="0" @(Model.Gender == 0 ? "selected" : null)>女士</option>
+                    <option value="1" @(Model.Gender == 1 ? "selected" : null)>男士</option>
+                </select>
+                </td>
+            </tr>*@
+            @*<tr style=" height:50px;">
+                <td width="13%" style=" font-size:15px; color:Red;">
+                    所属品类:
+                </td>
+                <td>
+                <div id="form1">
+                    <input type="radio" id="womenclothing" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenClothing"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenClothing"] ? "checked" : "") name="Category" checked="checked" /><label>服饰</label>
+                    <input type="radio" id="womenbags" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenBags"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenBags"] ? "checked" : "") name="Category" /><label>箱包</label>
+                    <input type="radio" id="womenshoes" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenShoes"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenShoes"] ? "checked" : "") name="Category" /><label>鞋靴</label>
+                    <input type="radio" id="womenaccessories" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenAccessories"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenAccessories"] ? "checked" : "") name="Category" /><label>配饰</label>
+                    <input type="radio" id="womenhomes" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenHomes"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenHomes"] ? "checked" : "") name="Category" /><label>家居</label>
+                    <input type="radio" id="womenbeauty" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenBeauty"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenBeauty"] ? "checked" : "") name="Category" /><label>美妆</label>
+                    <input type="radio" id="womenwatches" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenWatches"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenWatches"] ? "checked" : "") name="Category" /><label>腕表</label>
+                    <select>
+                        <option id="womenclothing" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenClothing"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenClothing"] ? "selected" : null)>服饰</option>
+                        <option id="womenbags" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenBags"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenBags"] ? "selected" : null) name="Category">箱包</option>
+                        <option id="womenshoes" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenShoes"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenShoes"] ? "selected" : null) name="Category">鞋靴</option>
+                        <option id="womenaccessories" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenAccessories"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenAccessories"] ? "selected" : null) name="Category">配饰</option>
+                        <option id="womenhomes" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenHomes"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenHomes"] ? "selected" : null) name="Category">家居</option>
+                        <option id="womenbeauty" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenBeauty"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenBeauty"] ? "selected" : null) name="Category">美妆</option>
+                        <option id="womenwatches" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenWatches"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["WomenWatches"] ? "selected" : null) name="Category">腕表</option>
+                    </select>
+                </div>
+                    
+                 <div id="form2" style="display: none;">
+                 <input type="radio" id="menclothing" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenClothing"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenClothing"] ? "checked" : "") name="Category" /><label>服饰</label>
+                    <input type="radio" id="menbags" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenBags"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenBags"] ? "checked" : "") name="Category" /><label>箱包</label>
+                    <input type="radio" id="menshoes" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenShoes"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenShoes"] ? "checked" : "") name="Category" /><label>鞋靴</label>
+                    <input type="radio" id="menaccessories" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenAccessories"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenAccessories"] ? "checked" : "") name="Category" /><label>配饰</label>
+                    <input type="radio" id="menhomes" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenHomes"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenHomes"] ? "checked" : "") name="Category" /><label>家居</label>
+                    <input type="radio" id="menbeauty" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenBeauty"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenBeauty"] ? "checked" : "") name="Category" /><label>美妆</label>
+                    <input type="radio" id="menwatches" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenWatches"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenWatches"] ? "checked" : "") name="Category" /><label>腕表</label>
+                    <select>
+                        <option id="menclothing" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenClothing"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenClothing"] ? "selected" : null) name="Category">男服饰</option>
+                        <option id="menbags" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenBags"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenBags"] ? "selected" : null) name="Category">箱包</option>
+                        <option id="menshoes" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenShoes"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenShoes"] ? "selected" : null) name="Category">鞋靴</option>
+                        <option id="menaccessories" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenAccessories"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenAccessories"] ? "selected" : null) name="Category">配饰</option>
+                        <option id="menhomes" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenHomes"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenHomes"] ? "selected" : null) name="Category">家居</option>
+                        <option id="menbeauty" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenBeauty"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenBeauty"] ? "selected" : null) name="Category">美妆</option>
+                        <option id="menwatches" value="@(Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenWatches"])" @(Model.Category == Shangpin.Framework.Configuration.AppSettingManager.AppSettings["MenWatches"] ? "selected" : null) name="Category">腕表</option>
+                    </select>
+                 </div>
+                </td>
+            </tr>*@
+            <tr style=" height:50px;">
+                <td width="8%" style=" font-size:15px;">
+                </td>
+                <td>
+                    @Html.HiddenFor(model => model.GroupId)
+                    <input type="submit" value="保存" onclick="return bao();" style=" width:60px; height:30px;"/>
+                    <button type="button" onclick="window.location.href='/shangpin/Channel/ChannelAlterList.html?channelno=@Request.QueryString["channelno"]'" style=" width:60px; height:30px;">
+                取消</button>
+                    
+                </td>
+            </tr>
+    </table>
+    </div>
+</form>
+@ViewData["tip"]

@@ -1,0 +1,425 @@
+﻿@using Shangpin.Entity.Item
+@using Shangpin.Entity.User
+@using Shangpin.Entity.Wfs
+@using Shangpin.Framework.Common
+@using Shangpin.Ocs.Entity.Extenstion.ShangPin;
+@using Shangpin.Ocs.Service.Shangpin;
+@using Shangpin.Ocs.Service.Common;
+@{
+    Layout = "~/Areas/Shangpin/Views/Shared/_Layout.cshtml";
+    int genderValue = Shangpin.Ocs.Service.Rq.GetIntQueryString("gender");
+    IList<SWfsPictureManager> topList = ViewBag.Banner;//头图Banner
+    IList<SWfsPictureManager> bigList = ViewBag.BigPagePosition;//大运营位置图片
+    IList<SWfsPictureManager> smallList = ViewBag.SmallPagePosition;//小运营位置图片
+    IList<SWfsPictureManager> picList = ViewBag.ButtonPagePosition;//底部运营位置图片 
+    SWfsHomeSecKill secKillSingle = (SWfsHomeSecKill)ViewBag.HomeSecKillSingle;//秒杀位置信息
+    //Shangpin.Ocs.Entity.Extenstion.Outlet.ProductInfo productSingle = (Shangpin.Ocs.Entity.Extenstion.Outlet.ProductInfo)ViewBag.HomeSecKillByProductNo;//秒杀位置图信息 
+    IEnumerable<ChannelRecommendBrandExtends> brandList = ViewBag.RecommendBrandList;
+    SWfsPictureManager picsingle = null;
+    SWfsPictureManager toppicsingle = null;
+    ViewBag.PicList = picList;
+    string genderValueWM = genderValue == 0 ? "女士" : "男士";
+}
+@using Shangpin.Ocs.Web.Infrastructure;
+@section HeadScript{
+    <script src="/Areas/Shangpin/Scripts/Venue/jquery.utils.min.js" type="text/javascript"
+        charset="utf-8"></script>
+    <script src="/Areas/Shangpin/Scripts/Venue/jquery.pagers.js" type="text/javascript"
+        charset="utf-8"></script>
+    <script src="/Areas/Shangpin/Scripts/Venue/jquery.form.js" type="text/javascript"
+        charset="utf-8"></script>
+    <script src="/Areas/Shangpin/Scripts/homepage/saveindexpic.js" type="text/javascript"
+        charset="utf-8"></script>
+  
+}
+@section HeadStyle{
+    <link href="/Areas/Shangpin/Content/css/tipswindown.css" rel="stylesheet" type="text/css"
+        charset="utf-8" />
+    <link href="/Areas/Shangpin/Content/css/page/index/homepage.css" rel="stylesheet"
+        type="text/css" charset="utf-8" />
+    <style type="text/css">
+        .dispalayRegion
+        {
+            display: none;
+            position: absolute;
+            width: 960px;
+            background-color: White;
+            height: auto;
+            top: 0px;
+            left: 0px;
+            font-size: 12px;
+        }
+        .dispalayRegion td
+        {
+            padding: 10px;
+        }
+    </style>
+}
+<div class="spWarp">
+   <select name="SelectGender" id="SelectGender" style="width: 120px;">
+        <option value="?gender=0" @(genderValue == 0 ? "selected=selected" : "")>女士</option>
+        <option value="?gender=1" @(genderValue == 1 ? "selected=selected" : "")>男士</option>
+    </select>
+    <div class="spContain">
+        <div class="spBox">
+            <div class="topShow">
+              <h2><a href="/shangpin/homepage/indexlist.html?gender=@(genderValue)">@(genderValueWM)轮播图管理</a></h2>
+                <div class="leftShow">
+                  
+                    @{ 
+                        if (topList != null && topList.Count > 0)
+                        {
+                            SWfsPictureManager topBigShow = topList.Where(p => p.PagePosition == 80).FirstOrDefault();
+                            if (topBigShow != null)
+                            {
+                            <a href="/shangpin/homepage/createtopswitch.html?gender=@(genderValue)"><img  alt="@(topBigShow.PictureName)" src="/ReadPic/GetPic.ashx?width=960&pictureFileNo=@(topBigShow.PictureFileNo)&type=2"/> </a>
+                             }else
+                             {
+                            <a href="/shangpin/homepage/createtopswitch.html?gender=@(genderValue)"><img alt="@(topList[0].PictureName)" src="/ReadPic/GetPic.ashx?pictureFileNo=@(topList[0].PictureFileNo)&type=2"/> </a>
+                             }
+                         
+                        }else
+                            {
+                          <a href="/shangpin/homepage/createtopswitch.html?gender=@(genderValue)">点击添加轮播图</a>
+                            }
+                        }
+                     </div>
+            </div>
+        </div>
+        <!--第一个包含3个空位的区域-->
+        <!--第二个包含7个空位的区域 relationtype="3" opratorregion="60" fontcolordata="580*316"-->
+        <div class="spBox ad2"> 
+            <ul class="left">
+            <h2><a href="/shangpin/homepage/indexbiglist.html?gender=@(genderValue)">@(genderValueWM)大运营位管理</a></h2>
+                <li class="big">
+                      @{
+                          picsingle = bigList != null ? bigList.Where(p => p.PagePosition == 84).FirstOrDefault() : null;
+                          if (picsingle != null)
+                          {
+                        <a href="/shangpin/homepage/CreateBigPagePosition.html?pid=84&gender=@(genderValue)">
+                            <img alt="@(picsingle.PictureName)" src="/ReadPic/GetPic.ashx?pictureFileNo=@(picsingle.PictureFileNo)&type=2"/></a>
+                          }
+                          else
+                          {
+                       <a href="/shangpin/homepage/CreateBigPagePosition.html?pid=84&gender=@(genderValue)">新品</a>
+                          }
+                    }
+                
+                </li>
+                <li class="big">
+                     @{
+                         picsingle = bigList != null ? bigList.Where(p => p.PagePosition == 85).FirstOrDefault() : null;
+                         if (picsingle != null)
+                         {
+                        <a href="/shangpin/homepage/CreateBigPagePosition.html?pid=85&gender=@(genderValue)">
+                            <img alt="@(picsingle.PictureName)" src="/ReadPic/GetPic.ashx?pictureFileNo=@(picsingle.PictureFileNo)&type=2"/></a>
+                         }
+                         else
+                         {
+                       <a href="/shangpin/homepage/CreateBigPagePosition.html?pid=85&gender=@(genderValue)">促销</a>
+                         }
+                    }
+                </li>
+                <li class="big">
+                       @{
+                           picsingle = bigList != null ? bigList.Where(p => p.PagePosition == 86).FirstOrDefault() : null;
+                           if (picsingle != null)
+                           {
+                        <a href="/shangpin/homepage/CreateBigPagePosition.html?pid=86&gender=@(genderValue)">
+                            <img alt="@(picsingle.PictureName)" src="/ReadPic/GetPic.ashx?pictureFileNo=@(picsingle.PictureFileNo)&type=2"/></a>
+                           }
+                           else
+                           {
+                       <a href="/shangpin/homepage/CreateBigPagePosition.html?pid=86&gender=@(genderValue)">搭配</a>
+                           }
+                    }
+                </li>
+                <li class="big">
+                      @{
+                          picsingle = bigList != null ? bigList.Where(p => p.PagePosition == 87).FirstOrDefault() : null;
+                          if (picsingle != null)
+                          {
+                        <a href="/shangpin/homepage/CreateBigPagePosition.html?pid=87&gender=@(genderValue)">
+                            <img alt="@(picsingle.PictureName)" src="/ReadPic/GetPic.ashx?pictureFileNo=@(picsingle.PictureFileNo)&type=2"/></a>
+                          }
+                          else
+                          {
+                    <a href="/shangpin/homepage/CreateBigPagePosition.html?pid=87&gender=@(genderValue)">品类</a>
+                          }
+                    }
+                </li>
+                <li class="big">
+                     @{
+                         picsingle = bigList != null ? bigList.Where(p => p.PagePosition == 88).FirstOrDefault() : null;
+                         if (picsingle != null)
+                         {
+                        <a href="/shangpin/homepage/CreateBigPagePosition.html?pid=88&gender=@(genderValue)">
+                            <img alt="@(picsingle.PictureName)" src="/ReadPic/GetPic.ashx?pictureFileNo=@(picsingle.PictureFileNo)&type=2"/></a>
+                         }
+                         else
+                         {
+                        <a href="/shangpin/homepage/CreateBigPagePosition.html?pid=88&gender=@(genderValue)">杂志</a>
+                         }
+                    }
+                </li>
+                <li class="big">
+                     @{
+                         picsingle = bigList != null ? bigList.Where(p => p.PagePosition == 94).FirstOrDefault() : null;
+                         if (picsingle != null)
+                         {
+                        <a href="/shangpin/homepage/CreateBigPagePosition.html?pid=94&gender=@(genderValue)">
+                            <img alt="@(picsingle.PictureName)" src="/ReadPic/GetPic.ashx?pictureFileNo=@(picsingle.PictureFileNo)&type=2"/></a>
+                         }
+                         else
+                         {
+                        <a href="/shangpin/homepage/CreateBigPagePosition.html?pid=94&gender=@(genderValue)">移动</a>
+                         }
+                    }
+                </li>
+            </ul>
+            
+            <ul class="right">
+            <h2><a href="/shangpin/homepage/indexsmalllist.html?gender=@(genderValue)">@(genderValueWM)小运营位管理</a></h2>
+                <li>
+                        @{
+                            picsingle = bigList != null ? smallList.Where(p => p.PagePosition == 89).FirstOrDefault() : null;
+                            if (picsingle != null)
+                            {
+                        <a href="/shangpin/homepage/CreateSmallPagePosition.html?pid=89&gender=@(genderValue)">
+                            <img alt="@(picsingle.PictureName)" src="/ReadPic/GetPic.ashx?pictureFileNo=@(picsingle.PictureFileNo)&type=2"/></a>
+                            }
+                            else
+                            {
+                        <a href="/shangpin/homepage/CreateSmallPagePosition.html?pid=89&gender=@(genderValue)">奥莱</a>
+                            }
+                    }
+                </li>
+                <li>
+                       @{
+                           picsingle = bigList != null ? smallList.Where(p => p.PagePosition == 90).FirstOrDefault() : null;
+                           if (picsingle != null)
+                           {
+                        <a href="/shangpin/homepage/CreateSmallPagePosition.html?pid=90&gender=@(genderValue)">
+                            <img alt="@(picsingle.PictureName)" src="/ReadPic/GetPic.ashx?pictureFileNo=@(picsingle.PictureFileNo)&type=2"/></a>
+                           }
+                           else
+                           {
+                     <a href="/shangpin/homepage/CreateSmallPagePosition.html?pid=90&gender=@(genderValue)">服装</a>
+                           }
+                    }
+                </li>
+                <li>
+                
+                      @{
+                          picsingle = bigList != null ? smallList.Where(p => p.PagePosition == 91).FirstOrDefault() : null;
+                          if (picsingle != null)
+                          {
+                        <a href="/shangpin/homepage/CreateSmallPagePosition.html?pid=91&gender=@(genderValue)">
+                            <img alt="@(picsingle.PictureName)" src="/ReadPic/GetPic.ashx?pictureFileNo=@(picsingle.PictureFileNo)&type=2"/></a>
+                          }
+                          else
+                          {
+                    <a href="/shangpin/homepage/CreateSmallPagePosition.html?pid=91&gender=@(genderValue)">箱包</a>
+                          }
+                    }
+                </li>
+                <li>
+                         @{
+                             picsingle = bigList != null ? smallList.Where(p => p.PagePosition == 92).FirstOrDefault() : null;
+                             if (picsingle != null)
+                             {
+                        <a href="/shangpin/homepage/CreateSmallPagePosition.html?pid=92&gender=@(genderValue)">
+                            <img alt="@(picsingle.PictureName)" src="/ReadPic/GetPic.ashx?pictureFileNo=@(picsingle.PictureFileNo)&type=2"/></a>
+                             }
+                             else
+                             {
+                        <a href="/shangpin/homepage/CreateSmallPagePosition.html?pid=92&gender=@(genderValue)">鞋靴</a>
+                             }
+                    }
+                </li>
+                <li>
+                    @{
+                        picsingle = bigList != null ? smallList.Where(p => p.PagePosition == 93).FirstOrDefault() : null;
+                        if (picsingle != null)
+                        {
+                        <a href="/shangpin/homepage/CreateSmallPagePosition.html?pid=93&gender=@(genderValue)">
+                            <img alt="@(picsingle.PictureName)" src="/ReadPic/GetPic.ashx?pictureFileNo=@(picsingle.PictureFileNo)&type=2"/></a>
+                        }
+                        else
+                        {
+                          <a href="/shangpin/homepage/CreateSmallPagePosition.html?pid=93&gender=@(genderValue)">扩展品类</a>
+                        }
+                    }
+                </li>
+                <li>
+                    @{
+                        picsingle = bigList != null ? smallList.Where(p => p.PagePosition == 95).FirstOrDefault() : null;
+                        if (picsingle != null)
+                        {
+                        <a href="/shangpin/homepage/CreateSmallPagePosition.html?pid=95&gender=@(genderValue)">
+                            <img alt="@(picsingle.PictureName)" src="/ReadPic/GetPic.ashx?pictureFileNo=@(picsingle.PictureFileNo)&type=2"/></a>
+                        }
+                        else
+                        {
+                          <a href="/shangpin/homepage/CreateSmallPagePosition.html?pid=95&gender=@(genderValue)">腕表眼镜</a>
+                        }
+                    }
+                </li>
+                
+                <div class="hot_brand">
+                    <a href="/shangpin/homepage/IndexBrandList?channelNo=@((Request.QueryString["gender"]==null||Request.QueryString["gender"]=="0")?"A01":"A02")">
+                    <h2>热门品牌推荐</h2>
+                    
+                    <div class="hot_brand_list">
+                        <ul class="clr">
+                            @if (brandList!=null)
+                            {
+                                for (int i = 0; i < brandList.Count(); i++)
+                                {
+                                    <li><img src="/ReadPic/GetPic.ashx?width=93&height=44&pictureFileNo=@(brandList.ElementAt(i).BrandLogo)&type=2" /></li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                    </a>
+                </div>
+                
+                @*<h2><a href="/shangpin/homepage/HomeSecKillList.html?gender=@genderValue">@(genderValueWM)微秒杀营位管理</a></h2>
+                <li class="bigright"> 
+                
+                    @{
+                    if (secKillSingle!=null&&productSingle!=null)
+                    {
+                        string genderValueS = secKillSingle.ChannelNo.ToLower() == "a02" ? "1" : "0"; 
+                         <center>
+                <div class="sales_activity" style="font-size:12px">
+                    <h2>
+                       @(secKillSingle.SecKillTitle) </h2>
+                    <div class='sales_activity_cont' id="activity_cont">
+                     
+                        <h4>
+                           @(secKillSingle.SecKillType == 1 ? "" : secKillSingle.StartTime.ToString("yyyy.MM.dd HH:mm"))</h4>
+                     <a href="/shangpin/homepage/CreateSecKill.html?gender=@genderValue&id=@secKillSingle.SecKillId"> 
+                             <img title="@Html.Raw(productSingle.ProductName)" alt="@Html.Raw(productSingle.ProductName)"   src="/ReadPic/GetPic.ashx?width=239&height=320&pictureFileNo=@(productSingle.ProductPicFile)&type=1"/>
+                             </a> 
+                             <span><br/>
+
+                           <a href="/shangpin/homepage/CreateSecKill.html?gender=@genderValue&id=@secKillSingle.SecKillId" style="font-size:12px">
+                                @productSingle.BrandEnName<br />
+                                @productSingle.ProductName</a>
+                                </span> <br />
+                                <em>市场参考价 ¥@productSingle.MarketPrice</em> <br />
+                                <span>秒杀价 ¥@productSingle.PromotionPrice</span> <br />
+                                <b><a style="font-size:12px" href="/shangpin/homepage/CreateSecKill.html?gender=@genderValue&id=@secKillSingle.SecKillId">SHOP NOW ></a> </b>
+                                
+                    </div>
+                </div>
+                </center>
+                    }
+                    }
+                
+                </li>*@
+            </ul>
+        </div>
+
+          <div class="spBox adLast">
+              <center>    感兴趣的商品</center>
+            </div>
+
+     <!--第四个包含3个空位的区域-->
+        <div class="spBox adLast">
+            <ul>
+               <h2><a href="/shangpin/homepage/IndexBottonList.html?gender=@(genderValue)">@(genderValueWM)底部运营位管理</a></h2>
+                <li class="bigLast">
+                    @{
+                        picsingle = picList != null ? picList.Where(p => p.PagePosition == 67).FirstOrDefault() : null;
+                        if (picsingle != null)
+                        {
+                          <a href="/shangpin/homepage/createbottonpageposition.html?pid=67&gender=@(genderValue)">
+                            <img alt="@(picsingle.PictureName)" src="/ReadPic/GetPic.ashx?pictureFileNo=@(picsingle.PictureFileNo)&type=2"/></a>
+                        }
+                        else
+                        {
+                          <a href="/shangpin/homepage/createbottonpageposition.html?pid=67&gender=@(genderValue)">点击上传图片474*155</a>
+                        }
+                    }
+                </li>
+                <li>
+                    @{
+                        picsingle = picList != null ? picList.Where(p => p.PagePosition == 68).FirstOrDefault() : null;
+                        if (picsingle != null)
+                        {
+                       <a href="/shangpin/homepage/createbottonpageposition.html?pid=68&gender=@(genderValue)">
+                            <img alt="@(picsingle.PictureName)"  src="/ReadPic/GetPic.ashx?pictureFileNo=@(picsingle.PictureFileNo)&type=2"/></a>
+                        }
+                        else
+                        {
+                         <a href="/shangpin/homepage/createbottonpageposition.html?pid=68&gender=@(genderValue)">点击上传图片231*155</a>
+                        }
+                    }
+                </li>
+                <li>
+                    @{
+                        picsingle = picList != null ? picList.Where(p => p.PagePosition == 69).FirstOrDefault() : null;
+                        if (picsingle != null)
+                        {
+                           <a href="/shangpin/homepage/createbottonpageposition.html?pid=69&gender=@(genderValue)">
+                            <img alt="@(picsingle.PictureName)" src="/ReadPic/GetPic.ashx?pictureFileNo=@(picsingle.PictureFileNo)&type=2"/></a>
+                        }
+                        else
+                        {
+                     <a href="/shangpin/homepage/createbottonpageposition.html?pid=69&gender=@(genderValue)">点击上传图片231*155</a>
+                        }
+                    }
+                </li>
+            </ul>
+        </div>
+        <!--第四个包含3个空位的区域-->
+    </div>
+</div>
+@section hiddendiv{
+    <div id="type3" class="dispalayRegion">
+        <form action="/Shangpin/HomePage/SaveSWfsPictureManagerContent" method="post" enctype="multipart/form-data"
+        id="type3form" accept-charset="utf-8">
+        <table border="0">
+            <tr>
+                <td>
+                    图片上传:
+                </td>
+                <td>
+                    <input type="hidden" value="0" name="PagePositionID" />
+                    <input type="hidden" value="3" name="RelationTypeID" />
+                    <img src="" alt="" title="yulan" />
+                    <input type="file" name="imgfile" />
+                    <input type="hidden" value="ImgNO" name="ImgNO" />
+                      <input type="hidden" value="savePicSize" name="savePicSize" />
+                    <!--图片-->
+                    <input type="hidden" value="@(Shangpin.Ocs.Service.Rq.GetIntQueryString("gender"))"  name="RelationGender"/>
+                    <!--图片-->
+                    <span style=" color:Red; font-size:14px;" id="spanColorFont" ></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    图片名称:
+                </td>
+                <td>
+                    <input type="text" name="PictureName" style="width: 300px;" maxlength="70" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    链接地址:
+                </td>
+                <td>
+                    <input type="text" value="http://" name="LinkAddress" style="width: 300px;" maxlength="1000" />
+                </td>
+            </tr>
+        </table>
+        <div>
+            <input type="button" value="确定" onclick="SaveSWfsPictureManagerContent('type3form')" />
+            <input type="button" value="返回" onclick="$('.dispalayRegion').hide();$('#windownBG').remove();" />
+        </div>
+        </form>
+    </div>
+    } 

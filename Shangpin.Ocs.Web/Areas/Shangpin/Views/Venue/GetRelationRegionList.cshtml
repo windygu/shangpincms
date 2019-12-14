@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Shangpin.Entity.Wfs.SWfsMeetingRelationRegion>
+
+@{
+    ViewBag.Title = "GetRelationRegionList";
+    Layout = "~/Areas/Shangpin/Views/Shared/_VenueLayout.cshtml";
+}
+
+<h2>会场区块列表</h2>
+<table class="mx-table" border="0">
+    <tr>
+        <th>
+            主会场编号
+        </th>
+        <th>
+            会场编号
+        </th>
+        <th>
+            区块ID
+        </th>
+        <th>
+            关联类型
+        </th>
+        <th>
+            关联内容
+        </th>
+        <th>
+            模板编号
+        </th>
+        <th>
+            AboutID
+        </th>
+        <th>操作</th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.MainMeetingNO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MettingNO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RegionID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RelationType)
+        </td>
+        <td>@Html.DisplayFor(modelItem => item.RelationContent)</td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TemplateNO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AboutID)
+        </td>
+        <td>
+            @Html.ActionLink("Venue", "DeleteRelationRegionByID", new { MeetingRelationID = item.MeetingRelationID, MeetingNO = item.MettingNO, TemplateNO = item.TemplateNO })
+        </td>
+    </tr>
+}
+
+</table>
